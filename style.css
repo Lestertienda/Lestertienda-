@@ -1,0 +1,343 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: #0b0e14;
+    color: #f0f3f6;
+    padding-bottom: 70px;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: #121620;
+    border-bottom: 1px solid #1f2633;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.logo span {
+    color: #00ff66;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.wallet-badge {
+    background: #1a212d;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid #2a3447;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #00ff66;
+    cursor: pointer;
+}
+
+.btn-login {
+    background: transparent;
+    border: 1px solid #2a3447;
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+/* Container */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+/* Saldo Card */
+.saldo-card {
+    background: linear-gradient(135deg, #121620 0%, #181f2d 100%);
+    border: 1px solid #1f2633;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.saldo-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.wallet-icon {
+    font-size: 2rem;
+    background: #1a212d;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.saldo-label {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.saldo-amount {
+    color: #fff;
+    font-size: 1.6rem;
+}
+
+.currency {
+    font-size: 0.8rem;
+    color: #00ff66;
+}
+
+.saldo-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.btn-green {
+    background-color: #00ff66;
+    color: #000;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.btn-dark {
+    background-color: #1a212d;
+    color: #fff;
+    border: 1px solid #2a3447;
+    padding: 0.75rem;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+/* Menu Grid */
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.menu-card {
+    background-color: #121620;
+    border: 1px solid #1f2633;
+    border-radius: 14px;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.menu-card:hover {
+    border-color: #00ff66;
+    transform: translateY(-2px);
+}
+
+.highlight-card {
+    border-color: #00ff6655;
+    background: linear-gradient(135deg, #121620 0%, #142820 100%);
+}
+
+.icon-box {
+    font-size: 1.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.menu-card h3 {
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.menu-card p {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+/* Dynamic Section */
+.dynamic-container {
+    margin-top: 1.5rem;
+    background: #121620;
+    border: 1px solid #1f2633;
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.back-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #1f2633;
+    padding-bottom: 0.8rem;
+}
+
+.btn-back {
+    background: #1a212d;
+    border: 1px solid #2a3447;
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.platform-grid, .country-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.platform-card, .country-card {
+    background: #1a212d;
+    border: 1px solid #2a3447;
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.platform-card:hover, .country-card:hover {
+    border-color: #00ff66;
+}
+
+.p-icon {
+    font-size: 2rem;
+}
+
+.cost-tag {
+    color: #00ff66;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.success-box {
+    text-align: center;
+}
+
+.phone-number-display {
+    background: #0b0e14;
+    border: 2px dashed #00ff66;
+    color: #00ff66;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    letter-spacing: 1px;
+}
+
+.sms-box {
+    background: #1a212d;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #121620;
+    border: 1px solid #1f2633;
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #94a3b8;
+}
+
+.offers-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.offer-box {
+    background: #1a212d;
+    border: 1px solid #2a3447;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.offer-price {
+    color: #00ff66;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+/* Bottom Nav */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #121620;
+    border-top: 1px solid #1f2633;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.6rem 0;
+    z-index: 99;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #94a3b8;
+    font-size: 0.75rem;
+}
+
+.nav-item.active, .nav-item:hover {
+    color: #00ff66;
+}
