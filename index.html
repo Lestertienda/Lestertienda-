@@ -203,7 +203,7 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* ICONO EXACTO DE USDT (BASADO EN TU CAPTURA: HEXÁGONO VERDE + T + BADGE BSC) */
+        /* ICONO EXACTO DE USDT (HEXÁGONO VERDE + T + BADGE BSC) */
         .usdt-real-badge {
             width: 44px; height: 44px; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
@@ -303,7 +303,6 @@
         }
         .ceo-btn:hover { background: #ff3b30; color: #fff; }
 
-        /* FORMULARIOS DIRECTOS DEL PANEL CEO (SIN MODALES QUE FALLEN) */
         .ceo-action-form {
             background: #07090e; border: 1px solid #ff3b30; border-radius: 12px; padding: 1rem; margin-top: 0.8rem;
         }
@@ -505,7 +504,7 @@
                     <input type="text" id="player-id-input" class="form-control no-left-icon" placeholder="Ej. 123456789" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
 
-                <div class="section-title">SELECCIONA EL PAQUETE</div>
+                <div class="section-title">SELECCIONA EL PAQUETE (COMPLETO)</div>
                 <div class="diamonds-grid">
                     <div class="diamond-card" onclick="seleccionarOferta(110, 1.2)">
                         <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
@@ -526,6 +525,16 @@
                         <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#f59e0b" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#f59e0b"/></svg></div>
                         <h4>1166 Diamantes</h4>
                         <span class="diamond-price" id="precio-1166">8.50 USDT</span>
+                    </div>
+                    <div class="diamond-card" onclick="seleccionarOferta(2420, 16.5)">
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#00f0ff" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#00f0ff"/></svg></div>
+                        <h4>2420 Diamantes</h4>
+                        <span class="diamond-price" id="precio-2420">16.50 USDT</span>
+                    </div>
+                    <div class="diamond-card" onclick="seleccionarOferta(6160, 41.0)">
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#a855f7" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#a855f7" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#a855f7"/></svg></div>
+                        <h4>6160 Diamantes</h4>
+                        <span class="diamond-price" id="precio-6160">41.00 USDT</span>
                     </div>
                 </div>
 
@@ -559,7 +568,6 @@
                 
                 <div class="wallet-selector-card">
                     <div class="wallet-info-left">
-                        <!-- ICONO EXACTO DE USDT BASADO EN TU CAPTURA -->
                         <div class="usdt-real-badge">
                             <div class="usdt-hex">
                                 <span class="usdt-t-letter">T</span>
@@ -708,7 +716,7 @@
 
         window.onload = function() {
             if (usuarioActual) {
-                let fresh = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
+                let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if(fresh) {
                     usuarioActual = fresh;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -834,7 +842,7 @@
                 let esPrincipalCEO = (email.toLowerCase() === 'lesterdomingues388@gmail.com');
                 usuarioActual = { 
                     nombre: user, 
-                    correo: email, 
+                    correo: email.toLowerCase(), 
                     pass: pass, 
                     balance: 0.00, 
                     recargasCount: 0, 
@@ -844,7 +852,7 @@
                     rango: esPrincipalCEO ? 2 : 0
                 };
                 
-                let existe = listaUsuariosGlobales.find(u => u.correo === email);
+                let existe = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === email.toLowerCase());
                 if(!existe) {
                     listaUsuariosGlobales.push(usuarioActual);
                 } else {
@@ -874,7 +882,7 @@
                 return;
             }
 
-            let encontrado = listaUsuariosGlobales.find(u => u.correo === email && u.pass === pass);
+            let encontrado = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === email.toLowerCase() && u.pass === pass);
             if(!encontrado) {
                 mostrarNotificacion("Correo o contraseña incorrectos.");
                 return;
@@ -940,15 +948,17 @@
         }
 
         function actualizarPreciosDiamantesUI() {
-            let p110 = 1.2, p361 = 3.5, p572 = 5.0, p1166 = 8.5;
+            let p110 = 1.2, p361 = 3.5, p572 = 5.0, p1166 = 8.5, p2420 = 16.5, p6160 = 41.0;
             if (usuarioActual && usuarioActual.descuentosDisponibles > 0) {
-                p110 *= 0.95; p361 *= 0.95; p572 *= 0.95; p1166 *= 0.95;
+                p110 *= 0.95; p361 *= 0.95; p572 *= 0.95; p1166 *= 0.95; p2420 *= 0.95; p6160 *= 0.95;
                 mostrarNotificacion("¡Tienes un 5% de descuento activo por referido!");
             }
             document.getElementById('precio-110').innerText = p110.toFixed(2) + " USDT";
             document.getElementById('precio-361').innerText = p361.toFixed(2) + " USDT";
             document.getElementById('precio-572').innerText = p572.toFixed(2) + " USDT";
             document.getElementById('precio-1166').innerText = p1166.toFixed(2) + " USDT";
+            document.getElementById('precio-2420').innerText = p2420.toFixed(2) + " USDT";
+            document.getElementById('precio-6160').innerText = p6160.toFixed(2) + " USDT";
         }
 
         function seleccionarOferta(diamantes, precioBase) {
@@ -988,7 +998,7 @@
                     usuarioActual.descuentosDisponibles--;
                 }
 
-                let uGlobal = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
+                let uGlobal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if(uGlobal) {
                     uGlobal.balance = usuarioActual.balance;
                     uGlobal.recargasCount = usuarioActual.recargasCount;
@@ -1001,7 +1011,7 @@
                     id: Date.now(),
                     fecha: new Date().toISOString(),
                     usuario: usuarioActual.nombre, 
-                    correo: usuarioActual.correo,
+                    correo: usuarioActual.correo.toLowerCase(),
                     idJugador: playerId, 
                     detalle: `${ofertaSeleccionada.diamantes} Diamantes`, 
                     precio: ofertaSeleccionada.precio,
@@ -1117,7 +1127,7 @@
                 const base64Image = e.target.result;
                 usuarioActual.avatar = base64Image;
                 
-                let fresh = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
+                let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if(fresh) fresh.avatar = base64Image;
 
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
@@ -1152,7 +1162,7 @@
             setTimeout(async () => {
                 const nuevoDep = { 
                     id: Date.now(),
-                    correo: usuarioActual.correo,
+                    correo: usuarioActual.correo.toLowerCase(),
                     usuario: usuarioActual.nombre, 
                     monto: monto, 
                     estado: 'Pendiente' 
@@ -1172,7 +1182,7 @@
 
         function actualizarPerfilUI() {
             if(!usuarioActual) return;
-            let fresh = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
+            let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
             if(fresh) usuarioActual = fresh;
             if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
 
@@ -1225,7 +1235,7 @@
                 return;
             }
             usuarioActual.pass = nue;
-            let uGlobal = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
+            let uGlobal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
             if(uGlobal) uGlobal.pass = nue;
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -1244,7 +1254,7 @@
         function ejecutarEliminarCuenta() {
             mostrarCarga();
             setTimeout(async () => {
-                listaUsuariosGlobales = listaUsuariosGlobales.filter(u => u.correo !== usuarioActual.correo);
+                listaUsuariosGlobales = listaUsuariosGlobales.filter(u => u.correo.toLowerCase() !== usuarioActual.correo.toLowerCase());
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.removeItem('lester_usuario');
                 await guardarEnCloud();
@@ -1264,7 +1274,6 @@
             window.open(`https://wa.me/${numero}?text=${texto}`, '_blank');
         }
 
-        // PANEL DE CEO / ADMIN CON FORMULARIOS DIRECTOS (SIN MODALES)
         function verificarAccesoCEO() {
             const contenedorCEO = document.getElementById('panel-ceo-container');
             if (usuarioActual && (usuarioActual.rango >= 1 || usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com')) {
@@ -1392,7 +1401,7 @@
         }
 
         async function ejecutarAcreditarCEO() {
-            const correo = document.getElementById('ceo-acreditar-correo').value.trim();
+            const correo = document.getElementById('ceo-acreditar-correo').value.trim().toLowerCase();
             const monto = parseFloat(document.getElementById('ceo-acreditar-monto').value);
 
             if(!correo || isNaN(monto)) {
@@ -1400,7 +1409,7 @@
                 return;
             }
 
-            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.toLowerCase());
+            let target = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === correo);
             if(!target) {
                 mostrarNotificacion("Usuario no encontrado en la base de datos");
                 return;
@@ -1421,7 +1430,7 @@
         }
 
         async function ejecutarDesacreditarCEO() {
-            const correo = document.getElementById('ceo-desacreditar-correo').value.trim();
+            const correo = document.getElementById('ceo-desacreditar-correo').value.trim().toLowerCase();
             const monto = parseFloat(document.getElementById('ceo-desacreditar-monto').value);
 
             if(!correo || isNaN(monto)) {
@@ -1429,7 +1438,7 @@
                 return;
             }
 
-            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.toLowerCase());
+            let target = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === correo);
             if(!target) {
                 mostrarNotificacion("Usuario no encontrado en la base de datos");
                 return;
@@ -1450,7 +1459,7 @@
         }
 
         async function ejecutarCambiarRangoCEO() {
-            const correo = document.getElementById('ceo-rango-correo').value.trim();
+            const correo = document.getElementById('ceo-rango-correo').value.trim().toLowerCase();
             const rangoVal = parseInt(document.getElementById('ceo-rango-valor').value);
 
             if(!correo || isNaN(rangoVal)) {
@@ -1458,7 +1467,7 @@
                 return;
             }
 
-            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.toLowerCase());
+            let target = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === correo);
             if(!target) {
                 mostrarNotificacion("Usuario no encontrado");
                 return;
@@ -1487,11 +1496,14 @@
             mostrarNotificacion("Etiqueta actualizada correctamente");
         }
 
+        // CORRECCIÓN BLINDADA DE APROBACIÓN DE DEPÓSITOS (SUMA INMEDIATA Y SIN FALLOS)
         async function aprobarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
+            if (!dep) return;
+            
             dep.estado = 'Aprobado';
 
-            let userTarget = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === dep.correo.trim().toLowerCase());
+            let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === dep.correo.toLowerCase());
             if(userTarget) {
                 userTarget.balance += dep.monto;
                 
@@ -1514,12 +1526,13 @@
             
             actualizarPerfilUI();
             renderizarOrdenes();
-            mostrarNotificacion(`¡Depósito de ${dep.monto} USDT aprobado y sumado al balance del usuario!`);
+            mostrarNotificacion(`¡Depósito de ${dep.monto} USDT aprobado y sumado al usuario!`);
             cargarAccionCEO('solicitudes_deposito');
         }
 
         async function cancelarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
+            if(!dep) return;
             dep.estado = 'Cancelado';
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
             await guardarEnCloud();
@@ -1530,6 +1543,7 @@
 
         async function aprobarRecarga(index) {
             let rec = solicitudesGlobales.recargas[index];
+            if(!rec) return;
             rec.estado = 'Completado';
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
             await guardarEnCloud();
@@ -1541,6 +1555,7 @@
 
         async function cancelarRecarga(index) {
             let rec = solicitudesGlobales.recargas[index];
+            if(!rec) return;
             rec.estado = 'Cancelado';
 
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === rec.correo.toLowerCase());
@@ -1567,3 +1582,4 @@
     </script>
 </body>
 </html>
+
