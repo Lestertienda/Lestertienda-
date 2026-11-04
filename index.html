@@ -1415,7 +1415,7 @@
                 return;
             }
 
-            target.balance += monto;
+            target.balance = parseFloat(((parseFloat(target.balance) || 0) + monto).toFixed(2));
             if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
                 usuarioActual.balance = target.balance;
                 actualizarPerfilUI();
@@ -1444,7 +1444,7 @@
                 return;
             }
 
-            target.balance = Math.max(0, target.balance - monto);
+            target.balance = Math.max(0, parseFloat(((parseFloat(target.balance) || 0) - monto).toFixed(2)));
             if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
                 usuarioActual.balance = target.balance;
                 actualizarPerfilUI();
@@ -1496,16 +1496,23 @@
             mostrarNotificacion("Etiqueta actualizada correctamente");
         }
 
-        // CORRECCIÓN BLINDADA DE APROBACIÓN DE DEPÓSITOS (SUMA INMEDIATA Y SIN FALLOS)
+        // FUNCIÓN DE APROBACIÓN DE DEPÓSITO CON MATEMÁTICA EXACTA Y BLINDADA
         async function aprobarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
             if (!dep) return;
             
-            dep.estado = 'Aprobado';
+            if (dep.estado === 'Aprobado') {
+                mostrarNotificacion("Este depósito ya fue aprobado.");
+                return;
+            }
 
-            let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === dep.correo.toLowerCase());
+            dep.estado = 'Aprobado';
+            let montoADepositar = parseFloat(dep.monto) || 0;
+
+            let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase().trim() === dep.correo.toLowerCase().trim());
             if(userTarget) {
-                userTarget.balance += dep.monto;
+                let saldoActual = parseFloat(userTarget.balance) || 0;
+                userTarget.balance = parseFloat((saldoActual + montoADepositar).toFixed(2));
                 
                 if (userTarget.referidoPor) {
                     let patrocinador = listaUsuariosGlobales.find(u => u.nombre.trim().toLowerCase() === userTarget.referidoPor.trim().toLowerCase());
@@ -1514,7 +1521,7 @@
                     }
                 }
 
-                if(usuarioActual && usuarioActual.correo.toLowerCase() === userTarget.correo.toLowerCase()) {
+                if(usuarioActual && usuarioActual.correo.toLowerCase().trim() === userTarget.correo.toLowerCase().trim()) {
                     usuarioActual.balance = userTarget.balance;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                 }
@@ -1526,7 +1533,7 @@
             
             actualizarPerfilUI();
             renderizarOrdenes();
-            mostrarNotificacion(`¡Depósito de ${dep.monto} USDT aprobado y sumado al usuario!`);
+            mostrarNotificacion(`¡Depósito de ${montoADepositar.toFixed(2)} USDT aprobado y sumado!`);
             cargarAccionCEO('solicitudes_deposito');
         }
 
@@ -1560,8 +1567,11 @@
 
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === rec.correo.toLowerCase());
             if(userTarget && rec.precio) {
-                userTarget.balance += rec.precio;
+                let saldoActual = parseFloat(userTarget.balance) || 0;
+                let precioRecarga = parseFloat(rec.precio) || 0;
+                userTarget.balance = parseFloat((saldoActual + precioRecarga).toFixed(2));
                 userTarget.recargasCount = Math.max(0, userTarget.recargasCount - 1);
+                
                 if(usuarioActual && usuarioActual.correo.toLowerCase() === userTarget.correo.toLowerCase()) {
                     usuarioActual.balance = userTarget.balance;
                     usuarioActual.recargasCount = userTarget.recargasCount;
@@ -1582,4 +1592,3 @@
     </script>
 </body>
 </html>
-
