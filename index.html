@@ -126,9 +126,9 @@
         }
         .nav-brand-area { display: flex; align-items: center; gap: 8px; }
         .nav-brand-logo {
-            background: var(--primary-blue); color: #fff; font-weight: 900;
-            font-size: 0.85rem; padding: 4px 8px; border-radius: 6px;
+            width: 32px; height: 32px; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); flex-shrink: 0;
         }
+        .nav-brand-logo img { width: 100%; height: 100%; object-fit: cover; }
         .nav-brand-title { font-size: 0.92rem; font-weight: 900; }
         .brand-white { color: #ffffff; }
         .brand-blue { color: var(--accent-glow); }
@@ -348,16 +348,16 @@
             padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
         }
 
-        /* BOTÓN FLOTANTE CON FOTO DE LA APLICACIÓN Y LIBERTAD TOTAL DE ARRASTRE */
+        /* BOTÓN FLOTANTE CON FOTO DE LA APLICACIÓN (SIN ESPACIOS BLANCOS) */
         .floating-bot {
             position: fixed; bottom: 85px; right: 20px; width: 56px; height: 56px;
-            background: #07090e; border: 2px solid var(--accent-glow); border-radius: 50%;
+            background: transparent; border: 2px solid var(--accent-glow); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 20px rgba(0, 240, 255, 0.5); cursor: grab; z-index: 99998;
-            touch-action: none; user-select: none; overflow: hidden;
+            touch-action: none; user-select: none; overflow: hidden; padding: 0;
         }
         .floating-bot:active { cursor: grabbing; }
-        .floating-bot img { width: 100%; height: 100%; object-fit: cover; }
+        .floating-bot img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
 
         /* MODAL SELECTOR SOPORTE & IA */
         #modal-soporte-selector {
@@ -527,7 +527,7 @@
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE SOPORTE (CON LA FOTO DE LA APP Y LIBERTAD TOTAL DE ARRASTRE) -->
+    <!-- BOTÓN FLOTANTE SOPORTE (CON LA FOTO DE LA APP RELLENA SIN ESPACIOS BLANCOS) -->
     <div id="floating-bot-soporte" class="floating-bot" onclick="mostrarModalSoporte()">
         <img src="icon-192.png" alt="Soporte">
     </div>
@@ -617,7 +617,9 @@
         
         <header class="navbar">
             <div class="nav-brand-area">
-                <div class="nav-brand-logo">LT</div>
+                <div class="nav-brand-logo">
+                    <img src="icon-192.png" alt="Logo">
+                </div>
                 <div class="nav-brand-title"><span class="brand-white">Lester</span> <span class="brand-blue">Tienda</span></div>
             </div>
             <div class="nav-top-icons">
@@ -1074,7 +1076,7 @@
             });
         }
 
-        // ARRASTRE FLUIDO Y LIBRE PARA EL BOTÓN DE SOPORTE (SIN BLOQUEO EN NINGUNA DIRECCIÓN)
+        // ARRASTRE FLUIDO Y LIBRE PARA EL BOTÓN DE SOPORTE
         const botSoporte = document.getElementById('floating-bot-soporte');
         let isDragging = false;
         let startX, startY, initialX, initialY;
@@ -1098,7 +1100,6 @@
             if (isDragging) {
                 let newX = initialX + dx;
                 let newY = initialY + dy;
-                // Permitir movimiento por toda la pantalla sin restricciones de altura máxima bloqueada
                 newX = Math.max(5, Math.min(window.innerWidth - 65, newX));
                 newY = Math.max(5, Math.min(window.innerHeight - 65, newY));
                 botSoporte.style.left = newX + 'px';
@@ -1124,9 +1125,10 @@
             }
         }
 
+        // MENSAJE DE WHATSAPP MÁS PROFESIONAL Y COMERCIAL
         function abrirWhatsAppReal(tipo) {
             const numero = "5359578110";
-            const texto = encodeURIComponent("Hola Lester, necesito soporte con mi cuenta.");
+            const texto = encodeURIComponent("Estimado equipo de soporte / Lester, me comunico desde la plataforma para recibir asistencia con mi cuenta y transacciones.");
             let url = "";
             if (tipo === 'business') {
                 url = `whatsapp://send?phone=${numero}&text=${texto}`;
@@ -1137,7 +1139,6 @@
             cerrarModalSoporte();
         }
 
-        // LÓGICA DE LA IA INTEGRADA CON ANIMACIÓN DE ESCRIBIENDO Y ESTILO WHATSAPP
         function abrirIaChatModal() {
             cerrarModalSoporte();
             document.getElementById('modal-ia-chat').style.display = 'flex';
@@ -1163,7 +1164,6 @@
             input.value = '';
             chatMsgs.scrollTop = chatMsgs.scrollHeight;
 
-            // Mostrar animación de escribiendo
             const typingId = 'typing-' + Date.now();
             chatMsgs.innerHTML += `
                 <div id="${typingId}" class="typing-indicator">
