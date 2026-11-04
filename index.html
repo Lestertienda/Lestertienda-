@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lester Tienda - Pro Gaming Store</title>
+    
+    <!-- CONFIGURACIÓN PWA (INSTALACIÓN COMO APP) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#07090e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lester Tienda">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -203,7 +212,6 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* ICONO EXACTO DE USDT (HEXÁGONO VERDE + T + BADGE BSC) */
         .usdt-real-badge {
             width: 44px; height: 44px; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
@@ -705,6 +713,15 @@
     </div>
 
     <script>
+        // Registro del Service Worker para la PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registrado con éxito', reg))
+                    .catch(err => console.log('Error al registrar Service Worker', err));
+            });
+        }
+
         let usuarioActual = JSON.parse(localStorage.getItem('lester_usuario')) || null;
         let ofertaSeleccionada = null;
         let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
@@ -1496,7 +1513,6 @@
             mostrarNotificacion("Etiqueta actualizada correctamente");
         }
 
-        // FUNCIÓN DE APROBACIÓN DE DEPÓSITO CON MATEMÁTICA EXACTA Y BLINDADA
         async function aprobarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
             if (!dep) return;
@@ -1561,7 +1577,7 @@
         }
 
         async function cancelarRecarga(index) {
-            let rec = solicitudesGlobales.recargas[index];
+            let rec = solicitudesGroup = solicitudesGlobales.recargas[index];
             if(!rec) return;
             rec.estado = 'Cancelado';
 
