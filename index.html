@@ -77,40 +77,6 @@
         }
         #notification-toast.show { transform: translateX(-50%) translateY(0); }
 
-        .custom-modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.85);
-            backdrop-filter: blur(6px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-        }
-        .custom-modal {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            width: 85%;
-            max-width: 340px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            text-align: center;
-        }
-        .custom-modal h3 { font-size: 0.95rem; margin-bottom: 0.8rem; color: #fff; font-weight: 800; }
-        .custom-modal input {
-            width: 100%; background: #07090e; border: 1px solid var(--border-color);
-            padding: 0.7rem; border-radius: 8px; color: #fff; margin-bottom: 1rem;
-            outline: none; text-align: center; font-size: 0.9rem;
-        }
-        .custom-modal-btns { display: flex; gap: 8px; }
-        .modal-btn {
-            flex: 1; padding: 0.6rem; border-radius: 8px; font-weight: bold;
-            font-size: 0.82rem; cursor: pointer; border: none; transition: all 0.2s;
-        }
-        .modal-btn-confirm { background: var(--primary-blue); color: #fff; }
-        .modal-btn-cancel { background: #1a233a; color: var(--text-muted); }
-
         .auth-container {
             max-width: 390px; margin: 40px auto; background: var(--bg-card);
             border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem 1.6rem;
@@ -206,7 +172,6 @@
 
         .section-title { font-size: 0.78rem; color: var(--text-muted); margin: 1rem 0 0.4rem 0; font-weight: 700; letter-spacing: 0.5px; }
 
-        /* HISTORIAL EN VIVO */
         .live-history-card {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; margin-bottom: 1.2rem;
         }
@@ -238,12 +203,19 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* ICONO REAL DE USDT */
+        /* ICONO EXACTO DE USDT (BASADO EN TU CAPTURA: HEXÁGONO VERDE + T + BADGE BSC) */
         .usdt-real-badge {
-            width: 38px; height: 38px; background: linear-gradient(135deg, #26a17b 0%, #115e48 100%);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 900; color: #fff; font-size: 1rem; border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: 0 3px 10px rgba(38, 161, 123, 0.3);
+            width: 44px; height: 44px; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .usdt-hex {
+            width: 40px; height: 36px; background: #009374; clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 3px 10px rgba(0, 147, 116, 0.4);
+        }
+        .usdt-t-letter { color: #fff; font-weight: 900; font-size: 1.1rem; line-height: 1; margin-top: -2px; }
+        .usdt-bsc-badge {
+            position: absolute; bottom: -2px; right: -2px; width: 18px; height: 18px; background: #f3ba2f;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.5rem;
+            font-weight: 900; color: #07090e; border: 1.5px solid #07090e; box-shadow: 0 2px 5px rgba(243, 186, 47, 0.5);
         }
 
         .wallet-selector-card {
@@ -331,6 +303,16 @@
         }
         .ceo-btn:hover { background: #ff3b30; color: #fff; }
 
+        /* FORMULARIOS DIRECTOS DEL PANEL CEO (SIN MODALES QUE FALLEN) */
+        .ceo-action-form {
+            background: #07090e; border: 1px solid #ff3b30; border-radius: 12px; padding: 1rem; margin-top: 0.8rem;
+        }
+        .ceo-action-form h4 { font-size: 0.85rem; color: #ff3b30; margin-bottom: 0.6rem; font-weight: 900; }
+        .ceo-action-form input {
+            width: 100%; background: #0d1322; border: 1px solid var(--border-color);
+            padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
+        }
+
         .floating-bot {
             position: fixed; bottom: 80px; right: 15px; width: 48px; height: 48px;
             background: var(--primary-blue); border-radius: 50%; display: flex;
@@ -365,17 +347,6 @@
 
     <div id="loading-overlay"><div class="spinner"></div></div>
     <div id="notification-toast">ACCIÓN COMPLETADA</div>
-
-    <div id="custom-modal" class="custom-modal-overlay">
-        <div class="custom-modal">
-            <h3 id="modal-title">Introduce un valor</h3>
-            <input type="text" id="modal-input" placeholder="">
-            <div class="custom-modal-btns">
-                <button class="modal-btn modal-btn-cancel" onclick="cerrarModal()">Cancelar</button>
-                <button class="modal-btn modal-btn-confirm" id="modal-btn-ok">Aceptar</button>
-            </div>
-        </div>
-    </div>
 
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
 
@@ -588,8 +559,13 @@
                 
                 <div class="wallet-selector-card">
                     <div class="wallet-info-left">
-                        <!-- ICONO REAL DE USDT -->
-                        <div class="usdt-real-badge">₮</div>
+                        <!-- ICONO EXACTO DE USDT BASADO EN TU CAPTURA -->
+                        <div class="usdt-real-badge">
+                            <div class="usdt-hex">
+                                <span class="usdt-t-letter">T</span>
+                            </div>
+                            <div class="usdt-bsc-badge">BNB</div>
+                        </div>
                         <div class="wallet-details">
                             <h4>USDT (BEP-20)</h4>
                             <span>Tether USD - Red Binance Smart Chain</span>
@@ -726,7 +702,6 @@
         let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
         let listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
         let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE" };
-        let modalCallback = null;
 
         const BIN_ID = '6aeaa0e1ffd5d16053a44254';
         const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
@@ -814,27 +789,6 @@
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        function abrirModal(titulo, placeholder, isPassword, callback) {
-            document.getElementById('modal-title').innerText = titulo;
-            const input = document.getElementById('modal-input');
-            input.value = '';
-            input.placeholder = placeholder;
-            input.type = isPassword ? 'password' : 'text';
-            document.getElementById('custom-modal').style.display = 'flex';
-            modalCallback = callback;
-        }
-
-        function cerrarModal() {
-            document.getElementById('custom-modal').style.display = 'none';
-            modalCallback = null;
-        }
-
-        document.getElementById('modal-btn-ok').onclick = function() {
-            const val = document.getElementById('modal-input').value;
-            cerrarModal();
-            if(modalCallback) modalCallback(val);
-        };
-
         function cambiarTabAuth(tipo) {
             if (tipo === 'registro') {
                 document.getElementById('form-registro').style.display = 'block';
@@ -887,7 +841,7 @@
                     avatar: "",
                     referidoPor: referidoPor || null,
                     descuentosDisponibles: 0,
-                    rango: esPrincipalCEO ? 2 : 0 // Rango 2 para CEO principal
+                    rango: esPrincipalCEO ? 2 : 0
                 };
                 
                 let existe = listaUsuariosGlobales.find(u => u.correo === email);
@@ -931,7 +885,7 @@
                 ocultarCarga();
                 usuarioActual = encontrado;
                 if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') {
-                    usuarioActual.rango = 2; // Asegurar rango CEO supremo
+                    usuarioActual.rango = 2;
                 }
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                 document.getElementById('auth-screen').style.display = 'none';
@@ -944,7 +898,6 @@
         }
 
         function cambiarSeccion(seccion, elemento) {
-            // SI SALIMOS DE LA WALLET, CERRAMOS EL PANEL AUTOMÁTICAMENTE
             if (seccion !== 'wallet') {
                 const panelWallet = document.getElementById('wallet-details-panel');
                 if(panelWallet) panelWallet.style.display = 'none';
@@ -1068,7 +1021,6 @@
             }, 800);
         }
 
-        // ORDENES PERSONALES EXCLUSIVAS DEL USUARIO
         function renderizarOrdenes() {
             solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
             const container = document.getElementById('lista-ordenes-container');
@@ -1312,7 +1264,7 @@
             window.open(`https://wa.me/${numero}?text=${texto}`, '_blank');
         }
 
-        // PANEL DE CEO / ADMIN CON RANGOS 1 Y 2
+        // PANEL DE CEO / ADMIN CON FORMULARIOS DIRECTOS (SIN MODALES)
         function verificarAccesoCEO() {
             const contenedorCEO = document.getElementById('panel-ceo-container');
             if (usuarioActual && (usuarioActual.rango >= 1 || usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com')) {
@@ -1326,7 +1278,6 @@
                     <button class="ceo-btn" onclick="cargarAccionCEO('desacreditar')">Desacreditar</button>
                 `;
 
-                // SOLO RANGO 2 (CEO) PUEDE VER LAS SOLICITUDES Y CONFIGURAR ETIQUETAS
                 if(esCEO) {
                     htmlBotones += `
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_recarga')">Recargas (${solicitudesGlobales.recargas.length})</button>
@@ -1382,7 +1333,7 @@
                 solicitudesGlobales.depositos.forEach((d, idx) => {
                     if(d.estado === 'Pendiente') {
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
-                            <b>User:</b> ${d.usuario} | <b>Monto:</b> ${d.monto} USDT
+                            <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto:</b> ${d.monto} USDT
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
                                 <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
                                 <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
@@ -1403,86 +1354,137 @@
                 });
                 res.innerHTML = html;
             } else if(accion === 'acreditar') {
-                abrirModal("Correo del usuario a acreditar", "correo@gmail.com", false, function(correo) {
-                    if(!correo) return;
-                    abrirModal("Monto en USDT a sumar", "10", false, async function(monto) {
-                        let valMonto = parseFloat(monto);
-                        if(correo && !isNaN(valMonto)) {
-                            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.trim().toLowerCase());
-                            if(target) {
-                                target.balance += valMonto;
-                                if(usuarioActual && usuarioActual.correo === target.correo) {
-                                    usuarioActual.balance = target.balance;
-                                    actualizarPerfilUI();
-                                }
-                                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
-                                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                                await guardarEnCloud();
-                                mostrarNotificacion(`Acreditados ${valMonto} USDT a ${correo}`);
-                                cargarAccionCEO('usuarios');
-                            } else {
-                                mostrarNotificacion("Usuario no encontrado");
-                            }
-                        }
-                    });
-                });
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Acreditar Saldo USDT</h4>
+                        <input type="email" id="ceo-acreditar-correo" placeholder="Correo del usuario">
+                        <input type="number" id="ceo-acreditar-monto" placeholder="Monto a sumar (Ej. 10)">
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarAcreditarCEO()">Aplicar Acreditación</button>
+                    </div>
+                `;
             } else if(accion === 'desacreditar') {
-                abrirModal("Correo del usuario a descontar", "correo@gmail.com", false, function(correo) {
-                    if(!correo) return;
-                    abrirModal("Monto en USDT a restar", "5", false, async function(monto) {
-                        let valMonto = parseFloat(monto);
-                        if(correo && !isNaN(valMonto)) {
-                            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.trim().toLowerCase());
-                            if(target) {
-                                target.balance = Math.max(0, target.balance - valMonto);
-                                if(usuarioActual && usuarioActual.correo === target.correo) {
-                                    usuarioActual.balance = target.balance;
-                                    actualizarPerfilUI();
-                                }
-                                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
-                                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                                await guardarEnCloud();
-                                mostrarNotificacion(`Descontados ${valMonto} USDT a ${correo}`);
-                                cargarAccionCEO('usuarios');
-                            } else {
-                                mostrarNotificacion("Usuario no encontrado");
-                            }
-                        }
-                    });
-                });
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Desacreditar Saldo USDT</h4>
+                        <input type="email" id="ceo-desacreditar-correo" placeholder="Correo del usuario">
+                        <input type="number" id="ceo-desacreditar-monto" placeholder="Monto a restar (Ej. 5)">
+                        <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarDesacreditarCEO()">Aplicar Desacreditación</button>
+                    </div>
+                `;
             } else if(accion === 'cambiar_rango' && esCEO) {
-                abrirModal("Correo del usuario a modificar", "correo@gmail.com", false, function(correo) {
-                    if(!correo) return;
-                    abrirModal("Nuevo Rango (0 = Quitar Admin, 1 = Admin Parcial, 2 = CEO)", "1", false, async function(rangoVal) {
-                        let rNum = parseInt(rangoVal);
-                        if(correo && !isNaN(rNum)) {
-                            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.trim().toLowerCase());
-                            if(target) {
-                                target.rango = rNum;
-                                if(usuarioActual && usuarioActual.correo === target.correo) {
-                                    usuarioActual.rango = rNum;
-                                    actualizarPerfilUI();
-                                }
-                                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
-                                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                                await guardarEnCloud();
-                                mostrarNotificacion(`Rango actualizado a ${rNum} para ${correo}`);
-                                cargarAccionCEO('usuarios');
-                            } else {
-                                mostrarNotificacion("Usuario no encontrado");
-                            }
-                        }
-                    });
-                });
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Gestionar Rangos y Admin</h4>
+                        <input type="email" id="ceo-rango-correo" placeholder="Correo del usuario">
+                        <input type="number" id="ceo-rango-valor" placeholder="Nuevo rango (0=Quitar, 1=Admin Parcial, 2=CEO)">
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarCambiarRangoCEO()">Actualizar Rango</button>
+                    </div>
+                `;
             } else if(accion === 'etiqueta_game' && esCEO) {
-                abrirModal("Texto de la etiqueta para Free Fire", "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE (o dejar en blanco)", false, async function(textoTag) {
-                    tiendaConfig.etiquetaFreeFire = textoTag;
-                    localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-                    await guardarEnCloud();
-                    aplicarConfiguracionVisual();
-                    mostrarNotificacion("Etiqueta actualizada correctamente");
-                });
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Crear / Editar Etiqueta Free Fire</h4>
+                        <input type="text" id="ceo-etiqueta-texto" placeholder="Texto de la etiqueta (Ej. DESCUENTO 50%)" value="${tiendaConfig.etiquetaFreeFire || ''}">
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta</button>
+                    </div>
+                `;
             }
+        }
+
+        async function ejecutarAcreditarCEO() {
+            const correo = document.getElementById('ceo-acreditar-correo').value.trim();
+            const monto = parseFloat(document.getElementById('ceo-acreditar-monto').value);
+
+            if(!correo || isNaN(monto)) {
+                mostrarNotificacion("Completa el correo y el monto correctamente");
+                return;
+            }
+
+            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.toLowerCase());
+            if(!target) {
+                mostrarNotificacion("Usuario no encontrado en la base de datos");
+                return;
+            }
+
+            target.balance += monto;
+            if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
+                usuarioActual.balance = target.balance;
+                actualizarPerfilUI();
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            await guardarEnCloud();
+
+            mostrarNotificacion(`¡Acreditados ${monto} USDT a ${correo} con éxito!`);
+            cargarAccionCEO('usuarios');
+        }
+
+        async function ejecutarDesacreditarCEO() {
+            const correo = document.getElementById('ceo-desacreditar-correo').value.trim();
+            const monto = parseFloat(document.getElementById('ceo-desacreditar-monto').value);
+
+            if(!correo || isNaN(monto)) {
+                mostrarNotificacion("Completa el correo y el monto correctamente");
+                return;
+            }
+
+            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.toLowerCase());
+            if(!target) {
+                mostrarNotificacion("Usuario no encontrado en la base de datos");
+                return;
+            }
+
+            target.balance = Math.max(0, target.balance - monto);
+            if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
+                usuarioActual.balance = target.balance;
+                actualizarPerfilUI();
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            await guardarEnCloud();
+
+            mostrarNotificacion(`¡Descontados ${monto} USDT a ${correo}!`);
+            cargarAccionCEO('usuarios');
+        }
+
+        async function ejecutarCambiarRangoCEO() {
+            const correo = document.getElementById('ceo-rango-correo').value.trim();
+            const rangoVal = parseInt(document.getElementById('ceo-rango-valor').value);
+
+            if(!correo || isNaN(rangoVal)) {
+                mostrarNotificacion("Completa el correo y el rango válido (0, 1 o 2)");
+                return;
+            }
+
+            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.toLowerCase());
+            if(!target) {
+                mostrarNotificacion("Usuario no encontrado");
+                return;
+            }
+
+            target.rango = rangoVal;
+            if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
+                usuarioActual.rango = rangoVal;
+                actualizarPerfilUI();
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            await guardarEnCloud();
+
+            mostrarNotificacion(`Rango actualizado a ${rangoVal} para ${correo}`);
+            cargarAccionCEO('usuarios');
+        }
+
+        async function ejecutarGuardarEtiquetaCEO() {
+            const texto = document.getElementById('ceo-etiqueta-texto').value;
+            tiendaConfig.etiquetaFreeFire = texto;
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            aplicarConfiguracionVisual();
+            mostrarNotificacion("Etiqueta actualizada correctamente");
         }
 
         async function aprobarDeposito(index) {
@@ -1493,7 +1495,6 @@
             if(userTarget) {
                 userTarget.balance += dep.monto;
                 
-                // LÓGICA DE REFERIDOS: SI JUAN DEPOSITA, EL PATROCINADOR GANA 5% DE DESCUENTO
                 if (userTarget.referidoPor) {
                     let patrocinador = listaUsuariosGlobales.find(u => u.nombre.trim().toLowerCase() === userTarget.referidoPor.trim().toLowerCase());
                     if (patrocinador) {
@@ -1501,7 +1502,7 @@
                     }
                 }
 
-                if(usuarioActual && usuarioActual.correo === userTarget.correo) {
+                if(usuarioActual && usuarioActual.correo.toLowerCase() === userTarget.correo.toLowerCase()) {
                     usuarioActual.balance = userTarget.balance;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                 }
@@ -1512,9 +1513,9 @@
             await guardarEnCloud();
             
             actualizarPerfilUI();
-            mostrarNotificacion(`Depósito de ${dep.monto} USDT aprobado y sumado al usuario`);
-            cargarAccionCEO('solicitudes_deposito');
             renderizarOrdenes();
+            mostrarNotificacion(`¡Depósito de ${dep.monto} USDT aprobado y sumado al balance del usuario!`);
+            cargarAccionCEO('solicitudes_deposito');
         }
 
         async function cancelarDeposito(index) {
@@ -1542,11 +1543,11 @@
             let rec = solicitudesGlobales.recargas[index];
             rec.estado = 'Cancelado';
 
-            let userTarget = listaUsuariosGlobales.find(u => u.correo === rec.correo);
+            let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === rec.correo.toLowerCase());
             if(userTarget && rec.precio) {
                 userTarget.balance += rec.precio;
                 userTarget.recargasCount = Math.max(0, userTarget.recargasCount - 1);
-                if(usuarioActual && usuarioActual.correo === userTarget.correo) {
+                if(usuarioActual && usuarioActual.correo.toLowerCase() === userTarget.correo.toLowerCase()) {
                     usuarioActual.balance = userTarget.balance;
                     usuarioActual.recargasCount = userTarget.recargasCount;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
