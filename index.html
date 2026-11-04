@@ -164,18 +164,30 @@
         }
         .game-hero-arrow svg { width: 14px; height: 14px; fill: var(--accent-glow); }
 
-        /* TARJETA DE JUEGO CON EFECTO NEÓN Y PERSONAJE PERSONALIZADO */
+        /* TARJETA DE FREE FIRE ESTILO NEÓN CON DIAMANTES Y SIN PERSONAJE */
         .game-card-character {
             background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px;
             overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; position: relative;
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
         }
         .game-card-character:hover { border-color: var(--accent-glow); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); }
+        
         .game-card-banner-img {
             background: linear-gradient(135deg, #07090e 0%, #0d1322 100%);
             height: 155px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
+            overflow: hidden;
         }
         
+        /* FONDO DE DIAMANTES Y NEÓN FLOTANTE BAKANO */
+        .neon-diamonds-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.35;
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.2) 0%, transparent 40%),
+                linear-gradient(45deg, transparent 48%, rgba(0, 240, 255, 0.15) 50%, transparent 52%);
+            background-size: 100% 100%, 100% 100%, 40px 40px;
+        }
+
         /* ETIQUETA ROJA ARRIBA A LA DERECHA */
         .neon-badge-top-right {
             position: absolute; top: 12px; right: 12px;
@@ -184,10 +196,6 @@
             text-transform: uppercase; box-shadow: 0 0 10px rgba(255, 59, 48, 0.3); z-index: 3;
         }
 
-        .game-card-character-art {
-            position: absolute; right: 10px; bottom: 0; height: 145px; object-fit: contain; pointer-events: none;
-            filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6));
-        }
         .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); }
 
         .invite-banner {
@@ -519,7 +527,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN SELECTOR DE JUEGOS CON PERSONAJE NEÓN Y ETIQUETA ARRIBA A LA DERECHA -->
+            <!-- SECCIÓN SELECTOR DE JUEGOS (FONDO NEÓN CON DIAMANTES Y SIN PERSONAJE) -->
             <div id="seccion-juegos-selector" class="vista-sec" style="display: none;">
                 <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver</button>
                 
@@ -527,37 +535,23 @@
 
                 <div class="game-card-character" onclick="abrirFreeFire()">
                     <div class="game-card-banner-img">
+                        <!-- FONDO DE DIAMANTES Y NEÓN BAKANO -->
+                        <div class="neon-diamonds-bg"></div>
+
                         <!-- ETIQUETA EDITABLE DEL CEO EN LA ESQUINA SUPERIOR DERECHA -->
                         <div id="freefire-custom-badge" class="neon-badge-top-right">
                             SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
                         </div>
-                        <div>
+
+                        <div style="z-index: 2; position: relative;">
                             <span style="background: rgba(0, 102, 255, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:var(--accent-glow); font-weight: bold; display: inline-block; margin-bottom: 4px;">Recarga por ID</span>
                             <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Free Fire</h3>
                         </div>
-                        <!-- PERSONAJE PRO GAMER CON EFECTO NEÓN -->
-                        <svg class="game-card-character-art" viewBox="0 0 220 220" width="130" height="145">
-                            <defs>
-                                <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
-                                    <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
-                                    <feMerge>
-                                        <feMergeNode in="coloredBlur"/>
-                                        <feMergeNode in="SourceGraphic"/>
-                                    </feMerge>
-                                </filter>
-                            </defs>
-                            <circle cx="110" cy="110" r="90" fill="#00f0ff" opacity="0.06" filter="url(#neon-glow)"/>
-                            <!-- Gorra Estilizada con Letra F -->
-                            <path d="M70 70 Q110 30 150 70 L145 90 Q110 65 75 90 Z" fill="#1e293b" stroke="#00f0ff" stroke-width="2" filter="url(#neon-glow)"/>
-                            <rect x="95" y="42" width="30" height="26" rx="4" fill="#f59e0b" stroke="#fff" stroke-width="1.5"/>
-                            <text x="103" y="61" font-size="20" font-weight="900" fill="#07090e">F</text>
-                            <!-- Lentes de Sol Oscuros y Barba Blanca -->
-                            <path d="M72 88 L148 88 L142 115 Q110 125 78 115 Z" fill="#07090e" stroke="#00f0ff" stroke-width="2" filter="url(#neon-glow)"/>
-                            <path d="M75 118 Q110 160 145 118 Q125 185 110 185 Q95 185 75 118 Z" fill="#ffffff" stroke="#00f0ff" stroke-width="1.5"/>
-                            <!-- Chaqueta Pro con Cuello Alto -->
-                            <path d="M55 165 Q110 140 165 165 L180 220 L40 220 Z" fill="#0066ff" stroke="#00f0ff" stroke-width="2" filter="url(#neon-glow)"/>
-                            <path d="M85 165 L110 195 L135 165 L120 220 L100 220 Z" fill="#ffffff"/>
-                        </svg>
+
+                        <!-- ICONO BAKANO DE DIAMANTES EN LA PARTE DERECHA -->
+                        <div style="z-index: 2; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(0,240,255,0.1); border: 1px solid var(--accent-glow); width: 60px; height: 60px; border-radius: 14px; box-shadow: 0 0 15px rgba(0,240,255,0.3);">
+                            <svg viewBox="0 0 64 64" width="36" height="36"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg>
+                        </div>
                     </div>
                     <div class="game-card-footer">
                         <span style="color: #fff;">Diamantes Instantáneos</span>
@@ -726,6 +720,22 @@
 
                 <div id="seccion-seguridad" style="display: none;" class="security-menu-box">
                     
+                    <!-- BOTÓN CAMBIAR NOMBRE DE USUARIO -->
+                    <button class="security-btn" onclick="toggleSubPanel('panel-cambiar-nombre')">
+                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        Cambiar Nombre de Usuario
+                    </button>
+                    <div id="panel-cambiar-nombre" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
+                        <div class="form-group">
+                            <label>Nuevo nombre de usuario</label>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                <input type="text" id="nuevo-nombre-input" class="form-control" placeholder="Nuevo nombre">
+                            </div>
+                        </div>
+                        <button class="btn-main" onclick="cambiarNombreUsuarioReal()">Guardar Nuevo Nombre</button>
+                    </div>
+
                     <button class="security-btn" onclick="toggleSubPanel('panel-cambiar-pass')">
                         <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                         Cambiar Contraseña
@@ -1381,6 +1391,35 @@
             reader.readAsDataURL(file);
         }
 
+        function cambiarNombreUsuarioReal() {
+            const nuevoNombre = document.getElementById('nuevo-nombre-input').value.trim();
+            if(!nuevoNombre || nuevoNombre.length < 3) {
+                mostrarNotificacion("Introduce un nombre de usuario válido");
+                return;
+            }
+
+            let existente = listaUsuariosGlobales.find(u => u.nombre.toLowerCase() === nuevoNombre.toLowerCase());
+            if(existente && existente.correo.toLowerCase() !== usuarioActual.correo.toLowerCase()) {
+                mostrarNotificacion("Este nombre de usuario ya está en uso");
+                return;
+            }
+
+            usuarioActual.nombre = nuevoNombre;
+            let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+            if(fresh) {
+                fresh.nombre = nuevoNombre;
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            guardarEnCloud();
+
+            document.getElementById('nuevo-nombre-input').value = '';
+            actualizarPerfilUI();
+            toggleSubPanel('panel-cambiar-nombre');
+            mostrarNotificacion("¡Nombre de usuario actualizado con éxito!");
+        }
+
         function copiarWallet() {
             navigator.clipboard.writeText("0x8B9a2f78D2bc67Bc6172386Ef9cd30e3F7829069");
             mostrarNotificacion("Wallet copiada al portapapeles");
@@ -1894,3 +1933,4 @@
     </script>
 </body>
 </html>
+
