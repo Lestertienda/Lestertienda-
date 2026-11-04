@@ -247,12 +247,14 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
+        /* NUEVO ICONO DE USDT REEMPLAZADO CON LA FOTO NUEVA */
         .usdt-real-badge {
-            width: 48px; height: 48px; background: #009393;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative;
+            width: 48px; height: 48px; border-radius: 50%; overflow: hidden;
+            display: flex; align-items: center; justify-content: center; position: relative;
             box-shadow: 0 4px 15px rgba(0, 147, 147, 0.4); border: 2px solid #26a69a; flex-shrink: 0;
+            background: #000;
         }
-        .usdt-real-badge svg { width: 24px; height: 24px; fill: #ffffff; }
+        .usdt-real-badge img { width: 100%; height: 100%; object-fit: cover; }
 
         .wallet-selector-card {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
@@ -348,7 +350,7 @@
             padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
         }
 
-        /* BOTÓN FLOTANTE CON FOTO DE LA APLICACIÓN (SIN ESPACIOS BLANCOS) */
+        /* BOTÓN FLOTANTE (INALTERADO Y PERFECTO) */
         .floating-bot {
             position: fixed; bottom: 85px; right: 20px; width: 56px; height: 56px;
             background: transparent; border: 2px solid var(--accent-glow); border-radius: 50%;
@@ -359,7 +361,7 @@
         .floating-bot:active { cursor: grabbing; }
         .floating-bot img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
 
-        /* MODAL SELECTOR SOPORTE & IA */
+        /* MODAL SELECTOR SOPORTE (SIN LA IA, SOLO WHATSAPP) */
         #modal-soporte-selector {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(5px);
@@ -377,61 +379,6 @@
             transition: border-color 0.2s; text-decoration: none; text-align: left;
         }
         .soporte-option-btn:hover { border-color: var(--accent-glow); }
-
-        /* MODAL DE CHAT IA ESTILO WHATSAPP Y MODERNO */
-        #modal-ia-chat {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 7, 18, 0.9); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center; z-index: 99999999; padding: 15px;
-        }
-        .ia-chat-container {
-            background: var(--bg-card); border: 1px solid var(--accent-glow); border-radius: 20px;
-            width: 100%; max-width: 420px; height: 82vh; display: flex; flex-direction: column; overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0, 240, 255, 0.2);
-        }
-        .ia-chat-header {
-            background: #07090e; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .ia-chat-messages {
-            flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 0.82rem;
-            background: #07090e;
-        }
-        
-        /* BURBUJAS ESTILO WHATSAPP */
-        .ia-msg { padding: 0.7rem 0.9rem; border-radius: 14px; max-width: 80%; line-height: 1.4; word-break: break-word; font-size: 0.82rem; }
-        .ia-msg.bot { background: #162038; color: #fff; border-top-left-radius: 4px; align-self: flex-start; border: 1px solid var(--border-color); }
-        .ia-msg.user { background: #0055ff; color: #fff; border-top-right-radius: 4px; align-self: flex-end; }
-        
-        /* ANIMACIÓN DE ESCRIBIENDO (TRES PUNTOS) */
-        .typing-indicator {
-            display: flex; align-items: center; gap: 4px; padding: 10px 14px;
-            background: #162038; border: 1px solid var(--border-color); border-radius: 14px;
-            border-top-left-radius: 4px; width: fit-content; align-self: flex-start;
-        }
-        .typing-dot {
-            width: 6px; height: 6px; background: var(--accent-glow); border-radius: 50%;
-            animation: typingBounce 1.4s infinite ease-in-out both;
-        }
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes typingBounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1.0); }
-        }
-
-        .ia-chat-input-area {
-            padding: 0.8rem; background: #07090e; border-top: 1px solid var(--border-color); display: flex; gap: 8px; align-items: center;
-        }
-        .ia-chat-input-area input {
-            flex: 1; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.7rem 1rem;
-            border-radius: 20px; color: #fff; font-size: 0.85rem; outline: none;
-        }
-        .ia-send-btn {
-            background: var(--primary-blue); border: none; width: 38px; height: 38px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
-        }
-        .ia-send-btn svg { width: 16px; height: 16px; fill: #fff; transform: translateX(1px); }
 
         .footer-legal-container {
             margin-top: auto; padding: 1.2rem 1rem; background: var(--bg-card);
@@ -460,21 +407,11 @@
     <div id="loading-overlay"><div class="spinner"></div></div>
     <div id="notification-toast">ACCIÓN COMPLETADA</div>
 
-    <!-- MODAL SELECTOR SOPORTE & IA -->
+    <!-- MODAL SELECTOR SOPORTE (IA ELIMINADA, SOLO WHATSAPP) -->
     <div id="modal-soporte-selector" onclick="cerrarModalSoporte(event)">
         <div class="soporte-modal-box" onclick="event.stopPropagation()">
-            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">Asistente & Soporte</h3>
-            <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">¿Cómo deseas recibir ayuda hoy?</p>
-            
-            <div class="soporte-option-btn" onclick="abrirIaChatModal()">
-                <div style="width: 32px; height: 32px; background: rgba(0,240,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m9 0a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5z"/></svg>
-                </div>
-                <div>
-                    <h4 style="font-size: 0.85rem; color: #fff;">Hablar con la IA de la Tienda</h4>
-                    <span style="font-size: 0.68rem; color: var(--text-muted);">Respuestas instantáneas 24/7</span>
-                </div>
-            </div>
+            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">Atención y Soporte</h3>
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Comunícate directamente a WhatsApp</p>
 
             <div class="soporte-option-btn" onclick="abrirWhatsAppReal('normal')">
                 <div style="width: 32px; height: 32px; background: rgba(37,211,102,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -497,33 +434,6 @@
             </div>
             
             <button onclick="cerrarModalSoporte()" style="background: transparent; border: none; color: var(--text-muted); font-size: 0.78rem; font-weight: bold; cursor: pointer; margin-top: 0.4rem;">Cancelar</button>
-        </div>
-    </div>
-
-    <!-- MODAL CHAT DE IA INTERNO (ESTILO WHATSAPP) -->
-    <div id="modal-ia-chat" onclick="cerrarIaChatModal(event)">
-        <div class="ia-chat-container" onclick="event.stopPropagation()">
-            <div class="ia-chat-header">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 1px solid var(--accent-glow);">
-                        <img src="icon-192.png" style="width:100%; height:100%; object-fit:cover;">
-                    </div>
-                    <div>
-                        <h3 style="font-size: 0.88rem; font-weight: 900; color: #fff;">Asistente IA</h3>
-                        <span style="font-size: 0.62rem; color: #10b981; display: flex; align-items: center; gap: 4px;"><span style="width:5px; height:5px; background:#10b981; border-radius:50%;"></span> En línea</span>
-                    </div>
-                </div>
-                <button onclick="cerrarIaChatModalDirecto()" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;">&times;</button>
-            </div>
-            <div id="ia-chat-messages" class="ia-chat-messages">
-                <div class="ia-msg bot">¡Hola! Soy el asistente inteligente de <b>Lester Tienda</b>. ¿En qué puedo ayudarte hoy sobre recargas, USDT o referidos?</div>
-            </div>
-            <div class="ia-chat-input-area">
-                <input type="text" id="ia-input-text" placeholder="Escribe un mensaje..." onkeypress="if(event.key === 'Enter') enviarMensajeIA()">
-                <button class="ia-send-btn" onclick="enviarMensajeIA()">
-                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-                </button>
-            </div>
         </div>
     </div>
 
@@ -708,7 +618,7 @@
                     </div>
                 </div>
 
-                <!-- BLOOD STRIKE (PRÓXIMAMENTE) -->
+                <!-- BLOOD STRIKE -->
                 <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
                     <div class="game-card-banner-img" style="background: linear-gradient(135deg, #1a0808 0%, #0d1322 100%);">
                         <div class="neon-diamonds-bg"></div>
@@ -781,7 +691,7 @@
                 <button class="btn-main" onclick="procesarRecarga()">COMPLETAR RECARGA</button>
             </div>
 
-            <!-- SECCIÓN ÓRDENES (DIVIDIDA EN COMPRAS Y DEPÓSITOS) -->
+            <!-- SECCIÓN ÓRDENES -->
             <div id="seccion-ordenes" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 0.8rem; font-size: 1.05rem; color:var(--accent-glow);">Tus Órdenes y Transacciones</h2>
                 <p style="color:var(--text-muted); font-size:0.72rem; margin-bottom: 1rem;">Historial privado de tus solicitudes y depósitos en la plataforma.</p>
@@ -849,7 +759,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN WALLET -->
+            <!-- SECCIÓN WALLET (CON NUEVO ICONO DE USDT) -->
             <div id="seccion-wallet" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">SELECCIONAR MÉTODO DE PAGO</h2>
                 <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1rem;">Selecciona tu método para ver las instrucciones o depositar.</p>
@@ -857,7 +767,7 @@
                 <div class="wallet-selector-card">
                     <div class="wallet-info-left">
                         <div class="usdt-real-badge">
-                            <svg viewBox="0 0 24 24"><path d="M12.313 14.86v3.74h2.29v1.73h-5.21v-1.73h2.3v-3.74C8.423 14.53 5.5 13.56 5.5 11c0-2.58 3.03-3.56 9.19-3.56 6.16 0 9.19.98 9.19 3.56 0 2.56-2.92 3.53-8.577 3.86zm-2.82-5.42c-.08-.03-2.12-.66-4.63-.44 1.33.72 3.2 1.25 4.63 1.39V9.44zm8.93 1.39c-2.51-.22-4.55.41-4.63.44v1.39c1.43-.14 3.3-.67 4.63-1.39z"/></svg>
+                            <img src="1095104.jpg" alt="USDT">
                         </div>
                         <div class="wallet-details">
                             <h4>USDT (BEP-20)</h4>
@@ -1125,7 +1035,6 @@
             }
         }
 
-        // MENSAJE DE WHATSAPP MÁS PROFESIONAL Y COMERCIAL
         function abrirWhatsAppReal(tipo) {
             const numero = "5359578110";
             const texto = encodeURIComponent("Estimado equipo de soporte / Lester, me comunico desde la plataforma para recibir asistencia con mi cuenta y transacciones.");
@@ -1137,63 +1046,6 @@
             }
             window.open(url, '_blank');
             cerrarModalSoporte();
-        }
-
-        function abrirIaChatModal() {
-            cerrarModalSoporte();
-            document.getElementById('modal-ia-chat').style.display = 'flex';
-        }
-
-        function cerrarIaChatModal(e) {
-            if (e.target.id === 'modal-ia-chat') {
-                document.getElementById('modal-ia-chat').style.display = 'none';
-            }
-        }
-
-        function cerrarIaChatModalDirecto() {
-            document.getElementById('modal-ia-chat').style.display = 'none';
-        }
-
-        function enviarMensajeIA() {
-            const input = document.getElementById('ia-input-text');
-            const texto = input.value.trim();
-            if(!texto) return;
-
-            const chatMsgs = document.getElementById('ia-chat-messages');
-            chatMsgs.innerHTML += `<div class="ia-msg user">${texto}</div>`;
-            input.value = '';
-            chatMsgs.scrollTop = chatMsgs.scrollHeight;
-
-            const typingId = 'typing-' + Date.now();
-            chatMsgs.innerHTML += `
-                <div id="${typingId}" class="typing-indicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            `;
-            chatMsgs.scrollTop = chatMsgs.scrollHeight;
-
-            setTimeout(() => {
-                const typingElem = document.getElementById(typingId);
-                if(typingElem) typingElem.remove();
-
-                let respuestaBot = "¡Entendido! En Lester Tienda ofrecemos recargas de Free Fire al instante mediante USDT (BEP-20). Puedes ver tus órdenes, invitar amigos con tu enlace de referidos y recargar saldo en tu Wallet.";
-                const t = texto.toLowerCase();
-
-                if (t.includes('hola') || t.includes('saludos')) {
-                    respuestaBot = "¡Hola! ¿En qué puedo guiarte sobre nuestra tienda de recargas?";
-                } else if (t.includes('precio') || t.includes('cuanto') || t.includes('diamantes')) {
-                    respuestaBot = "Los paquetes de Free Fire van desde 1.20 USDT para 110 diamantes hasta 41.00 USDT para 6160 diamantes. ¡Recuerda que si invitas amigos obtienes descuentos!";
-                } else if (t.includes('usdt') || t.includes('bep20') || t.includes('pagar') || t.includes('recargar saldo')) {
-                    respuestaBot = "Para recargar saldo, ve a la sección Wallet, copia la dirección oficial BEP-20, realiza tu transferencia y envía el TxID o número de transferencia.";
-                } else if (t.includes('referido') || t.includes('invitar')) {
-                    respuestaBot = "En la sección Referidos tienes tu enlace personal. ¡Al invitar socios acumulas ventajas y premios increíbles con el CEO!";
-                }
-
-                chatMsgs.innerHTML += `<div class="ia-msg bot">${respuestaBot}</div>`;
-                chatMsgs.scrollTop = chatMsgs.scrollHeight;
-            }, 1000);
         }
 
         let deferredPrompt = null;
