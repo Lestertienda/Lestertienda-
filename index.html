@@ -650,9 +650,14 @@
                     </div>
                 </div>
 
-                <div class="section-title">JUEGOS POPULARES</div>
+                <div class="section-title">JUEGOS POPULARES (DESDE JSONBIN.IO)</div>
                 
-                <div class="game-card-pro" onclick="abrirFreeFire()" style="position: relative;">
+                <!-- Contenedor dinámico donde se cargarán los productos de JSONBin.io -->
+                <div id="jsonbin-productos-container">
+                    <p style="color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 1rem;">Cargando productos desde la nube...</p>
+                </div>
+
+                <div class="game-card-pro" onclick="abrirFreeFire()" style="position: relative; margin-top: 1rem;">
                     <div style="position: absolute; top: 12px; right: 12px; background: rgba(255, 59, 48, 0.2); border: 1px solid #ff3b30; color: #ff3b30; padding: 3px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 900; z-index: 2; text-transform: uppercase; box-shadow: 0 0 10px rgba(255,59,48,0.4);">
                         SOLO DISPONIBLE PARA EEUU Y NORTE
                     </div>
@@ -876,6 +881,10 @@
         let biometricoActivo = false;
         let modalCallback = null;
 
+        // Configuración de JSONBin.io con tus credenciales
+        const BIN_ID = '6aea9cfeffd5d16053a43c0a';
+        const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
+
         window.onload = function() {
             if (usuarioActual) {
                 let fresh = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
@@ -888,7 +897,43 @@
                 actualizarPerfilUI();
                 renderizarOrdenes();
             }
+            // Cargar productos de la base de datos en la nube al abrir
+            cargarProductosJSONBin();
         };
+
+        // Función para obtener productos desde JSONBin.io y pintarlos en la tienda
+        async function cargarProductosJSONBin() {
+            const container = document.getElementById('jsonbin-productos-container');
+            try {
+                const respuesta = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: {
+                        'X-Master-Key': MASTER_KEY
+                    }
+                });
+                const resultado = await respuesta.json();
+                const productos = resultado.record.productos;
+
+                let html = '';
+                productos.forEach(p => {
+                    html += `
+                        <div class="game-card-pro">
+                            <div class="game-card-banner" style="height: 110px;">
+                                <span style="background: rgba(0, 240, 255, 0.2); padding: 3px 8px; border-radius: 6px; width: fit-content; font-size: 0.7rem; margin-bottom: 5px; color:var(--accent-glow); font-weight: bold;">Cloud Product #${p.id}</span>
+                                <h3 style="font-size: 1.1rem;">${p.nombre}</h3>
+                            </div>
+                            <div class="game-card-footer">
+                                <span style="color: var(--accent-glow);">${p.precio.toFixed(2)} USDT</span>
+                                <span style="color: var(--text-muted); font-size: 0.75rem;">${p.descripcion || ''}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            } catch (error) {
+                console.error('Error al conectar con JSONBin:', error);
+                container.innerHTML = '<p style="color: #ff3b30; font-size: 0.8rem; text-align: center;">Error al cargar productos desde la nube.</p>';
+            }
+        }
 
         function mostrarCarga() {
             document.getElementById('loading-overlay').style.display = 'flex';
