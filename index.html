@@ -140,16 +140,6 @@
         .container { max-width: 500px; margin: 0 auto; padding: 1rem; }
         .vista-sec { animation: fadeInPage 0.5s ease forwards; }
 
-        .invite-banner {
-            background: linear-gradient(135deg, #0d1322 0%, #07090e 100%);
-            border: 1px solid var(--accent-glow); border-radius: 16px;
-            padding: 1.1rem; color: #fff; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 20px rgba(0,240,255,0.1);
-        }
-        .invite-banner h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 0.2rem; color: var(--accent-glow); }
-        .invite-banner p { font-size: 0.73rem; color: var(--text-muted); margin-bottom: 0.6rem; max-width: 190px; }
-        .btn-invite { background: var(--primary-blue); color: #fff; border: none; padding: 0.35rem 0.9rem; border-radius: 12px; font-weight: bold; font-size: 0.78rem; cursor: pointer; }
-
         .game-card-pro {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
             overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: border-color 0.2s; position: relative;
@@ -450,8 +440,8 @@
 
                 <div class="invite-banner">
                     <div>
-                        <h3 style="text-transform: uppercase; font-size: 0.95rem;">Programa Épico de Referidos</h3>
-                        <p>Invita a 10 socios y desbloquea un **Regalo Sorpresa VIP** en tu cuenta.</p>
+                        <h3 style="text-transform: uppercase; font-size: 0.95rem;">Programa VIP de Referidos</h3>
+                        <p>¡Invita a 10 socios y te premiamos con un regalo exclusivo en tu cuenta!</p>
                         <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Ver Mis Referidos</button>
                     </div>
                     <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--accent-glow); padding: 12px 14px; border-radius: 12px; text-align: center;">
@@ -537,19 +527,28 @@
             </div>
 
             <div id="seccion-referidos" class="vista-sec" style="display: none;">
-                <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">PROGRAMA ÉPICO DE REFERIDOS</h2>
-                <div class="profile-header-card">
-                    <p style="color: var(--text-muted); font-size: 0.78rem; margin-bottom: 0.4rem;">Tu Enlace de Invitación Exclusivo</p>
-                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.7rem; background: #07090e; text-align: center; margin-bottom: 1rem;">https://lestertienda.com/ref/usuario</div>
-                    <button class="btn-main" onclick="copiarEnlaceRef()">Copiar Enlace VIP</button>
-                    <div style="margin-top: 1rem; font-size: 0.73rem; color: var(--text-muted); text-align: left; background: #07090e; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
-                        <p style="color: var(--accent-glow); font-weight: bold; margin-bottom: 6px; font-size: 0.8rem;">¡Sube de nivel, socio!</p>
-                        <p>Invita a tus amigos con tu enlace. Por cada socio que se registre y complete un depósito, obtienes un jugoso <strong>5% de descuento</strong> automático para tus recargas.</p>
-                        <p style="margin-top: 8px; color: #fff; font-weight: bold;">Meta VIP (10 Socios): <span id="contador-meta-referidos" style="color: var(--accent-glow);">0 / 10</span></p>
-                        <div style="width: 100%; background: #1a233a; height: 8px; border-radius: 4px; margin-top: 6px; overflow: hidden;">
-                            <div id="barra-progreso-referidos" style="width: 0%; background: var(--accent-glow); height: 100%; transition: width 0.4s;"></div>
-                        </div>
-                        <p id="estado-regalo-vip" style="margin-top: 8px; font-size: 0.7rem; color: #10b981; font-weight: bold; display: none;">🎁 ¡Felicidades! Has completado la meta de 10 socios. Reclama tu Regalo Sorpresa VIP con el soporte del CEO.</p>
+                <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">REFERIDOS Y RECOMPENSAS</h2>
+                <div class="profile-header-card" style="text-align: left; padding: 1.2rem;">
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.6rem;">Solo cuentan las personas nuevas que se registran con tu enlace.</p>
+                    
+                    <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px;">
+                        <span id="contador-meta-referidos" style="color: #fff;">0 / 10 referidos para el próximo premio</span>
+                        <span style="color: var(--accent-glow);">VIP</span>
+                    </div>
+                    <div style="width: 100%; background: #07090e; height: 8px; border-radius: 4px; margin-bottom: 0.8rem; overflow: hidden; border: 1px solid var(--border-color);">
+                        <div id="barra-progreso-referidos" style="width: 0%; background: #10b981; height: 100%; transition: width 0.4s;"></div>
+                    </div>
+
+                    <div id="badge-premio-disponible" style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; color: #10b981; padding: 0.6rem; border-radius: 10px; text-align: center; font-size: 0.78rem; font-weight: bold; margin-bottom: 1rem; display: none;">
+                        🎁 ¡Premio disponible al llegar a 10 referidos! Reclámalo con el CEO.
+                    </div>
+
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.4rem;">Tu enlace de referidos</p>
+                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.68rem; background: #07090e; text-align: center; margin-bottom: 0.8rem; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">https://lestertienda.com/ref/usuario</div>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-main" style="margin-top: 0; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff;" onclick="copiarEnlaceRef()">Copiar Enlace</button>
+                        <button class="btn-main" style="margin-top: 0; background: #10b981;" onclick="compartirEnlaceRef()">Compartir VIP</button>
                     </div>
                 </div>
             </div>
@@ -625,14 +624,48 @@
                 </button>
 
                 <div id="seccion-seguridad" style="display: none;" class="security-menu-box">
+                    
+                    <!-- CAMBIO DE CONTRASEÑA CON CANDADO, OJOS Y 3 CAMPOS EXACTOS -->
                     <button class="security-btn" onclick="toggleSubPanel('panel-cambiar-pass')">
                         <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                         Cambiar Contraseña
                     </button>
-                    <div id="panel-cambiar-pass" style="display:none; padding:8px 0; border-top:1px solid var(--border-color); margin-top:4px;">
-                        <div class="form-group"><label>Contraseña actual</label><input type="password" id="p-act" class="form-control no-left-icon"></div>
-                        <div class="form-group"><label>Nueva contraseña</label><input type="password" id="p-nue" class="form-control no-left-icon"></div>
-                        <button class="btn-main" onclick="cambiarPasswordReal()">Actualizar Contraseña</button>
+                    <div id="panel-cambiar-pass" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
+                        
+                        <div class="form-group">
+                            <label>Contraseña actual</label>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <input type="password" id="p-act" class="form-control" placeholder="••••••••">
+                                <button type="button" class="toggle-password" onclick="togglePass('p-act')">
+                                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Contraseña nueva</label>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <input type="password" id="p-nue" class="form-control" placeholder="••••••••">
+                                <button type="button" class="toggle-password" onclick="togglePass('p-nue')">
+                                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Confirmar contraseña</label>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <input type="password" id="p-con" class="form-control" placeholder="••••••••">
+                                <button type="button" class="toggle-password" onclick="togglePass('p-con')">
+                                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button class="btn-main" onclick="cambiarPasswordReal()">Cambiar Contraseña</button>
                     </div>
 
                     <button class="security-btn" onclick="confirmarEliminarCuenta()" style="color:#ff3b30; border-color:rgba(255,59,48,0.2);">
@@ -1151,7 +1184,6 @@
             container.innerHTML = html;
         }
 
-        // HISTORIAL EN VIVO ACUMULATIVO (TOP POR USUARIO)
         function actualizarEstadisticasInicio() {
             solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
             listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
@@ -1160,7 +1192,6 @@
             const recargasHoyList = solicitudesGlobales.recargas.filter(r => new Date(r.id || r.fecha).toDateString() === hoy);
             document.getElementById('contador-recargas-hoy').innerText = recargasHoyList.length;
 
-            // Agrupar y acumular por usuario para el top en vivo
             let acumuladoUsuarios = {};
             recargasHoyList.forEach(r => {
                 let correoKey = r.correo ? r.correo.toLowerCase() : r.usuario.toLowerCase();
@@ -1247,6 +1278,19 @@
             mostrarNotificacion("Enlace de referido VIP copiado");
         }
 
+        function compartirEnlaceRef() {
+            const enlace = "https://lestertienda.com/ref/" + usuarioActual.nombre;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Lester Tienda - Free Fire',
+                    text: '¡Únete a Lester Tienda y recarga al mejor precio!',
+                    url: enlace,
+                }).catch(() => {});
+            } else {
+                copiarEnlaceRef();
+            }
+        }
+
         function confirmarendioDeposito() {
             const monto = parseFloat(document.getElementById('monto-deposito').value);
             const txid = document.getElementById('txid-deposito').value.trim();
@@ -1321,19 +1365,19 @@
             document.getElementById('stat-referidos').innerText = referidosCount;
             document.getElementById('enlace-ref').innerText = "https://lestertienda.com/ref/" + usuarioActual.nombre;
             
-            // Actualizar barra de progreso de referidos VIP (Meta 10 socios)
             let porcentajeMeta = Math.min(100, (referidosCount / 10) * 100);
-            document.getElementById('contador-meta-referidos').innerText = `${referidosCount} / 10`;
+            document.getElementById('contador-meta-referidos').innerText = `${referidosCount} / 10 referidos para el próximo premio`;
             document.getElementById('barra-progreso-referidos').style.width = `${porcentajeMeta}%`;
 
             if(referidosCount >= 10) {
-                document.getElementById('estado-regalo-vip').style.display = 'block';
+                document.getElementById('badge-premio-disponible').style.display = 'block';
             } else {
-                document.getElementById('estado-regalo-vip').style.display = 'none';
+                document.getElementById('badge-premio-disponible').style.display = 'none';
             }
 
             if(usuarioActual.descuentosDisponibles !== undefined) {
-                document.getElementById('descuentos-activos-count').innerText = usuarioActual.descuentosDisponibles;
+                let descElem = document.getElementById('descuentos-activos-count');
+                if(descElem) descElem.innerText = usuarioActual.descuentosDisponibles;
             }
             actualizarEstadisticasInicio();
         }
@@ -1351,17 +1395,33 @@
         function cambiarPasswordReal() {
             const act = document.getElementById('p-act').value;
             const nue = document.getElementById('p-nue').value;
-            if(act !== usuarioActual.pass) {
-                mostrarNotificacion("Contraseña actual incorrecta");
+            const con = document.getElementById('p-con').value;
+
+            if(!act || !nue || !con) {
+                mostrarNotificacion("Completa todos los campos de contraseña");
                 return;
             }
+            if(act !== usuarioActual.pass) {
+                mostrarNotificacion("La contraseña actual es incorrecta");
+                return;
+            }
+            if(nue !== con) {
+                mostrarNotificacion("Las nuevas contraseñas no coinciden");
+                return;
+            }
+
             usuarioActual.pass = nue;
             let uGlobal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
             if(uGlobal) uGlobal.pass = nue;
+
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             guardarEnCloud();
-            mostrarNotificacion("Contraseña actualizada con éxito");
+
+            document.getElementById('p-act').value = '';
+            document.getElementById('p-nue').value = '';
+            document.getElementById('p-con').value = '';
+            mostrarNotificacion("¡Contraseña actualizada con éxito!");
             toggleSubPanel('panel-cambiar-pass');
         }
 
@@ -1476,11 +1536,19 @@
             } else if(accion === 'usuarios') {
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Lista de Usuarios Registrados:</h4>";
                 if(listaUsuariosGlobales.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay usuarios.</p>";
+                
                 listaUsuariosGlobales.forEach(u => {
                     let rText = u.rango === 2 ? "CEO / Supremo" : (u.rango === 1 ? "Admin (Rango 1)" : "Cliente (Rango 0)");
-                    html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
-                        <b>Usuario:</b> ${u.nombre} (${u.correo})<br>
-                        <b>Saldo:</b> ${u.balance.toFixed(2)} USDT | <b>Rango:</b> <span style="color:var(--accent-glow);">${rText}</span>
+                    let numReferidos = listaUsuariosGlobales.filter(ref => ref.referidoPor && ref.referidoPor.toLowerCase() === u.nombre.toLowerCase()).length;
+                    
+                    html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4;">
+                        👤 <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
+                        📧 <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
+                        🔑 <b>Contraseña:</b> <span style="color:var(--accent-glow);">${u.pass}</span><br>
+                        💰 <b>Cantidad de USDT:</b> <span style="color:#10b981; font-weight:bold;">${(u.balance || 0).toFixed(2)} USDT</span><br>
+                        ⚡ <b>Cantidad de recarga:</b> <span style="color:#fff;">${u.recargasCount || 0}</span><br>
+                        🤝 <b>Cantidad de referido:</b> <span style="color:var(--accent-glow);">${numReferidos}</span><br>
+                        ⭐ <b>Rango de el usuario:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
                     </div>`;
                 });
                 res.innerHTML = html;
