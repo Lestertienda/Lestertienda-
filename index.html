@@ -637,7 +637,7 @@
                     </div>
 
                     <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.4rem;">Tu enlace de referidos</p>
-                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.68rem; background: #07090e; text-align: center; margin-bottom: 0.8rem; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">https://lesterdominguesricardo-design.github.io/inverbot-nuevo/?ref=usuario</div>
+                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.68rem; background: #07090e; text-align: center; margin-bottom: 0.8rem; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">https://lestertienda.github.io/Lestertienda-/?ref=usuario</div>
                     
                     <div style="display: flex; gap: 8px;">
                         <button class="btn-main" style="margin-top: 0; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff;" onclick="copiarEnlaceRef()">Copiar Enlace</button>
@@ -1371,22 +1371,42 @@
 
             const reader = new FileReader();
             reader.onload = async function(e) {
-                const base64Image = e.target.result;
-                usuarioActual.avatar = base64Image;
-                
-                let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
-                if(fresh) {
-                    fresh.avatar = base64Image;
-                }
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 250;
+                    
+                    if (width > height) {
+                        if (width > maxDim) { height *= maxDim / width; width = maxDim; }
+                    } else {
+                        if (height > maxDim) { width *= maxDim / height; height = maxDim; }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
 
-                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
-                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                
-                await guardarEnCloud();
-                
-                actualizarPerfilUI();
-                actualizarEstadisticasInicio();
-                mostrarNotificacion("¡Foto de perfil actualizada con éxito!");
+                    usuarioActual.avatar = compressedBase64;
+                    let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                    if(fresh) {
+                        fresh.avatar = compressedBase64;
+                    }
+
+                    localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                    
+                    guardarEnCloud();
+                    actualizarPerfilUI();
+                    actualizarEstadisticasInicio();
+                    mostrarNotificacion("¡Foto de perfil guardada correctamente!");
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -1426,12 +1446,12 @@
         }
 
         function copiarEnlaceRef() {
-            navigator.clipboard.writeText("https://lesterdominguesricardo-design.github.io/inverbot-nuevo/?ref=" + usuarioActual.nombre);
-            mostrarNotificacion("Enlace de referido GitHub copiado");
+            navigator.clipboard.writeText("https://lestertienda.github.io/Lestertienda-/?ref=" + usuarioActual.nombre);
+            mostrarNotificacion("Enlace de referido copiado");
         }
 
         function compartirEnlaceRef() {
-            const enlace = "https://lesterdominguesricardo-design.github.io/inverbot-nuevo/?ref=" + usuarioActual.nombre;
+            const enlace = "https://lestertienda.github.io/Lestertienda-/?ref=" + usuarioActual.nombre;
             if (navigator.share) {
                 navigator.share({
                     title: 'Lester Tienda - Free Fire',
@@ -1515,7 +1535,7 @@
             let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase() === usuarioActual.nombre.toLowerCase());
             let referidosCount = referidosLista.length;
             document.getElementById('stat-referidos').innerText = referidosCount;
-            document.getElementById('enlace-ref').innerText = "https://lesterdominguesricardo-design.github.io/inverbot-nuevo/?ref=" + usuarioActual.nombre;
+            document.getElementById('enlace-ref').innerText = "https://lestertienda.github.io/Lestertienda-/?ref=" + usuarioActual.nombre;
             
             let porcentajeMeta = Math.min(100, (referidosCount / 10) * 100);
             document.getElementById('contador-meta-referidos').innerText = `${referidosCount} / 10 referidos para el próximo premio`;
@@ -1933,4 +1953,3 @@
     </script>
 </body>
 </html>
-
