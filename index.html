@@ -141,10 +141,12 @@
         .vista-sec { animation: fadeInPage 0.5s ease forwards; }
 
         .invite-banner {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
+            background: linear-gradient(135deg, #0d1322 0%, #07090e 100%);
+            border: 1px solid var(--accent-glow); border-radius: 16px;
             padding: 1.1rem; color: #fff; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 20px rgba(0,240,255,0.1);
         }
-        .invite-banner h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 0.2rem; }
+        .invite-banner h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 0.2rem; color: var(--accent-glow); }
         .invite-banner p { font-size: 0.73rem; color: var(--text-muted); margin-bottom: 0.6rem; max-width: 190px; }
         .btn-invite { background: var(--primary-blue); color: #fff; border: none; padding: 0.35rem 0.9rem; border-radius: 12px; font-weight: bold; font-size: 0.78rem; cursor: pointer; }
 
@@ -192,7 +194,6 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* USDT PRO BADGE */
         .usdt-pro-circle {
             width: 48px; height: 48px; background: radial-gradient(circle, #00b090 0%, #00765c 100%);
             border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative;
@@ -449,13 +450,13 @@
 
                 <div class="invite-banner">
                     <div>
-                        <h3>Invita y gana</h3>
-                        <p>Si tu invitado deposita, obtienes un 5% de descuento en tu próxima recarga</p>
-                        <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Ver Referidos</button>
+                        <h3 style="text-transform: uppercase; font-size: 0.95rem;">Programa Épico de Referidos</h3>
+                        <p>Invita a 10 socios y desbloquea un **Regalo Sorpresa VIP** en tu cuenta.</p>
+                        <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Ver Mis Referidos</button>
                     </div>
-                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); padding: 12px 14px; border-radius: 12px; text-align: center;">
+                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--accent-glow); padding: 12px 14px; border-radius: 12px; text-align: center;">
                         <svg width="26" height="22" viewBox="0 0 24 24" fill="#00f0ff"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.5 15.38 12 17 10.83 14.92 8H20v6z"/></svg>
-                        <span style="display: block; font-size: 0.52rem; font-weight: bold; color: #00f0ff; margin-top: 2px;">BONUS</span>
+                        <span style="display: block; font-size: 0.52rem; font-weight: bold; color: #00f0ff; margin-top: 2px;">VIP 10</span>
                     </div>
                 </div>
 
@@ -466,11 +467,11 @@
                             <h3>Historial de compras en tiempo real</h3>
                             <div class="live-status-sub">
                                 <div class="live-dot"></div>
-                                <span>En vivo · últimos 10 de hoy</span>
+                                <span>En vivo · Top acumulado de hoy</span>
                             </div>
                         </div>
                         <div class="live-counter-pill">
-                            <span>COMPRAS HOY</span>
+                            <span>TOTAL HOY</span>
                             <h4 id="contador-recargas-hoy">0</h4>
                         </div>
                     </div>
@@ -536,20 +537,23 @@
             </div>
 
             <div id="seccion-referidos" class="vista-sec" style="display: none;">
-                <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">PROGRAMA DE REFERIDOS</h2>
+                <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">PROGRAMA ÉPICO DE REFERIDOS</h2>
                 <div class="profile-header-card">
-                    <p style="color: var(--text-muted); font-size: 0.78rem; margin-bottom: 0.4rem;">Tu Enlace de Invitación</p>
+                    <p style="color: var(--text-muted); font-size: 0.78rem; margin-bottom: 0.4rem;">Tu Enlace de Invitación Exclusivo</p>
                     <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.7rem; background: #07090e; text-align: center; margin-bottom: 1rem;">https://lestertienda.com/ref/usuario</div>
-                    <button class="btn-main" onclick="copiarEnlaceRef()">Copiar Enlace</button>
-                    <div style="margin-top: 1rem; font-size: 0.73rem; color: var(--text-muted); text-align: left; background: #07090e; padding: 10px; border-radius: 8px;">
-                        <p style="color: var(--accent-glow); font-weight: bold; margin-bottom: 4px;">¿Cómo funciona?</p>
-                        <p>Cuando alguien se registra con tu nombre de usuario y completa un depósito, tú obtienes un <strong>5% de descuento</strong> aplicable en tu próxima recarga.</p>
-                        <p style="margin-top: 6px;">Descuentos acumulados disponibles: <span id="descuentos-activos-count" style="color: #10b981; font-weight: bold;">0</span></p>
+                    <button class="btn-main" onclick="copiarEnlaceRef()">Copiar Enlace VIP</button>
+                    <div style="margin-top: 1rem; font-size: 0.73rem; color: var(--text-muted); text-align: left; background: #07090e; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
+                        <p style="color: var(--accent-glow); font-weight: bold; margin-bottom: 6px; font-size: 0.8rem;">¡Sube de nivel, socio!</p>
+                        <p>Invita a tus amigos con tu enlace. Por cada socio que se registre y complete un depósito, obtienes un jugoso <strong>5% de descuento</strong> automático para tus recargas.</p>
+                        <p style="margin-top: 8px; color: #fff; font-weight: bold;">Meta VIP (10 Socios): <span id="contador-meta-referidos" style="color: var(--accent-glow);">0 / 10</span></p>
+                        <div style="width: 100%; background: #1a233a; height: 8px; border-radius: 4px; margin-top: 6px; overflow: hidden;">
+                            <div id="barra-progreso-referidos" style="width: 0%; background: var(--accent-glow); height: 100%; transition: width 0.4s;"></div>
+                        </div>
+                        <p id="estado-regalo-vip" style="margin-top: 8px; font-size: 0.7rem; color: #10b981; font-weight: bold; display: none;">🎁 ¡Felicidades! Has completado la meta de 10 socios. Reclama tu Regalo Sorpresa VIP con el soporte del CEO.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- WALLET MEJORADA CON USDT PRO Y TXID -->
             <div id="seccion-wallet" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">SELECCIONAR MÉTODO DE PAGO</h2>
                 <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1rem;">Selecciona tu criptomoneda para ver la dirección oficial de depósito.</p>
@@ -1081,6 +1085,7 @@
                     correo: usuarioActual.correo.toLowerCase(),
                     idJugador: playerId, 
                     detalle: `${ofertaSeleccionada.diamantes} Diamantes`, 
+                    diamantesNum: ofertaSeleccionada.diamantes,
                     precio: ofertaSeleccionada.precio,
                     estado: 'Pendiente' 
                 };
@@ -1146,6 +1151,7 @@
             container.innerHTML = html;
         }
 
+        // HISTORIAL EN VIVO ACUMULATIVO (TOP POR USUARIO)
         function actualizarEstadisticasInicio() {
             solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
             listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
@@ -1154,16 +1160,36 @@
             const recargasHoyList = solicitudesGlobales.recargas.filter(r => new Date(r.id || r.fecha).toDateString() === hoy);
             document.getElementById('contador-recargas-hoy').innerText = recargasHoyList.length;
 
-            let vivoHTML = "";
-            let ultimas10 = recargasHoyList.slice(-10).reverse();
+            // Agrupar y acumular por usuario para el top en vivo
+            let acumuladoUsuarios = {};
+            recargasHoyList.forEach(r => {
+                let correoKey = r.correo ? r.correo.toLowerCase() : r.usuario.toLowerCase();
+                if (!acumuladoUsuarios[correoKey]) {
+                    acumuladoUsuarios[correoKey] = {
+                        usuario: r.usuario,
+                        correo: r.correo,
+                        totalDiamantes: 0,
+                        totalGasto: 0,
+                        ultimaHora: (r.id || r.fecha)
+                    };
+                }
+                acumuladoUsuarios[correoKey].totalDiamantes += (r.diamantesNum || parseInt(r.detalle) || 110);
+                acumuladoUsuarios[correoKey].totalGasto += (r.precio || 1.20);
+                if((r.id || r.fecha) > acumuladoUsuarios[correoKey].ultimaHora) {
+                    acumuladoUsuarios[correoKey].ultimaHora = (r.id || r.fecha);
+                }
+            });
 
-            if(ultimas10.length === 0) {
+            let listaTop = Object.values(acumuladoUsuarios).sort((a, b) => b.totalDiamantes - a.totalDiamantes);
+            let vivoHTML = "";
+
+            if(listaTop.length === 0) {
                 vivoHTML = "<p style='color:var(--text-muted); font-size:0.75rem; text-align:center; padding:1rem;'>No hay compras registradas hoy.</p>";
             } else {
-                ultimas10.forEach(r => {
-                    let horaStr = new Date(r.id || r.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    let uObj = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === r.correo.toLowerCase());
-                    let avatarC = (uObj && uObj.avatar) ? `<img src="${uObj.avatar}">` : r.usuario.charAt(0).toUpperCase();
+                listaTop.forEach(item => {
+                    let horaStr = new Date(item.ultimaHora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    let uObj = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === (item.correo || '').toLowerCase() || u.nombre.toLowerCase() === item.usuario.toLowerCase());
+                    let avatarC = (uObj && uObj.avatar) ? `<img src="${uObj.avatar}">` : item.usuario.charAt(0).toUpperCase();
 
                     vivoHTML += `
                         <div class="history-item-row">
@@ -1171,11 +1197,11 @@
                             <div class="history-user-info">
                                 <div class="history-avatar">${avatarC}</div>
                                 <div class="history-user-details">
-                                    <h5>${r.usuario}</h5>
-                                    <p>Free Fire LATAM · ${r.detalle.split(' ')[0]}</p>
+                                    <h5>${item.usuario}</h5>
+                                    <p>Free Fire LATAM · <b>+${item.totalDiamantes} Diamantes</b></p>
                                 </div>
                             </div>
-                            <span class="history-price">${r.precio ? r.precio.toFixed(2) : '1.20'} USDT</span>
+                            <span class="history-price">${item.totalGasto.toFixed(2)} USDT</span>
                         </div>
                     `;
                 });
@@ -1195,7 +1221,9 @@
                 usuarioActual.avatar = base64Image;
                 
                 let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
-                if(fresh) fresh.avatar = base64Image;
+                if(fresh) {
+                    fresh.avatar = base64Image;
+                }
 
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -1204,7 +1232,7 @@
                 
                 actualizarPerfilUI();
                 actualizarEstadisticasInicio();
-                mostrarNotificacion("¡Foto de perfil actualizada!");
+                mostrarNotificacion("¡Foto de perfil actualizada con éxito!");
             };
             reader.readAsDataURL(file);
         }
@@ -1216,7 +1244,7 @@
 
         function copiarEnlaceRef() {
             navigator.clipboard.writeText("https://lestertienda.com/ref/" + usuarioActual.nombre);
-            mostrarNotificacion("Enlace de referido copiado");
+            mostrarNotificacion("Enlace de referido VIP copiado");
         }
 
         function confirmarendioDeposito() {
@@ -1288,10 +1316,22 @@
             document.getElementById('stat-saldo').innerText = usuarioActual.balance.toFixed(2);
             document.getElementById('stat-recargas').innerText = usuarioActual.recargasCount;
             
-            let referidosCount = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase() === usuarioActual.nombre.toLowerCase()).length;
+            let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase() === usuarioActual.nombre.toLowerCase());
+            let referidosCount = referidosLista.length;
             document.getElementById('stat-referidos').innerText = referidosCount;
             document.getElementById('enlace-ref').innerText = "https://lestertienda.com/ref/" + usuarioActual.nombre;
             
+            // Actualizar barra de progreso de referidos VIP (Meta 10 socios)
+            let porcentajeMeta = Math.min(100, (referidosCount / 10) * 100);
+            document.getElementById('contador-meta-referidos').innerText = `${referidosCount} / 10`;
+            document.getElementById('barra-progreso-referidos').style.width = `${porcentajeMeta}%`;
+
+            if(referidosCount >= 10) {
+                document.getElementById('estado-regalo-vip').style.display = 'block';
+            } else {
+                document.getElementById('estado-regalo-vip').style.display = 'none';
+            }
+
             if(usuarioActual.descuentosDisponibles !== undefined) {
                 document.getElementById('descuentos-activos-count').innerText = usuarioActual.descuentosDisponibles;
             }
