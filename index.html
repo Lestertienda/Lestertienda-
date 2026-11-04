@@ -247,14 +247,14 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* NUEVO ICONO DE USDT REEMPLAZADO CON LA FOTO NUEVA */
+        /* USDT BADGE CORREGIDO PARA QUE LA IMAGEN CARGUE Y NUNCA QUEDE NEGRA */
         .usdt-real-badge {
             width: 48px; height: 48px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center; position: relative;
             box-shadow: 0 4px 15px rgba(0, 147, 147, 0.4); border: 2px solid #26a69a; flex-shrink: 0;
-            background: #000;
+            background: #ffffff;
         }
-        .usdt-real-badge img { width: 100%; height: 100%; object-fit: cover; }
+        .usdt-real-badge img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .wallet-selector-card {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
@@ -350,7 +350,7 @@
             padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
         }
 
-        /* BOTÓN FLOTANTE (INALTERADO Y PERFECTO) */
+        /* BOTÓN FLOTANTE */
         .floating-bot {
             position: fixed; bottom: 85px; right: 20px; width: 56px; height: 56px;
             background: transparent; border: 2px solid var(--accent-glow); border-radius: 50%;
@@ -361,7 +361,7 @@
         .floating-bot:active { cursor: grabbing; }
         .floating-bot img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
 
-        /* MODAL SELECTOR SOPORTE (SIN LA IA, SOLO WHATSAPP) */
+        /* MODAL SELECTOR SOPORTE */
         #modal-soporte-selector {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(5px);
@@ -407,7 +407,7 @@
     <div id="loading-overlay"><div class="spinner"></div></div>
     <div id="notification-toast">ACCIÓN COMPLETADA</div>
 
-    <!-- MODAL SELECTOR SOPORTE (IA ELIMINADA, SOLO WHATSAPP) -->
+    <!-- MODAL SELECTOR SOPORTE -->
     <div id="modal-soporte-selector" onclick="cerrarModalSoporte(event)">
         <div class="soporte-modal-box" onclick="event.stopPropagation()">
             <h3 style="color: #fff; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">Atención y Soporte</h3>
@@ -437,7 +437,7 @@
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE SOPORTE (CON LA FOTO DE LA APP RELLENA SIN ESPACIOS BLANCOS) -->
+    <!-- BOTÓN FLOTANTE SOPORTE -->
     <div id="floating-bot-soporte" class="floating-bot" onclick="mostrarModalSoporte()">
         <img src="icon-192.png" alt="Soporte">
     </div>
@@ -537,6 +537,10 @@
                     <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     <span id="header-wallet-balance">0.00 USDT</span>
                 </div>
+                <!-- BOTÓN DE INSTALACIÓN RÁPIDA EN LA NAVBAR -->
+                <button class="nav-top-icon-btn" onclick="instalarAppManual()" title="Instalar Aplicación">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                </button>
                 <button class="nav-top-icon-btn" onclick="mostrarNotificacion('Sin notificaciones nuevas')">
                     <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
                 </button>
@@ -759,7 +763,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN WALLET (CON NUEVO ICONO DE USDT) -->
+            <!-- SECCIÓN WALLET -->
             <div id="seccion-wallet" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">SELECCIONAR MÉTODO DE PAGO</h2>
                 <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1rem;">Selecciona tu método para ver las instrucciones o depositar.</p>
@@ -1048,63 +1052,31 @@
             cerrarModalSoporte();
         }
 
+        // LÓGICA DE INSTALACIÓN PWA CORREGIDA (MUESTRA EL PROMPT Y ESTADO DE INSTALACIÓN)
         let deferredPrompt = null;
-        let appInstalada = localStorage.getItem('lester_app_instalada') === 'true';
 
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            if (!appInstalada) {
-                mostrarModalInstalacionForzosa();
-            }
+            console.log("Evento beforeinstallprompt capturado con éxito.");
         });
 
-        function verificarInstalacionForzosaAlLogin() {
-            if (!appInstalada) {
-                mostrarModalInstalacionForzosa();
-            }
-        }
-
-        function mostrarModalInstalacionForzosa() {
-            if (document.getElementById('modal-forzar-instalacion')) return;
-            const modalHTML = `
-                <div id="modal-forzar-instalacion" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 99999999; padding: 20px;">
-                    <div style="background: var(--bg-card); border: 1px solid var(--accent-glow); border-radius: 22px; padding: 2.2rem 1.6rem; max-width: 360px; width: 100%; text-align: center; box-shadow: 0 15px 50px rgba(0,240,255,0.25);">
-                        <div style="width: 65px; height: 65px; background: rgba(0,240,255,0.1); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem auto;">
-                            <svg viewBox="0 0 24 24" width="30" height="30" fill="var(--accent-glow)"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                        </div>
-                        <h3 style="color: #fff; font-size: 1.2rem; font-weight: 900; margin-bottom: 0.5rem;">Instalación Obligatoria</h3>
-                        <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.6rem; line-height: 1.5;">Para usar <b>Lester Tienda</b> y acceder al sistema, es obligatorio instalar la aplicación en tu dispositivo móvil.</p>
-                        <button onclick="ejecutarInstalacionApp()" style="width: 100%; background: var(--primary-blue); color: #fff; border: none; padding: 0.9rem; border-radius: 12px; font-weight: 900; font-size: 0.92rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,102,255,0.5);">INSTALAR AHORA</button>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-        }
-
-        async function ejecutarInstalacionApp() {
+        async function instalarAppManual() {
             if (deferredPrompt) {
+                mostrarNotificacion("Iniciando instalación...");
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    localStorage.setItem('lester_app_instalada', 'true');
-                    appInstalada = true;
-                    const modal = document.getElementById('modal-forzar-instalacion');
-                    if (modal) modal.remove();
-                    mostrarNotificacion("¡Aplicación instalada con éxito!");
+                    mostrarNotificacion("¡Aplicación instalada correctamente!");
+                } else {
+                    mostrarNotificacion("Instalación cancelada.");
                 }
                 deferredPrompt = null;
             } else {
-                alert("Para instalar: toca los 3 puntitos arriba a la derecha de tu navegador y selecciona 'Instalar aplicación' o 'Añadir a la pantalla principal'.");
+                // Si el navegador ya está instalado o no dispara el prompt automático, muestra guía rápida
+                alert("Para instalar la app: toca los 3 puntos de tu navegador (arriba a la derecha) y selecciona 'Instalar aplicación' o 'Añadir a la pantalla principal'.");
             }
         }
-
-        window.addEventListener('appinstalled', () => {
-            localStorage.setItem('lester_app_instalada', 'true');
-            appInstalada = true;
-            const modal = document.getElementById('modal-forzar-instalacion');
-            if (modal) modal.remove();
-        });
 
         let usuarioActual = JSON.parse(localStorage.getItem('lester_usuario')) || null;
         let ofertaSeleccionada = null;
@@ -1142,7 +1114,6 @@
                 document.getElementById('app-screen').style.display = 'flex';
                 actualizarPerfilUI();
                 renderizarOrdenes();
-                verificarInstalacionForzosaAlLogin();
             }
             sincronizarConCloud();
             aplicarConfiguracionVisual();
@@ -1372,7 +1343,6 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 actualizarPerfilUI();
                 renderizarOrdenes();
-                verificarInstalacionForzosaAlLogin();
                 mostrarNotificacion("¡Bienvenido a Lester Tienda!");
             }, 800);
         }
@@ -1405,7 +1375,6 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 actualizarPerfilUI();
                 renderizarOrdenes();
-                verificarInstalacionForzosaAlLogin();
                 mostrarNotificacion("¡Sesión iniciada correctamente!");
             }, 800);
         }
