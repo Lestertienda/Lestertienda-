@@ -79,7 +79,7 @@
             font-size: 0.82rem;
             box-shadow: 0 5px 20px rgba(0,0,0,0.6);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 9999;
+            z-index: 9999999;
             width: 90%;
             max-width: 380px;
             text-align: center;
@@ -713,14 +713,73 @@
     </div>
 
     <script>
-        // Registro del Service Worker para la PWA
+        // Registro del Service Worker para PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Service Worker registrado con éxito', reg))
-                    .catch(err => console.log('Error al registrar Service Worker', err));
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error', err));
             });
         }
+
+        // --- LÓGICA DE INSTALACIÓN FORZOSA (MODAL BLOQUEANTE) ---
+        let deferredPrompt = null;
+        let appInstalada = localStorage.getItem('lester_app_instalada') === 'true';
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (!appInstalada) {
+                mostrarModalInstalacionForzosa();
+            }
+        });
+
+        function verificarInstalacionForzosaAlLogin() {
+            if (!appInstalada) {
+                mostrarModalInstalacionForzosa();
+            }
+        }
+
+        function mostrarModalInstalacionForzosa() {
+            if (document.getElementById('modal-forzar-instalacion')) return;
+
+            const modalHTML = `
+                <div id="modal-forzar-instalacion" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 99999999; padding: 20px;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--accent-glow); border-radius: 22px; padding: 2.2rem 1.6rem; max-width: 360px; width: 100%; text-align: center; box-shadow: 0 15px 50px rgba(0,240,255,0.25);">
+                        <div style="width: 65px; height: 65px; background: rgba(0,240,255,0.1); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem auto;">
+                            <svg viewBox="0 0 24 24" width="30" height="30" fill="var(--accent-glow)"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        </div>
+                        <h3 style="color: #fff; font-size: 1.2rem; font-weight: 900; margin-bottom: 0.5rem;">Instalación Obligatoria</h3>
+                        <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.6rem; line-height: 1.5;">Para usar <b>Lester Tienda</b> y acceder a tu cuenta, es obligatorio instalar la aplicación en tu dispositivo móvil.</p>
+                        <button onclick="ejecutarInstalacionApp()" style="width: 100%; background: var(--primary-blue); color: #fff; border: none; padding: 0.9rem; border-radius: 12px; font-weight: 900; font-size: 0.92rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,102,255,0.5);">INSTALAR AHORA</button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        async function ejecutarInstalacionApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    localStorage.setItem('lester_app_instalada', 'true');
+                    appInstalada = true;
+                    const modal = document.getElementById('modal-forzar-instalacion');
+                    if (modal) modal.remove();
+                    mostrarNotificacion("¡Aplicación instalada con éxito!");
+                }
+                deferredPrompt = null;
+            } else {
+                alert("Para instalar: toca los 3 puntitos arriba a la derecha de tu navegador y selecciona 'Instalar aplicación' o 'Añadir a la pantalla principal'.");
+            }
+        }
+
+        window.addEventListener('appinstalled', () => {
+            localStorage.setItem('lester_app_instalada', 'true');
+            appInstalada = true;
+            const modal = document.getElementById('modal-forzar-instalacion');
+            if (modal) modal.remove();
+        });
+        // ----------------------------------------------------
 
         let usuarioActual = JSON.parse(localStorage.getItem('lester_usuario')) || null;
         let ofertaSeleccionada = null;
@@ -742,6 +801,7 @@
                 document.getElementById('app-screen').style.display = 'block';
                 actualizarPerfilUI();
                 renderizarOrdenes();
+                verificarInstalacionForzosaAlLogin();
             }
             sincronizarConCloud();
             aplicarConfiguracionVisual();
@@ -886,6 +946,7 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 actualizarPerfilUI();
                 renderizarOrdenes();
+                verificarInstalacionForzosaAlLogin();
                 mostrarNotificacion("¡Bienvenido a Lester Tienda!");
             }, 800);
         }
@@ -918,6 +979,7 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 actualizarPerfilUI();
                 renderizarOrdenes();
+                verificarInstalacionForzosaAlLogin();
                 mostrarNotificacion("¡Sesión iniciada correctamente!");
             }, 800);
         }
@@ -1513,6 +1575,7 @@
             mostrarNotificacion("Etiqueta actualizada correctamente");
         }
 
+        // FUNCIÓN DE APROBACIÓN DE DEPÓSITO CON MATEMÁTICA EXACTA Y BLINDADA
         async function aprobarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
             if (!dep) return;
@@ -1577,7 +1640,7 @@
         }
 
         async function cancelarRecarga(index) {
-            let rec = solicitudesGroup = solicitudesGlobales.recargas[index];
+            let rec = solicitudesGlobales.recargas[index];
             if(!rec) return;
             rec.estado = 'Cancelado';
 
