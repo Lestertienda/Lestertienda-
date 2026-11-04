@@ -23,6 +23,7 @@
             --primary-blue: #0066ff;
             --accent-glow: #00f0ff;
             --border-color: #1a233a;
+            --error-color: #ff3b30;
         }
 
         * {
@@ -82,7 +83,7 @@
         .auth-tab.active { background: var(--primary-blue); color: #fff; }
         .brand-logo-text { font-size: 1.5rem; font-weight: 900; color: #fff; text-align: center; margin-bottom: 1.4rem; letter-spacing: 0.5px; }
         
-        .form-group { margin-bottom: 1rem; position: relative; }
+        .form-group { margin-bottom: 1.1rem; position: relative; }
         .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600; }
         .input-icon-wrapper { position: relative; display: flex; align-items: center; }
         .input-icon-wrapper svg { position: absolute; left: 12px; width: 16px; height: 16px; fill: var(--text-muted); pointer-events: none; }
@@ -93,6 +94,12 @@
         }
         .form-control.no-left-icon { padding-left: 1rem; padding-right: 1rem; }
         .form-control:focus { border-color: var(--accent-glow); }
+
+        /* ESTILOS DE ERROR EN ROJO */
+        .form-control.input-error { border-color: var(--error-color) !important; background: rgba(255, 59, 48, 0.03); }
+        .error-feedback-text {
+            color: var(--error-color); font-size: 0.68rem; font-weight: 700; margin-top: 4px; display: none;
+        }
 
         .toggle-password {
             position: absolute; right: 12px; background: none; border: none; cursor: pointer;
@@ -400,33 +407,41 @@
                 <label>Nombre de usuario</label>
                 <div class="input-icon-wrapper">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    <input type="text" id="reg-user" class="form-control" placeholder="Ej. lester_gamer">
+                    <input type="text" id="reg-user" class="form-control" placeholder="Ej. lester_gamer" oninput="validarCampoUser(this)">
                 </div>
+                <div id="err-reg-user" class="error-feedback-text">Mínimo 4 caracteres y sin espacios.</div>
             </div>
+            
             <div class="form-group">
                 <label>Correo electrónico</label>
                 <div class="input-icon-wrapper">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    <input type="email" id="reg-email" class="form-control" placeholder="correo@gmail.com">
+                    <input type="email" id="reg-email" class="form-control" placeholder="correo@gmail.com" oninput="validarCampoEmail(this)">
                 </div>
+                <div id="err-reg-email" class="error-feedback-text">Introduce un correo electrónico válido.</div>
             </div>
+
             <div class="form-group">
                 <label>Contraseña</label>
                 <div class="input-icon-wrapper">
                     <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                    <input type="password" id="reg-pass" class="form-control" placeholder="••••••••">
+                    <input type="password" id="reg-pass" class="form-control" placeholder="Mín. 6 carac. (Letras, números y símbolo)" oninput="validarCampoPass(this)">
                     <button type="button" class="toggle-password" onclick="togglePass('reg-pass')">
                         <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
                     </button>
                 </div>
+                <div id="err-reg-pass" class="error-feedback-text">Debe tener al menos 6 caracteres, incluir letras, números y algún símbolo (!@#$).</div>
             </div>
+
             <div class="form-group">
                 <label>Confirmación de contraseña</label>
                 <div class="input-icon-wrapper">
                     <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                    <input type="password" id="reg-pass-confirm" class="form-control" placeholder="••••••••">
+                    <input type="password" id="reg-pass-confirm" class="form-control" placeholder="••••••••" oninput="validarCampoPassConfirm()">
                 </div>
+                <div id="err-reg-confirm" class="error-feedback-text">Las contraseñas no coinciden.</div>
             </div>
+
             <div class="form-group">
                 <label>¿Quién te invitó? (Opcional)</label>
                 <input type="text" id="reg-referido" class="form-control no-left-icon" placeholder="Patrocinador">
@@ -918,6 +933,23 @@
         const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
 
         window.onload = function() {
+            // DETECTAR CÓDIGO DE REFERIDO EN LA URL (?ref=nombre)
+            const urlParams = new URLSearchParams(window.location.search);
+            const refParam = urlParams.get('ref');
+            if (refParam) {
+                localStorage.setItem('lester_ref_pendiente', refParam.trim());
+                setTimeout(() => {
+                    const inputRef = document.getElementById('reg-referido');
+                    if (inputRef) inputRef.value = refParam.trim();
+                }, 500);
+            } else {
+                let guardadoRef = localStorage.getItem('lester_ref_pendiente');
+                if (guardadoRef) {
+                    const inputRef = document.getElementById('reg-referido');
+                    if (inputRef) inputRef.value = guardadoRef;
+                }
+            }
+
             if (usuarioActual) {
                 let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if(fresh) {
@@ -1035,28 +1067,110 @@
             panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
         }
 
-        function registrarUsuario() {
-            const user = document.getElementById('reg-user').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const pass = document.getElementById('reg-pass').value.trim();
-            const conf = document.getElementById('reg-pass-confirm').value.trim();
-            const referidoPor = document.getElementById('reg-referido').value.trim();
+        // VALIDACIONES ESTRICTAS EN TIEMPO REAL
+        function validarCampoUser(input) {
+            const val = input.value.trim();
+            const errDiv = document.getElementById('err-reg-user');
+            let existe = listaUsuariosGlobales.some(u => u.nombre.toLowerCase() === val.toLowerCase());
 
-            if (!user || !email || !pass) {
-                mostrarNotificacion("Completa todos los campos obligatorios");
+            if (val.length < 4 || /\s/.test(val)) {
+                input.classList.add('input-error');
+                errDiv.innerText = "Mínimo 4 caracteres y sin espacios.";
+                errDiv.style.display = 'block';
+                return false;
+            } else if (existe) {
+                input.classList.add('input-error');
+                errDiv.innerText = "Este nombre de usuario ya existe.";
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validarCampoEmail(input) {
+            const val = input.value.trim();
+            const errDiv = document.getElementById('err-reg-email');
+            const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!regexEmail.test(val)) {
+                input.classList.add('input-error');
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validarCampoPass(input) {
+            const val = input.value;
+            const errDiv = document.getElementById('err-reg-pass');
+            // Mínimo 6 carac, al menos una letra, un número y un símbolo
+            const regexPass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_\-\+\=])[A-Za-z\d@$!%*#?&_\-\+\=]{6,}$/;
+
+            if (!regexPass.test(val)) {
+                input.classList.add('input-error');
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validarCampoPassConfirm() {
+            const p1 = document.getElementById('reg-pass').value;
+            const p2 = document.getElementById('reg-pass-confirm').value;
+            const errDiv = document.getElementById('err-reg-confirm');
+            const input2 = document.getElementById('reg-pass-confirm');
+
+            if (p1 !== p2 || p2 === "") {
+                input2.classList.add('input-error');
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input2.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function registrarUsuario() {
+            const inputUser = document.getElementById('reg-user');
+            const inputEmail = document.getElementById('reg-email');
+            const inputPass = document.getElementById('reg-pass');
+            const inputConfirm = document.getElementById('reg-pass-confirm');
+
+            let v1 = validarCampoUser(inputUser);
+            let v2 = validarCampoEmail(inputEmail);
+            let v3 = validarCampoPass(inputPass);
+            let v4 = validarCampoPassConfirm();
+
+            if (!v1 || !v2 || !v3 || !v4) {
+                mostrarNotificacion("Revisa los campos marcados en rojo");
                 return;
             }
-            if (pass !== conf) {
-                mostrarNotificacion("Las contraseñas no coinciden");
-                return;
+
+            const user = inputUser.value.trim();
+            const email = inputEmail.value.trim().toLowerCase();
+            const pass = inputPass.value;
+            let referidoPor = document.getElementById('reg-referido').value.trim();
+
+            if (!referidoPor) {
+                referidoPor = localStorage.getItem('lester_ref_pendiente') || null;
             }
 
             mostrarCarga();
             setTimeout(async () => {
-                let esPrincipalCEO = (email.toLowerCase() === 'lesterdomingues388@gmail.com');
+                let esPrincipalCEO = (email === 'lesterdomingues388@gmail.com');
                 usuarioActual = { 
                     nombre: user, 
-                    correo: email.toLowerCase(), 
+                    correo: email, 
                     pass: pass, 
                     balance: 0.00, 
                     recargasCount: 0, 
@@ -1066,14 +1180,10 @@
                     rango: esPrincipalCEO ? 2 : 0
                 };
                 
-                let existe = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === email.toLowerCase());
-                if(!existe) {
-                    listaUsuariosGlobales.push(usuarioActual);
-                } else {
-                    Object.assign(existe, usuarioActual);
-                }
+                listaUsuariosGlobales.push(usuarioActual);
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                localStorage.removeItem('lester_ref_pendiente');
 
                 await guardarEnCloud();
                 ocultarCarga();
@@ -1413,8 +1523,8 @@
 
         function cambiarNombreUsuarioReal() {
             const nuevoNombre = document.getElementById('nuevo-nombre-input').value.trim();
-            if(!nuevoNombre || nuevoNombre.length < 3) {
-                mostrarNotificacion("Introduce un nombre de usuario válido");
+            if(!nuevoNombre || nuevoNombre.length < 4 || /\s/.test(nuevoNombre)) {
+                mostrarNotificacion("Nombre inválido (Mínimo 4 caracteres y sin espacios)");
                 return;
             }
 
@@ -1532,7 +1642,7 @@
             document.getElementById('stat-saldo').innerText = usuarioActual.balance.toFixed(2);
             document.getElementById('stat-recargas').innerText = usuarioActual.recargasCount;
             
-            let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase() === usuarioActual.nombre.toLowerCase());
+            let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase().trim() === usuarioActual.nombre.toLowerCase().trim());
             let referidosCount = referidosLista.length;
             document.getElementById('stat-referidos').innerText = referidosCount;
             document.getElementById('enlace-ref').innerText = "https://lestertienda.github.io/Lestertienda-/?ref=" + usuarioActual.nombre;
@@ -1569,12 +1679,18 @@
             const nue = document.getElementById('p-nue').value;
             const con = document.getElementById('p-con').value;
 
+            const regexPass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_\-\+\=])[A-Za-z\d@$!%*#?&_\-\+\=]{6,}$/;
+
             if(!act || !nue || !con) {
                 mostrarNotificacion("Completa todos los campos de contraseña");
                 return;
             }
             if(act !== usuarioActual.pass) {
                 mostrarNotificacion("La contraseña actual es incorrecta");
+                return;
+            }
+            if(!regexPass.test(nue)) {
+                mostrarNotificacion("La nueva contraseña debe tener mín. 6 carac., letras, números y símbolos");
                 return;
             }
             if(nue !== con) {
@@ -1711,7 +1827,7 @@
                 
                 listaUsuariosGlobales.forEach(u => {
                     let rText = u.rango === 2 ? "CEO / Supremo" : (u.rango === 1 ? "Admin (Rango 1)" : "Cliente (Rango 0)");
-                    let numReferidos = listaUsuariosGlobales.filter(ref => ref.referidoPor && ref.referidoPor.toLowerCase() === u.nombre.toLowerCase()).length;
+                    let numReferidos = listaUsuariosGlobales.filter(ref => ref.referidoPor && ref.referidoPor.toLowerCase().trim() === u.nombre.toLowerCase().trim()).length;
                     
                     html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4;">
                         👤 <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
