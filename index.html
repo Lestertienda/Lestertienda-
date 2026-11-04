@@ -650,14 +650,7 @@
                     </div>
                 </div>
 
-                <div class="section-title">JUEGOS POPULARES (DESDE JSONBIN.IO)</div>
-                
-                <!-- Contenedor dinámico donde se cargarán los productos de JSONBin.io -->
-                <div id="jsonbin-productos-container">
-                    <p style="color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 1rem;">Cargando productos desde la nube...</p>
-                </div>
-
-                <div class="game-card-pro" onclick="abrirFreeFire()" style="position: relative; margin-top: 1rem;">
+                <div class="game-card-pro" onclick="abrirFreeFire()" style="position: relative;">
                     <div style="position: absolute; top: 12px; right: 12px; background: rgba(255, 59, 48, 0.2); border: 1px solid #ff3b30; color: #ff3b30; padding: 3px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 900; z-index: 2; text-transform: uppercase; box-shadow: 0 0 10px rgba(255,59,48,0.4);">
                         SOLO DISPONIBLE PARA EEUU Y NORTE
                     </div>
@@ -881,8 +874,8 @@
         let biometricoActivo = false;
         let modalCallback = null;
 
-        // Configuración de JSONBin.io con tus credenciales
-        const BIN_ID = '6aea9cfeffd5d16053a43c0a';
+        // Credenciales actualizadas de JSONBin.io con tu nuevo Bin ID
+        const BIN_ID = '6aeaa0e1ffd5d16053a44254';
         const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
 
         window.onload = function() {
@@ -897,13 +890,12 @@
                 actualizarPerfilUI();
                 renderizarOrdenes();
             }
-            // Cargar productos de la base de datos en la nube al abrir
-            cargarProductosJSONBin();
+            // Sincronizar y cargar actividades desde la nube al iniciar
+            sincronizarConCloud();
         };
 
-        // Función para obtener productos desde JSONBin.io y pintarlos en la tienda
-        async function cargarProductosJSONBin() {
-            const container = document.getElementById('jsonbin-productos-container');
+        // Función para leer y sincronizar actividades y usuarios desde JSONBin.io
+        async function sincronizarConCloud() {
             try {
                 const respuesta = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
                     headers: {
@@ -911,27 +903,39 @@
                     }
                 });
                 const resultado = await respuesta.json();
-                const productos = resultado.record.productos;
-
-                let html = '';
-                productos.forEach(p => {
-                    html += `
-                        <div class="game-card-pro">
-                            <div class="game-card-banner" style="height: 110px;">
-                                <span style="background: rgba(0, 240, 255, 0.2); padding: 3px 8px; border-radius: 6px; width: fit-content; font-size: 0.7rem; margin-bottom: 5px; color:var(--accent-glow); font-weight: bold;">Cloud Product #${p.id}</span>
-                                <h3 style="font-size: 1.1rem;">${p.nombre}</h3>
-                            </div>
-                            <div class="game-card-footer">
-                                <span style="color: var(--accent-glow);">${p.precio.toFixed(2)} USDT</span>
-                                <span style="color: var(--text-muted); font-size: 0.75rem;">${p.descripcion || ''}</span>
-                            </div>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
+                
+                if (resultado.record) {
+                    if (resultado.record.usuarios && Array.isArray(resultado.record.usuarios)) {
+                        listaUsuariosGlobales = resultado.record.usuarios;
+                        localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                    }
+                    if (resultado.record.solicitudes) {
+                        solicitudesGlobales = resultado.record.solicitudes;
+                        localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                        renderizarOrdenes();
+                    }
+                }
             } catch (error) {
-                console.error('Error al conectar con JSONBin:', error);
-                container.innerHTML = '<p style="color: #ff3b30; font-size: 0.8rem; text-align: center;">Error al cargar productos desde la nube.</p>';
+                console.error('Error al sincronizar con JSONBin:', error);
+            }
+        }
+
+        // Función para guardar los cambios y actividades en la nube en tiempo real
+        async function guardarEnCloud() {
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY
+                    },
+                    body: JSON.stringify({
+                        usuarios: listaUsuariosGlobales,
+                        solicitudes: solicitudesGlobales
+                    })
+                });
+            } catch (error) {
+                console.error('Error al guardar en la nube:', error);
             }
         }
 
@@ -1011,8 +1015,7 @@
             }
 
             mostrarCarga();
-            setTimeout(() => {
-                ocultarCarga();
+            setTimeout(async () => {
                 usuarioActual = { nombre: user, correo: email, pass: pass, balance: 0.00, recargasCount: 0 };
                 
                 let existe = listaUsuariosGlobales.find(u => u.correo === email);
@@ -1023,6 +1026,9 @@
                 }
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+
+                await guardarEnCloud();
+                ocultarCarga();
 
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'block';
@@ -1131,8 +1137,7 @@
             }
 
             mostrarCarga();
-            setTimeout(() => {
-                ocultarCarga();
+            setTimeout(async () => {
                 usuarioActual.balance -= ofertaSeleccionada.precio;
                 usuarioActual.recargasCount++;
 
@@ -1157,6 +1162,9 @@
                 solicitudesGlobales.recargas.push(nuevaOrden);
                 localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
                 
+                await guardarEnCloud();
+                ocultarCarga();
+
                 mostrarNotificacion("Recarga procesada y enviada al CEO con éxito");
                 actualizarPerfilUI();
                 renderizarOrdenes();
@@ -1227,8 +1235,7 @@
             }
 
             mostrarCarga();
-            setTimeout(() => {
-                ocultarCarga();
+            setTimeout(async () => {
                 solicitudesGlobales.depositos.push({ 
                     id: Date.now(),
                     correo: usuarioActual.correo,
@@ -1238,6 +1245,9 @@
                 });
                 localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
                 
+                await guardarEnCloud();
+                ocultarCarga();
+
                 mostrarNotificacion("Depósito enviado al CEO, esperar 24h.");
                 document.getElementById('monto-deposito').value = '';
                 renderizarOrdenes();
@@ -1284,6 +1294,7 @@
             if(uGlobal) uGlobal.pass = nue;
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            guardarEnCloud();
             mostrarNotificacion("Contraseña actualizada con éxito");
             toggleSubPanel('panel-cambiar-pass');
         }
@@ -1305,11 +1316,12 @@
 
         function ejecutarEliminarCuenta() {
             mostrarCarga();
-            setTimeout(() => {
-                ocultarCarga();
+            setTimeout(async () => {
                 listaUsuariosGlobales = listaUsuariosGlobales.filter(u => u.correo !== usuarioActual.correo);
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.removeItem('lester_usuario');
+                await guardarEnCloud();
+                ocultarCarga();
                 location.reload();
             }, 800);
         }
@@ -1417,6 +1429,7 @@
                                 }
                                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                                guardarEnCloud();
                                 mostrarNotificacion(`Acreditados ${valMonto} USDT a ${correo}`);
                             } else {
                                 mostrarNotificacion("Usuario no encontrado en la base de datos");
@@ -1439,6 +1452,7 @@
                                 }
                                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                                guardarEnCloud();
                                 mostrarNotificacion(`Descontados ${valMonto} USDT a ${correo}`);
                             } else {
                                 mostrarNotificacion("Usuario no encontrado");
@@ -1453,7 +1467,7 @@
             }
         }
 
-        function aprobarDeposito(index) {
+        async function aprobarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
             dep.estado = 'Aprobado';
 
@@ -1464,16 +1478,11 @@
                     usuarioActual.balance = userTarget.balance;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                 }
-            } else {
-                if(usuarioActual) {
-                    usuarioActual.balance += dep.monto;
-                    listaUsuariosGlobales.push(usuarioActual);
-                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                }
             }
 
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
             
             actualizarPerfilUI();
             mostrarNotificacion(`Depósito de ${dep.monto} USDT aprobado y sumado al usuario`);
@@ -1482,29 +1491,33 @@
             verificarAccesoCEO();
         }
 
-        function cancelarDeposito(index) {
+        async function cancelarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
             dep.estado = 'Cancelado';
 
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            
             mostrarNotificacion("Depósito cancelado");
             cargarAccionCEO('solicitudes_deposito');
             renderizarOrdenes();
             verificarAccesoCEO();
         }
 
-        function aprobarRecarga(index) {
+        async function aprobarRecarga(index) {
             let rec = solicitudesGlobales.recargas[index];
             rec.estado = 'Completado';
 
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            
             mostrarNotificacion("Recarga completada con éxito");
             cargarAccionCEO('solicitudes_recarga');
             renderizarOrdenes();
             verificarAccesoCEO();
         }
 
-        function cancelarRecarga(index) {
+        async function cancelarRecarga(index) {
             let rec = solicitudesGlobales.recargas[index];
             rec.estado = 'Cancelado';
 
@@ -1521,6 +1534,7 @@
 
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
             
             actualizarPerfilUI();
             mostrarNotificacion("Recarga cancelada y saldo devuelto al usuario");
