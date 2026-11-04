@@ -247,7 +247,7 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* LOGOTIPO REAL DE USDT (TETHER) */
+        /* LOGOTIPO PROFESIONAL Y REAL DE USDT (TETHER) */
         .usdt-real-badge {
             width: 48px; height: 48px; background: #009393;
             border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative;
@@ -349,34 +349,63 @@
             padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
         }
 
-        /* BOTÓN FLOTANTE DE SOPORTE ARRASTRE LIBRE */
+        /* BOTÓN FLOTANTE AZUL Y SIN BLOQUEAR SCROLL */
         .floating-bot {
             position: fixed; bottom: 85px; right: 20px; width: 52px; height: 52px;
-            background: #25D366; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            background: var(--primary-blue); border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0, 102, 255, 0.5);
             cursor: grab; z-index: 99998; touch-action: none; user-select: none;
         }
         .floating-bot:active { cursor: grabbing; }
-        .floating-bot svg { width: 30px; height: 30px; fill: #fff; }
+        .floating-bot svg { width: 26px; height: 26px; fill: #fff; }
 
-        /* MODAL SELECTOR WHATSAPP REAL */
-        #modal-whatsapp-selector {
+        /* MODAL SELECTOR SOPORTE & IA */
+        #modal-soporte-selector {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(5px);
             display: none; justify-content: center; align-items: center; z-index: 9999999; padding: 20px;
         }
-        .wa-modal-box {
+        .soporte-modal-box {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px;
             padding: 1.6rem; max-width: 340px; width: 100%; text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6); animation: fadeInPage 0.3s ease;
         }
-        .wa-option-btn {
+        .soporte-option-btn {
             display: flex; align-items: center; gap: 12px; width: 100%; background: #07090e;
             border: 1px solid var(--border-color); padding: 0.8rem 1rem; border-radius: 12px;
             margin-bottom: 0.8rem; cursor: pointer; color: #fff; font-weight: 700; font-size: 0.85rem;
-            transition: border-color 0.2s; text-decoration: none;
+            transition: border-color 0.2s; text-decoration: none; text-align: left;
         }
-        .wa-option-btn:hover { border-color: #25D366; }
+        .soporte-option-btn:hover { border-color: var(--accent-glow); }
+
+        /* MODAL DE CHAT IA INTEGRADO */
+        #modal-ia-chat {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.9); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 99999999; padding: 15px;
+        }
+        .ia-chat-container {
+            background: var(--bg-card); border: 1px solid var(--accent-glow); border-radius: 20px;
+            width: 100%; max-width: 420px; height: 80vh; display: flex; flex-direction: column; overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 240, 255, 0.2);
+        }
+        .ia-chat-header {
+            background: #07090e; padding: 1rem; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .ia-chat-messages {
+            flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; font-size: 0.82rem;
+        }
+        .ia-msg { padding: 0.7rem 1rem; border-radius: 12px; max-width: 85%; line-height: 1.4; }
+        .ia-msg.bot { background: #07090e; color: #fff; border: 1px solid var(--border-color); align-self: flex-start; }
+        .ia-msg.user { background: var(--primary-blue); color: #fff; align-self: flex-end; }
+        .ia-chat-input-area {
+            padding: 0.8rem; background: #07090e; border-top: 1px solid var(--border-color); display: flex; gap: 8px;
+        }
+        .ia-chat-input-area input {
+            flex: 1; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.7rem;
+            border-radius: 10px; color: #fff; font-size: 0.85rem; outline: none;
+        }
 
         .footer-legal-container {
             margin-top: auto; padding: 1.2rem 1rem; background: var(--bg-card);
@@ -405,31 +434,69 @@
     <div id="loading-overlay"><div class="spinner"></div></div>
     <div id="notification-toast">ACCIÓN COMPLETADA</div>
 
-    <!-- MODAL SELECTOR WHATSAPP CON ICONOS REALES -->
-    <div id="modal-whatsapp-selector" onclick="cerrarModalWhatsApp(event)">
-        <div class="wa-modal-box" onclick="event.stopPropagation()">
-            <h3 style="color: #fff; font-size: 1.05rem; font-weight: 900; margin-bottom: 0.4rem;">Canal de Soporte</h3>
-            <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Elige con qué WhatsApp deseas comunicarte:</p>
+    <!-- MODAL SELECTOR SOPORTE & IA -->
+    <div id="modal-soporte-selector" onclick="cerrarModalSoporte(event)">
+        <div class="soporte-modal-box" onclick="event.stopPropagation()">
+            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">Asistente & Soporte</h3>
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">¿Cómo deseas recibir ayuda hoy?</p>
             
-            <a class="wa-option-btn" onclick="abrirWhatsAppReal('normal')">
-                <!-- ICONO REAL WHATSAPP NORMAL -->
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                <span>WhatsApp Normal</span>
-            </a>
+            <div class="soporte-option-btn" onclick="abrirIaChatModal()">
+                <div style="width: 32px; height: 32px; background: rgba(0,240,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m9 0a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5z"/></svg>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.85rem; color: #fff;">Hablar con la IA de la Tienda</h4>
+                    <span style="font-size: 0.68rem; color: var(--text-muted);">Respuestas instantáneas 24/7</span>
+                </div>
+            </div>
 
-            <a class="wa-option-btn" onclick="abrirWhatsAppReal('business')">
-                <!-- ICONO REAL WHATSAPP BUSINESS -->
-                <svg viewBox="0 0 24 24" width="24" height="24" fill="#25D366"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
-                <span>WhatsApp Business</span>
-            </a>
+            <div class="soporte-option-btn" onclick="abrirWhatsAppReal('normal')">
+                <div style="width: 32px; height: 32px; background: rgba(37,211,102,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.85rem; color: #fff;">WhatsApp Normal</h4>
+                    <span style="font-size: 0.68rem; color: var(--text-muted);">Chat directo con Lester</span>
+                </div>
+            </div>
+
+            <div class="soporte-option-btn" onclick="abrirWhatsAppReal('business')">
+                <div style="width: 32px; height: 32px; background: rgba(37,211,102,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="#25D366"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.85rem; color: #fff;">WhatsApp Business</h4>
+                    <span style="font-size: 0.68rem; color: var(--text-muted);">Atención comercial</span>
+                </div>
+            </div>
             
-            <button onclick="cerrarModalWhatsApp()" style="background: transparent; border: none; color: var(--text-muted); font-size: 0.78rem; font-weight: bold; cursor: pointer; margin-top: 0.4rem;">Cancelar</button>
+            <button onclick="cerrarModalSoporte()" style="background: transparent; border: none; color: var(--text-muted); font-size: 0.78rem; font-weight: bold; cursor: pointer; margin-top: 0.4rem;">Cancelar</button>
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE SOPORTE -->
-    <div id="floating-bot-soporte" class="floating-bot" onclick="mostrarModalWhatsApp()">
-        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    <!-- MODAL CHAT DE IA INTERNO -->
+    <div id="modal-ia-chat" onclick="cerrarIaChatModal(event)">
+        <div class="ia-chat-container" onclick="event.stopPropagation()">
+            <div class="ia-chat-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 10px; height: 10px; background: #10b981; border-radius: 50%;"></div>
+                    <h3 style="font-size: 0.95rem; font-weight: 900; color: #fff;">Asistente IA - Lester Tienda</h3>
+                </div>
+                <button onclick="cerrarIaChatModalDirecto()" style="background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer;">&times;</button>
+            </div>
+            <div id="ia-chat-messages" class="ia-chat-messages">
+                <div class="ia-msg bot">¡Hola! Soy el asistente inteligente de <b>Lester Tienda</b>. ¿En qué puedo ayudarte hoy sobre recargas, USDT o referidos?</div>
+            </div>
+            <div class="ia-chat-input-area">
+                <input type="text" id="ia-input-text" placeholder="Escribe tu duda aquí..." onkeypress="if(event.key === 'Enter') enviarMensajeIA()">
+                <button class="btn-main" style="width: auto; margin-top: 0; padding: 0 1rem;" onclick="enviarMensajeIA()">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTÓN FLOTANTE SOPORTE (AZUL Y FLUIDO) -->
+    <div id="floating-bot-soporte" class="floating-bot" onclick="mostrarModalSoporte()">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
     </div>
 
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
@@ -579,12 +646,13 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN SELECTOR DE JUEGOS -->
+            <!-- SECCIÓN SELECTOR DE JUEGOS (FREE FIRE Y BLOOD STRIKE) -->
             <div id="seccion-juegos-selector" class="vista-sec" style="display: none;">
                 <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver</button>
                 
                 <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">SELECCIONA EL JUEGO</h2>
 
+                <!-- FREE FIRE -->
                 <div class="game-card-character" onclick="abrirFreeFire()">
                     <div class="game-card-banner-img">
                         <div class="neon-diamonds-bg"></div>
@@ -602,6 +670,27 @@
                     <div class="game-card-footer">
                         <span style="color: #fff;">Diamantes Instantáneos</span>
                         <span style="color: var(--accent-glow);">Ver Ofertas &gt;</span>
+                    </div>
+                </div>
+
+                <!-- BLOOD STRIKE (PRÓXIMAMENTE) -->
+                <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
+                    <div class="game-card-banner-img" style="background: linear-gradient(135deg, #1a0808 0%, #0d1322 100%);">
+                        <div class="neon-diamonds-bg"></div>
+                        <div class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">
+                            PRÓXIMAMENTE
+                        </div>
+                        <div style="z-index: 2; position: relative;">
+                            <span style="background: rgba(245, 158, 11, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:#f59e0b; font-weight: bold; display: inline-block; margin-bottom: 4px;">Shooter Pro</span>
+                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Blood Strike</h3>
+                        </div>
+                        <div style="z-index: 2; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(245,158,11,0.1); border: 1px solid #f59e0b; width: 60px; height: 60px; border-radius: 14px; box-shadow: 0 0 15px rgba(245,158,11,0.3);">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="#f59e0b"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
+                        </div>
+                    </div>
+                    <div class="game-card-footer">
+                        <span style="color: #fff;">Oro y Pases de Batalla</span>
+                        <span style="color: #f59e0b;">Ver Oferta &gt;</span>
                     </div>
                 </div>
             </div>
@@ -657,11 +746,44 @@
                 <button class="btn-main" onclick="procesarRecarga()">COMPLETAR RECARGA</button>
             </div>
 
-            <!-- SECCIÓN ÓRDENES -->
+            <!-- SECCIÓN ÓRDENES (DIVIDIDA EN COMPRAS Y DEPÓSITOS CON TABS) -->
             <div id="seccion-ordenes" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 0.8rem; font-size: 1.05rem; color:var(--accent-glow);">Tus Órdenes y Transacciones</h2>
-                <p style="color:var(--text-muted); font-size:0.72rem; margin-bottom: 1rem;">Historial privado de tus solicitudes de recarga y depósitos en la plataforma.</p>
-                <div id="lista-ordenes-container"></div>
+                <p style="color:var(--text-muted); font-size:0.72rem; margin-bottom: 1rem;">Historial privado de tus solicitudes y depósitos en la plataforma.</p>
+                
+                <!-- PESTAÑAS / BOTONES DE NAVEGACIÓN DE ÓRDENES -->
+                <div style="display: flex; gap: 8px; margin-bottom: 1rem; background: #07090e; padding: 4px; border-radius: 10px; border: 1px solid var(--border-color);">
+                    <button id="tab-btn-compras" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: var(--primary-blue); color: #fff; transition: all 0.3s;" onclick="cambiarTabOrdenes('compras')">Compras (Recargas)</button>
+                    <button id="tab-btn-depositos" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.3s;" onclick="cambiarTabOrdenes('depositos')">Depósitos</button>
+                </div>
+
+                <!-- CONTENEDOR DE COMPRAS -->
+                <div id="panel-ordenes-compras">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DE RECARGAS REALIZADAS</span>
+                            <h3 id="stat-total-recargas-realizadas" style="font-size: 1.2rem; font-weight: 900; color: var(--accent-glow);">0</h3>
+                        </div>
+                        <div style="width: 36px; height: 36px; background: rgba(0,240,255,0.1); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        </div>
+                    </div>
+                    <div id="lista-compras-container"></div>
+                </div>
+
+                <!-- CONTENEDOR DE DEPÓSITOS -->
+                <div id="panel-ordenes-depositos" style="display: none;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN USDT</span>
+                            <h3 id="stat-total-depositado-usdt" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0.00 USDT</h3>
+                        </div>
+                        <div style="width: 36px; height: 36px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        </div>
+                    </div>
+                    <div id="lista-depositos-container"></div>
+                </div>
             </div>
 
             <!-- SECCIÓN REFERIDOS -->
@@ -688,7 +810,7 @@
                     <div style="display: flex; gap: 8px;">
                         <button class="btn-main" style="margin-top: 0; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff;" onclick="copiarEnlaceRef()">Copiar Enlace</button>
                         
-                        <!-- BOTÓN COMPARTIR ACTUALIZADO -->
+                        <!-- BOTÓN COMPARTIR VIP -->
                         <button class="btn-main" style="margin-top: 0; background: var(--primary-blue); display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="compartirEnlaceRef()">
                             <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
                             Compartir
@@ -927,7 +1049,7 @@
             });
         }
 
-        // LÓGICA DE ARRASTRE LIBRE PARA EL BOTÓN DE SOPORTE FLOTANTE
+        // ARRASTRE FLUIDO Y LIBRE PARA EL BOTÓN DE SOPORTE (AZUL)
         const botSoporte = document.getElementById('floating-bot-soporte');
         let isDragging = false;
         let startX, startY, initialX, initialY;
@@ -965,28 +1087,74 @@
             startY = null;
         });
 
-        function mostrarModalWhatsApp() {
+        function mostrarModalSoporte() {
             if (isDragging) return;
-            document.getElementById('modal-whatsapp-selector').style.display = 'flex';
+            document.getElementById('modal-soporte-selector').style.display = 'flex';
         }
 
-        function cerrarModalWhatsApp(e) {
-            if (!e || e.target.id === 'modal-whatsapp-selector') {
-                document.getElementById('modal-whatsapp-selector').style.display = 'none';
+        function cerrarModalSoporte(e) {
+            if (!e || e.target.id === 'modal-soporte-selector') {
+                document.getElementById('modal-soporte-selector').style.display = 'none';
             }
         }
 
         function abrirWhatsAppReal(tipo) {
-            const numero = "+5359578110";
+            const numero = "5359578110";
             const texto = encodeURIComponent("Hola Lester, necesito soporte con mi cuenta.");
             let url = "";
             if (tipo === 'business') {
-                url = `https://wa.me/${numero}?text=${texto}`;
+                // Esquema directo para WhatsApp Business
+                url = `whatsapp://send?phone=${numero}&text=${texto}`;
             } else {
                 url = `https://api.whatsapp.com/send?phone=${numero}&text=${texto}`;
             }
             window.open(url, '_blank');
-            cerrarModalWhatsApp();
+            cerrarModalSoporte();
+        }
+
+        // LÓGICA DE LA IA INTEGRADA DE LA TIENDA
+        function abrirIaChatModal() {
+            cerrarModalSoporte();
+            document.getElementById('modal-ia-chat').style.display = 'flex';
+        }
+
+        function cerrarIaChatModal(e) {
+            if (e.target.id === 'modal-ia-chat') {
+                document.getElementById('modal-ia-chat').style.display = 'none';
+            }
+        }
+
+        function cerrarIaChatModalDirecto() {
+            document.getElementById('modal-ia-chat').style.display = 'none';
+        }
+
+        function enviarMensajeIA() {
+            const input = document.getElementById('ia-input-text');
+            const texto = input.value.trim();
+            if(!texto) return;
+
+            const chatMsgs = document.getElementById('ia-chat-messages');
+            chatMsgs.innerHTML += `<div class="ia-msg user">${texto}</div>`;
+            input.value = '';
+            chatMsgs.scrollTop = chatMsgs.scrollHeight;
+
+            setTimeout(() => {
+                let respuestaBot = "¡Entendido! En Lester Tienda ofrecemos recargas de Free Fire al instante mediante USDT (BEP-20). Puedes ver tus órdenes, invitar amigos con tu enlace de referidos y recargar saldo en tu Wallet.";
+                const t = texto.toLowerCase();
+
+                if (t.includes('hola') || t.includes('saludos')) {
+                    respuestaBot = "¡Hola! ¿En qué puedo guiarte sobre nuestra tienda de recargas?";
+                } else if (t.includes('precio') || t.includes('cuanto') || t.includes('diamantes')) {
+                    respuestaBot = "Los paquetes de Free Fire van desde 1.20 USDT para 110 diamantes hasta 41.00 USDT para 6160 diamantes. ¡Recuerda que si invitas amigos obtienes descuentos!";
+                } else if (t.includes('usdt') || t.includes('bep20') || t.includes('pagar') || t.includes('recargar saldo')) {
+                    respuestaBot = "Para recargar saldo, ve a la sección Wallet, copia la dirección oficial BEP-20, realiza tu transferencia y envía el TxID o número de transferencia.";
+                } else if (t.includes('referido') || t.includes('invitar')) {
+                    respuestaBot = "En la sección Referidos tienes tu enlace personal. ¡Al invitar socios acumulas ventajas y premios increíbles con el CEO!";
+                }
+
+                chatMsgs.innerHTML += `<div class="ia-msg bot">${respuestaBot}</div>`;
+                chatMsgs.scrollTop = chatMsgs.scrollHeight;
+            }, 600);
         }
 
         let deferredPrompt = null;
@@ -1489,52 +1657,86 @@
             }, 800);
         }
 
+        // CONTROL DE TABS EN SECCIÓN ÓRDENES (COMPRAS vs DEPÓSITOS)
+        function cambiarTabOrdenes(tipo) {
+            const btnCompras = document.getElementById('tab-btn-compras');
+            const btnDepositos = document.getElementById('tab-btn-depositos');
+            const panelCompras = document.getElementById('panel-ordenes-compras');
+            const panelDepositos = document.getElementById('panel-ordenes-depositos');
+
+            if(tipo === 'compras') {
+                btnCompras.style.background = 'var(--primary-blue)';
+                btnCompras.style.color = '#fff';
+                btnDepositos.style.background = 'transparent';
+                btnDepositos.style.color = 'var(--text-muted)';
+                panelCompras.style.display = 'block';
+                panelDepositos.style.display = 'none';
+            } else {
+                btnDepositos.style.background = 'var(--primary-blue)';
+                btnDepositos.style.color = '#fff';
+                btnCompras.style.background = 'transparent';
+                btnCompras.style.color = 'var(--text-muted)';
+                panelDepositos.style.display = 'block';
+                panelCompras.style.display = 'none';
+            }
+        }
+
         function renderizarOrdenes() {
             solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
-            const container = document.getElementById('lista-ordenes-container');
-            let html = "";
+            const containerCompras = document.getElementById('lista-compras-container');
+            const containerDepositos = document.getElementById('lista-depositos-container');
             
             let misRecargas = solicitudesGlobales.recargas.filter(r => r.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
             let misDepositos = solicitudesGlobales.depositos.filter(d => d.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
 
-            if(misRecargas.length === 0 && misDepositos.length === 0) {
-                container.innerHTML = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:2rem;'>No tienes órdenes registradas todavía.</p>";
-                return;
+            // Actualizar estadísticas de compras y depósitos
+            document.getElementById('stat-total-recargas-realizadas').innerText = misRecargas.length;
+            let totalDepositadoUSDT = misDepositos.filter(d => d.estado === 'Aprobado').reduce((acc, curr) => acc + curr.monto, 0);
+            document.getElementById('stat-total-depositado-usdt').innerText = totalDepositadoUSDT.toFixed(2) + " USDT";
+
+            let htmlCompras = "";
+            if(misRecargas.length === 0) {
+                htmlCompras = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:1.5rem;'>No tienes compras de recargas registradas.</p>";
+            } else {
+                misRecargas.slice().reverse().forEach(o => {
+                    let claseEstado = "status-pendiente";
+                    if(o.estado === 'Aprobada' || o.estado === 'Completado') claseEstado = "status-completado";
+                    if(o.estado === 'Cancelado') claseEstado = "status-cancelado";
+
+                    htmlCompras += `
+                        <div class="order-card-pro">
+                            <div class="order-info">
+                                <h4>Free Fire - ${o.detalle}</h4>
+                                <p>ID: ${o.idJugador} | Precio: ${o.precio.toFixed(2)} USDT</p>
+                            </div>
+                            <span class="badge-status ${claseEstado}">${o.estado}</span>
+                        </div>
+                    `;
+                });
             }
+            containerCompras.innerHTML = htmlCompras;
 
-            misRecargas.slice().reverse().forEach(o => {
-                let claseEstado = "status-pendiente";
-                if(o.estado === 'Aprobada' || o.estado === 'Completado') claseEstado = "status-completado";
-                if(o.estado === 'Cancelado') claseEstado = "status-cancelado";
+            let htmlDepositos = "";
+            if(misDepositos.length === 0) {
+                htmlDepositos = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:1.5rem;'>No tienes solicitudes de depósito registradas.</p>";
+            } else {
+                misDepositos.slice().reverse().forEach(d => {
+                    let claseEstado = "status-pendiente";
+                    if(d.estado === 'Aprobado') claseEstado = "status-completado";
+                    if(d.estado === 'Cancelado') claseEstado = "status-cancelado";
 
-                html += `
-                    <div class="order-card-pro">
-                        <div class="order-info">
-                            <h4>Free Fire - ${o.detalle}</h4>
-                            <p>ID: ${o.idJugador} | Precio: ${o.precio.toFixed(2)} USDT</p>
+                    htmlDepositos += `
+                        <div class="order-card-pro">
+                            <div class="order-info">
+                                <h4>Depósito USDT - ${d.monto} USDT</h4>
+                                <p>TxID: ${d.txid || 'N/A'}</p>
+                            </div>
+                            <span class="badge-status ${claseEstado}">${d.estado}</span>
                         </div>
-                        <span class="badge-status ${claseEstado}">${o.estado}</span>
-                    </div>
-                `;
-            });
-
-            misDepositos.slice().reverse().forEach(d => {
-                let claseEstado = "status-pendiente";
-                if(d.estado === 'Aprobado') claseEstado = "status-completado";
-                if(d.estado === 'Cancelado') claseEstado = "status-cancelado";
-
-                html += `
-                    <div class="order-card-pro">
-                        <div class="order-info">
-                            <h4>Depósito USDT - ${d.monto} USDT</h4>
-                            <p>TxID: ${d.txid || 'N/A'}</p>
-                        </div>
-                        <span class="badge-status ${claseEstado}">${d.estado}</span>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+                    `;
+                });
+            }
+            containerDepositos.innerHTML = htmlDepositos;
         }
 
         function actualizarEstadisticasInicio() {
