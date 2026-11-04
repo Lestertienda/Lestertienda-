@@ -43,7 +43,7 @@
 
         body {
             padding-bottom: 95px;
-            animation: fadeInPage 0.5s ease forwards;
+            animation: fadeInPage 0.4s ease forwards;
         }
 
         @keyframes fadeInPage {
@@ -245,12 +245,12 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* ICONO REAL DE USDT (TETHER) OFICIAL CON CÍRCULO VERDE TURQUESA */
+        /* LOGOTIPO REAL DE USDT (TETHER) OFICIAL CON CÍRCULO VERDE EXACTO DEL MERCADO */
         .usdt-real-badge {
-            width: 42px; height: 42px; border-radius: 50%; overflow: hidden;
+            width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center; position: relative;
             box-shadow: 0 0 12px rgba(38, 166, 154, 0.5); border: 2px solid #26a69a; flex-shrink: 0;
-            background: linear-gradient(135deg, #134e4a 0%, #042f2e 100%);
+            background: #26a69a;
         }
 
         .wallet-selector-card {
@@ -266,7 +266,6 @@
         }
         .btn-seleccionar-wallet svg { width: 12px; height: 12px; fill: #fff; }
 
-        /* PANEL SUB-PÁTAÑA DE WALLET MEJORADO (SIN BAJAR ABAJO) */
         #wallet-subview-panel {
             display: none; animation: fadeInPage 0.3s ease forwards;
         }
@@ -311,12 +310,12 @@
         .stat-col h4 { font-size: 0.88rem; font-weight: 900; color: var(--accent-glow); }
         .stat-col span { font-size: 0.68rem; color: var(--text-muted); }
 
-        /* TARJETAS DE ÓRDENES PROFESIONALES CON NEÓN Y HUMO POR DETRÁS (ENCAPSULADAS) */
+        /* TARJETAS DE ÓRDENES Y DEPÓSITOS 100% ENCAPSULADAS CON NEÓN Y HUMO */
         .order-card-pro {
             background: var(--bg-card); 
             border: 1.5px solid var(--accent-glow); 
             border-radius: 16px;
-            padding: 1rem 1.1rem; 
+            padding: 1.1rem 1.2rem; 
             margin-bottom: 0.9rem; 
             display: flex; 
             justify-content: space-between; 
@@ -324,6 +323,7 @@
             position: relative;
             box-shadow: 0 0 18px rgba(0, 240, 255, 0.22), inset 0 0 10px rgba(0, 240, 255, 0.05);
             overflow: hidden;
+            gap: 12px;
         }
         .order-card-pro::before {
             content: '';
@@ -335,13 +335,22 @@
         }
         .order-card-pro > * { position: relative; z-index: 1; }
         
-        .order-info h4 { font-size: 0.86rem; font-weight: 900; color: #fff; margin-bottom: 3px; }
-        .order-info p { font-size: 0.72rem; color: var(--text-muted); }
+        .order-info { flex: 1; min-width: 0; }
+        .order-info h4 { font-size: 0.86rem; font-weight: 900; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .order-info p { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
-        .badge-status { padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; }
-        .status-pendiente { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
-        .status-completado { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .status-cancelado { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .badge-status { 
+            padding: 5px 10px; 
+            border-radius: 8px; 
+            font-size: 0.7rem; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            flex-shrink: 0; 
+            text-align: center;
+        }
+        .status-pendiente { background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5); }
+        .status-completado { background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.5); }
+        .status-cancelado { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); }
 
         .security-menu-box { 
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; 
@@ -671,7 +680,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE -->
+            <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE CON LOS PRECIOS EXACTOS -->
             <div id="seccion-freefire" class="vista-sec" style="display: none;">
                 <button class="nav-top-icon-btn" onclick="irASelectorJuegos()" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Juegos</button>
                 
@@ -707,15 +716,15 @@
                         <h4>1166 Diamantes</h4>
                         <span class="diamond-price" id="precio-1166">8.50 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(2420, 16.5)">
+                    <div class="diamond-card" onclick="seleccionarOferta(2398, 17.4)">
                         <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#00f0ff" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#00f0ff"/></svg></div>
-                        <h4>2420 Diamantes</h4>
-                        <span class="diamond-price" id="precio-2420">16.50 USDT</span>
+                        <h4>2398 Diamantes</h4>
+                        <span class="diamond-price" id="precio-2398">17.40 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(6160, 41.0)">
+                    <div class="diamond-card" onclick="seleccionarOferta(6160, 40.0)">
                         <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#a855f7" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#a855f7" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#a855f7"/></svg></div>
                         <h4>6160 Diamantes</h4>
-                        <span class="diamond-price" id="precio-6160">41.00 USDT</span>
+                        <span class="diamond-price" id="precio-6160">40.00 USDT</span>
                     </div>
                 </div>
 
@@ -804,10 +813,9 @@
                     <div class="wallet-selector-card">
                         <div class="wallet-info-left">
                             <div class="usdt-real-badge">
-                                <!-- ICONO REAL DE USDT (TETHER) OFICIAL VECTORIAL -->
-                                <svg viewBox="0 0 32 32" width="28" height="28">
-                                    <path fill="#26A69A" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
-                                    <path fill="#FFFFFF" d="M15.8,17.8c2.4,0,4.4,0.5,4.4,1.1c0,0.6-2,1.1-4.4,1.1s-4.4-0.5-4.4-1.1C11.4,18.3,13.4,17.8,15.8,17.8z"/>
+                                <!-- LOGOTIPO OFICIAL REAL DE USDT (TETHER) -->
+                                <svg viewBox="0 0 32 32" width="24" height="24">
+                                    <path fill="#FFFFFF" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
                                 </svg>
                             </div>
                             <div class="wallet-details">
@@ -823,8 +831,8 @@
 
                     <div class="wallet-selector-card">
                         <div class="wallet-info-left">
-                            <div style="width: 42px; height: 42px; background: rgba(0, 102, 255, 0.15); border: 2px solid var(--primary-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <div style="width: 40px; height: 40px; background: rgba(0, 102, 255, 0.15); border: 2px solid var(--primary-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                             </div>
                             <div class="wallet-details">
                                 <h4>Saldo</h4>
@@ -839,8 +847,8 @@
 
                     <div class="wallet-selector-card">
                         <div class="wallet-info-left">
-                            <div style="width: 42px; height: 42px; background: rgba(245, 158, 11, 0.15); border: 2px solid #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="#f59e0b"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                            <div style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.15); border: 2px solid #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="#f59e0b"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
                             </div>
                             <div class="wallet-details">
                                 <h4>Tarjeta</h4>
@@ -854,16 +862,15 @@
                     </div>
                 </div>
 
-                <!-- SUB-VISTA DEDICADA DE WALLET (ABRE DIRECTO EN PANTALLA SIN BAJAR) -->
+                <!-- SUB-VISTA DEDICADA DE WALLET -->
                 <div id="wallet-subview-panel">
                     <button class="nav-top-icon-btn" onclick="cerrarSubVistaWallet()" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Métodos</button>
                     
                     <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(0,240,255,0.15);">
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
                             <div class="usdt-real-badge">
-                                <svg viewBox="0 0 32 32" width="26" height="26">
-                                    <path fill="#26A69A" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
-                                    <path fill="#FFFFFF" d="M15.8,17.8c2.4,0,4.4,0.5,4.4,1.1c0,0.6-2,1.1-4.4,1.1s-4.4-0.5-4.4-1.1C11.4,18.3,13.4,17.8,15.8,17.8z"/>
+                                <svg viewBox="0 0 32 32" width="22" height="22">
+                                    <path fill="#FFFFFF" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
                                 </svg>
                             </div>
                             <div>
@@ -1189,7 +1196,6 @@
             aplicarConfiguracionVisual();
         };
 
-        // CARGA AUTOMÁTICA EN SEGUNDO PLANO CON ANIMACIÓN FLUIDA
         async function sincronizarConCloudAuto() {
             mostrarCarga("Sincronizando datos...");
             try {
@@ -1299,7 +1305,6 @@
             input.type = input.type === "password" ? "text" : "password";
         }
 
-        // CONTROL DE SUB-VISTA EN WALLET (SIN BAJAR LA PÁGINA)
         function abrirSubVistaWallet() {
             document.getElementById('wallet-main-list').style.display = 'none';
             document.getElementById('wallet-subview-panel').style.display = 'block';
@@ -1522,15 +1527,15 @@
         }
 
         function actualizarPreciosDiamantesUI() {
-            let p110 = 1.2, p361 = 3.5, p572 = 5.0, p1166 = 8.5, p2420 = 16.5, p6160 = 41.0;
+            let p110 = 1.2, p361 = 3.5, p572 = 5.0, p1166 = 8.5, p2398 = 17.4, p6160 = 40.0;
             if (usuarioActual && usuarioActual.descuentosDisponibles > 0) {
-                p110 *= 0.95; p361 *= 0.95; p572 *= 0.95; p1166 *= 0.95; p2420 *= 0.95; p6160 *= 0.95;
+                p110 *= 0.95; p361 *= 0.95; p572 *= 0.95; p1166 *= 0.95; p2398 *= 0.95; p6160 *= 0.95;
             }
             document.getElementById('precio-110').innerText = p110.toFixed(2) + " USDT";
             document.getElementById('precio-361').innerText = p361.toFixed(2) + " USDT";
             document.getElementById('precio-572').innerText = p572.toFixed(2) + " USDT";
             document.getElementById('precio-1166').innerText = p1166.toFixed(2) + " USDT";
-            document.getElementById('precio-2420').innerText = p2420.toFixed(2) + " USDT";
+            document.getElementById('precio-2398').innerText = p2398.toFixed(2) + " USDT";
             document.getElementById('precio-6160').innerText = p6160.toFixed(2) + " USDT";
         }
 
@@ -1900,7 +1905,6 @@
             }
         }
 
-        // AL MANDAR DEPÓSITO REDIRIGE DIRECTO A ÓRDENES / DEPÓSITOS
         function confirmarendioDeposito() {
             const monto = parseFloat(document.getElementById('monto-deposito').value);
             const txid = document.getElementById('txid-deposito').value.trim();
