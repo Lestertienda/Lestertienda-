@@ -140,24 +140,46 @@
         .container { max-width: 500px; margin: 0 auto; padding: 1rem; }
         .vista-sec { animation: fadeInPage 0.5s ease forwards; }
 
-        /* BOTÓN JUEGOS ÉPICO Y DESTACADO EN INICIO */
-        .game-hero-banner {
+        /* BOTÓN "RECARGAS VÍA ID" MÁS COMPACTO Y ELEGANTE EN INICIO */
+        .game-hero-compact {
             background: linear-gradient(135deg, #0d1322 0%, #07090e 100%);
-            border: 2px solid var(--accent-glow); border-radius: 20px;
-            padding: 1.5rem; margin-bottom: 1.2rem; cursor: pointer; position: relative;
-            box-shadow: 0 0 25px rgba(0, 240, 255, 0.2); transition: transform 0.2s, box-shadow 0.2s;
+            border: 1.5px solid var(--accent-glow); border-radius: 14px;
+            padding: 0.9rem 1.1rem; margin-bottom: 1rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15); transition: transform 0.2s, box-shadow 0.2s;
         }
-        .game-hero-banner:hover { transform: translateY(-2px); box-shadow: 0 0 35px rgba(0, 240, 255, 0.4); }
-        .game-hero-content { display: flex; align-items: center; gap: 15px; }
-        .game-hero-icon {
-            width: 60px; height: 60px; background: rgba(0, 240, 255, 0.1); border: 2px solid var(--accent-glow);
-            border-radius: 16px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        .game-hero-compact:hover { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(0, 240, 255, 0.3); }
+        .game-hero-left { display: flex; align-items: center; gap: 10px; }
+        .game-hero-icon-small {
+            width: 38px; height: 38px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-glow);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .game-hero-icon svg { width: 32px; height: 32px; fill: var(--accent-glow); }
-        .game-hero-details h2 { font-size: 1.3rem; font-weight: 900; color: #fff; margin-bottom: 4px; letter-spacing: 0.5px; }
-        .game-hero-details p { font-size: 0.78rem; color: var(--text-muted); }
+        .game-hero-icon-small svg { width: 20px; height: 20px; fill: var(--accent-glow); }
+        .game-hero-text h3 { font-size: 0.92rem; font-weight: 900; color: #fff; margin-bottom: 1px; }
+        .game-hero-text p { font-size: 0.68rem; color: var(--accent-glow); font-weight: 700; }
+        
+        .game-hero-arrow {
+            width: 28px; height: 28px; background: rgba(0, 102, 255, 0.2); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .game-hero-arrow svg { width: 14px; height: 14px; fill: var(--accent-glow); }
 
-        /* BANNER DE REFERIDOS ESTILO ANTERIOR LIMPIO */
+        /* TARJETA DE JUEGO (FREE FIRE) CON PERSONAJE */
+        .game-card-character {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
+            overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: border-color 0.2s; position: relative;
+        }
+        .game-card-character:hover { border-color: var(--accent-glow); }
+        .game-card-banner-img {
+            background: linear-gradient(135deg, #07090e 0%, #0d1322 100%);
+            height: 140px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1rem; position: relative;
+        }
+        .game-card-character-art {
+            position: absolute; right: 10px; bottom: 0; height: 130px; object-fit: contain; pointer-events: none; opacity: 0.85;
+        }
+        .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); }
+
+        /* BANNER DE REFERIDOS SOLICITADO */
         .invite-banner {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
             padding: 1.2rem; color: #fff; margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;
@@ -207,7 +229,7 @@
         .usdt-pro-text { color: #fff; font-weight: 900; font-size: 1.25rem; font-family: 'Inter', sans-serif; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
         .usdt-pro-bsc {
             position: absolute; bottom: -3px; right: -3px; background: #f3ba2f; color: #07090e;
-            font-size: 0.5srem; font-weight: 900; padding: 2px 4px; border-radius: 6px; border: 1.5px solid #07090e;
+            font-size: 0.5rem; font-weight: 900; padding: 2px 4px; border-radius: 6px; border: 1.5px solid #07090e;
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
@@ -324,7 +346,7 @@
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card);
             border-top: 1px solid var(--border-color); display: flex; justify-content: space-around;
-            padding: 0.55rem 0; z-index: 99999; box-shadow: 0 -4px 15px rgba(0,0,0,0.7);
+            padding: 0.55rem 0; z-index: 99999; box-shadow: -4px 15px rgba(0,0,0,0.7);
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; text-decoration: none;
@@ -439,20 +461,23 @@
             
             <div id="seccion-inicio" class="vista-sec">
                 
-                <!-- BOTÓN DE JUEGOS DESTACADO EN LA PARTE SUPERIOR DEL INICIO -->
-                <div class="game-hero-banner" onclick="abrirFreeFire()">
-                    <div class="game-hero-content">
-                        <div class="game-hero-icon">
+                <!-- BOTÓN "RECARGAS VÍA ID" MÁS COMPACTO Y CON FLECHA -->
+                <div class="game-hero-compact" onclick="irASelectorJuegos()">
+                    <div class="game-hero-left">
+                        <div class="game-hero-icon-small">
                             <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
-                        <div class="game-hero-details">
-                            <h2>Juegos</h2>
-                            <p>Explora tu juego favorito y haz recargas instantáneas</p>
+                        <div class="game-hero-text">
+                            <h3>Recargas Vía ID</h3>
+                            <p>Ver Oferta</p>
                         </div>
+                    </div>
+                    <div class="game-hero-arrow">
+                        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
                     </div>
                 </div>
 
-                <!-- BANNER DE REFERIDOS (ESTILO LIMPIO ANTERIOR) -->
+                <!-- BANNER DE REFERIDOS SOLICITADO -->
                 <div class="invite-banner">
                     <div>
                         <h3>Invita y Gana</h3>
@@ -484,11 +509,44 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN DE JUEGOS (SOLO FREE FIRE) -->
-            <div id="seccion-freefire" class="vista-sec" style="display: none;">
+            <!-- SECCIÓN SELECTOR DE JUEGOS (MANDA A FREE FIRE CON PERSONAJE Y ETIQUETA CEO) -->
+            <div id="seccion-juegos-selector" class="vista-sec" style="display: none;">
                 <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver</button>
                 
-                <div id="freefire-custom-badge" style="background: rgba(255, 59, 48, 0.15); border: 1px solid rgba(255,59,48,0.4); color: #ff3b30; padding: 6px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase; text-align: center;">
+                <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">SELECCIONA EL JUEGO</h2>
+
+                <!-- Tarjeta del Único Juego: Free Fire con Personaje y Etiqueta Editable -->
+                <div class="game-card-character" onclick="abrirFreeFire()">
+                    <div class="game-card-banner-img">
+                        <div>
+                            <div id="freefire-custom-badge" style="background: rgba(255, 59, 48, 0.2); border: 1px solid rgba(255,59,48,0.5); color: #ff3b30; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; width: fit-content; margin-bottom: 6px; text-transform: uppercase;">
+                                SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
+                            </div>
+                            <span style="background: rgba(0, 102, 255, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:var(--accent-glow); font-weight: bold; display: inline-block; margin-bottom: 4px;">Recarga por ID</span>
+                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Free Fire</h3>
+                        </div>
+                        <!-- Ilustración de Personaje Pro Gamer -->
+                        <svg class="game-card-character-art" viewBox="0 0 200 200" width="110" height="130">
+                            <path d="M100 20 C120 20 140 40 140 70 C140 90 120 110 100 130 C80 110 60 90 60 70 C60 40 80 20 100 20 Z" fill="#00f0ff" opacity="0.15"/>
+                            <circle cx="100" cy="65" r="28" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/>
+                            <path d="M75 60 L125 60 L120 85 L80 85 Z" fill="#0066ff"/>
+                            <polygon points="90,45 110,45 100,30" fill="#f59e0b"/>
+                            <path d="M60 110 Q100 90 140 110 L150 170 L50 170 Z" fill="#0d1322" stroke="#1a233a" stroke-width="2"/>
+                            <circle cx="100" cy="135" r="12" fill="#00f0ff"/>
+                        </svg>
+                    </div>
+                    <div class="game-card-footer">
+                        <span style="color: #fff;">Diamantes Instantáneos</span>
+                        <span style="color: var(--accent-glow);">Ver Ofertas &gt;</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE -->
+            <div id="seccion-freefire" class="vista-sec" style="display: none;">
+                <button class="nav-top-icon-btn" onclick="irASelectorJuegos()" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Juegos</button>
+                
+                <div id="freefire-custom-badge-det" style="background: rgba(255, 59, 48, 0.15); border: 1px solid rgba(255,59,48,0.4); color: #ff3b30; padding: 6px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase; text-align: center;">
                     SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
                 </div>
 
@@ -788,7 +846,7 @@
                             <svg viewBox="0 0 24 24" width="30" height="30" fill="var(--accent-glow)"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                         </div>
                         <h3 style="color: #fff; font-size: 1.2rem; font-weight: 900; margin-bottom: 0.5rem;">Instalación Obligatoria</h3>
-                        <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.6rem; line-height: 1.5;">Para usar <b>Lester Tienda</b> y acceder a tu cuenta, es obligatorio instalar la aplicación en tu dispositivo móvil.</p>
+                        <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.6rem; line-height: 1.5;">Para usar <b>Lester Tienda</b> y acceder al sistema, es obligatorio instalar la aplicación en tu dispositivo móvil.</p>
                         <button onclick="ejecutarInstalacionApp()" style="width: 100%; background: var(--primary-blue); color: #fff; border: none; padding: 0.9rem; border-radius: 12px; font-weight: 900; font-size: 0.92rem; cursor: pointer; box-shadow: 0 4px 20px rgba(0,102,255,0.5);">INSTALAR AHORA</button>
                     </div>
                 </div>
@@ -903,10 +961,17 @@
         }
 
         function aplicarConfiguracionVisual() {
-            const badge = document.getElementById('freefire-custom-badge');
-            if(badge && tiendaConfig.etiquetaFreeFire) {
-                badge.innerText = tiendaConfig.etiquetaFreeFire;
-                badge.style.display = tiendaConfig.etiquetaFreeFire.trim() === "" ? "none" : "block";
+            const badge1 = document.getElementById('freefire-custom-badge');
+            const badge2 = document.getElementById('freefire-custom-badge-det');
+            let textoEtiqueta = tiendaConfig.etiquetaFreeFire || "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE";
+            
+            if(badge1) {
+                badge1.innerText = textoEtiqueta;
+                badge1.style.display = textoEtiqueta.trim() === "" ? "none" : "block";
+            }
+            if(badge2) {
+                badge2.innerText = textoEtiqueta;
+                badge2.style.display = textoEtiqueta.trim() === "" ? "none" : "block";
             }
         }
 
@@ -1062,6 +1127,17 @@
             }, 300);
         }
 
+        function irASelectorJuegos() {
+            mostrarCarga();
+            setTimeout(() => {
+                ocultarCarga();
+                document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+                document.getElementById('seccion-juegos-selector').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                aplicarConfiguracionVisual();
+            }, 300);
+        }
+
         function abrirFreeFire() {
             mostrarCarga();
             setTimeout(() => {
@@ -1070,6 +1146,7 @@
                 document.getElementById('seccion-freefire').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 actualizarPreciosDiamantesUI();
+                aplicarConfiguracionVisual();
             }, 300);
         }
 
