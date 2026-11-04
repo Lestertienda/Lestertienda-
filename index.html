@@ -140,7 +140,7 @@
         .container { max-width: 500px; margin: 0 auto; padding: 1rem; }
         .vista-sec { animation: fadeInPage 0.5s ease forwards; }
 
-        /* BOTÓN "RECARGAS VÍA ID" MÁS COMPACTO Y ELEGANTE EN INICIO */
+        /* BOTÓN COMPACTO RECARGAS VÍA ID */
         .game-hero-compact {
             background: linear-gradient(135deg, #0d1322 0%, #07090e 100%);
             border: 1.5px solid var(--accent-glow); border-radius: 14px;
@@ -164,22 +164,32 @@
         }
         .game-hero-arrow svg { width: 14px; height: 14px; fill: var(--accent-glow); }
 
-        /* TARJETA DE JUEGO (FREE FIRE) CON PERSONAJE */
+        /* TARJETA DE JUEGO CON EFECTO NEÓN Y PERSONAJE PERSONALIZADO */
         .game-card-character {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
-            overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: border-color 0.2s; position: relative;
+            background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px;
+            overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; position: relative;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
         }
-        .game-card-character:hover { border-color: var(--accent-glow); }
+        .game-card-character:hover { border-color: var(--accent-glow); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); }
         .game-card-banner-img {
             background: linear-gradient(135deg, #07090e 0%, #0d1322 100%);
-            height: 140px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1rem; position: relative;
+            height: 155px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
         }
+        
+        /* ETIQUETA ROJA ARRIBA A LA DERECHA */
+        .neon-badge-top-right {
+            position: absolute; top: 12px; right: 12px;
+            background: rgba(255, 59, 48, 0.2); border: 1px solid rgba(255, 59, 48, 0.6);
+            color: #ff3b30; padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 900;
+            text-transform: uppercase; box-shadow: 0 0 10px rgba(255, 59, 48, 0.3); z-index: 3;
+        }
+
         .game-card-character-art {
-            position: absolute; right: 10px; bottom: 0; height: 130px; object-fit: contain; pointer-events: none; opacity: 0.85;
+            position: absolute; right: 10px; bottom: 0; height: 145px; object-fit: contain; pointer-events: none;
+            filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.6));
         }
         .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); }
 
-        /* BANNER DE REFERIDOS SOLICITADO */
         .invite-banner {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
             padding: 1.2rem; color: #fff; margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;
@@ -346,7 +356,7 @@
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card);
             border-top: 1px solid var(--border-color); display: flex; justify-content: space-around;
-            padding: 0.55rem 0; z-index: 99999; box-shadow: -4px 15px rgba(0,0,0,0.7);
+            padding: 0.55rem 0; z-index: 99999; box-shadow: 0 -4px 15px rgba(0,0,0,0.7);
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; text-decoration: none;
@@ -461,7 +471,7 @@
             
             <div id="seccion-inicio" class="vista-sec">
                 
-                <!-- BOTÓN "RECARGAS VÍA ID" MÁS COMPACTO Y CON FLECHA -->
+                <!-- BOTÓN COMPACTO RECARGAS VÍA ID -->
                 <div class="game-hero-compact" onclick="irASelectorJuegos()">
                     <div class="game-hero-left">
                         <div class="game-hero-icon-small">
@@ -477,7 +487,7 @@
                     </div>
                 </div>
 
-                <!-- BANNER DE REFERIDOS SOLICITADO -->
+                <!-- BANNER DE REFERIDOS -->
                 <div class="invite-banner">
                     <div>
                         <h3>Invita y Gana</h3>
@@ -509,30 +519,44 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN SELECTOR DE JUEGOS (MANDA A FREE FIRE CON PERSONAJE Y ETIQUETA CEO) -->
+            <!-- SECCIÓN SELECTOR DE JUEGOS CON PERSONAJE NEÓN Y ETIQUETA ARRIBA A LA DERECHA -->
             <div id="seccion-juegos-selector" class="vista-sec" style="display: none;">
                 <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver</button>
                 
                 <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">SELECCIONA EL JUEGO</h2>
 
-                <!-- Tarjeta del Único Juego: Free Fire con Personaje y Etiqueta Editable -->
                 <div class="game-card-character" onclick="abrirFreeFire()">
                     <div class="game-card-banner-img">
+                        <!-- ETIQUETA EDITABLE DEL CEO EN LA ESQUINA SUPERIOR DERECHA -->
+                        <div id="freefire-custom-badge" class="neon-badge-top-right">
+                            SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
+                        </div>
                         <div>
-                            <div id="freefire-custom-badge" style="background: rgba(255, 59, 48, 0.2); border: 1px solid rgba(255,59,48,0.5); color: #ff3b30; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; width: fit-content; margin-bottom: 6px; text-transform: uppercase;">
-                                SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
-                            </div>
                             <span style="background: rgba(0, 102, 255, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:var(--accent-glow); font-weight: bold; display: inline-block; margin-bottom: 4px;">Recarga por ID</span>
                             <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Free Fire</h3>
                         </div>
-                        <!-- Ilustración de Personaje Pro Gamer -->
-                        <svg class="game-card-character-art" viewBox="0 0 200 200" width="110" height="130">
-                            <path d="M100 20 C120 20 140 40 140 70 C140 90 120 110 100 130 C80 110 60 90 60 70 C60 40 80 20 100 20 Z" fill="#00f0ff" opacity="0.15"/>
-                            <circle cx="100" cy="65" r="28" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/>
-                            <path d="M75 60 L125 60 L120 85 L80 85 Z" fill="#0066ff"/>
-                            <polygon points="90,45 110,45 100,30" fill="#f59e0b"/>
-                            <path d="M60 110 Q100 90 140 110 L150 170 L50 170 Z" fill="#0d1322" stroke="#1a233a" stroke-width="2"/>
-                            <circle cx="100" cy="135" r="12" fill="#00f0ff"/>
+                        <!-- PERSONAJE PRO GAMER CON EFECTO NEÓN -->
+                        <svg class="game-card-character-art" viewBox="0 0 220 220" width="130" height="145">
+                            <defs>
+                                <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <circle cx="110" cy="110" r="90" fill="#00f0ff" opacity="0.06" filter="url(#neon-glow)"/>
+                            <!-- Gorra Estilizada con Letra F -->
+                            <path d="M70 70 Q110 30 150 70 L145 90 Q110 65 75 90 Z" fill="#1e293b" stroke="#00f0ff" stroke-width="2" filter="url(#neon-glow)"/>
+                            <rect x="95" y="42" width="30" height="26" rx="4" fill="#f59e0b" stroke="#fff" stroke-width="1.5"/>
+                            <text x="103" y="61" font-size="20" font-weight="900" fill="#07090e">F</text>
+                            <!-- Lentes de Sol Oscuros y Barba Blanca -->
+                            <path d="M72 88 L148 88 L142 115 Q110 125 78 115 Z" fill="#07090e" stroke="#00f0ff" stroke-width="2" filter="url(#neon-glow)"/>
+                            <path d="M75 118 Q110 160 145 118 Q125 185 110 185 Q95 185 75 118 Z" fill="#ffffff" stroke="#00f0ff" stroke-width="1.5"/>
+                            <!-- Chaqueta Pro con Cuello Alto -->
+                            <path d="M55 165 Q110 140 165 165 L180 220 L40 220 Z" fill="#0066ff" stroke="#00f0ff" stroke-width="2" filter="url(#neon-glow)"/>
+                            <path d="M85 165 L110 195 L135 165 L120 220 L100 220 Z" fill="#ffffff"/>
                         </svg>
                     </div>
                     <div class="game-card-footer">
@@ -546,10 +570,6 @@
             <div id="seccion-freefire" class="vista-sec" style="display: none;">
                 <button class="nav-top-icon-btn" onclick="irASelectorJuegos()" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Juegos</button>
                 
-                <div id="freefire-custom-badge-det" style="background: rgba(255, 59, 48, 0.15); border: 1px solid rgba(255,59,48,0.4); color: #ff3b30; padding: 6px 12px; border-radius: 8px; font-size: 0.72rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase; text-align: center;">
-                    SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
-                </div>
-
                 <div class="section-title">MÉTODO DE PAGO</div>
                 <div style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-card); border:1px solid var(--border-color); padding:0.6rem 1rem; border-radius:10px; color:var(--accent-glow); font-weight:bold; font-size:0.82rem; margin-bottom: 1rem;">
                     <span>USDT (BEP-20)</span>
@@ -623,7 +643,7 @@
                     </div>
 
                     <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.4rem;">Tu enlace de referidos</p>
-                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.68rem; background: #07090e; text-align: center; margin-bottom: 0.8rem; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">https://lestertienda.com/ref/usuario</div>
+                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.68rem; background: #07090e; text-align: center; margin-bottom: 0.8rem; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">https://lesterdominguesricardo-design.github.io/inverbot-nuevo/?ref=usuario</div>
                     
                     <div style="display: flex; gap: 8px;">
                         <button class="btn-main" style="margin-top: 0; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff;" onclick="copiarEnlaceRef()">Copiar Enlace</button>
@@ -962,16 +982,11 @@
 
         function aplicarConfiguracionVisual() {
             const badge1 = document.getElementById('freefire-custom-badge');
-            const badge2 = document.getElementById('freefire-custom-badge-det');
             let textoEtiqueta = tiendaConfig.etiquetaFreeFire || "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE";
             
             if(badge1) {
                 badge1.innerText = textoEtiqueta;
                 badge1.style.display = textoEtiqueta.trim() === "" ? "none" : "block";
-            }
-            if(badge2) {
-                badge2.innerText = textoEtiqueta;
-                badge2.style.display = textoEtiqueta.trim() === "" ? "none" : "block";
             }
         }
 
@@ -1146,7 +1161,6 @@
                 document.getElementById('seccion-freefire').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 actualizarPreciosDiamantesUI();
-                aplicarConfiguracionVisual();
             }, 300);
         }
 
@@ -1373,12 +1387,12 @@
         }
 
         function copiarEnlaceRef() {
-            navigator.clipboard.writeText("https://lestertienda.com/ref/" + usuarioActual.nombre);
-            mostrarNotificacion("Enlace de referido VIP copiado");
+            navigator.clipboard.writeText("https://lesterdominguesricardo-design.github.io/inverbot-nuevo/?ref=" + usuarioActual.nombre);
+            mostrarNotificacion("Enlace de referido GitHub copiado");
         }
 
         function compartirEnlaceRef() {
-            const enlace = "https://lestertienda.com/ref/" + usuarioActual.nombre;
+            const enlace = "https://lesterdominguesricardo-design.github.io/inverbot-nuevo/?ref=" + usuarioActual.nombre;
             if (navigator.share) {
                 navigator.share({
                     title: 'Lester Tienda - Free Fire',
@@ -1462,7 +1476,7 @@
             let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase() === usuarioActual.nombre.toLowerCase());
             let referidosCount = referidosLista.length;
             document.getElementById('stat-referidos').innerText = referidosCount;
-            document.getElementById('enlace-ref').innerText = "https://lestertienda.com/ref/" + usuarioActual.nombre;
+            document.getElementById('enlace-ref').innerText = "https://lesterdominguesricardo-design.github.io/inverbot-nuevo/?ref=" + usuarioActual.nombre;
             
             let porcentajeMeta = Math.min(100, (referidosCount / 10) * 100);
             document.getElementById('contador-meta-referidos').innerText = `${referidosCount} / 10 referidos para el próximo premio`;
