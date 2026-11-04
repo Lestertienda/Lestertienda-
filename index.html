@@ -66,12 +66,12 @@
             transform: translateX(-50%) translateY(-200px);
             background: linear-gradient(135deg, #0d1322 0%, #030712 100%);
             color: var(--accent-glow);
-            border: 1px solid var(--accent-glow);
+            border: 1px solid var(--border-color);
             padding: 0.9rem 1.5rem;
             border-radius: 14px;
             font-weight: 700;
             font-size: 0.85rem;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 9999;
             width: 90%;
@@ -83,14 +83,13 @@
         }
 
         @keyframes shakeError {
-            0%, 100% { transform: translateX(0); border-color: #ff3b30; box-shadow: 0 0 15px rgba(255,59,48,0.5); }
+            0%, 100% { transform: translateX(0); border-color: #ff3b30; box-shadow: 0 0 10px rgba(255,59,48,0.3); }
             20%, 60% { transform: translateX(-6px); }
             40%, 80% { transform: translateX(6px); }
         }
         .input-error-shake {
             animation: shakeError 0.4s ease;
             border-color: #ff3b30 !important;
-            box-shadow: 0 0 15px rgba(255,59,48,0.5) !important;
         }
 
         .custom-modal-overlay {
@@ -106,12 +105,12 @@
         }
         .custom-modal {
             background: var(--bg-card);
-            border: 1px solid var(--accent-glow);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 1.5rem;
             width: 85%;
             max-width: 350px;
-            box-shadow: 0 0 35px rgba(0, 240, 255, 0.35);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
             text-align: center;
             transform: scale(0.9);
             animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -132,7 +131,7 @@
         }
         .modal-btn:hover { transform: translateY(-2px); }
         .modal-btn:active { transform: scale(0.96); }
-        .modal-btn-confirm { background: var(--primary-blue); color: #fff; box-shadow: 0 0 12px rgba(0,102,255,0.5); }
+        .modal-btn-confirm { background: var(--primary-blue); color: #fff; }
         .modal-btn-cancel { background: #1a233a; color: var(--text-muted); }
 
         .auth-container {
@@ -149,11 +148,11 @@
             font-size: 0.85rem; cursor: pointer; border-radius: 8px; color: var(--text-muted); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .auth-tab.active {
-            background: var(--primary-blue); color: #fff; box-shadow: 0 0 15px rgba(0, 102, 255, 0.6);
+            background: var(--primary-blue); color: #fff;
         }
         .brand-logo-text {
             font-size: 1.6rem; font-weight: 900; color: #fff; text-align: center;
-            margin-bottom: 1.5rem; text-shadow: 0 0 12px rgba(0, 240, 255, 0.5); letter-spacing: 1px;
+            margin-bottom: 1.5rem; letter-spacing: 1px;
         }
         .form-group { margin-bottom: 1.1rem; position: relative; }
         .form-group label { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.4rem; font-weight: 600; }
@@ -165,7 +164,7 @@
             font-size: 0.9rem; outline: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .form-control.no-left-icon { padding-left: 1rem; }
-        .form-control:focus { border-color: var(--accent-glow); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
+        .form-control:focus { border-color: var(--accent-glow); }
 
         .toggle-password {
             position: absolute; right: 12px; background: none; border: none; cursor: pointer;
@@ -175,18 +174,16 @@
         .toggle-password:hover svg { fill: var(--accent-glow); }
 
         .btn-main {
-            width: 100%; background: linear-gradient(135deg, #0066ff 0%, #00f0ff 100%);
+            width: 100%; background: var(--primary-blue);
             color: #fff; border: none; padding: 0.85rem; border-radius: 10px; font-weight: 900;
-            font-size: 0.95rem; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            margin-top: 1rem; box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+            font-size: 0.95rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 1rem;
         }
         .btn-main:hover {
-            transform: translateY(-3px) scale(1.01);
-            box-shadow: 0 8px 25px rgba(0, 240, 255, 0.6);
+            filter: brightness(1.1);
+            transform: translateY(-2px);
         }
-        .btn-main:active {
-            transform: translateY(1px) scale(0.98);
-        }
+        .btn-main:active { transform: translateY(1px); }
 
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
@@ -195,63 +192,60 @@
         }
         .nav-brand-area { display: flex; align-items: center; gap: 8px; }
         .nav-brand-logo {
-            background: linear-gradient(135deg, #0052cc, #00f0ff); color: #fff; font-weight: 900;
-            font-size: 0.9rem; padding: 4px 8px; border-radius: 6px; box-shadow: 0 0 10px rgba(0,240,255,0.4);
+            background: var(--primary-blue); color: #fff; font-weight: 900;
+            font-size: 0.9rem; padding: 4px 8px; border-radius: 6px;
         }
         .nav-brand-title { font-size: 0.95rem; font-weight: 900; letter-spacing: 0.5px; }
         .brand-white { color: #ffffff; }
-        .brand-blue { color: var(--accent-glow); text-shadow: 0 0 10px rgba(0,240,255,0.4); }
+        .brand-blue { color: var(--accent-glow); }
         
         .nav-top-icons { display: flex; gap: 8px; align-items: center; }
         
         .header-wallet-pill {
             background: #07090e;
-            border: 1px solid var(--accent-glow);
+            border: 1px solid var(--border-color);
             padding: 4px 10px;
             border-radius: 20px;
             display: flex;
             align-items: center;
             gap: 6px;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0,240,255,0.25);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s;
         }
-        .header-wallet-pill:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(0,240,255,0.5); }
+        .header-wallet-pill:hover { border-color: var(--accent-glow); }
         .header-wallet-pill svg { width: 14px; height: 14px; fill: var(--accent-glow); }
         .header-wallet-pill span { font-size: 0.75rem; font-weight: 900; color: var(--accent-glow); }
 
         .nav-top-icon-btn {
             background: #07090e; border: 1px solid var(--border-color); width: 34px; height: 34px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s;
         }
-        .nav-top-icon-btn:hover { border-color: var(--accent-glow); transform: scale(1.1); }
-        .nav-top-icon-btn:active { transform: scale(0.95); }
+        .nav-top-icon-btn:hover { border-color: var(--accent-glow); }
         .nav-top-icon-btn svg { width: 16px; height: 16px; fill: var(--accent-glow); }
 
         .container { max-width: 500px; margin: 0 auto; padding: 1rem; }
         .vista-sec { animation: fadeInPage 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
         .invite-banner {
-            background: linear-gradient(135deg, #0033cc 0%, #07090e 100%);
-            border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 1.2rem;
+            background: linear-gradient(135deg, #0d1322 0%, #07090e 100%);
+            border: 1px solid var(--border-color); border-radius: 16px; padding: 1.2rem;
             color: #fff; margin-bottom: 1rem; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: 0 0 20px rgba(0, 102, 255, 0.2); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            align-items: center; transition: all 0.3s;
         }
-        .invite-banner:hover { transform: translateY(-3px); box-shadow: 0 6px 25px rgba(0, 240, 255, 0.3); }
+        .invite-banner:hover { border-color: var(--accent-glow); }
         .invite-banner h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 0.2rem; }
-        .invite-banner p { font-size: 0.75rem; opacity: 0.85; margin-bottom: 0.8rem; max-width: 190px; }
-        .btn-invite { background: #fff; color: #002266; border: none; padding: 0.4rem 1rem; border-radius: 15px; font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        .btn-invite:hover { transform: scale(1.05); }
-        .btn-invite:active { transform: scale(0.95); }
-        .invite-graphic-box { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); padding: 12px 15px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .invite-banner p { font-size: 0.75rem; opacity: 0.85; margin-bottom: 0.8rem; max-width: 190px; color: var(--text-muted); }
+        .btn-invite { background: var(--primary-blue); color: #fff; border: none; padding: 0.4rem 1rem; border-radius: 15px; font-weight: bold; font-size: 0.8rem; cursor: pointer; transition: all 0.3s; }
+        .btn-invite:hover { filter: brightness(1.1); }
+        .invite-graphic-box { background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); padding: 12px 15px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
 
         .search-bar-box {
             display: flex; align-items: center; background: var(--bg-card);
             border: 1px solid var(--border-color); padding: 0.6rem 1rem; border-radius: 12px; margin-bottom: 1rem;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s;
         }
-        .search-bar-box:focus-within { border-color: var(--accent-glow); box-shadow: 0 0 15px rgba(0,240,255,0.2); }
+        .search-bar-box:focus-within { border-color: var(--accent-glow); }
         .search-bar-box svg { width: 18px; height: 18px; fill: var(--text-muted); margin-right: 10px; }
         .search-bar-box input { border: none; outline: none; background: transparent; font-size: 0.9rem; width: 100%; color: var(--text-main); }
 
@@ -259,21 +253,19 @@
         .category-pill-card {
             background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.8rem;
             border-radius: 12px; display: flex; align-items: center; gap: 8px; font-weight: bold;
-            font-size: 0.85rem; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 0.85rem; cursor: pointer; transition: all 0.3s;
         }
-        .category-pill-card:hover { transform: translateY(-3px); border-color: var(--accent-glow); }
-        .category-pill-card:active { transform: scale(0.97); }
+        .category-pill-card:hover { border-color: var(--accent-glow); }
         .category-pill-card.active {
             border-color: var(--accent-glow); color: var(--accent-glow);
-            background: rgba(0, 240, 255, 0.05); box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            background: rgba(0, 240, 255, 0.03);
         }
 
         .game-card-pro {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
-            overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s;
         }
-        .game-card-pro:hover { transform: translateY(-4px); border-color: var(--accent-glow); box-shadow: 0 0 25px rgba(0, 240, 255, 0.2); }
-        .game-card-pro:active { transform: scale(0.98); }
+        .game-card-pro:hover { border-color: var(--accent-glow); }
         .game-card-banner {
             background: linear-gradient(135deg, #07090e 0%, #0d1322 100%);
             height: 130px; display: flex; flex-direction: column; justify-content: flex-end; padding: 1rem;
@@ -282,30 +274,69 @@
 
         .section-title { font-size: 0.8rem; color: var(--text-muted); margin: 1rem 0 0.5rem 0; font-weight: 700; letter-spacing: 0.5px; }
 
-        .stats-top-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
-        .stat-box-pro {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
-            padding: 1rem; display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        /* ESTILO IDÉNTICO AL DE TU CAPTURA PARA EL HISTORIAL */
+        .live-history-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1.2rem;
         }
-        .stat-box-info h4 { font-size: 1.4rem; font-weight: 900; color: var(--accent-glow); text-shadow: 0 0 10px rgba(0,240,255,0.4); }
-        .stat-box-info span { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .live-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+        .live-history-title-box h3 {
+            font-size: 1rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+        .live-status-sub {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .live-dot {
+            width: 7px; height: 7px; background: #10b981; border-radius: 50%;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+        }
+        .live-counter-pill {
+            background: #07090e;
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 12px;
+            text-align: right;
+        }
+        .live-counter-pill span { display: block; font-size: 0.6rem; color: var(--text-muted); font-weight: bold; }
+        .live-counter-pill h4 { font-size: 1.1rem; font-weight: 900; color: #10b981; }
 
-        .top-users-list { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; margin-bottom: 1rem; }
-        .top-user-row {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0.6rem 0; border-bottom: 1px solid var(--border-color);
+        .history-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(26, 35, 58, 0.5);
+            font-size: 0.8rem;
         }
-        .top-user-row:last-child { border-bottom: none; }
-        .top-user-left { display: flex; align-items: center; gap: 10px; }
-        .top-avatar {
-            width: 32px; height: 32px; border-radius: 50%; background: #07090e; border: 1px solid var(--accent-glow);
-            display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.8rem; color: var(--accent-glow);
-            overflow: hidden;
+        .history-item-row:last-child { border-bottom: none; }
+        .history-time { color: var(--text-muted); font-size: 0.72rem; width: 65px; }
+        .history-user-info { display: flex; align-items: center; gap: 8px; flex: 1; padding: 0 8px; }
+        .history-avatar {
+            width: 30px; height: 30px; border-radius: 50%; background: #07090e;
+            border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.75rem; color: var(--accent-glow); overflow: hidden;
         }
-        .top-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .top-user-name { font-size: 0.85rem; font-weight: 800; color: #fff; }
-        .top-user-score { font-size: 0.75rem; font-weight: 900; color: var(--accent-glow); background: rgba(0,240,255,0.1); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(0,240,255,0.3); }
+        .history-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .history-user-details h5 { font-size: 0.8rem; font-weight: 800; color: #fff; }
+        .history-user-details p { font-size: 0.68rem; color: var(--text-muted); }
+        .history-price { font-weight: 900; color: #10b981; font-size: 0.8rem; text-align: right; }
 
         .wallet-selector-card {
             background: var(--bg-card);
@@ -316,118 +347,63 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 1rem;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s;
         }
-        .wallet-selector-card:hover {
-            border-color: var(--accent-glow);
-            box-shadow: 0 0 20px rgba(0,240,255,0.2);
-        }
-        .wallet-info-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .wallet-selector-card:hover { border-color: var(--accent-glow); }
+        .wallet-info-left { display: flex; align-items: center; gap: 12px; }
         .usdt-real-icon {
-            width: 40px;
-            height: 40px;
-            background: #26a17b;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #fff;
-            font-size: 1.1rem;
-            box-shadow: 0 0 12px rgba(38,161,123,0.5);
+            width: 40px; height: 40px; background: #26a17b; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff; font-size: 1.1rem;
         }
         .wallet-details h4 { font-size: 0.9rem; font-weight: 900; color: #fff; }
         .wallet-details span { font-size: 0.75rem; color: var(--text-muted); }
 
         .btn-seleccionar-wallet {
-            background: linear-gradient(135deg, #0066ff, #00f0ff);
-            color: #fff;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
-            font-weight: 900;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 0 10px rgba(0,102,255,0.4);
-        }
-        .btn-seleccionar-wallet:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0,240,255,0.8);
+            background: var(--primary-blue); color: #fff; border: none;
+            padding: 0.5rem 1rem; border-radius: 10px; font-weight: 900; font-size: 0.8rem; cursor: pointer;
         }
 
         #wallet-details-panel {
-            background: #07090e;
-            border: 1px solid var(--accent-glow);
-            border-radius: 14px;
-            padding: 1.2rem;
-            margin-bottom: 1.2rem;
-            display: none;
-            box-shadow: 0 0 25px rgba(0,240,255,0.25);
-            animation: fadeInPage 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            background: #07090e; border: 1px solid var(--border-color); border-radius: 14px;
+            padding: 1.2rem; margin-bottom: 1.2rem; display: none;
         }
 
         .diamonds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.2rem; }
         .diamond-card {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
-            padding: 1rem 0.8rem; text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 1rem 0.8rem; text-align: center; cursor: pointer; transition: all 0.3s;
             display: flex; flex-direction: column; justify-content: space-between; align-items: center;
         }
-        .diamond-card:hover { transform: translateY(-4px); border-color: var(--accent-glow); box-shadow: 0 0 15px rgba(0,240,255,0.15); }
-        .diamond-card:active { transform: scale(0.96); }
+        .diamond-card:hover { border-color: var(--accent-glow); }
         .diamond-card.selected {
-            border-color: var(--accent-glow); box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-            background: rgba(0, 102, 255, 0.08); transform: scale(1.02);
+            border-color: var(--accent-glow); background: rgba(0, 102, 255, 0.05);
         }
         .diamond-img-render {
-            width: 55px; height: 50px; margin-bottom: 0.3rem; display: flex; align-items: center;
-            justify-content: center; filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.7)); transition: transform 0.3s;
+            width: 55px; height: 50px; margin-bottom: 0.3rem; display: flex; align-items: center; justify-content: center;
         }
-        .diamond-card:hover .diamond-img-render { transform: scale(1.12); }
         .diamond-card h4 { font-size: 0.85rem; font-weight: 800; margin-bottom: 0.2rem; color: #fff; }
-        .diamond-price { color: var(--accent-glow); font-weight: 900; font-size: 0.9rem; text-shadow: 0 0 8px rgba(0, 240, 255, 0.4); }
+        .diamond-price { color: var(--accent-glow); font-weight: 900; font-size: 0.9rem; }
 
         .profile-header-card { 
-            background: var(--bg-card); 
-            border: 1px solid var(--border-color); 
-            border-radius: 16px; 
-            padding: 1.2rem; 
-            text-align: center; 
-            margin-bottom: 1rem;
-            position: relative; 
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; 
+            padding: 1.2rem; text-align: center; margin-bottom: 1rem; position: relative; 
         }
         .profile-wallet-pill-corner {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: #07090e;
-            border: 1px solid var(--accent-glow);
-            padding: 4px 10px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 0 10px rgba(0,240,255,0.2);
+            position: absolute; top: 12px; right: 12px; background: #07090e; border: 1px solid var(--border-color);
+            padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 5px;
         }
         .profile-wallet-pill-corner svg { width: 14px; height: 14px; fill: var(--accent-glow); }
         .profile-wallet-pill-corner span { font-size: 0.75rem; font-weight: 900; color: var(--accent-glow); }
 
-        .profile-avatar-wrapper {
-            position: relative; width: 75px; height: 75px; margin: 0 auto 0.6rem auto;
-        }
+        .profile-avatar-wrapper { position: relative; width: 75px; height: 75px; margin: 0 auto 0.6rem auto; }
         .profile-avatar-circle {
             width: 75px; height: 75px; background: #07090e; border: 2px solid var(--accent-glow); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-            font-weight: bold; color: var(--accent-glow); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--accent-glow);
             overflow: hidden; cursor: pointer;
         }
         .profile-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-edit-badge {
-            position: absolute; bottom: 0; right: 0; background: var(--primary-blue); border: 1px solid var(--accent-glow);
+            position: absolute; bottom: 0; right: 0; background: var(--primary-blue); border: 1px solid var(--border-color);
             width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
         }
         .avatar-edit-badge svg { width: 12px; height: 12px; fill: #fff; }
@@ -438,118 +414,71 @@
 
         .order-card-pro {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
-            padding: 0.9rem 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between;
-            align-items: center; animation: fadeInPage 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 0.9rem 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center;
         }
-        .order-card-pro:hover { transform: translateX(4px); border-color: var(--accent-glow); }
         .order-info h4 { font-size: 0.85rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
         .order-info p { font-size: 0.75rem; color: var(--text-muted); }
         
-        .badge-status { padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; }
-        .status-pendiente { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
-        .status-completado { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .status-cancelado { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .badge-status { padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; }
+        .status-pendiente { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .status-completado { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-cancelado { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-        .security-menu-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 8px; animation: fadeInPage 0.4s ease; }
+        .security-menu-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 8px; }
         .security-btn {
             width: 100%; background: #07090e; border: 1px solid var(--border-color); color: var(--text-main);
             padding: 0.75rem 1rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; display: flex;
-            align-items: center; gap: 12px; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-align: left;
+            align-items: center; gap: 12px; cursor: pointer; text-align: left; transition: all 0.3s;
         }
-        .security-btn:hover { border-color: var(--accent-glow); background: rgba(0, 240, 255, 0.05); transform: translateX(4px); }
-        .security-btn:active { transform: scale(0.98); }
+        .security-btn:hover { border-color: var(--accent-glow); }
         .security-btn svg { width: 18px; height: 18px; fill: var(--accent-glow); flex-shrink: 0; }
 
         .ceo-box {
             background: linear-gradient(135deg, #130a0a 0%, #07090e 100%);
-            border: 1px solid #ff3b30; border-radius: 16px; padding: 1.2rem; margin-top: 1.2rem;
-            box-shadow: 0 0 25px rgba(255, 59, 48, 0.25); animation: fadeInPage 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 59, 48, 0.4); border-radius: 16px; padding: 1.2rem; margin-top: 1.2rem;
         }
         .ceo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.8rem; }
         .ceo-btn {
             background: #07090e; border: 1px solid #ff3b30; color: #ff3b30; padding: 0.7rem;
-            border-radius: 10px; font-weight: 900; font-size: 0.8rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-align: center;
+            border-radius: 10px; font-weight: 900; font-size: 0.8rem; cursor: pointer; text-align: center; transition: all 0.3s;
         }
-        .ceo-btn:hover { background: #ff3b30; color: #fff; transform: translateY(-2px); box-shadow: 0 0 15px rgba(255, 59, 48, 0.5); }
-        .ceo-btn:active { transform: scale(0.96); }
+        .ceo-btn:hover { background: #ff3b30; color: #fff; }
 
         .floating-bot {
             position: fixed; bottom: 80px; right: 15px; width: 50px; height: 50px;
-            background: linear-gradient(135deg, #0066ff, #00f0ff); border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
-            cursor: pointer; z-index: 9998; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--primary-blue); border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+            cursor: pointer; z-index: 9998;
         }
-        .floating-bot:hover { transform: scale(1.12) rotate(6deg); box-shadow: 0 0 30px rgba(0,240,255,0.9); }
-        .floating-bot:active { transform: scale(0.92); }
         .floating-bot svg { width: 26px; height: 26px; fill: #fff; }
 
         .footer-legal-container {
-            margin-top: 2.5rem;
-            padding: 1.5rem 1rem;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border-color);
-            border-radius: 16px 16px 0 0;
-            text-align: center;
+            margin-top: 2.5rem; padding: 1.5rem 1rem; background: var(--bg-card);
+            border-top: 1px solid var(--border-color); border-radius: 16px 16px 0 0; text-align: center;
         }
-        .footer-legal-container h4 {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            margin-bottom: 0.8rem;
-            text-transform: uppercase;
-        }
-        .footer-links-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 6px 12px;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-        .footer-links-grid span {
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .footer-links-grid span:hover {
-            color: var(--accent-glow);
-        }
-        .footer-copy {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            padding-top: 0.8rem;
-        }
+        .footer-legal-container h4 { font-size: 0.8rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 0.8rem; text-transform: uppercase; }
+        .footer-links-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 12px; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .footer-links-grid span { cursor: pointer; transition: color 0.2s; }
+        .footer-links-grid span:hover { color: var(--accent-glow); }
+        .footer-copy { font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 0.8rem; }
 
-        /* Menú Inferior Fijo 100% visible */
         .bottom-nav {
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            background: var(--bg-card);
-            border-top: 1px solid var(--border-color); 
-            display: flex; 
-            justify-content: space-around;
-            padding: 0.6rem 0; 
-            z-index: 99999;
-            box-shadow: 0 -5px 25px rgba(0,0,0,0.85);
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card);
+            border-top: 1px solid var(--border-color); display: flex; justify-content: space-around;
+            padding: 0.6rem 0; z-index: 99999; box-shadow: 0 -5px 20px rgba(0,0,0,0.8);
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; text-decoration: none;
-            color: var(--text-muted); font-size: 0.65rem; font-weight: 600; cursor: pointer; gap: 2px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--text-muted); font-size: 0.65rem; font-weight: 600; cursor: pointer; gap: 2px; transition: all 0.3s;
         }
         .nav-item svg { width: 20px; height: 20px; fill: var(--text-muted); transition: fill 0.3s; }
-        .nav-item.active, .nav-item:hover { color: var(--accent-glow); transform: translateY(-2px); }
+        .nav-item.active, .nav-item:hover { color: var(--accent-glow); }
         .nav-item.active svg, .nav-item:hover svg { fill: var(--accent-glow); }
     </style>
 </head>
 <body>
 
-    <div id="loading-overlay">
-        <div class="spinner"></div>
-    </div>
-
+    <div id="loading-overlay"><div class="spinner"></div></div>
     <div id="notification-toast">ACCIÓN COMPLETADA</div>
 
     <div id="custom-modal" class="custom-modal-overlay">
@@ -562,6 +491,8 @@
             </div>
         </div>
     </div>
+
+    <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
 
     <div class="floating-bot" onclick="contactarSoporte()">
         <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.95 14.53L2 22l5.62-1.48A10 10 0 1 0 12 2m0 18a8 8 0 0 1-4.08-1.12l-.29-.17-3 .79.8-2.92-.19-.3A8 8 0 1 1 12 20m4.33-5.35c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06s-1.02-.38-1.94-1.2c-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.01-.37.1-.49.1-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42s-.54-1.3-.74-1.78c-.2-.48-.4-.42-.54-.42h-.46c-.16 0-.42.06-.64.3s-.84.82-.84 2 .88 2.32 1 2.48c.12.16 1.74 2.66 4.22 3.73.59.25 1.05.4 1.41.51.59.19 1.13.16 1.56.1.48-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z"/></svg>
@@ -609,8 +540,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label>Código de referido (Opcional)</label>
-                <input type="text" id="reg-referido" class="form-control no-left-icon" placeholder="Nombre de quien te invitó">
+                <label>¿Quién te invitó? (Usuario que te invitó)</label>
+                <input type="text" id="reg-referido" class="form-control no-left-icon" placeholder="Nombre de usuario del patrocinador">
             </div>
             <button class="btn-main" onclick="registrarUsuario()">REGISTRARSE</button>
         </div>
@@ -660,44 +591,25 @@
             
             <div id="seccion-inicio" class="vista-sec">
                 
-                <!-- HISTORIAL DE RECARGAS Y CONTADOR -->
-                <div class="section-title">ACTIVIDAD DE HOY</div>
-                <div class="stats-top-grid">
-                    <div class="stat-box-pro">
-                        <div class="stat-box-info">
-                            <h4 id="contador-recargas-hoy">0</h4>
-                            <span>Recargas realizadas hoy</span>
-                        </div>
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="#00f0ff"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                <div class="game-card-pro" onclick="abrirFreeFire()" style="position: relative;">
+                    <div style="position: absolute; top: 12px; right: 12px; background: rgba(255, 59, 48, 0.15); border: 1px solid rgba(255,59,48,0.4); color: #ff3b30; padding: 3px 8px; border-radius: 6px; font-size: 0.6rem; font-weight: 900; z-index: 2; text-transform: uppercase;">
+                        SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
                     </div>
-                </div>
-
-                <div class="section-title">TOP 10 USUARIOS MÁS ACTIVOS</div>
-                <div class="top-users-list" id="top-usuarios-container">
-                    <!-- Se llena dinámicamente -->
-                </div>
-
-                <div class="search-bar-box" style="margin-top: 1rem;">
-                    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    <input type="text" placeholder="Buscar juego...">
-                </div>
-
-                <div class="categories-grid">
-                    <div class="category-pill-card active">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#00f0ff"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                        <span>Juegos</span>
+                    <div class="game-card-banner">
+                        <span style="background: rgba(0, 102, 255, 0.2); padding: 3px 8px; border-radius: 6px; width: fit-content; font-size: 0.7rem; margin-bottom: 5px; color:var(--accent-glow); font-weight: bold;">Recarga por ID</span>
+                        <h3 style="font-size: 1.2rem;">Free Fire</h3>
                     </div>
-                    <div class="category-pill-card" onclick="mostrarNotificacion('Gift Cards próximamente')">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#8a99ad"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.5 15.38 12 17 10.83 14.92 8H20v6z"/></svg>
-                        <span>Gift Cards</span>
+                    <div class="game-card-footer">
+                        <span>Recarga Inmediata</span>
+                        <span style="color: var(--accent-glow);">&gt;</span>
                     </div>
                 </div>
 
                 <div class="invite-banner">
                     <div>
                         <h3>Invita y gana</h3>
-                        <p>Gana el 5% de descuento en la primera compra de tu referido</p>
-                        <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Invitar &gt;</button>
+                        <p>Si tu invitado deposita, obtienes un 5% de descuento en tu próxima recarga</p>
+                        <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Ver Referidos &gt;</button>
                     </div>
                     <div class="invite-graphic-box">
                         <svg width="30" height="25" viewBox="0 0 24 24" fill="#00f0ff"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.5 15.38 12 17 10.83 14.92 8H20v6z"/></svg>
@@ -705,17 +617,23 @@
                     </div>
                 </div>
 
-                <div class="game-card-pro" onclick="abrirFreeFire()" style="position: relative;">
-                    <div style="position: absolute; top: 12px; right: 12px; background: rgba(255, 59, 48, 0.2); border: 1px solid #ff3b30; color: #ff3b30; padding: 3px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 900; z-index: 2; text-transform: uppercase; box-shadow: 0 0 10px rgba(255,59,48,0.4);">
-                        SOLO DISPONIBLE PARA EEUU Y NORTE
+                <!-- HISTORIAL EN TIEMPO REAL IDÉNTICO A TU CAPTURA -->
+                <div class="live-history-card">
+                    <div class="live-history-header">
+                        <div class="live-history-title-box">
+                            <h3>Historial de compras en tiempo real</h3>
+                            <div class="live-status-sub">
+                                <div class="live-dot"></div>
+                                <span>En vivo · últimos 10 de hoy</span>
+                            </div>
+                        </div>
+                        <div class="live-counter-pill">
+                            <span>COMPRAS HECHAS HOY</span>
+                            <h4 id="contador-recargas-hoy">0</h4>
+                        </div>
                     </div>
-                    <div class="game-card-banner">
-                        <span style="background: rgba(0, 102, 255, 0.3); padding: 3px 8px; border-radius: 6px; width: fit-content; font-size: 0.7rem; margin-bottom: 5px; color:#00f0ff; font-weight: bold;">Recarga por ID</span>
-                        <h3 style="font-size: 1.2rem;">Free Fire</h3>
-                    </div>
-                    <div class="game-card-footer">
-                        <span>Recarga Inmediata</span>
-                        <span style="color: var(--accent-glow);">&gt;</span>
+                    <div id="lista-historial-vivo">
+                        <!-- Se llena dinámicamente -->
                     </div>
                 </div>
             </div>
@@ -724,7 +642,7 @@
                 <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver</button>
                 
                 <div class="section-title">MÉTODO DE PAGO</div>
-                <div class="payment-pill" style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-card); border:1px solid var(--accent-glow); padding:0.6rem 1rem; border-radius:10px; color:var(--accent-glow); font-weight:bold;">
+                <div class="payment-pill" style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-card); border:1px solid var(--border-color); padding:0.6rem 1rem; border-radius:10px; color:var(--accent-glow); font-weight:bold;">
                     <span>USDT (BEP-20)</span>
                 </div>
 
@@ -736,24 +654,24 @@
                 <div class="section-title">SELECCIONA EL PAQUETE</div>
                 <div class="diamonds-grid">
                     <div class="diamond-card" onclick="seleccionarOferta(110, 1.2)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="45" height="45"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="40" height="40"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
                         <h4>110 Diamantes</h4>
-                        <span class="diamond-price" id="precio-110">1.2 USDT</span>
+                        <span class="diamond-price" id="precio-110">1.20 USDT</span>
                     </div>
                     <div class="diamond-card" onclick="seleccionarOferta(361, 3.5)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="45" height="45"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/><circle cx="32" cy="28" r="5" fill="#fff" opacity="0.7"/></svg></div>
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="40" height="40"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
                         <h4>361 Diamantes</h4>
-                        <span class="diamond-price" id="precio-361">3.5 USDT</span>
+                        <span class="diamond-price" id="precio-361">3.50 USDT</span>
                     </div>
                     <div class="diamond-card" onclick="seleccionarOferta(572, 5.0)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="45" height="45"><polygon points="32,2 60,18 48,56 16,56 4,18" fill="#00a8ff"/><polygon points="32,8 52,22 42,50 22,50 12,22" fill="#00f0ff"/><polygon points="32,8 45,22 32,46 19,22" fill="#ffffff" opacity="0.9"/></svg></div>
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="40" height="40"><polygon points="32,2 60,18 48,56 16,56 4,18" fill="#00a8ff"/><polygon points="32,8 52,22 42,50 22,50 12,22" fill="#00f0ff"/><polygon points="32,8 45,22 32,46 19,22" fill="#ffffff" opacity="0.9"/></svg></div>
                         <h4>572 Diamantes</h4>
-                        <span class="diamond-price" id="precio-572">5.0 USDT</span>
+                        <span class="diamond-price" id="precio-572">5.00 USDT</span>
                     </div>
                     <div class="diamond-card" onclick="seleccionarOferta(1166, 8.5)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="50" height="50"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#f59e0b" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#f59e0b"/><polygon points="22,18 28,12 32,20 18,20" fill="#00f0ff"/><polygon points="32,16 38,10 44,18 30,18" fill="#00f0ff"/><polygon points="40,22 45,16 48,24 38,24" fill="#00f0ff"/></svg></div>
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="40" height="40"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#f59e0b" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#f59e0b"/></svg></div>
                         <h4>1166 Diamantes</h4>
-                        <span class="diamond-price" id="precio-1166">8.5 USDT</span>
+                        <span class="diamond-price" id="precio-1166">8.50 USDT</span>
                     </div>
                 </div>
 
@@ -765,14 +683,17 @@
                 <div id="lista-ordenes-container"></div>
             </div>
 
-            <!-- SECCIÓN REFERIDOS -->
             <div id="seccion-referidos" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">PROGRAMA DE REFERIDOS</h2>
                 <div class="profile-header-card">
-                    <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.5rem;">Tu Código o Enlace de Invitación</p>
-                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.75rem; background: #07090e; text-align: center; margin-bottom: 1rem;">https://lestertienda.com/ref/usuario99</div>
+                    <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.5rem;">Tu Enlace de Invitación</p>
+                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.72rem; background: #07090e; text-align: center; margin-bottom: 1rem;">https://lestertienda.com/ref/usuario</div>
                     <button class="btn-main" onclick="copiarEnlaceRef()">Copiar Enlace</button>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 1rem;">Tus amigos obtendrán un 5% de descuento automático en su primera compra al registrarse con tu invitación.</p>
+                    <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted); text-align: left; background: #07090e; padding: 10px; border-radius: 8px;">
+                        <p style="color: var(--accent-glow); font-weight: bold; margin-bottom: 4px;">¿Cómo funciona?</p>
+                        <p>Cuando alguien se registra con tu nombre de usuario y completa un depósito, tú (el patrocinador) obtienes automáticamente un <strong>5% de descuento</strong> aplicable en tu próxima recarga.</p>
+                        <p style="margin-top: 6px;">Descuentos acumulados disponibles: <span id="descuentos-activos-count" style="color: #10b981; font-weight: bold;">0</span></p>
+                    </div>
                 </div>
             </div>
 
@@ -792,7 +713,7 @@
                 </div>
 
                 <div id="wallet-details-panel">
-                    <p style="color: #ff3b30; font-size: 0.75rem; margin-bottom: 0.8rem; font-weight: bold;">El depósito tarda 24 horas. Si en ese tiempo no se confirma, contacta con soporte.</p>
+                    <p style="color: #ff3b30; font-size: 0.75rem; margin-bottom: 0.8rem; font-weight: bold;">El depósito tarda 24 horas máximo en validarse.</p>
                     
                     <div class="form-group">
                         <label>Wallet Oficial de Depósito</label>
@@ -816,10 +737,9 @@
                         <span id="profile-wallet-balance">0.00 USDT</span>
                     </div>
 
-                    <!-- FOTO DE PERFIL -->
                     <div class="profile-avatar-wrapper">
-                        <div class="profile-avatar-circle" id="perfil-inicial" onclick="cambiarFotoPerfil()">L</div>
-                        <div class="avatar-edit-badge" onclick="cambiarFotoPerfil()">
+                        <div class="profile-avatar-circle" id="perfil-inicial" onclick="abrirSelectorGaleria()">L</div>
+                        <div class="avatar-edit-badge" onclick="abrirSelectorGaleria()">
                             <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                         </div>
                     </div>
@@ -835,7 +755,7 @@
                     </div>
                 </div>
 
-                <button class="btn-main" style="background: var(--bg-card); border: 1px solid var(--accent-glow); color: var(--accent-glow); margin-bottom: 1rem;" onclick="toggleSeguridadPanel()">
+                <button class="btn-main" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--accent-glow); margin-bottom: 1rem;" onclick="toggleSeguridadPanel()">
                     SEGURIDAD Y CONFIGURACIÓN
                 </button>
 
@@ -892,7 +812,7 @@
 
         </div>
 
-        <!-- BARRA DE NAVEGACIÓN INFERIOR FIJA CON BOTÓN DE REFERIDOS -->
+        <!-- BARRA DE NAVEGACIÓN INFERIOR FIJA -->
         <nav class="bottom-nav">
             <a class="nav-item active" id="nav-btn-inicio" onclick="cambiarSeccion('inicio', this)">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -963,7 +883,7 @@
                 }
                 actualizarEstadisticasInicio();
             } catch (error) {
-                console.error('Error al sincronizar con JSONBin:', error);
+                console.error('Error de red al sincronizar con JSONBin:', error);
             }
         }
 
@@ -1067,7 +987,7 @@
                     recargasCount: 0, 
                     avatar: "",
                     referidoPor: referidoPor || null,
-                    descuentoPendiente: referidoPor ? true : false 
+                    descuentosDisponibles: 0 
                 };
                 
                 let existe = listaUsuariosGlobales.find(u => u.correo === email);
@@ -1152,15 +1072,15 @@
                 document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
                 document.getElementById('seccion-freefire').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                aplicarDescuentoReferidoUI();
+                actualizarPreciosDiamantesUI();
             }, 300);
         }
 
-        function aplicarDescuentoReferidoUI() {
+        function actualizarPreciosDiamantesUI() {
             let p110 = 1.2, p361 = 3.5, p572 = 5.0, p1166 = 8.5;
-            if (usuarioActual && usuarioActual.descuentoPendiente) {
+            if (usuarioActual && usuarioActual.descuentosDisponibles > 0) {
                 p110 *= 0.95; p361 *= 0.95; p572 *= 0.95; p1166 *= 0.95;
-                mostrarNotificacion("¡Descuento del 5% por referido aplicado a tu primera compra!");
+                mostrarNotificacion("¡Tienes un 5% de descuento activo por invitado que depositó!");
             }
             document.getElementById('precio-110').innerText = p110.toFixed(2) + " USDT";
             document.getElementById('precio-361').innerText = p361.toFixed(2) + " USDT";
@@ -1169,7 +1089,7 @@
         }
 
         function seleccionarOferta(diamantes, precioBase) {
-            let precioFinal = usuarioActual && usuarioActual.descuentoPendiente ? precioBase * 0.95 : precioBase;
+            let precioFinal = usuarioActual && usuarioActual.descuentosDisponibles > 0 ? precioBase * 0.95 : precioBase;
             ofertaSeleccionada = { diamantes, precio: precioFinal };
             document.querySelectorAll('.diamond-card').forEach(c => c.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
@@ -1201,15 +1121,15 @@
             setTimeout(async () => {
                 usuarioActual.balance -= ofertaSeleccionada.precio;
                 usuarioActual.recargasCount++;
-                if (usuarioActual.descuentoPendiente) {
-                    usuarioActual.descuentoPendiente = false; // Solo aplica una vez
+                if (usuarioActual.descuentosDisponibles > 0) {
+                    usuarioActual.descuentosDisponibles--; // Gasta 1 descuento del 5%
                 }
 
                 let uGlobal = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
                 if(uGlobal) {
                     uGlobal.balance = usuarioActual.balance;
                     uGlobal.recargasCount = usuarioActual.recargasCount;
-                    uGlobal.descuentoPendiente = usuarioActual.descuentoPendiente;
+                    uGlobal.descuentosDisponibles = usuarioActual.descuentosDisponibles;
                 }
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -1288,46 +1208,63 @@
             listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
 
             const hoy = new Date().toDateString();
-            const recargasHoy = solicitudesGlobales.recargas.filter(r => new Date(r.id || r.fecha).toDateString() === hoy).length;
-            document.getElementById('contador-recargas-hoy').innerText = recargasHoy;
+            const recargasHoyList = solicitudesGlobales.recargas.filter(r => new Date(r.id || r.fecha).toDateString() === hoy);
+            document.getElementById('contador-recargas-hoy').innerText = recargasHoyList.length;
 
-            // TOP 10 USUARIOS
-            let topHTML = "";
-            let usuariosOrdenados = [...listaUsuariosGlobales].sort((a,b) => b.recargasCount - a.recargasCount).slice(0, 10);
-            
-            if(usuariosOrdenados.length === 0) {
-                topHTML = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center;'>Aún no hay actividad.</p>";
+            let vivoHTML = "";
+            let ultimas10 = recargasHoyList.slice(-10).reverse();
+
+            if(ultimas10.length === 0) {
+                vivoHTML = "<p style='color:var(--text-muted); font-size:0.75rem; text-align:center; padding:1rem;'>No hay compras registradas hoy.</p>";
             } else {
-                usuariosOrdenados.forEach((u, index) => {
-                    let avatarContent = u.avatar ? `<img src="${u.avatar}">` : u.nombre.charAt(0).toUpperCase();
-                    topHTML += `
-                        <div class="top-user-row">
-                            <div class="top-user-left">
-                                <span style="font-size:0.75rem; font-weight:bold; color:var(--text-muted);">#${index+1}</span>
-                                <div class="top-avatar">${avatarContent}</div>
-                                <div class="top-user-name">${u.nombre}</div>
+                ultimas10.forEach(r => {
+                    let horaStr = new Date(r.id || r.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    let uObj = listaUsuariosGlobales.find(u => u.nombre.toLowerCase() === r.usuario.toLowerCase());
+                    let avatarC = (uObj && uObj.avatar) ? `<img src="${uObj.avatar}">` : r.usuario.charAt(0).toUpperCase();
+
+                    vivoHTML += `
+                        <div class="history-item-row">
+                            <span class="history-time">${horaStr}</span>
+                            <div class="history-user-info">
+                                <div class="history-avatar">${avatarC}</div>
+                                <div class="history-user-details">
+                                    <h5>${r.usuario}</h5>
+                                    <p>Free Fire LATAM · ${r.detalle.split(' ')[0]}</p>
+                                </div>
                             </div>
-                            <span class="top-user-score">${u.recargasCount} recargas</span>
+                            <span class="history-price">${r.precio ? r.precio.toFixed(2) : '1.20'} USDT</span>
                         </div>
                     `;
                 });
             }
-            document.getElementById('top-usuarios-container').innerHTML = topHTML;
+            document.getElementById('lista-historial-vivo').innerHTML = vivoHTML;
         }
 
-        function cambiarFotoPerfil() {
-            abrirModal("Enlace o URL de tu nueva foto", "https://ejemplo.com/foto.jpg", false, async function(url) {
-                if(url) {
-                    usuarioActual.avatar = url;
-                    let fresh = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
-                    if(fresh) fresh.avatar = url;
-                    localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
-                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                    await guardarEnCloud();
-                    actualizarPerfilUI();
-                    mostrarNotificacion("Foto de perfil actualizada");
-                }
-            });
+        function abrirSelectorGaleria() {
+            document.getElementById('file-input-hidden').click();
+        }
+
+        function procesarFotoGaleria(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64Image = e.target.result;
+                usuarioActual.avatar = base64Image;
+                
+                let fresh = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
+                if(fresh) fresh.avatar = base64Image;
+
+                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                await guardarEnCloud();
+                
+                actualizarPerfilUI();
+                actualizarEstadisticasInicio();
+                mostrarNotificacion("Foto de perfil actualizada desde la galería");
+            };
+            reader.readAsDataURL(file);
         }
 
         function copiarWallet() {
@@ -1394,6 +1331,10 @@
             let referidosCount = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase() === usuarioActual.nombre.toLowerCase()).length;
             document.getElementById('stat-referidos').innerText = referidosCount;
             document.getElementById('enlace-ref').innerText = "https://lestertienda.com/ref/" + usuarioActual.nombre;
+            
+            if(usuarioActual.descuentosDisponibles !== undefined) {
+                document.getElementById('descuentos-activos-count').innerText = usuarioActual.descuentosDisponibles;
+            }
         }
 
         function toggleSeguridadPanel() {
@@ -1453,7 +1394,7 @@
             window.open(`https://wa.me/${numero}?text=${texto}`, '_blank');
         }
 
-        // PANEL DE CEO CORREGIDO
+        // PANEL DE CEO
         function verificarAccesoCEO() {
             const contenedorCEO = document.getElementById('panel-ceo-container');
             if (usuarioActual && usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com') {
@@ -1493,8 +1434,8 @@
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.75rem;">
                             <b>User:</b> ${s.usuario} | <b>ID:</b> ${s.idJugador} | <b>Detalle:</b> ${s.detalle} | <b>Estado:</b> <span style="color:#f59e0b;">${s.estado}</span>
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
-                                <button style="background:#10b981; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarRecarga(${idx})">Completar</button>
-                                <button style="background:#ef4444; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarRecarga(${idx})">Cancelar</button>
+                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarRecarga(${idx})">Completar</button>
+                                <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarRecarga(${idx})">Cancelar</button>
                             </div>
                         </div>`;
                     }
@@ -1510,8 +1451,8 @@
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.75rem;">
                             <b>User:</b> ${d.usuario} | <b>Monto:</b> ${d.monto} USDT | <b>Estado:</b> <span style="color:#f59e0b;">${d.estado}</span>
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
-                                <button style="background:#10b981; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
-                                <button style="background:#ef4444; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
+                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
+                                <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
                             </div>
                         </div>`;
                     }
@@ -1519,20 +1460,20 @@
                 res.innerHTML = html;
             } else if(accion === 'usuarios') {
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.85rem;'>Base de Datos de Usuarios:</h4>";
-                if(listaUsuariosGlobales.length === 0) html += "<p style='color:#8a99ad; font-size:0.8rem;'>No hay usuarios registrados.</p>";
+                if(listaUsuariosGlobales.length === 0) html += "<p style='color:#8a99ad; font-size:0.8rem;'>No hay usuarios.</p>";
                 listaUsuariosGlobales.forEach(u => {
                     html += `<div style="background:#07090e; padding:0.7rem; margin-top:0.5rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.75rem;">
                         <b>Usuario:</b> ${u.nombre}<br>
                         <b>Correo:</b> ${u.correo}<br>
                         <b>Saldo USDT:</b> ${u.balance.toFixed(2)} USDT<br>
-                        <b>Recargas Realizadas:</b> ${u.recargasCount} veces
+                        <b>Recargas:</b> ${u.recargasCount}
                     </div>`;
                 });
                 res.innerHTML = html;
             } else if(accion === 'acreditar') {
                 abrirModal("Correo del usuario a acreditar", "correo@gmail.com", false, function(correo) {
                     if(!correo) return;
-                    abrirModal("Monto a acreditar en USDT", "10", false, async function(monto) {
+                    abrirModal("Monto en USDT", "10", false, async function(monto) {
                         let valMonto = parseFloat(monto);
                         if(correo && !isNaN(valMonto)) {
                             let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.trim().toLowerCase());
@@ -1588,9 +1529,18 @@
             let dep = solicitudesGlobales.depositos[index];
             dep.estado = 'Aprobado';
 
-            let userTarget = listaUsuariosGlobales.find(u => u.correo === dep.correo);
+            let userTarget = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === dep.correo.trim().toLowerCase());
             if(userTarget) {
                 userTarget.balance += dep.monto;
+                
+                // LÓGICA DE REFERIDOS INVERTIDA: SI JUAN DEPOSITA, PEPO (PATROCINADOR) GANA 5% DE DESCUENTO
+                if (userTarget.referidoPor) {
+                    let patrocinador = listaUsuariosGlobales.find(u => u.nombre.trim().toLowerCase() === userTarget.referidoPor.trim().toLowerCase());
+                    if (patrocinador) {
+                        patrocinador.descuentosDisponibles = (patrocinador.descuentosDisponibles || 0) + 1;
+                    }
+                }
+
                 if(usuarioActual && usuarioActual.correo === userTarget.correo) {
                     usuarioActual.balance = userTarget.balance;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -1602,7 +1552,7 @@
             await guardarEnCloud();
             
             actualizarPerfilUI();
-            mostrarNotificacion(`Depósito de ${dep.monto} USDT aprobado`);
+            mostrarNotificacion(`Depósito de ${dep.monto} USDT aprobado y acreditado`);
             cargarAccionCEO('solicitudes_deposito');
             renderizarOrdenes();
         }
@@ -1625,6 +1575,7 @@
             mostrarNotificacion("Recarga completada");
             cargarAccionCEO('solicitudes_recarga');
             renderizarOrdenes();
+            actualizarEstadisticasInicio();
         }
 
         async function cancelarRecarga(index) {
@@ -1650,6 +1601,7 @@
             mostrarNotificacion("Recarga cancelada y saldo devuelto");
             cargarAccionCEO('solicitudes_recarga');
             renderizarOrdenes();
+            actualizarEstadisticasInicio();
         }
     </script>
 </body>
