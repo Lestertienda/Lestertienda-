@@ -36,7 +36,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Animación de carga perfecta tipo Spinner */
         #loading-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -283,6 +282,31 @@
 
         .section-title { font-size: 0.8rem; color: var(--text-muted); margin: 1rem 0 0.5rem 0; font-weight: 700; letter-spacing: 0.5px; }
 
+        .stats-top-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .stat-box-pro {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
+            padding: 1rem; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .stat-box-info h4 { font-size: 1.4rem; font-weight: 900; color: var(--accent-glow); text-shadow: 0 0 10px rgba(0,240,255,0.4); }
+        .stat-box-info span { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+
+        .top-users-list { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; margin-bottom: 1rem; }
+        .top-user-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.6rem 0; border-bottom: 1px solid var(--border-color);
+        }
+        .top-user-row:last-child { border-bottom: none; }
+        .top-user-left { display: flex; align-items: center; gap: 10px; }
+        .top-avatar {
+            width: 32px; height: 32px; border-radius: 50%; background: #07090e; border: 1px solid var(--accent-glow);
+            display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.8rem; color: var(--accent-glow);
+            overflow: hidden;
+        }
+        .top-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .top-user-name { font-size: 0.85rem; font-weight: 800; color: #fff; }
+        .top-user-score { font-size: 0.75rem; font-weight: 900; color: var(--accent-glow); background: rgba(0,240,255,0.1); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(0,240,255,0.3); }
+
         .wallet-selector-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -392,11 +416,22 @@
         .profile-wallet-pill-corner svg { width: 14px; height: 14px; fill: var(--accent-glow); }
         .profile-wallet-pill-corner span { font-size: 0.75rem; font-weight: 900; color: var(--accent-glow); }
 
-        .profile-avatar-circle {
-            width: 65px; height: 65px; background: #07090e; border: 2px solid var(--accent-glow); border-radius: 50%;
-            margin: 0 auto 0.6rem auto; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
-            font-weight: bold; color: var(--accent-glow); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        .profile-avatar-wrapper {
+            position: relative; width: 75px; height: 75px; margin: 0 auto 0.6rem auto;
         }
+        .profile-avatar-circle {
+            width: 75px; height: 75px; background: #07090e; border: 2px solid var(--accent-glow); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+            font-weight: bold; color: var(--accent-glow); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            overflow: hidden; cursor: pointer;
+        }
+        .profile-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-edit-badge {
+            position: absolute; bottom: 0; right: 0; background: var(--primary-blue); border: 1px solid var(--accent-glow);
+            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .avatar-edit-badge svg { width: 12px; height: 12px; fill: #fff; }
+
         .profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; background: #07090e; border-radius: 10px; padding: 0.6rem; margin: 1rem 0 0 0; border: 1px solid var(--border-color); }
         .stat-col h4 { font-size: 0.9rem; font-weight: 900; color: var(--accent-glow); }
         .stat-col span { font-size: 0.7rem; color: var(--text-muted); }
@@ -448,7 +483,6 @@
         .floating-bot:active { transform: scale(0.92); }
         .floating-bot svg { width: 26px; height: 26px; fill: #fff; }
 
-        /* Estilos del Footer Legal */
         .footer-legal-container {
             margin-top: 2.5rem;
             padding: 1.5rem 1rem;
@@ -487,7 +521,7 @@
             padding-top: 0.8rem;
         }
 
-        /* Menú Inferior Fijo 100% visible flotando como el header superior */
+        /* Menú Inferior Fijo 100% visible */
         .bottom-nav {
             position: fixed; 
             bottom: 0; 
@@ -503,7 +537,7 @@
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; text-decoration: none;
-            color: var(--text-muted); font-size: 0.7rem; font-weight: 600; cursor: pointer; gap: 2px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: var(--text-muted); font-size: 0.65rem; font-weight: 600; cursor: pointer; gap: 2px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .nav-item svg { width: 20px; height: 20px; fill: var(--text-muted); transition: fill 0.3s; }
         .nav-item.active, .nav-item:hover { color: var(--accent-glow); transform: translateY(-2px); }
@@ -512,7 +546,6 @@
 </head>
 <body>
 
-    <!-- Animación de carga perfecta -->
     <div id="loading-overlay">
         <div class="spinner"></div>
     </div>
@@ -575,6 +608,10 @@
                     <input type="password" id="reg-pass-confirm" class="form-control" placeholder="••••••••">
                 </div>
             </div>
+            <div class="form-group">
+                <label>Código de referido (Opcional)</label>
+                <input type="text" id="reg-referido" class="form-control no-left-icon" placeholder="Nombre de quien te invitó">
+            </div>
             <button class="btn-main" onclick="registrarUsuario()">REGISTRARSE</button>
         </div>
 
@@ -622,7 +659,25 @@
         <div class="container">
             
             <div id="seccion-inicio" class="vista-sec">
-                <div class="search-bar-box">
+                
+                <!-- HISTORIAL DE RECARGAS Y CONTADOR -->
+                <div class="section-title">ACTIVIDAD DE HOY</div>
+                <div class="stats-top-grid">
+                    <div class="stat-box-pro">
+                        <div class="stat-box-info">
+                            <h4 id="contador-recargas-hoy">0</h4>
+                            <span>Recargas realizadas hoy</span>
+                        </div>
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="#00f0ff"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    </div>
+                </div>
+
+                <div class="section-title">TOP 10 USUARIOS MÁS ACTIVOS</div>
+                <div class="top-users-list" id="top-usuarios-container">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <div class="search-bar-box" style="margin-top: 1rem;">
                     <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                     <input type="text" placeholder="Buscar juego...">
                 </div>
@@ -641,8 +696,8 @@
                 <div class="invite-banner">
                     <div>
                         <h3>Invita y gana</h3>
-                        <p>Gana el 5% de la primera compra de tu referido</p>
-                        <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-perfil'))">Invitar &gt;</button>
+                        <p>Gana el 5% de descuento en la primera compra de tu referido</p>
+                        <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Invitar &gt;</button>
                     </div>
                     <div class="invite-graphic-box">
                         <svg width="30" height="25" viewBox="0 0 24 24" fill="#00f0ff"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.5 15.38 12 17 10.83 14.92 8H20v6z"/></svg>
@@ -683,32 +738,22 @@
                     <div class="diamond-card" onclick="seleccionarOferta(110, 1.2)">
                         <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="45" height="45"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
                         <h4>110 Diamantes</h4>
-                        <span class="diamond-price">1.2 USDT</span>
+                        <span class="diamond-price" id="precio-110">1.2 USDT</span>
                     </div>
                     <div class="diamond-card" onclick="seleccionarOferta(361, 3.5)">
                         <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="45" height="45"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/><circle cx="32" cy="28" r="5" fill="#fff" opacity="0.7"/></svg></div>
                         <h4>361 Diamantes</h4>
-                        <span class="diamond-price">3.5 USDT</span>
+                        <span class="diamond-price" id="precio-361">3.5 USDT</span>
                     </div>
                     <div class="diamond-card" onclick="seleccionarOferta(572, 5.0)">
                         <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="45" height="45"><polygon points="32,2 60,18 48,56 16,56 4,18" fill="#00a8ff"/><polygon points="32,8 52,22 42,50 22,50 12,22" fill="#00f0ff"/><polygon points="32,8 45,22 32,46 19,22" fill="#ffffff" opacity="0.9"/></svg></div>
                         <h4>572 Diamantes</h4>
-                        <span class="diamond-price">5.0 USDT</span>
+                        <span class="diamond-price" id="precio-572">5.0 USDT</span>
                     </div>
                     <div class="diamond-card" onclick="seleccionarOferta(1166, 8.5)">
                         <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="50" height="50"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#f59e0b" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#f59e0b"/><polygon points="22,18 28,12 32,20 18,20" fill="#00f0ff"/><polygon points="32,16 38,10 44,18 30,18" fill="#00f0ff"/><polygon points="40,22 45,16 48,24 38,24" fill="#00f0ff"/></svg></div>
                         <h4>1166 Diamantes</h4>
-                        <span class="diamond-price">8.5 USDT</span>
-                    </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(2398, 17.4)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="50" height="50"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#f59e0b" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#f59e0b"/><polygon points="22,18 28,12 32,20 18,20" fill="#00f0ff"/><polygon points="32,16 38,10 44,18 30,18" fill="#00f0ff"/><polygon points="40,22 45,16 48,24 38,24" fill="#00f0ff"/></svg></div>
-                        <h4>2398 Diamantes</h4>
-                        <span class="diamond-price">17.4 USDT</span>
-                    </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(6160, 40.0)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="50" height="50"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#f59e0b" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#f59e0b"/><polygon points="22,18 28,12 32,20 18,20" fill="#00f0ff"/><polygon points="32,16 38,10 44,18 30,18" fill="#00f0ff"/><polygon points="40,22 45,16 48,24 38,24" fill="#00f0ff"/></svg></div>
-                        <h4>6160 Diamantes</h4>
-                        <span class="diamond-price">40.0 USDT</span>
+                        <span class="diamond-price" id="precio-1166">8.5 USDT</span>
                     </div>
                 </div>
 
@@ -718,6 +763,17 @@
             <div id="seccion-ordenes" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">TUS ÓRDENES Y RECARGAS</h2>
                 <div id="lista-ordenes-container"></div>
+            </div>
+
+            <!-- SECCIÓN REFERIDOS -->
+            <div id="seccion-referidos" class="vista-sec" style="display: none;">
+                <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">PROGRAMA DE REFERIDOS</h2>
+                <div class="profile-header-card">
+                    <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.5rem;">Tu Código o Enlace de Invitación</p>
+                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.75rem; background: #07090e; text-align: center; margin-bottom: 1rem;">https://lestertienda.com/ref/usuario99</div>
+                    <button class="btn-main" onclick="copiarEnlaceRef()">Copiar Enlace</button>
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 1rem;">Tus amigos obtendrán un 5% de descuento automático en su primera compra al registrarse con tu invitación.</p>
+                </div>
             </div>
 
             <div id="seccion-wallet" class="vista-sec" style="display: none;">
@@ -753,15 +809,6 @@
                 </div>
             </div>
 
-            <div id="seccion-referidos" class="vista-sec" style="display: none;">
-                <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">PROGRAMA DE REFERIDOS</h2>
-                <div class="profile-header-card">
-                    <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.5rem;">Tu Enlace de Invitación</p>
-                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.75rem; background: #07090e; text-align: center; margin-bottom: 1rem;">https://lestertienda.com/ref/usuario99</div>
-                    <button class="btn-main" onclick="copiarEnlaceRef()">Copiar Enlace</button>
-                </div>
-            </div>
-
             <div id="seccion-perfil" class="vista-sec" style="display: none;">
                 <div class="profile-header-card">
                     <div class="profile-wallet-pill-corner">
@@ -769,7 +816,14 @@
                         <span id="profile-wallet-balance">0.00 USDT</span>
                     </div>
 
-                    <div class="profile-avatar-circle" id="perfil-inicial">L</div>
+                    <!-- FOTO DE PERFIL -->
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-circle" id="perfil-inicial" onclick="cambiarFotoPerfil()">L</div>
+                        <div class="avatar-edit-badge" onclick="cambiarFotoPerfil()">
+                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        </div>
+                    </div>
+
                     <h3 id="perfil-usuario" style="font-size: 1.1rem; font-weight: 900;">Usuario</h3>
                     <p id="perfil-correo" style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.2rem;">correo@gmail.com</p>
                     <p style="color: var(--accent-glow); font-size: 0.75rem; font-weight: bold; margin-top: 0.3rem;">VERIFICADO PRO</p>
@@ -796,18 +850,11 @@
                         <button class="btn-main" onclick="cambiarPasswordReal()">Actualizar Contraseña</button>
                     </div>
 
-                    <button class="security-btn" onclick="toggleBiometrico()">
-                        <svg viewBox="0 0 24 24"><path d="M17.81 4.47c-.08 0-.16-.02-.23-.06C15.66 3.42 13.9 3 12 3s-3.66.42-5.58 1.41c-.15.08-.33.05-.45-.07-.12-.13-.15-.32-.07-.47C7.96 2.65 9.92 2.2 12 2.2s4.04.45 6.08 1.49c.15.08.21.27.13.43-.05.18-.26.29-.4.35zM12 5.5c-3.1 0-6 1.1-7.5 3-.15.2-.05.48.15.63.2.15.48.05.63-.15C6.5 8.1 9 7.2 12 7.5s5.5.9 6.72 2.48c.15.2.43.25.63.15.2-.15.25-.43.15-.63-1.5-1.9-4.4-3-7.5-3z"/></svg>
-                        <span>Verificación 2 Pasos (Huella/Patrón)</span>
-                        <span id="bio-status" style="color:var(--accent-glow); margin-left:auto; font-size:0.75rem;">[ OFF ]</span>
-                    </button>
-
                     <button class="security-btn" onclick="confirmarEliminarCuenta()" style="color:#ff3b30; border-color:rgba(255,59,48,0.2);">
                         <svg viewBox="0 0 24 24" style="fill:#ff3b30;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                         Eliminar Cuenta
                     </button>
 
-                    <!-- Panel de Confirmación de Eliminación -->
                     <div id="panel-confirmar-eliminar" style="display:none; background:rgba(255,59,48,0.08); border:1px solid #ff3b30; border-radius:12px; padding:12px; margin-top:8px;">
                         <p style="color:#ff3b30; font-size:0.8rem; font-weight:bold; margin-bottom:8px; text-align:center;">¿Estás seguro de que quieres eliminar tu cuenta permanentemente?</p>
                         <div style="display:flex; gap:8px;">
@@ -845,6 +892,7 @@
 
         </div>
 
+        <!-- BARRA DE NAVEGACIÓN INFERIOR FIJA CON BOTÓN DE REFERIDOS -->
         <nav class="bottom-nav">
             <a class="nav-item active" id="nav-btn-inicio" onclick="cambiarSeccion('inicio', this)">
                 <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -853,6 +901,10 @@
             <a class="nav-item" id="nav-btn-ordenes" onclick="cambiarSeccion('ordenes', this)">
                 <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                 <span>Órdenes</span>
+            </a>
+            <a class="nav-item" id="nav-btn-referidos" onclick="cambiarSeccion('referidos', this)">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span>Referidos</span>
             </a>
             <a class="nav-item" id="nav-btn-wallet" onclick="cambiarSeccion('wallet', this)">
                 <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -871,10 +923,8 @@
         let ofertaSeleccionada = null;
         let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
         let listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
-        let biometricoActivo = false;
         let modalCallback = null;
 
-        // Credenciales actualizadas de JSONBin.io con tu nuevo Bin ID
         const BIN_ID = '6aeaa0e1ffd5d16053a44254';
         const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
 
@@ -890,17 +940,13 @@
                 actualizarPerfilUI();
                 renderizarOrdenes();
             }
-            // Sincronizar y cargar actividades desde la nube al iniciar
             sincronizarConCloud();
         };
 
-        // Función para leer y sincronizar actividades y usuarios desde JSONBin.io
         async function sincronizarConCloud() {
             try {
                 const respuesta = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                    headers: {
-                        'X-Master-Key': MASTER_KEY
-                    }
+                    headers: { 'X-Master-Key': MASTER_KEY }
                 });
                 const resultado = await respuesta.json();
                 
@@ -915,12 +961,12 @@
                         renderizarOrdenes();
                     }
                 }
+                actualizarEstadisticasInicio();
             } catch (error) {
                 console.error('Error al sincronizar con JSONBin:', error);
             }
         }
 
-        // Función para guardar los cambios y actividades en la nube en tiempo real
         async function guardarEnCloud() {
             try {
                 await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
@@ -939,12 +985,8 @@
             }
         }
 
-        function mostrarCarga() {
-            document.getElementById('loading-overlay').style.display = 'flex';
-        }
-        function ocultarCarga() {
-            document.getElementById('loading-overlay').style.display = 'none';
-        }
+        function mostrarCarga() { document.getElementById('loading-overlay').style.display = 'flex'; }
+        function ocultarCarga() { document.getElementById('loading-overlay').style.display = 'none'; }
 
         function mostrarNotificacion(mensaje) {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1004,6 +1046,7 @@
             const email = document.getElementById('reg-email').value.trim();
             const pass = document.getElementById('reg-pass').value.trim();
             const conf = document.getElementById('reg-pass-confirm').value.trim();
+            const referidoPor = document.getElementById('reg-referido').value.trim();
 
             if (!user || !email || !pass) {
                 mostrarNotificacion("Completa todos los campos");
@@ -1016,7 +1059,16 @@
 
             mostrarCarga();
             setTimeout(async () => {
-                usuarioActual = { nombre: user, correo: email, pass: pass, balance: 0.00, recargasCount: 0 };
+                usuarioActual = { 
+                    nombre: user, 
+                    correo: email, 
+                    pass: pass, 
+                    balance: 0.00, 
+                    recargasCount: 0, 
+                    avatar: "",
+                    referidoPor: referidoPor || null,
+                    descuentoPendiente: referidoPor ? true : false 
+                };
                 
                 let existe = listaUsuariosGlobales.find(u => u.correo === email);
                 if(!existe) {
@@ -1050,7 +1102,7 @@
 
             let encontrado = listaUsuariosGlobales.find(u => u.correo === email && u.pass === pass);
             if(!encontrado) {
-                mostrarNotificacion("Correo o contraseña incorrectos, o usuario no registrado.");
+                mostrarNotificacion("Correo o contraseña incorrectos.");
                 return;
             }
 
@@ -1087,6 +1139,9 @@
                 if(seccion === 'ordenes') {
                     renderizarOrdenes();
                 }
+                if(seccion === 'inicio') {
+                    actualizarEstadisticasInicio();
+                }
             }, 400);
         }
 
@@ -1097,11 +1152,25 @@
                 document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
                 document.getElementById('seccion-freefire').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                aplicarDescuentoReferidoUI();
             }, 300);
         }
 
-        function seleccionarOferta(diamantes, precio) {
-            ofertaSeleccionada = { diamantes, precio };
+        function aplicarDescuentoReferidoUI() {
+            let p110 = 1.2, p361 = 3.5, p572 = 5.0, p1166 = 8.5;
+            if (usuarioActual && usuarioActual.descuentoPendiente) {
+                p110 *= 0.95; p361 *= 0.95; p572 *= 0.95; p1166 *= 0.95;
+                mostrarNotificacion("¡Descuento del 5% por referido aplicado a tu primera compra!");
+            }
+            document.getElementById('precio-110').innerText = p110.toFixed(2) + " USDT";
+            document.getElementById('precio-361').innerText = p361.toFixed(2) + " USDT";
+            document.getElementById('precio-572').innerText = p572.toFixed(2) + " USDT";
+            document.getElementById('precio-1166').innerText = p1166.toFixed(2) + " USDT";
+        }
+
+        function seleccionarOferta(diamantes, precioBase) {
+            let precioFinal = usuarioActual && usuarioActual.descuentoPendiente ? precioBase * 0.95 : precioBase;
+            ofertaSeleccionada = { diamantes, precio: precioFinal };
             document.querySelectorAll('.diamond-card').forEach(c => c.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
         }
@@ -1109,21 +1178,13 @@
         function procesarRecarga() {
             const playerIdInput = document.getElementById('player-id-input');
             const playerId = playerIdInput.value.trim();
-            const labelId = document.getElementById('label-player-id');
 
             if(!playerId || playerId.length < 6) {
                 abrirFreeFire();
                 playerIdInput.classList.add('input-error-shake');
-                labelId.style.color = '#ff3b30';
-                labelId.innerText = "Falta el ID de Free Fire (Introduce números válidos)";
-                mostrarNotificacion("Debes introducir tu ID de Free Fire");
-                setTimeout(() => {
-                    playerIdInput.classList.remove('input-error-shake');
-                }, 1000);
+                mostrarNotificacion("Introduce un ID de Free Fire válido");
+                setTimeout(() => playerIdInput.classList.remove('input-error-shake'), 1000);
                 return;
-            } else {
-                labelId.style.color = 'var(--text-muted)';
-                labelId.innerText = "PLAYER ID (Solo números de Free Fire)";
             }
 
             if(!ofertaSeleccionada) {
@@ -1132,7 +1193,7 @@
             }
 
             if (usuarioActual.balance < ofertaSeleccionada.precio) {
-                mostrarNotificacion("Saldo insuficiente en USDT para esta recarga");
+                mostrarNotificacion("Saldo insuficiente en USDT");
                 return;
             }
 
@@ -1140,17 +1201,22 @@
             setTimeout(async () => {
                 usuarioActual.balance -= ofertaSeleccionada.precio;
                 usuarioActual.recargasCount++;
+                if (usuarioActual.descuentoPendiente) {
+                    usuarioActual.descuentoPendiente = false; // Solo aplica una vez
+                }
 
                 let uGlobal = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
                 if(uGlobal) {
                     uGlobal.balance = usuarioActual.balance;
                     uGlobal.recargasCount = usuarioActual.recargasCount;
+                    uGlobal.descuentoPendiente = usuarioActual.descuentoPendiente;
                 }
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
 
                 const nuevaOrden = { 
                     id: Date.now(),
+                    fecha: new Date().toISOString(),
                     usuario: usuarioActual.nombre, 
                     correo: usuarioActual.correo,
                     idJugador: playerId, 
@@ -1165,7 +1231,7 @@
                 await guardarEnCloud();
                 ocultarCarga();
 
-                mostrarNotificacion("Recarga procesada y enviada al CEO con éxito");
+                mostrarNotificacion("Recarga procesada y enviada al panel");
                 actualizarPerfilUI();
                 renderizarOrdenes();
                 cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
@@ -1178,7 +1244,7 @@
             let html = "";
             
             if(solicitudesGlobales.recargas.length === 0 && solicitudesGlobales.depositos.length === 0) {
-                container.innerHTML = "<p style='color:var(--text-muted); font-size:0.85rem; text-align:center; margin-top:2rem;'>No hay órdenes registradas aún.</p>";
+                container.innerHTML = "<p style='color:var(--text-muted); font-size:0.85rem; text-align:center; margin-top:2rem;'>No hay órdenes registradas.</p>";
                 return;
             }
 
@@ -1217,6 +1283,53 @@
             container.innerHTML = html;
         }
 
+        function actualizarEstadisticasInicio() {
+            solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
+            listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
+
+            const hoy = new Date().toDateString();
+            const recargasHoy = solicitudesGlobales.recargas.filter(r => new Date(r.id || r.fecha).toDateString() === hoy).length;
+            document.getElementById('contador-recargas-hoy').innerText = recargasHoy;
+
+            // TOP 10 USUARIOS
+            let topHTML = "";
+            let usuariosOrdenados = [...listaUsuariosGlobales].sort((a,b) => b.recargasCount - a.recargasCount).slice(0, 10);
+            
+            if(usuariosOrdenados.length === 0) {
+                topHTML = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center;'>Aún no hay actividad.</p>";
+            } else {
+                usuariosOrdenados.forEach((u, index) => {
+                    let avatarContent = u.avatar ? `<img src="${u.avatar}">` : u.nombre.charAt(0).toUpperCase();
+                    topHTML += `
+                        <div class="top-user-row">
+                            <div class="top-user-left">
+                                <span style="font-size:0.75rem; font-weight:bold; color:var(--text-muted);">#${index+1}</span>
+                                <div class="top-avatar">${avatarContent}</div>
+                                <div class="top-user-name">${u.nombre}</div>
+                            </div>
+                            <span class="top-user-score">${u.recargasCount} recargas</span>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('top-usuarios-container').innerHTML = topHTML;
+        }
+
+        function cambiarFotoPerfil() {
+            abrirModal("Enlace o URL de tu nueva foto", "https://ejemplo.com/foto.jpg", false, async function(url) {
+                if(url) {
+                    usuarioActual.avatar = url;
+                    let fresh = listaUsuariosGlobales.find(u => u.correo === usuarioActual.correo);
+                    if(fresh) fresh.avatar = url;
+                    localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                    await guardarEnCloud();
+                    actualizarPerfilUI();
+                    mostrarNotificacion("Foto de perfil actualizada");
+                }
+            });
+        }
+
         function copiarWallet() {
             navigator.clipboard.writeText("0x8B9a2f78D2bc67Bc6172386Ef9cd30e3F7829069");
             mostrarNotificacion("Wallet copiada al portapapeles");
@@ -1224,7 +1337,7 @@
 
         function copiarEnlaceRef() {
             navigator.clipboard.writeText("https://lestertienda.com/ref/" + usuarioActual.nombre);
-            mostrarNotificacion("Enlace copiado");
+            mostrarNotificacion("Enlace de referido copiado");
         }
 
         function confirmarendioDeposito() {
@@ -1236,19 +1349,20 @@
 
             mostrarCarga();
             setTimeout(async () => {
-                solicitudesGlobales.depositos.push({ 
+                const nuevoDep = { 
                     id: Date.now(),
                     correo: usuarioActual.correo,
                     usuario: usuarioActual.nombre, 
                     monto: monto, 
                     estado: 'Pendiente' 
-                });
+                };
+                solicitudesGlobales.depositos.push(nuevoDep);
                 localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
                 
                 await guardarEnCloud();
                 ocultarCarga();
 
-                mostrarNotificacion("Depósito enviado al CEO, esperar 24h.");
+                mostrarNotificacion("Depósito enviado correctamente al CEO");
                 document.getElementById('monto-deposito').value = '';
                 renderizarOrdenes();
                 cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
@@ -1261,15 +1375,25 @@
             if(fresh) usuarioActual = fresh;
 
             const saldoTexto = `${usuarioActual.balance.toFixed(2)} USDT`;
-
             document.getElementById('header-wallet-balance').innerText = saldoTexto;
             document.getElementById('profile-wallet-balance').innerText = saldoTexto;
 
             document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
             document.getElementById('perfil-correo').innerText = usuarioActual.correo;
-            document.getElementById('perfil-inicial').innerText = usuarioActual.nombre.charAt(0).toUpperCase();
+            
+            const avatarCircle = document.getElementById('perfil-inicial');
+            if(usuarioActual.avatar) {
+                avatarCircle.innerHTML = `<img src="${usuarioActual.avatar}">`;
+            } else {
+                avatarCircle.innerText = usuarioActual.nombre.charAt(0).toUpperCase();
+            }
+
             document.getElementById('stat-saldo').innerText = usuarioActual.balance.toFixed(2);
             document.getElementById('stat-recargas').innerText = usuarioActual.recargasCount;
+            
+            let referidosCount = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase() === usuarioActual.nombre.toLowerCase()).length;
+            document.getElementById('stat-referidos').innerText = referidosCount;
+            document.getElementById('enlace-ref').innerText = "https://lestertienda.com/ref/" + usuarioActual.nombre;
         }
 
         function toggleSeguridadPanel() {
@@ -1299,20 +1423,12 @@
             toggleSubPanel('panel-cambiar-pass');
         }
 
-        function toggleBiometrico() {
-            biometricoActivo = !biometricoActivo;
-            document.getElementById('bio-status').innerText = biometricoActivo ? '[ ON ]' : '[ OFF ]';
-            mostrarNotificacion(biometricoActivo ? "Verificación biométrica activada" : "Verificación desactivada");
-        }
-
         function confirmarEliminarCuenta() {
             const panelEliminar = document.getElementById('panel-confirmar-eliminar');
             panelEliminar.style.display = panelEliminar.style.display === 'none' ? 'block' : 'none';
         }
 
-        function cancelarEliminarCuenta() {
-            document.getElementById('panel-confirmar-eliminar').style.display = 'none';
-        }
+        function cancelarEliminarCuenta() { document.getElementById('panel-confirmar-eliminar').style.display = 'none'; }
 
         function ejecutarEliminarCuenta() {
             mostrarCarga();
@@ -1337,7 +1453,7 @@
             window.open(`https://wa.me/${numero}?text=${texto}`, '_blank');
         }
 
-        // PANEL DE CEO
+        // PANEL DE CEO CORREGIDO
         function verificarAccesoCEO() {
             const contenedorCEO = document.getElementById('panel-ceo-container');
             if (usuarioActual && usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com') {
@@ -1408,7 +1524,6 @@
                     html += `<div style="background:#07090e; padding:0.7rem; margin-top:0.5rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.75rem;">
                         <b>Usuario:</b> ${u.nombre}<br>
                         <b>Correo:</b> ${u.correo}<br>
-                        <b>Contraseña:</b> <span style="color:var(--accent-glow);">${u.pass}</span><br>
                         <b>Saldo USDT:</b> ${u.balance.toFixed(2)} USDT<br>
                         <b>Recargas Realizadas:</b> ${u.recargasCount} veces
                     </div>`;
@@ -1417,10 +1532,10 @@
             } else if(accion === 'acreditar') {
                 abrirModal("Correo del usuario a acreditar", "correo@gmail.com", false, function(correo) {
                     if(!correo) return;
-                    abrirModal("Monto a acreditar en USDT", "10", false, function(monto) {
+                    abrirModal("Monto a acreditar en USDT", "10", false, async function(monto) {
                         let valMonto = parseFloat(monto);
                         if(correo && !isNaN(valMonto)) {
-                            let target = listaUsuariosGlobales.find(u => u.correo === correo);
+                            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.trim().toLowerCase());
                             if(target) {
                                 target.balance += valMonto;
                                 if(usuarioActual && usuarioActual.correo === target.correo) {
@@ -1429,10 +1544,11 @@
                                 }
                                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                                guardarEnCloud();
+                                await guardarEnCloud();
                                 mostrarNotificacion(`Acreditados ${valMonto} USDT a ${correo}`);
+                                cargarAccionCEO('usuarios');
                             } else {
-                                mostrarNotificacion("Usuario no encontrado en la base de datos");
+                                mostrarNotificacion("Usuario no encontrado");
                             }
                         }
                     });
@@ -1440,10 +1556,10 @@
             } else if(accion === 'desacreditar') {
                 abrirModal("Correo del usuario a desacreditar", "correo@gmail.com", false, function(correo) {
                     if(!correo) return;
-                    abrirModal("Monto a descontar en USDT", "5", false, function(monto) {
+                    abrirModal("Monto a descontar en USDT", "5", false, async function(monto) {
                         let valMonto = parseFloat(monto);
                         if(correo && !isNaN(valMonto)) {
-                            let target = listaUsuariosGlobales.find(u => u.correo === correo);
+                            let target = listaUsuariosGlobales.find(u => u.correo.trim().toLowerCase() === correo.trim().toLowerCase());
                             if(target) {
                                 target.balance = Math.max(0, target.balance - valMonto);
                                 if(usuarioActual && usuarioActual.correo === target.correo) {
@@ -1452,8 +1568,9 @@
                                 }
                                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                                guardarEnCloud();
+                                await guardarEnCloud();
                                 mostrarNotificacion(`Descontados ${valMonto} USDT a ${correo}`);
+                                cargarAccionCEO('usuarios');
                             } else {
                                 mostrarNotificacion("Usuario no encontrado");
                             }
@@ -1462,7 +1579,7 @@
                 });
             } else if(accion === 'admin') {
                 abrirModal("Correo para dar administrador", "correo@gmail.com", false, function(correo) {
-                    if(correo) mostrarNotificacion(`Administrador concedido a ${correo}`);
+                    if(correo) mostrarNotificacion(`Permisos de administrador concedidos a ${correo}`);
                 });
             }
         }
@@ -1485,36 +1602,29 @@
             await guardarEnCloud();
             
             actualizarPerfilUI();
-            mostrarNotificacion(`Depósito de ${dep.monto} USDT aprobado y sumado al usuario`);
+            mostrarNotificacion(`Depósito de ${dep.monto} USDT aprobado`);
             cargarAccionCEO('solicitudes_deposito');
             renderizarOrdenes();
-            verificarAccesoCEO();
         }
 
         async function cancelarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
             dep.estado = 'Cancelado';
-
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
             await guardarEnCloud();
-            
             mostrarNotificacion("Depósito cancelado");
             cargarAccionCEO('solicitudes_deposito');
             renderizarOrdenes();
-            verificarAccesoCEO();
         }
 
         async function aprobarRecarga(index) {
             let rec = solicitudesGlobales.recargas[index];
             rec.estado = 'Completado';
-
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
             await guardarEnCloud();
-            
-            mostrarNotificacion("Recarga completada con éxito");
+            mostrarNotificacion("Recarga completada");
             cargarAccionCEO('solicitudes_recarga');
             renderizarOrdenes();
-            verificarAccesoCEO();
         }
 
         async function cancelarRecarga(index) {
@@ -1537,10 +1647,9 @@
             await guardarEnCloud();
             
             actualizarPerfilUI();
-            mostrarNotificacion("Recarga cancelada y saldo devuelto al usuario");
+            mostrarNotificacion("Recarga cancelada y saldo devuelto");
             cargarAccionCEO('solicitudes_recarga');
             renderizarOrdenes();
-            verificarAccesoCEO();
         }
     </script>
 </body>
