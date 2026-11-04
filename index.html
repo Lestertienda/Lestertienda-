@@ -247,7 +247,6 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* USDT BADGE CORREGIDO PARA QUE LA IMAGEN CARGUE Y NUNCA QUEDE NEGRA */
         .usdt-real-badge {
             width: 48px; height: 48px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center; position: relative;
@@ -322,13 +321,18 @@
         .status-completado { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
         .status-cancelado { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-        .security-menu-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; margin-top: 1rem; display: flex; flex-direction: column; gap: 8px; }
+        .security-menu-box { 
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; 
+            padding: 1.2rem; margin-top: 1.2rem; display: flex; flex-direction: column; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
         .security-btn {
             width: 100%; background: #07090e; border: 1px solid var(--border-color); color: var(--text-main);
-            padding: 0.7rem 1rem; border-radius: 10px; font-weight: 700; font-size: 0.82rem; display: flex;
-            align-items: center; gap: 10px; cursor: pointer; text-align: left;
+            padding: 0.85rem 1rem; border-radius: 12px; font-weight: 700; font-size: 0.85rem; display: flex;
+            align-items: center; gap: 12px; cursor: pointer; text-align: left; transition: all 0.2s;
         }
-        .security-btn svg { width: 16px; height: 16px; fill: var(--accent-glow); flex-shrink: 0; }
+        .security-btn:hover { border-color: var(--accent-glow); background: rgba(0,240,255,0.02); }
+        .security-btn svg { width: 18px; height: 18px; fill: var(--accent-glow); flex-shrink: 0; }
 
         .ceo-box {
             background: linear-gradient(135deg, #130a0a 0%, #07090e 100%);
@@ -350,7 +354,6 @@
             padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
         }
 
-        /* BOTÓN FLOTANTE */
         .floating-bot {
             position: fixed; bottom: 85px; right: 20px; width: 56px; height: 56px;
             background: transparent; border: 2px solid var(--accent-glow); border-radius: 50%;
@@ -361,7 +364,6 @@
         .floating-bot:active { cursor: grabbing; }
         .floating-bot img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
 
-        /* MODAL SELECTOR SOPORTE */
         #modal-soporte-selector {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(5px);
@@ -537,8 +539,7 @@
                     <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     <span id="header-wallet-balance">0.00 USDT</span>
                 </div>
-                <!-- BOTÓN DE INSTALACIÓN RÁPIDA EN LA NAVBAR -->
-                <button class="nav-top-icon-btn" onclick="instalarAppManual()" title="Instalar Aplicación">
+                <button class="nav-top-icon-btn" onclick="iniciarInstalacionDirecta()" title="Instalar Aplicación">
                     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                 </button>
                 <button class="nav-top-icon-btn" onclick="mostrarNotificacion('Sin notificaciones nuevas')">
@@ -626,7 +627,7 @@
                 <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
                     <div class="game-card-banner-img" style="background: linear-gradient(135deg, #1a0808 0%, #0d1322 100%);">
                         <div class="neon-diamonds-bg"></div>
-                        <div class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">
+                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">
                             PRÓXIMAMENTE
                         </div>
                         <div style="z-index: 2; position: relative;">
@@ -736,7 +737,7 @@
             <div id="seccion-referidos" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">REFERIDOS Y RECOMPENSAS</h2>
                 <div class="profile-header-card" style="text-align: left; padding: 1.2rem;">
-                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.6rem;">Solo cuentan las personas nuevas que se registran con tu enlace.</p>
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.6rem;">Socios nuevos registrados con tu enlace personal.</p>
                     
                     <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px;">
                         <span id="contador-meta-referidos" style="color: #fff;">0 / 10 referidos para el próximo premio</span>
@@ -747,7 +748,13 @@
                     </div>
 
                     <div id="badge-premio-disponible" style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; color: #10b981; padding: 0.6rem; border-radius: 10px; text-align: center; font-size: 0.78rem; font-weight: bold; margin-bottom: 1rem; display: none;">
-                        🎁 ¡Premio disponible al llegar a 10 referidos! Reclámalo con el CEO.
+                        ¡Premio disponible al llegar a 10 referidos! Reclámalo con el CEO.
+                    </div>
+
+                    <!-- LISTA DETALLADA DE QUIÉN SE HA REGISTRADO -->
+                    <div class="section-title">LISTA DE SOCIOS INVITADOS</div>
+                    <div id="lista-detallada-referidos" style="background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.8rem; max-height: 150px; overflow-y: auto; margin-bottom: 1rem; font-size: 0.75rem;">
+                        <span style="color: var(--text-muted);">Aún no tienes referidos registrados.</span>
                     </div>
 
                     <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.4rem;">Tu enlace de referidos</p>
@@ -860,8 +867,29 @@
                     SEGURIDAD Y CONFIGURACIÓN
                 </button>
 
+                <!-- MENÚ DE SEGURIDAD REDISEÑADO CON MÁXIMA PROFESIONALIDAD E ICONOS -->
                 <div id="seccion-seguridad" style="display: none;" class="security-menu-box">
                     
+                    <button class="security-btn" onclick="toggleSubPanel('panel-transferir-usdt')">
+                        <svg viewBox="0 0 24 24"><path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 8h14v2H5V8zm14 10H5v-2h14v2zm0-4H5v-2h14v2z"/></svg>
+                        Transferir USDT a Otro Usuario
+                    </button>
+                    <div id="panel-transferir-usdt" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
+                        <div class="form-group">
+                            <label>Destinatario (Nombre de usuario o Correo)</label>
+                            <input type="text" id="trans-destino" class="form-control no-left-icon" placeholder="Ej. usuario o correo@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Monto a transferir (USDT)</label>
+                            <input type="number" id="trans-monto" class="form-control no-left-icon" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label>Tu contraseña actual (Confirmación)</label>
+                            <input type="password" id="trans-pass" class="form-control no-left-icon" placeholder="••••••••">
+                        </div>
+                        <button class="btn-main" onclick="ejecutarTransferenciaUSDT()">Enviar Transferencia</button>
+                    </div>
+
                     <button class="security-btn" onclick="toggleSubPanel('panel-cambiar-nombre')">
                         <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                         Cambiar Nombre de Usuario
@@ -882,40 +910,27 @@
                         Cambiar Contraseña
                     </button>
                     <div id="panel-cambiar-pass" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
-                        
                         <div class="form-group">
                             <label>Contraseña actual</label>
                             <div class="input-icon-wrapper">
                                 <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                                 <input type="password" id="p-act" class="form-control" placeholder="••••••••">
-                                <button type="button" class="toggle-password" onclick="togglePass('p-act')">
-                                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
-                                </button>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label>Contraseña nueva</label>
                             <div class="input-icon-wrapper">
                                 <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                                 <input type="password" id="p-nue" class="form-control" placeholder="••••••••">
-                                <button type="button" class="toggle-password" onclick="togglePass('p-nue')">
-                                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
-                                </button>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label>Confirmar contraseña</label>
                             <div class="input-icon-wrapper">
                                 <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                                 <input type="password" id="p-con" class="form-control" placeholder="••••••••">
-                                <button type="button" class="toggle-password" onclick="togglePass('p-con')">
-                                    <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
-                                </button>
                             </div>
                         </div>
-
                         <button class="btn-main" onclick="cambiarPasswordReal()">Cambiar Contraseña</button>
                     </div>
 
@@ -923,7 +938,6 @@
                         <svg viewBox="0 0 24 24" style="fill:#ff3b30;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                         Eliminar Cuenta
                     </button>
-
                     <div id="panel-confirmar-eliminar" style="display:none; background:rgba(255,59,48,0.06); border:1px solid #ff3b30; border-radius:10px; padding:10px; margin-top:6px;">
                         <p style="color:#ff3b30; font-size:0.75rem; font-weight:bold; margin-bottom:6px; text-align:center;">¿Estás seguro de eliminar tu cuenta?</p>
                         <div style="display:flex; gap:6px;">
@@ -983,6 +997,29 @@
 
     </div>
 
+    <!-- MODAL DE INSTALACIÓN PROFESIONAL CON PROGRESO Y PORCENTAJE -->
+    <div id="modal-descarga-pwa" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 999999999; padding: 20px;">
+        <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 22px; padding: 2.2rem 1.6rem; max-width: 360px; width: 100%; text-align: center; box-shadow: 0 15px 50px rgba(0,240,255,0.25);">
+            <div style="width: 65px; height: 65px; background: rgba(0,240,255,0.1); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem auto;">
+                <svg viewBox="0 0 24 24" width="30" height="30" fill="var(--accent-glow)"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            </div>
+            <h3 id="pwa-modal-titulo" style="color: #fff; font-size: 1.2rem; font-weight: 900; margin-bottom: 0.5rem;">Instalando Lester Tienda</h3>
+            <p id="pwa-modal-desc" style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.2rem;">Preparando archivos y recursos de la aplicación...</p>
+            
+            <!-- BARRA Y PORCENTAJE -->
+            <div style="width: 100%; background: #07090e; height: 10px; border-radius: 5px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 0.8rem;">
+                <div id="pwa-barra-progreso" style="width: 0%; background: var(--accent-glow); height: 100%; transition: width 0.1s linear;"></div>
+            </div>
+            <h4 id="pwa-texto-porcentaje" style="color: var(--accent-glow); font-size: 0.9rem; font-weight: 900; margin-bottom: 1.2rem;">0%</h4>
+
+            <!-- CONTENEDOR DE BOTONES FINALES -->
+            <div id="pwa-botones-finales" style="display: none; gap: 8px;">
+                <button onclick="abrirAppInstalada()" style="flex: 1; background: var(--primary-blue); color: #fff; border: none; padding: 0.8rem; border-radius: 10px; font-weight: 900; font-size: 0.85rem; cursor: pointer;">Abrir</button>
+                <button onclick="cerrarModalInstalacionPWA()" style="flex: 1; background: #07090e; color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.8rem; border-radius: 10px; font-weight: 900; font-size: 0.85rem; cursor: pointer;">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -990,7 +1027,6 @@
             });
         }
 
-        // ARRASTRE FLUIDO Y LIBRE PARA EL BOTÓN DE SOPORTE
         const botSoporte = document.getElementById('floating-bot-soporte');
         let isDragging = false;
         let startX, startY, initialX, initialY;
@@ -1042,47 +1078,68 @@
         function abrirWhatsAppReal(tipo) {
             const numero = "5359578110";
             const texto = encodeURIComponent("Estimado equipo de soporte / Lester, me comunico desde la plataforma para recibir asistencia con mi cuenta y transacciones.");
-            let url = "";
-            if (tipo === 'business') {
-                url = `whatsapp://send?phone=${numero}&text=${texto}`;
-            } else {
-                url = `https://api.whatsapp.com/send?phone=${numero}&text=${texto}`;
-            }
+            let url = tipo === 'business' ? `whatsapp://send?phone=${numero}&text=${texto}` : `https://api.whatsapp.com/send?phone=${numero}&text=${texto}`;
             window.open(url, '_blank');
             cerrarModalSoporte();
         }
 
-        // LÓGICA DE INSTALACIÓN PWA CORREGIDA (MUESTRA EL PROMPT Y ESTADO DE INSTALACIÓN)
         let deferredPrompt = null;
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            console.log("Evento beforeinstallprompt capturado con éxito.");
         });
 
-        async function instalarAppManual() {
-            if (deferredPrompt) {
-                mostrarNotificacion("Iniciando instalación...");
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    mostrarNotificacion("¡Aplicación instalada correctamente!");
+        function iniciarInstalacionDirecta() {
+            const modal = document.getElementById('modal-descarga-pwa');
+            const barra = document.getElementById('pwa-barra-progreso');
+            const porcentajeTexto = document.getElementById('pwa-texto-porcentaje');
+            const titulo = document.getElementById('pwa-modal-titulo');
+            const desc = document.getElementById('pwa-modal-desc');
+            const botonesFinales = document.getElementById('pwa-botones-finales');
+
+            modal.style.display = 'flex';
+            barra.style.width = '0%';
+            porcentajeTexto.innerText = '0%';
+            titulo.innerText = 'Instalando Lester Tienda';
+            desc.innerText = 'Descargando paquetes, recursos y configuración PWA...';
+            botonesFinales.style.display = 'none';
+
+            let progreso = 0;
+            let intervalo = setInterval(() => {
+                progreso += 2;
+                if (progreso <= 100) {
+                    barra.style.width = progreso + '%';
+                    porcentajeTexto.innerText = progreso + '%';
                 } else {
-                    mostrarNotificacion("Instalación cancelada.");
+                    clearInterval(intervalo);
+                    titulo.innerText = '¡Aplicación Instalada!';
+                    desc.innerText = 'Lester Tienda se ha instalado correctamente en tu dispositivo.';
+                    botonesFinales.style.display = 'flex';
+
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then(choiceResult => {
+                            deferredPrompt = null;
+                        });
+                    }
                 }
-                deferredPrompt = null;
-            } else {
-                // Si el navegador ya está instalado o no dispara el prompt automático, muestra guía rápida
-                alert("Para instalar la app: toca los 3 puntos de tu navegador (arriba a la derecha) y selecciona 'Instalar aplicación' o 'Añadir a la pantalla principal'.");
-            }
+            }, 30);
+        }
+
+        function abrirAppInstalada() {
+            cerrarModalInstalacionPWA();
+            mostrarNotificacion("La app ya está lista en tu dispositivo.");
+        }
+
+        function cerrarModalInstalacionPWA() {
+            document.getElementById('modal-descarga-pwa').style.display = 'none';
         }
 
         let usuarioActual = JSON.parse(localStorage.getItem('lester_usuario')) || null;
         let ofertaSeleccionada = null;
         let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
         let listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
-        let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE" };
+        let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", etiquetaBloodStrike: "PRÓXIMAMENTE" };
 
         const BIN_ID = '6aeaa0e1ffd5d16053a44254';
         const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
@@ -1176,11 +1233,18 @@
         }
 
         function aplicarConfiguracionVisual() {
-            const badge1 = document.getElementById('freefire-custom-badge');
-            let textoEtiqueta = tiendaConfig.etiquetaFreeFire || "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE";
-            if(badge1) {
-                badge1.innerText = textoEtiqueta;
-                badge1.style.display = textoEtiqueta.trim() === "" ? "none" : "block";
+            const badgeFF = document.getElementById('freefire-custom-badge');
+            let textoFF = tiendaConfig.etiquetaFreeFire || "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE";
+            if(badgeFF) {
+                badgeFF.innerText = textoFF;
+                badgeFF.style.display = textoFF.trim() === "" ? "none" : "block";
+            }
+
+            const badgeBS = document.getElementById('bloodstrike-custom-badge');
+            let textoBS = tiendaConfig.etiquetaBloodStrike || "PRÓXIMAMENTE";
+            if(badgeBS) {
+                badgeBS.innerText = textoBS;
+                badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
         }
 
@@ -1402,6 +1466,9 @@
                 }
                 if(seccion === 'ordenes') {
                     renderizarOrdenes();
+                }
+                if(seccion === 'referidos') {
+                    actualizarPerfilUI();
                 }
                 if(seccion === 'inicio') {
                     actualizarEstadisticasInicio();
@@ -1689,7 +1756,7 @@
                     guardarEnCloud();
                     actualizarPerfilUI();
                     actualizarEstadisticasInicio();
-                    mostrarNotificacion("¡Foto de perfil guardada correctamente!");
+                    mostrarNotificacion("Foto de perfil guardada correctamente");
                 }
             };
             reader.readAsDataURL(file);
@@ -1708,9 +1775,20 @@
                 return;
             }
 
+            let nombreAnterior = usuarioActual.nombre;
             usuarioActual.nombre = nuevoNombre;
+
+            // Actualizar en todas las referencias de referidos
+            listaUsuariosGlobales.forEach(u => {
+                if (u.referidoPor && u.referidoPor.toLowerCase() === nombreAnterior.toLowerCase()) {
+                    u.referidoPor = nuevoNombre;
+                }
+            });
+
             let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
-            if(fresh) fresh.nombre = nuevoNombre;
+            if(fresh) {
+                fresh.nombre = nuevoNombre;
+            }
 
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -1719,7 +1797,66 @@
             document.getElementById('nuevo-nombre-input').value = '';
             actualizarPerfilUI();
             toggleSubPanel('panel-cambiar-nombre');
-            mostrarNotificacion("¡Nombre de usuario actualizado con éxito!");
+            mostrarNotificacion("Nombre de usuario actualizado en todo el sistema");
+        }
+
+        function ejecutarTransferenciaUSDT() {
+            const destinoInput = document.getElementById('trans-destino').value.trim();
+            const monto = parseFloat(document.getElementById('trans-monto').value);
+            const password = document.getElementById('trans-pass').value;
+
+            if (!destinoInput || isNaN(monto) || monto <= 0 || !password) {
+                mostrarNotificacion("Completa todos los campos correctamente");
+                return;
+            }
+
+            if (password !== usuarioActual.pass) {
+                mostrarNotificacion("Contraseña incorrecta");
+                return;
+            }
+
+            if (usuarioActual.balance < monto) {
+                mostrarNotificacion("Saldo insuficiente en tu balance USDT");
+                return;
+            }
+
+            let destinatarioObj = listaUsuariosGlobales.find(u => 
+                u.nombre.toLowerCase() === destinoInput.toLowerCase() || 
+                u.correo.toLowerCase() === destinoInput.toLowerCase()
+            );
+
+            if (!destinatarioObj) {
+                mostrarNotificacion("El usuario destinatario no existe");
+                return;
+            }
+
+            if (destinatarioObj.correo.toLowerCase() === usuarioActual.correo.toLowerCase()) {
+                mostrarNotificacion("No puedes transferirte saldo a ti mismo");
+                return;
+            }
+
+            mostrarCarga();
+            setTimeout(async () => {
+                usuarioActual.balance = parseFloat((usuarioActual.balance - monto).toFixed(2));
+                destinatarioObj.balance = parseFloat(((parseFloat(destinatarioObj.balance) || 0) + monto).toFixed(2));
+
+                let uLocal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                if (uLocal) uLocal.balance = usuarioActual.balance;
+
+                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                await guardarEnCloud();
+                ocultarCarga();
+
+                document.getElementById('trans-destino').value = '';
+                document.getElementById('trans-monto').value = '';
+                document.getElementById('trans-pass').value = '';
+                toggleSubPanel('panel-transferir-usdt');
+
+                actualizarPerfilUI();
+                renderizarOrdenes();
+                mostrarNotificacion(`Transferencia de ${monto.toFixed(2)} USDT exitosa`);
+            }, 800);
         }
 
         function copiarWallet() {
@@ -1814,11 +1951,25 @@
             document.getElementById('stat-saldo').innerText = usuarioActual.balance.toFixed(2);
             document.getElementById('stat-recargas').innerText = usuarioActual.recargasCount;
             
+            // FILTRAR Y MOSTRAR REFERIDOS REALES
             let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase().trim() === usuarioActual.nombre.toLowerCase().trim());
             let referidosCount = referidosLista.length;
             document.getElementById('stat-referidos').innerText = referidosCount;
             document.getElementById('enlace-ref').innerText = "https://lestertienda.github.io/Lestertienda-/?ref=" + usuarioActual.nombre;
             
+            let listaDetalladaHTML = "";
+            if (referidosCount === 0) {
+                listaDetalladaHTML = "<span style='color: var(--text-muted);'>Aún no tienes referidos registrados. Comparte tu enlace.</span>";
+            } else {
+                referidosLista.forEach(ref => {
+                    listaDetalladaHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(26,35,58,0.4);">
+                        <span style="color: #fff; font-weight: 700;">${ref.nombre}</span>
+                        <span style="color: var(--accent-glow); font-size: 0.7rem;">${ref.correo}</span>
+                    </div>`;
+                });
+            }
+            document.getElementById('lista-detallada-referidos').innerHTML = listaDetalladaHTML;
+
             let porcentajeMeta = Math.min(100, (referidosCount / 10) * 100);
             document.getElementById('contador-meta-referidos').innerText = `${referidosCount} / 10 referidos para el próximo premio`;
             document.getElementById('barra-progreso-referidos').style.width = `${porcentajeMeta}%`;
@@ -1829,10 +1980,6 @@
                 document.getElementById('badge-premio-disponible').style.display = 'none';
             }
 
-            if(usuarioActual.descuentosDisponibles !== undefined) {
-                let descElem = document.getElementById('descuentos-activos-count');
-                if(descElem) descElem.innerText = usuarioActual.descuentosDisponibles;
-            }
             actualizarEstadisticasInicio();
         }
 
@@ -1880,7 +2027,7 @@
             document.getElementById('p-act').value = '';
             document.getElementById('p-nue').value = '';
             document.getElementById('p-con').value = '';
-            mostrarNotificacion("¡Contraseña actualizada con éxito!");
+            mostrarNotificacion("Contraseña actualizada con éxito");
             toggleSubPanel('panel-cambiar-pass');
         }
 
@@ -1927,6 +2074,7 @@
                         <button class="ceo-btn" onclick="cargarAccionCEO('cambiar_rango')">Gestionar Rangos</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('eliminar_cuenta_correo')">Eliminar por Correo</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_game')">Etiqueta Free Fire</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_blood')">Etiqueta Blood Strike</button>
                     `;
                 }
 
@@ -1995,13 +2143,13 @@
                     let numReferidos = listaUsuariosGlobales.filter(ref => ref.referidoPor && ref.referidoPor.toLowerCase().trim() === u.nombre.toLowerCase().trim()).length;
                     
                     html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4;">
-                        👤 <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
-                        📧 <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
-                        🔑 <b>Contraseña:</b> <span style="color:var(--accent-glow);">${u.pass}</span><br>
-                        💰 <b>Cantidad de USDT:</b> <span style="color:#10b981; font-weight:bold;">${(u.balance || 0).toFixed(2)} USDT</span><br>
-                        ⚡ <b>Cantidad de recarga:</b> <span style="color:#fff;">${u.recargasCount || 0}</span><br>
-                        🤝 <b>Cantidad de referido:</b> <span style="color:var(--accent-glow);">${numReferidos}</span><br>
-                        ⭐ <b>Rango de el usuario:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
+                        <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
+                        <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
+                        <b>Contraseña:</b> <span style="color:var(--accent-glow);">${u.pass}</span><br>
+                        <b>Cantidad de USDT:</b> <span style="color:#10b981; font-weight:bold;">${(u.balance || 0).toFixed(2)} USDT</span><br>
+                        <b>Cantidad de recarga:</b> <span style="color:#fff;">${u.recargasCount || 0}</span><br>
+                        <b>Cantidad de referido:</b> <span style="color:var(--accent-glow);">${numReferidos}</span><br>
+                        <b>Rango de el usuario:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
                     </div>`;
                 });
                 res.innerHTML = html;
@@ -2048,6 +2196,14 @@
                         <button class="btn-main" style="margin-top:0;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta</button>
                     </div>
                 `;
+            } else if(accion === 'etiqueta_blood' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form" style="border-color:#f59e0b;">
+                        <h4 style="color:#f59e0b;">Crear / Editar Etiqueta Blood Strike</h4>
+                        <input type="text" id="ceo-etiqueta-blood-texto" placeholder="Texto de la etiqueta (Ej. PRÓXIMAMENTE)" value="${tiendaConfig.etiquetaBloodStrike || ''}">
+                        <button class="btn-main" style="margin-top:0; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
+                    </div>
+                `;
             }
         }
 
@@ -2069,7 +2225,7 @@
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             await guardarEnCloud();
 
-            mostrarNotificacion(`Cuenta de ${usuarioEliminado.nombre} (${correo}) eliminada correctamente`);
+            mostrarNotificacion(`Cuenta de ${usuarioEliminado.nombre} eliminada correctamente`);
             cargarAccionCEO('usuarios');
         }
 
@@ -2098,7 +2254,7 @@
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             await guardarEnCloud();
 
-            mostrarNotificacion(`¡Acreditados ${monto} USDT a ${correo} con éxito!`);
+            mostrarNotificacion(`Acreditados ${monto} USDT a ${correo}`);
             cargarAccionCEO('usuarios');
         }
 
@@ -2127,7 +2283,7 @@
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             await guardarEnCloud();
 
-            mostrarNotificacion(`¡Descontados ${monto} USDT a ${correo}!`);
+            mostrarNotificacion(`Descontados ${monto} USDT a ${correo}`);
             cargarAccionCEO('usuarios');
         }
 
@@ -2166,7 +2322,16 @@
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
-            mostrarNotificacion("Etiqueta actualizada correctamente");
+            mostrarNotificacion("Etiqueta Free Fire actualizada");
+        }
+
+        async function ejecutarGuardarEtiquetaBloodCEO() {
+            const texto = document.getElementById('ceo-etiqueta-blood-texto').value;
+            tiendaConfig.etiquetaBloodStrike = texto;
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            aplicarConfiguracionVisual();
+            mostrarNotificacion("Etiqueta Blood Strike actualizada");
         }
 
         async function aprobarDeposito(index) {
@@ -2204,7 +2369,7 @@
             
             actualizarPerfilUI();
             renderizarOrdenes();
-            mostrarNotificacion(`¡Depósito de ${montoADepositar.toFixed(2)} USDT aprobado y sumado!`);
+            mostrarNotificacion(`Depósito de ${montoADepositar.toFixed(2)} USDT aprobado`);
             cargarAccionCEO('solicitudes_deposito');
         }
 
