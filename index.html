@@ -100,11 +100,8 @@
         }
         .form-control.no-left-icon { padding-left: 1rem; padding-right: 1rem; }
         .form-control:focus { border-color: var(--accent-glow); }
-
         .form-control.input-error { border-color: var(--error-color) !important; background: rgba(255, 59, 48, 0.03); }
-        .error-feedback-text {
-            color: var(--error-color); font-size: 0.68rem; font-weight: 700; margin-top: 4px; display: none;
-        }
+        .error-feedback-text { color: var(--error-color); font-size: 0.68rem; font-weight: 700; margin-top: 4px; display: none; }
 
         .toggle-password {
             position: absolute; right: 12px; background: none; border: none; cursor: pointer;
@@ -247,13 +244,13 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
+        /* ICONO USDT REAL VECTORIAL PROFESIONAL */
         .usdt-real-badge {
             width: 48px; height: 48px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center; position: relative;
-            box-shadow: 0 4px 15px rgba(0, 147, 147, 0.4); border: 2px solid #26a69a; flex-shrink: 0;
-            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(38, 166, 154, 0.4); border: 2px solid #26a69a; flex-shrink: 0;
+            background: linear-gradient(135deg, #134e4a 0%, #042f2e 100%);
         }
-        .usdt-real-badge img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .wallet-selector-card {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
@@ -539,7 +536,8 @@
                     <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     <span id="header-wallet-balance">0.00 USDT</span>
                 </div>
-                <button class="nav-top-icon-btn" onclick="iniciarInstalacionDirecta()" title="Instalar Aplicación">
+                <!-- BOTÓN DE DESCARGA DIRECTA NATIVA -->
+                <button class="nav-top-icon-btn" onclick="iniciarDescargaDirectaApp()" title="Descargar Aplicación">
                     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
                 </button>
                 <button class="nav-top-icon-btn" onclick="mostrarNotificacion('Sin notificaciones nuevas')">
@@ -778,7 +776,11 @@
                 <div class="wallet-selector-card">
                     <div class="wallet-info-left">
                         <div class="usdt-real-badge">
-                            <img src="1095104.jpg" alt="USDT">
+                            <!-- ICONO VECTORIAL REAL DE USDT (TETHER) -->
+                            <svg viewBox="0 0 32 32" width="30" height="30">
+                                <path fill="#26A69A" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
+                                <path fill="#FFFFFF" d="M15.8,17.8c2.4,0,4.4,0.5,4.4,1.1c0,0.6-2,1.1-4.4,1.1s-4.4-0.5-4.4-1.1C11.4,18.3,13.4,17.8,15.8,17.8z"/>
+                            </svg>
                         </div>
                         <div class="wallet-details">
                             <h4>USDT (BEP-20)</h4>
@@ -997,29 +999,6 @@
 
     </div>
 
-    <!-- MODAL DE INSTALACIÓN PROFESIONAL CON PROGRESO Y PORCENTAJE -->
-    <div id="modal-descarga-pwa" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 999999999; padding: 20px;">
-        <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 22px; padding: 2.2rem 1.6rem; max-width: 360px; width: 100%; text-align: center; box-shadow: 0 15px 50px rgba(0,240,255,0.25);">
-            <div style="width: 65px; height: 65px; background: rgba(0,240,255,0.1); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem auto;">
-                <svg viewBox="0 0 24 24" width="30" height="30" fill="var(--accent-glow)"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-            </div>
-            <h3 id="pwa-modal-titulo" style="color: #fff; font-size: 1.2rem; font-weight: 900; margin-bottom: 0.5rem;">Instalando Lester Tienda</h3>
-            <p id="pwa-modal-desc" style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1.2rem;">Preparando archivos y recursos de la aplicación...</p>
-            
-            <!-- BARRA Y PORCENTAJE -->
-            <div style="width: 100%; background: #07090e; height: 10px; border-radius: 5px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 0.8rem;">
-                <div id="pwa-barra-progreso" style="width: 0%; background: var(--accent-glow); height: 100%; transition: width 0.1s linear;"></div>
-            </div>
-            <h4 id="pwa-texto-porcentaje" style="color: var(--accent-glow); font-size: 0.9rem; font-weight: 900; margin-bottom: 1.2rem;">0%</h4>
-
-            <!-- CONTENEDOR DE BOTONES FINALES -->
-            <div id="pwa-botones-finales" style="display: none; gap: 8px;">
-                <button onclick="abrirAppInstalada()" style="flex: 1; background: var(--primary-blue); color: #fff; border: none; padding: 0.8rem; border-radius: 10px; font-weight: 900; font-size: 0.85rem; cursor: pointer;">Abrir</button>
-                <button onclick="cerrarModalInstalacionPWA()" style="flex: 1; background: #07090e; color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.8rem; border-radius: 10px; font-weight: 900; font-size: 0.85rem; cursor: pointer;">Cerrar</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -1089,50 +1068,37 @@
             deferredPrompt = e;
         });
 
-        function iniciarInstalacionDirecta() {
-            const modal = document.getElementById('modal-descarga-pwa');
-            const barra = document.getElementById('pwa-barra-progreso');
-            const porcentajeTexto = document.getElementById('pwa-texto-porcentaje');
-            const titulo = document.getElementById('pwa-modal-titulo');
-            const desc = document.getElementById('pwa-modal-desc');
-            const botonesFinales = document.getElementById('pwa-botones-finales');
-
-            modal.style.display = 'flex';
-            barra.style.width = '0%';
-            porcentajeTexto.innerText = '0%';
-            titulo.innerText = 'Instalando Lester Tienda';
-            desc.innerText = 'Descargando paquetes, recursos y configuración PWA...';
-            botonesFinales.style.display = 'none';
-
-            let progreso = 0;
-            let intervalo = setInterval(() => {
-                progreso += 2;
-                if (progreso <= 100) {
-                    barra.style.width = progreso + '%';
-                    porcentajeTexto.innerText = progreso + '%';
-                } else {
-                    clearInterval(intervalo);
-                    titulo.innerText = '¡Aplicación Instalada!';
-                    desc.innerText = 'Lester Tienda se ha instalado correctamente en tu dispositivo.';
-                    botonesFinales.style.display = 'flex';
-
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                        deferredPrompt.userChoice.then(choiceResult => {
-                            deferredPrompt = null;
-                        });
+        // DESCARGA NATIVA DIRECTA (Dispara el prompt del navegador para descargar e instalar al instante)
+        function iniciarDescargaDirectaApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        mostrarNotificacion("Iniciando descarga e instalación...");
                     }
-                }
-            }, 30);
-        }
-
-        function abrirAppInstalada() {
-            cerrarModalInstalacionPWA();
-            mostrarNotificacion("La app ya está lista en tu dispositivo.");
-        }
-
-        function cerrarModalInstalacionPWA() {
-            document.getElementById('modal-descarga-pwa').style.display = 'none';
+                    deferredPrompt = null;
+                });
+            } else {
+                // Si el navegador ya tiene la PWA instalada o no soporta prompt directo, generamos un enlace de descarga del manifiesto/paquete
+                const manifestData = {
+                    "name": "Lester Tienda",
+                    "short_name": "LesterTienda",
+                    "start_url": ".",
+                    "display": "standalone",
+                    "background_color": "#07090e",
+                    "theme_color": "#0066ff"
+                };
+                const blob = new Blob([JSON.stringify(manifestData, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'lester-tienda-installer.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                mostrarNotificacion("Descarga directa iniciada en tu dispositivo.");
+            }
         }
 
         let usuarioActual = JSON.parse(localStorage.getItem('lester_usuario')) || null;
@@ -1778,7 +1744,6 @@
             let nombreAnterior = usuarioActual.nombre;
             usuarioActual.nombre = nuevoNombre;
 
-            // Actualizar en todas las referencias de referidos
             listaUsuariosGlobales.forEach(u => {
                 if (u.referidoPor && u.referidoPor.toLowerCase() === nombreAnterior.toLowerCase()) {
                     u.referidoPor = nuevoNombre;
@@ -1951,7 +1916,6 @@
             document.getElementById('stat-saldo').innerText = usuarioActual.balance.toFixed(2);
             document.getElementById('stat-recargas').innerText = usuarioActual.recargasCount;
             
-            // FILTRAR Y MOSTRAR REFERIDOS REALES
             let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase().trim() === usuarioActual.nombre.toLowerCase().trim());
             let referidosCount = referidosLista.length;
             document.getElementById('stat-referidos').innerText = referidosCount;
