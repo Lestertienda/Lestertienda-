@@ -815,47 +815,108 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN WALLET / DEPÓSITO DE SALDO ORIGINAL -->
+            <!-- SECCIÓN WALLET RESTAURADA CON 3 OPCIONES -->
             <div id="seccion-wallet" class="vista-sec" style="display: none;">
-                <div id="wallet-main-list">
-                    <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">RECARGAR SALDO</h2>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1rem;">Transfiere al número oficial e introduce los datos de tu pago.</p>
+                <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">MÉTODOS DE BILLETERA</h2>
+                <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Selecciona tu método de recarga o gestión de fondos.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;">
                     
-                    <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(0,240,255,0.15);">
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
-                            <div style="width: 40px; height: 40px; background: rgba(0, 102, 255, 0.2); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    <!-- Opción 1: USDT BEP-20 / TRC-20 -->
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s;" onclick="seleccionarOpcionWallet('usdt')">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 38px; height: 38px; background: rgba(38, 166, 154, 0.15); border: 1px solid #26a69a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 32 32" width="20" height="20"><path fill="#26a69a" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">USDT (BEP-20 / TRC-20)</h3>
+                                    <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Billetera de Criptomonedas</span>
+                                </div>
+                            </div>
+                            <span style="color: var(--accent-glow); font-size: 0.8rem; font-weight: bold;">&gt;</span>
+                        </div>
+                    </div>
+
+                    <!-- Opción 2: Saldo (Transferencia Móvil) -->
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s;" onclick="seleccionarOpcionWallet('saldo')">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 38px; height: 38px; background: rgba(0, 102, 255, 0.15); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Recargar Saldo (Transferencia)</h3>
+                                    <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Saldo Interno Habilitado</span>
+                                </div>
+                            </div>
+                            <span style="color: var(--accent-glow); font-size: 0.8rem; font-weight: bold;">&gt;</span>
+                        </div>
+                    </div>
+
+                    <!-- Opción 3: Tarjeta (Próximamente) -->
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s;" onclick="seleccionarOpcionWallet('tarjeta')">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 38px; height: 38px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="#f59e0b"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Pago con Tarjeta</h3>
+                                    <span style="font-size: 0.68rem; color: #f59e0b; font-weight: bold;">Próximamente disponible</span>
+                                </div>
+                            </div>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">&gt;</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CONTENEDOR DINÁMICO DE DEPÓSITO DE SALDO (SIN ID DE TRANSFERENCIA) -->
+                <div id="wallet-formulario-saldo-container" style="display: none; background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(0,240,255,0.15);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 36px; height: 36px; background: rgba(0, 102, 255, 0.2); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                             </div>
                             <div>
-                                <h3 style="font-size: 0.95rem; font-weight: 900; color: #fff;">Transferencia Móvil / Saldo</h3>
-                                <span style="font-size: 0.7rem; color: #10b981; font-weight: bold;">Recarga rápida y segura</span>
+                                <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Transferencia Móvil / Saldo</h3>
+                                <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Recarga rápida</span>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label>Número Oficial para Recibir el Pago</label>
-                            <div class="form-control no-left-icon" id="wallet-num-text" style="font-weight: 900; font-size: 1.1rem; background: #07090e; color: var(--accent-glow); text-align: center; letter-spacing: 1px;">59578110</div>
-                            <button class="btn-main" style="margin-top: 0.5rem; background: var(--bg-card); color: #fff; border: 1px solid var(--border-color);" onclick="copiarNumeroWallet()">Copiar Número</button>
-                        </div>
-
-                        <div class="form-group" style="margin-top: 1rem;">
-                            <label>Monto exacto transferido</label>
-                            <input type="number" id="monto-deposito" class="form-control no-left-icon" placeholder="Ej. 300">
-                        </div>
-
-                        <div class="form-group" style="margin-top: 1rem;">
-                            <label>Tu número con el que transfirió el saldo</label>
-                            <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
-                        </div>
-
-                        <div class="form-group" style="margin-top: 1rem;">
-                            <label>ID de Transferencia / Comprobante</label>
-                            <input type="text" id="txid-deposito" class="form-control no-left-icon" placeholder="Número de confirmación o de orden">
-                        </div>
-
-                        <button class="btn-main" onclick="confirmarendioDeposito()">CONFIRMAR DEPÓSITO</button>
+                        <button onclick="cerrarFormularioWallet()" style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; font-weight: bold; cursor: pointer;">Volver</button>
                     </div>
+
+                    <div class="form-group">
+                        <label>Número Oficial para Recibir el Pago</label>
+                        <div class="form-control no-left-icon" style="font-weight: 900; font-size: 1.1rem; background: #07090e; color: var(--accent-glow); text-align: center; letter-spacing: 1px;">59578110</div>
+                        <button class="btn-main" style="margin-top: 0.5rem; background: var(--bg-card); color: #fff; border: 1px solid var(--border-color);" onclick="copiarNumeroWallet()">Copiar Número</button>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Monto exacto transferido</label>
+                        <input type="number" id="monto-deposito" class="form-control no-left-icon" placeholder="Ej. 300">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Tu número con el que transfirió el saldo</label>
+                        <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+                    </div>
+
+                    <button class="btn-main" onclick="confirmarendioDeposito()">CONFIRMAR DEPÓSITO</button>
                 </div>
+
+                <!-- CONTENEDOR USDT -->
+                <div id="wallet-formulario-usdt-container" style="display: none; background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(38,166,154,0.15);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
+                        <h3 style="font-size: 0.95rem; font-weight: 900; color: #fff;">Dirección Billetera USDT</h3>
+                        <button onclick="cerrarFormularioWallet()" style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; font-weight: bold; cursor: pointer;">Volver</button>
+                    </div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.8rem;">Redes soportadas: <b>BEP-20</b> / <b>TRC-20</b></p>
+                    <div class="form-control no-left-icon" style="font-size: 0.7rem; background: #07090e; color: #26a69a; text-align: center; word-break: break-all; padding: 0.8rem; margin-bottom: 0.8rem;">0x71C...B294fA (SafePal / Binance)</div>
+                    <button class="btn-main" style="background: #26a69a;" onclick="copiarDireccionUSDT()">Copiar Dirección USDT</button>
+                </div>
+
             </div>
 
             <!-- SECCIÓN PERFIL -->
@@ -1451,6 +1512,7 @@
                 if(seccion === 'perfil') verificarAccesoCEO();
                 if(seccion === 'ordenes') renderizarOrdenes();
                 if(seccion === 'referidos') actualizarPerfilUI();
+                if(seccion === 'wallet') cerrarFormularioWallet();
                 if(seccion === 'inicio') {
                     actualizarEstadisticasInicio();
                     aplicarConfiguracionVisual();
@@ -1478,6 +1540,25 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 seleccionarMetodoPago('usdt');
             }, 300);
+        }
+
+        function seleccionarOpcionWallet(opcion) {
+            if (opcion === 'usdt') {
+                document.getElementById('wallet-formulario-usdt-container').style.display = 'block';
+                document.getElementById('wallet-formulario-saldo-container').style.display = 'none';
+            } else if (opcion === 'saldo') {
+                document.getElementById('wallet-formulario-saldo-container').style.display = 'block';
+                document.getElementById('wallet-formulario-usdt-container').style.display = 'none';
+            } else if (opcion === 'tarjeta') {
+                document.getElementById('wallet-formulario-usdt-container').style.display = 'none';
+                document.getElementById('wallet-formulario-saldo-container').style.display = 'none';
+                mostrarNotificacion("Pago con Tarjeta: Próximamente disponible");
+            }
+        }
+
+        function cerrarFormularioWallet() {
+            document.getElementById('wallet-formulario-usdt-container').style.display = 'none';
+            document.getElementById('wallet-formulario-saldo-container').style.display = 'none';
         }
 
         function seleccionarMetodoPago(metodo) {
@@ -1545,6 +1626,7 @@
                     mostrarNotificacion("Saldo insuficiente. Redirigiendo a Wallet para recargar saldo...");
                     setTimeout(() => {
                         cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'));
+                        seleccionarOpcionWallet('saldo');
                     }, 1200);
                     return;
                 }
@@ -1672,7 +1754,7 @@
                         <div class="order-card-pro">
                             <div class="order-info">
                                 <h4>Recarga Saldo - ${d.monto}</h4>
-                                <p>Tel: ${d.telefonoTransfirio || 'N/A'} | Comprobante: ${d.txid || 'N/A'}</p>
+                                <p>Tel: ${d.telefonoTransfirio || 'N/A'}</p>
                             </div>
                             <span class="badge-status ${claseEstado}">${d.estado}</span>
                         </div>
@@ -1886,6 +1968,11 @@
             mostrarNotificacion("Número 59578110 copiado al portapapeles");
         }
 
+        function copiarDireccionUSDT() {
+            navigator.clipboard.writeText("0x71C7656EC7ab88b098defB751B7401B5f6d2B294fA");
+            mostrarNotificacion("Dirección USDT copiada al portapapeles");
+        }
+
         function copiarEnlaceRef() {
             navigator.clipboard.writeText("https://lestertienda.github.io/Lestertienda-/?ref=" + encodeURIComponent(usuarioActual.nombre));
             mostrarNotificacion("Enlace de referido copiado");
@@ -1907,7 +1994,6 @@
         function confirmarendioDeposito() {
             const monto = parseFloat(document.getElementById('monto-deposito').value);
             const telefonoTransfirio = document.getElementById('telefono-transfirio').value.trim();
-            const txid = document.getElementById('txid-deposito').value.trim();
 
             if(isNaN(monto) || monto <= 0) {
                 mostrarNotificacion("Introduce un monto válido");
@@ -1919,11 +2005,6 @@
                 return;
             }
 
-            if(!txid || txid.length < 3) {
-                mostrarNotificacion("Debes introducir el ID o comprobante de transferencia");
-                return;
-            }
-
             mostrarCarga("Enviando depósito...");
             setTimeout(async () => {
                 const nuevoDep = { 
@@ -1932,7 +2013,6 @@
                     usuario: usuarioActual.nombre, 
                     monto: monto, 
                     telefonoTransfirio: telefonoTransfirio,
-                    txid: txid,
                     estado: 'Pendiente' 
                 };
                 solicitudesGlobales.depositos.push(nuevoDep);
@@ -1944,7 +2024,6 @@
                 mostrarNotificacion("Depósito enviado a revisión");
                 document.getElementById('monto-deposito').value = '';
                 document.getElementById('telefono-transfirio').value = '';
-                document.getElementById('txid-deposito').value = '';
                 
                 renderizarOrdenes();
                 cambiarTabOrdenes('depositos');
@@ -2157,8 +2236,7 @@
                     if(d.estado === 'Pendiente') {
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
                             <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto Saldo:</b> ${d.monto}<br>
-                            <b>Teléfono Transfirio:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span><br>
-                            <b>Comprobante:</b> <span style="color:var(--accent-glow);">${d.txid || 'N/A'}</span>
+                            <b>Teléfono Transfirio:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span>
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
                                 <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
                                 <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
