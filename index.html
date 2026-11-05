@@ -245,62 +245,40 @@
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
-        /* LOGOTIPO REAL DE USDT (TETHER) OFICIAL CON CÍRCULO VERDE EXACTO DEL MERCADO */
-        .usdt-real-badge {
-            width: 32px; height: 32px; border-radius: 50%; overflow: hidden;
-            display: flex; align-items: center; justify-content: center; position: relative;
-            border: 2px solid #26a69a; flex-shrink: 0; background: #26a69a;
-        }
-
-        /* ESTILO EXACTO DE LOS BOTONES DE PAGO (IMÁGENES DE REFERENCIA) */
+        /* BOTONES DE PAGO MÁS PEQUEÑOS: BLANCOS POR DEFECTO Y AZULES AL SELECCIONAR */
         .payment-method-selector-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 1.2rem;
+            gap: 8px;
+            margin-bottom: 1rem;
         }
         .pay-method-pill-btn {
-            background: linear-gradient(135deg, #2b70ff 0%, #004fe3 100%);
-            border: 2px solid rgba(0, 240, 255, 0.4);
-            border-radius: 16px;
-            padding: 0.75rem 0.6rem;
+            background: #ffffff;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.5rem 0.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
-            opacity: 0.65;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .pay-method-pill-btn.active {
-            opacity: 1;
+            background: linear-gradient(135deg, #2b70ff 0%, #004fe3 100%);
             border-color: var(--accent-glow);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
-            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            transform: translateY(-1px);
         }
         .pay-method-pill-btn span {
-            color: #ffffff;
+            color: #0d1322;
             font-weight: 900;
-            font-size: 0.95rem;
-            letter-spacing: 0.3px;
+            font-size: 0.85rem;
+            letter-spacing: 0.2px;
         }
-
-        .wallet-selector-card {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
-            padding: 1rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;
-        }
-        .wallet-info-left { display: flex; align-items: center; gap: 12px; }
-        .wallet-details h4 { font-size: 0.88rem; font-weight: 900; color: #fff; }
-        .wallet-details span { font-size: 0.72rem; color: var(--text-muted); }
-        .btn-seleccionar-wallet {
-            background: var(--primary-blue); color: #fff; border: none; padding: 0.45rem 0.9rem;
-            border-radius: 10px; font-weight: 900; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 5px;
-        }
-        .btn-seleccionar-wallet svg { width: 12px; height: 12px; fill: #fff; }
-
-        #wallet-subview-panel {
-            display: none; animation: fadeInPage 0.3s ease forwards;
+        .pay-method-pill-btn.active span {
+            color: #ffffff;
         }
 
         .diamonds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.1rem; }
@@ -340,11 +318,10 @@
         }
         .avatar-edit-badge svg { width: 11px; height: 11px; fill: #fff; }
 
-        .profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; background: #07090e; border-radius: 10px; padding: 0.5rem; margin: 0.9rem 0 0 0; border: 1px solid var(--border-color); }
+        .profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr; background: #07090e; border-radius: 10px; padding: 0.6rem; margin: 0.9rem 0 0 0; border: 1px solid var(--border-color); gap: 8px; }
         .stat-col h4 { font-size: 0.88rem; font-weight: 900; color: var(--accent-glow); }
         .stat-col span { font-size: 0.68rem; color: var(--text-muted); }
 
-        /* TARJETAS DE ÓRDENES Y DEPÓSITOS 100% ENCAPSULADAS CON NEÓN Y HUMO */
         .order-card-pro {
             background: var(--bg-card); 
             border: 1.5px solid var(--accent-glow); 
@@ -359,16 +336,6 @@
             overflow: hidden;
             gap: 12px;
         }
-        .order-card-pro::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(0,240,255,0.08) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        .order-card-pro > * { position: relative; z-index: 1; }
-        
         .order-info { flex: 1; min-width: 0; }
         .order-info h4 { font-size: 0.86rem; font-weight: 900; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .order-info p { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -471,7 +438,6 @@
 </head>
 <body>
 
-    <!-- ANIMACIÓN DE CARGA AUTOMÁTICA -->
     <div id="loading-overlay">
         <div class="spinner"></div>
         <div class="loading-text" id="loading-label-text">Actualizando sistema...</div>
@@ -479,7 +445,6 @@
     
     <div id="notification-toast">ACCIÓN COMPLETADA</div>
 
-    <!-- MODAL SELECTOR SOPORTE -->
     <div id="modal-soporte-selector" onclick="cerrarModalSoporte(event)">
         <div class="soporte-modal-box" onclick="event.stopPropagation()">
             <h3 style="color: #fff; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">Atención y Soporte</h3>
@@ -509,7 +474,6 @@
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE SOPORTE -->
     <div id="floating-bot-soporte" class="floating-bot" onclick="mostrarModalSoporte()">
         <img src="icon-192.png" alt="Soporte">
     </div>
@@ -714,7 +678,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE CON BOTONES DE PAGO Y PRECIOS DINÁMICOS -->
+            <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE -->
             <div id="seccion-freefire" class="vista-sec" style="display: none;">
                 <button class="nav-top-icon-btn" onclick="irASelectorJuegos()" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Juegos</button>
                 
@@ -723,21 +687,19 @@
                     <input type="text" id="player-id-input" class="form-control no-left-icon" placeholder="Ej. 123456789" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
 
-                <!-- DOS BOTONES SUPERIORES DE PAGO (USDT y SALDO) EXACTOS COMO LAS IMÁGENES -->
+                <!-- DOS BOTONES SUPERIORES DE PAGO (BLANCOS POR DEFECTO, AZULES AL SELECCIONAR) -->
                 <div class="section-title">SELECCIONA EL MÉTODO DE PAGO</div>
                 <div class="payment-method-selector-grid">
                     <div id="btn-pay-usdt" class="pay-method-pill-btn active" onclick="seleccionarMetodoPago('usdt')">
-                        <div class="usdt-real-badge">
-                            <svg viewBox="0 0 32 32" width="20" height="20">
-                                <path fill="#FFFFFF" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
-                            </svg>
+                        <div style="width: 22px; height: 22px; background: #26a69a; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 32 32" width="14" height="14"><path fill="#FFFFFF" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/></svg>
                         </div>
                         <span>USDT</span>
                     </div>
 
                     <div id="btn-pay-saldo" class="pay-method-pill-btn" onclick="seleccionarMetodoPago('saldo')">
-                        <div style="width: 32px; height: 32px; background: rgba(0, 102, 255, 0.2); border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        <div style="width: 22px; height: 22px; background: #0066ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="#fff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
                         <span>Saldo</span>
                     </div>
@@ -806,8 +768,8 @@
                 <div id="panel-ordenes-depositos" style="display: none;">
                     <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN WALLET</span>
-                            <h3 id="stat-total-depositado-usdt" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0.00</h3>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN SALDO</span>
+                            <h3 id="stat-total-depositado-saldo" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0</h3>
                         </div>
                         <div style="width: 36px; height: 36px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -853,10 +815,10 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN WALLET / DEPÓSITO DE SALDO ACTUALIZADA CON NÚMERO 59578110 -->
+            <!-- SECCIÓN WALLET / DEPÓSITO DE SALDO ORIGINAL -->
             <div id="seccion-wallet" class="vista-sec" style="display: none;">
                 <div id="wallet-main-list">
-                    <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">RECARGAR SALDO / WALLET</h2>
+                    <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">RECARGAR SALDO</h2>
                     <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1rem;">Transfiere al número oficial e introduce los datos de tu pago.</p>
                     
                     <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(0,240,255,0.15);">
@@ -887,7 +849,7 @@
                         </div>
 
                         <div class="form-group" style="margin-top: 1rem;">
-                            <label>ID de Transferencia / Comprobante / Hash</label>
+                            <label>ID de Transferencia / Comprobante</label>
                             <input type="text" id="txid-deposito" class="form-control no-left-icon" placeholder="Número de confirmación o de orden">
                         </div>
 
@@ -916,9 +878,8 @@
                     <p id="perfil-rango-label" style="color: var(--accent-glow); font-size: 0.72rem; font-weight: bold; margin-top: 0.3rem;">CLIENTE PRO</p>
 
                     <div class="profile-stats-grid">
-                        <div class="stat-col"><h4 id="stat-recargas">0</h4><span>Recargas</span></div>
-                        <div class="stat-col"><h4 id="stat-saldo">0.00</h4><span>Saldo</span></div>
-                        <div class="stat-col"><h4 id="stat-referidos">0</h4><span>Referidos</span></div>
+                        <div class="stat-col"><h4 id="stat-saldo-usdt">0.00</h4><span>Wallet USDT</span></div>
+                        <div class="stat-col"><h4 id="stat-saldo-cup">0</h4><span>Saldo Interno</span></div>
                     </div>
                 </div>
 
@@ -1177,9 +1138,13 @@
             }
 
             if (usuarioActual) {
+                if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
                 let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if(fresh) {
                     usuarioActual = fresh;
+                    if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                    if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                 }
                 document.getElementById('auth-screen').style.display = 'none';
@@ -1201,7 +1166,11 @@
                 
                 if (resultado.record) {
                     if (resultado.record.usuarios && Array.isArray(resultado.record.usuarios)) {
-                        listaUsuariosGlobales = resultado.record.usuarios;
+                        listaUsuariosGlobales = resultado.record.usuarios.map(u => {
+                            if(u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
+                            if(u.balanceCUP === undefined) u.balanceCUP = 0;
+                            return u;
+                        });
                         localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                     }
                     if (resultado.record.solicitudes) {
@@ -1218,6 +1187,8 @@
                     let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                     if(fresh) {
                         usuarioActual = fresh;
+                        if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                        if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
                         localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                     }
                 }
@@ -1403,7 +1374,9 @@
                     nombre: user, 
                     correo: email, 
                     pass: pass, 
-                    balance: 0.00, 
+                    balanceUSDT: 0.00,
+                    balanceCUP: 0,
+                    balance: 0.00,
                     recargasCount: 0, 
                     avatar: "",
                     referidoPor: referidoPor || null,
@@ -1447,6 +1420,8 @@
             setTimeout(() => {
                 ocultarCarga();
                 usuarioActual = encontrado;
+                if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
                 if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') {
                     usuarioActual.rango = 2;
                 }
@@ -1501,7 +1476,7 @@
                 document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
                 document.getElementById('seccion-freefire').style.display = 'flex';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                seleccionarMetodoPago('usdt'); // Por defecto USDT
+                seleccionarMetodoPago('usdt');
             }, 300);
         }
 
@@ -1559,18 +1534,30 @@
                 return;
             }
 
-            // Validar saldo insuficiente si paga con Saldo interno
-            if (usuarioActual.balance < ofertaSeleccionada.precio) {
-                mostrarNotificacion("Saldo insuficiente. Redirigiendo a Wallet para recargar...");
-                setTimeout(() => {
-                    cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'));
-                }, 1200);
-                return;
+            // Validar saldo específico según método de pago elegido
+            if (ofertaSeleccionada.moneda === 'usdt') {
+                if (usuarioActual.balanceUSDT < ofertaSeleccionada.precio) {
+                    mostrarNotificacion("Saldo USDT insuficiente. Recarga en tu Wallet USDT.");
+                    return;
+                }
+            } else {
+                if (usuarioActual.balanceCUP < ofertaSeleccionada.precio) {
+                    mostrarNotificacion("Saldo insuficiente. Redirigiendo a Wallet para recargar saldo...");
+                    setTimeout(() => {
+                        cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'));
+                    }, 1200);
+                    return;
+                }
             }
 
             mostrarCarga("Procesando recarga...");
             setTimeout(async () => {
-                usuarioActual.balance -= ofertaSeleccionada.precio;
+                if (ofertaSeleccionada.moneda === 'usdt') {
+                    usuarioActual.balanceUSDT -= ofertaSeleccionada.precio;
+                } else {
+                    usuarioActual.balanceCUP -= ofertaSeleccionada.precio;
+                }
+                usuarioActual.balance = usuarioActual.balanceUSDT;
                 usuarioActual.recargasCount++;
                 if (usuarioActual.descuentosDisponibles > 0) {
                     usuarioActual.descuentosDisponibles--;
@@ -1578,7 +1565,9 @@
 
                 let uGlobal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if(uGlobal) {
-                    uGlobal.balance = usuarioActual.balance;
+                    uGlobal.balanceUSDT = usuarioActual.balanceUSDT;
+                    uGlobal.balanceCUP = usuarioActual.balanceCUP;
+                    uGlobal.balance = usuarioActual.balanceUSDT;
                     uGlobal.recargasCount = usuarioActual.recargasCount;
                     uGlobal.descuentosDisponibles = usuarioActual.descuentosDisponibles;
                 }
@@ -1644,8 +1633,8 @@
             let misDepositos = solicitudesGlobales.depositos.filter(d => d.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
 
             document.getElementById('stat-total-recargas-realizadas').innerText = misRecargas.length;
-            let totalDepositadoWallet = misDepositos.filter(d => d.estado === 'Aprobado').reduce((acc, curr) => acc + curr.monto, 0);
-            document.getElementById('stat-total-depositado-usdt').innerText = totalDepositadoWallet.toFixed(2);
+            let totalDepositadoSaldo = misDepositos.filter(d => d.estado === 'Aprobado').reduce((acc, curr) => acc + curr.monto, 0);
+            document.getElementById('stat-total-depositado-saldo').innerText = totalDepositadoSaldo;
 
             let htmlCompras = "";
             if(misRecargas.length === 0) {
@@ -1710,6 +1699,7 @@
                         correo: r.correo,
                         totalDiamantesTexto: r.detalle || '100+10',
                         totalGasto: 0,
+                        monedaGasto: r.moneda || 'usdt',
                         ultimaHora: (r.id || r.fecha)
                     };
                 }
@@ -1729,6 +1719,7 @@
                     let horaStr = new Date(item.ultimaHora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     let uObj = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === (item.correo || '').toLowerCase() || u.nombre.toLowerCase() === item.usuario.toLowerCase());
                     let avatarC = (uObj && uObj.avatar) ? `<img src="${uObj.avatar}">` : item.usuario.charAt(0).toUpperCase();
+                    let monedaTxt = item.monedaGasto === 'saldo' ? '$' : 'USDT';
 
                     vivoHTML += `
                         <div class="history-item-row">
@@ -1740,7 +1731,7 @@
                                     <p>Free Fire LATAM · <b>+${item.totalDiamantesTexto}</b></p>
                                 </div>
                             </div>
-                            <span class="history-price">${item.totalGasto.toFixed(2)}</span>
+                            <span class="history-price">${item.totalGasto.toFixed(2)} ${monedaTxt}</span>
                         </div>
                     `;
                 });
@@ -1840,8 +1831,8 @@
                 return;
             }
 
-            if (usuarioActual.balance < monto) {
-                mostrarNotificacion("Saldo insuficiente en tu balance");
+            if (usuarioActual.balanceUSDT < monto) {
+                mostrarNotificacion("Saldo USDT insuficiente en tu balance");
                 return;
             }
 
@@ -1862,11 +1853,17 @@
 
             mostrarCarga("Procesando transferencia...");
             setTimeout(async () => {
-                usuarioActual.balance = parseFloat((usuarioActual.balance - monto).toFixed(2));
-                destinatarioObj.balance = parseFloat(((parseFloat(destinatarioObj.balance) || 0) + monto).toFixed(2));
+                usuarioActual.balanceUSDT = parseFloat((usuarioActual.balanceUSDT - monto).toFixed(2));
+                usuarioActual.balance = usuarioActual.balanceUSDT;
+                if(destinatarioObj.balanceUSDT === undefined) destinatarioObj.balanceUSDT = destinatarioObj.balance || 0;
+                destinatarioObj.balanceUSDT = parseFloat(((parseFloat(destinatarioObj.balanceUSDT) || 0) + monto).toFixed(2));
+                destinatarioObj.balance = destinatarioObj.balanceUSDT;
 
                 let uLocal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
-                if (uLocal) uLocal.balance = usuarioActual.balance;
+                if (uLocal) {
+                    uLocal.balanceUSDT = usuarioActual.balanceUSDT;
+                    uLocal.balance = usuarioActual.balanceUSDT;
+                }
 
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -1880,7 +1877,7 @@
 
                 actualizarPerfilUI();
                 renderizarOrdenes();
-                mostrarNotificacion(`Transferencia de ${monto.toFixed(2)} exitosa`);
+                mostrarNotificacion(`Transferencia de ${monto.toFixed(2)} USDT exitosa`);
             }, 800);
         }
 
@@ -1960,13 +1957,15 @@
             let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
             if(fresh) {
                 usuarioActual = fresh;
+                if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             }
             if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
 
-            const saldoTexto = `${usuarioActual.balance.toFixed(2)}`;
-            document.getElementById('header-wallet-balance').innerText = saldoTexto;
-            document.getElementById('profile-wallet-balance').innerText = saldoTexto;
+            const saldoUsdtTexto = `${(usuarioActual.balanceUSDT || 0).toFixed(2)} USDT`;
+            document.getElementById('header-wallet-balance').innerText = saldoUsdtTexto;
+            document.getElementById('profile-wallet-balance').innerText = saldoUsdtTexto;
 
             document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
             document.getElementById('perfil-correo').innerText = usuarioActual.correo;
@@ -1983,12 +1982,11 @@
                 avatarCircle.innerText = usuarioActual.nombre.charAt(0).toUpperCase();
             }
 
-            document.getElementById('stat-saldo').innerText = usuarioActual.balance.toFixed(2);
-            document.getElementById('stat-recargas').innerText = usuarioActual.recargasCount;
+            document.getElementById('stat-saldo-usdt').innerText = (usuarioActual.balanceUSDT || 0).toFixed(2);
+            document.getElementById('stat-saldo-cup').innerText = usuarioActual.balanceCUP || 0;
             
             let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase().trim() === usuarioActual.nombre.toLowerCase().trim());
             let referidosCount = referidosLista.length;
-            document.getElementById('stat-referidos').innerText = referidosCount;
             document.getElementById('enlace-ref').innerText = "https://lestertienda.github.io/Lestertienda-/?ref=" + usuarioActual.nombre;
             
             let listaDetalladaHTML = "";
@@ -2141,7 +2139,7 @@
                 solicitudesGlobales.recargas.forEach((s, idx) => {
                     if(s.estado === 'Pendiente') {
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
-                            <b>User:</b> ${s.usuario} | <b>ID:</b> ${s.idJugador} | <b>Detalle:</b> ${s.detalle}
+                            <b>User:</b> ${s.usuario} | <b>ID:</b> ${s.idJugador} | <b>Detalle:</b> ${s.detalle} (${s.moneda})
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
                                 <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarRecarga(${idx})">Completar</button>
                                 <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarRecarga(${idx})">Cancelar</button>
@@ -2158,8 +2156,8 @@
                 solicitudesGlobales.depositos.forEach((d, idx) => {
                     if(d.estado === 'Pendiente') {
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
-                            <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto:</b> ${d.monto}<br>
-                            <b>Teléfono Transfirió:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span><br>
+                            <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto Saldo:</b> ${d.monto}<br>
+                            <b>Teléfono Transfirio:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span><br>
                             <b>Comprobante:</b> <span style="color:var(--accent-glow);">${d.txid || 'N/A'}</span>
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
                                 <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
@@ -2175,34 +2173,41 @@
                 
                 listaUsuariosGlobales.forEach(u => {
                     let rText = u.rango === 2 ? "CEO / Supremo" : (u.rango === 1 ? "Admin (Rango 1)" : "Cliente (Rango 0)");
-                    let numReferidos = listaUsuariosGlobales.filter(ref => ref.referidoPor && ref.referidoPor.toLowerCase().trim() === u.nombre.toLowerCase().trim()).length;
+                    if(u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
+                    if(u.balanceCUP === undefined) u.balanceCUP = 0;
                     
                     html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4;">
                         <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
                         <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
-                        <b>Contraseña:</b> <span style="color:var(--accent-glow);">${u.pass}</span><br>
-                        <b>Saldo:</b> <span style="color:#10b981; font-weight:bold;">${(u.balance || 0).toFixed(2)}</span><br>
-                        <b>Cantidad de recarga:</b> <span style="color:#fff;">${u.recargasCount || 0}</span><br>
-                        <b>Cantidad de referido:</b> <span style="color:var(--accent-glow);">${numReferidos}</span><br>
-                        <b>Rango de el usuario:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
+                        <b>Wallet USDT:</b> <span style="color:var(--accent-glow); font-weight:bold;">${u.balanceUSDT.toFixed(2)}</span><br>
+                        <b>Saldo Interno:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP}</span><br>
+                        <b>Rango:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
                     </div>`;
                 });
                 res.innerHTML = html;
             } else if(accion === 'acreditar') {
                 res.innerHTML = `
                     <div class="ceo-action-form">
-                        <h4>Acreditar Saldo</h4>
+                        <h4>Acreditar Saldo / USDT</h4>
                         <input type="email" id="ceo-acreditar-correo" placeholder="Correo del usuario">
-                        <input type="number" id="ceo-acreditar-monto" placeholder="Monto a sumar (Ej. 300)">
+                        <select id="ceo-acreditar-tipo" style="width:100%; background:#0d1322; border:1px solid var(--border-color); padding:0.65rem; border-radius:8px; color:#fff; margin-bottom:0.6rem; font-size:0.82rem; outline:none;">
+                            <option value="cup">Saldo Interno (CUP)</option>
+                            <option value="usdt">Wallet USDT</option>
+                        </select>
+                        <input type="number" id="ceo-acreditar-monto" placeholder="Monto a sumar">
                         <button class="btn-main" style="margin-top:0;" onclick="ejecutarAcreditarCEO()">Aplicar Acreditación</button>
                     </div>
                 `;
             } else if(accion === 'desacreditar') {
                 res.innerHTML = `
                     <div class="ceo-action-form">
-                        <h4>Desacreditar Saldo</h4>
+                        <h4>Desacreditar Saldo / USDT</h4>
                         <input type="email" id="ceo-desacreditar-correo" placeholder="Correo del usuario">
-                        <input type="number" id="ceo-desacreditar-monto" placeholder="Monto a restar (Ej. 100)">
+                        <select id="ceo-desacreditar-tipo" style="width:100%; background:#0d1322; border:1px solid var(--border-color); padding:0.65rem; border-radius:8px; color:#fff; margin-bottom:0.6rem; font-size:0.82rem; outline:none;">
+                            <option value="cup">Saldo Interno (CUP)</option>
+                            <option value="usdt">Wallet USDT</option>
+                        </select>
+                        <input type="number" id="ceo-desacreditar-monto" placeholder="Monto a restar">
                         <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarDesacreditarCEO()">Aplicar Desacreditación</button>
                     </div>
                 `;
@@ -2260,6 +2265,7 @@
 
         async function ejecutarAcreditarCEO() {
             const correo = document.getElementById('ceo-acreditar-correo').value.trim().toLowerCase();
+            const tipo = document.getElementById('ceo-acreditar-tipo').value;
             const monto = parseFloat(document.getElementById('ceo-acreditar-monto').value);
 
             if(!correo || isNaN(monto)) { mostrarNotificacion("Completa el correo y el monto correctamente"); return; }
@@ -2267,9 +2273,20 @@
             let target = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === correo);
             if(!target) { mostrarNotificacion("Usuario no encontrado"); return; }
 
-            target.balance = parseFloat(((parseFloat(target.balance) || 0) + monto).toFixed(2));
+            if(target.balanceUSDT === undefined) target.balanceUSDT = target.balance || 0;
+            if(target.balanceCUP === undefined) target.balanceCUP = 0;
+
+            if (tipo === 'usdt') {
+                target.balanceUSDT = parseFloat((target.balanceUSDT + monto).toFixed(2));
+                target.balance = target.balanceUSDT;
+            } else {
+                target.balanceCUP = Math.round(target.balanceCUP + monto);
+            }
+
             if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
-                usuarioActual.balance = target.balance;
+                usuarioActual.balanceUSDT = target.balanceUSDT;
+                usuarioActual.balanceCUP = target.balanceCUP;
+                usuarioActual.balance = target.balanceUSDT;
                 actualizarPerfilUI();
             }
 
@@ -2277,12 +2294,13 @@
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             await guardarEnCloud();
 
-            mostrarNotificacion(`Acreditados ${monto} a ${correo}`);
+            mostrarNotificacion(`Acreditado ${monto} (${tipo.toUpperCase()}) a ${correo}`);
             cargarAccionCEO('usuarios');
         }
 
         async function ejecutarDesacreditarCEO() {
             const correo = document.getElementById('ceo-desacreditar-correo').value.trim().toLowerCase();
+            const tipo = document.getElementById('ceo-desacreditar-tipo').value;
             const monto = parseFloat(document.getElementById('ceo-desacreditar-monto').value);
 
             if(!correo || isNaN(monto)) { mostrarNotificacion("Completa el correo y el monto correctamente"); return; }
@@ -2290,9 +2308,20 @@
             let target = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === correo);
             if(!target) { mostrarNotificacion("Usuario no encontrado"); return; }
 
-            target.balance = Math.max(0, parseFloat(((parseFloat(target.balance) || 0) - monto).toFixed(2)));
+            if(target.balanceUSDT === undefined) target.balanceUSDT = target.balance || 0;
+            if(target.balanceCUP === undefined) target.balanceCUP = 0;
+
+            if (tipo === 'usdt') {
+                target.balanceUSDT = Math.max(0, parseFloat((target.balanceUSDT - monto).toFixed(2)));
+                target.balance = target.balanceUSDT;
+            } else {
+                target.balanceCUP = Math.max(0, Math.round(target.balanceCUP - monto));
+            }
+
             if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
-                usuarioActual.balance = target.balance;
+                usuarioActual.balanceUSDT = target.balanceUSDT;
+                usuarioActual.balanceCUP = target.balanceCUP;
+                usuarioActual.balance = target.balanceUSDT;
                 actualizarPerfilUI();
             }
 
@@ -2300,7 +2329,7 @@
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             await guardarEnCloud();
 
-            mostrarNotificacion(`Descontados ${monto} a ${correo}`);
+            mostrarNotificacion(`Descontado ${monto} (${tipo.toUpperCase()}) a ${correo}`);
             cargarAccionCEO('usuarios');
         }
 
@@ -2355,8 +2384,8 @@
 
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase().trim() === dep.correo.toLowerCase().trim());
             if(userTarget) {
-                let saldoActual = parseFloat(userTarget.balance) || 0;
-                userTarget.balance = parseFloat((saldoActual + montoADepositar).toFixed(2));
+                if(userTarget.balanceCUP === undefined) userTarget.balanceCUP = 0;
+                userTarget.balanceCUP = Math.round(userTarget.balanceCUP + montoADepositar);
                 
                 if (userTarget.referidoPor) {
                     let patrocinador = listaUsuariosGlobales.find(u => u.nombre.trim().toLowerCase() === userTarget.referidoPor.trim().toLowerCase());
@@ -2364,7 +2393,7 @@
                 }
 
                 if(usuarioActual && usuarioActual.correo.toLowerCase().trim() === userTarget.correo.toLowerCase().trim()) {
-                    usuarioActual.balance = userTarget.balance;
+                    usuarioActual.balanceCUP = userTarget.balanceCUP;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                 }
             }
@@ -2375,7 +2404,7 @@
             
             actualizarPerfilUI();
             renderizarOrdenes();
-            mostrarNotificacion(`Depósito de ${montoADepositar.toFixed(2)} aprobado`);
+            mostrarNotificacion(`Depósito de saldo ${montoADepositar} aprobado`);
             cargarAccionCEO('solicitudes_deposito');
         }
 
@@ -2409,13 +2438,21 @@
 
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === rec.correo.toLowerCase());
             if(userTarget && rec.precio) {
-                let saldoActual = parseFloat(userTarget.balance) || 0;
                 let precioRecarga = parseFloat(rec.precio) || 0;
-                userTarget.balance = parseFloat((saldoActual + precioRecarga).toFixed(2));
+                if(rec.moneda === 'usdt') {
+                    if(userTarget.balanceUSDT === undefined) userTarget.balanceUSDT = userTarget.balance || 0;
+                    userTarget.balanceUSDT = parseFloat((userTarget.balanceUSDT + precioRecarga).toFixed(2));
+                    userTarget.balance = userTarget.balanceUSDT;
+                } else {
+                    if(userTarget.balanceCUP === undefined) userTarget.balanceCUP = 0;
+                    userTarget.balanceCUP = Math.round(userTarget.balanceCUP + precioRecarga);
+                }
                 userTarget.recargasCount = Math.max(0, userTarget.recargasCount - 1);
                 
                 if(usuarioActual && usuarioActual.correo.toLowerCase() === userTarget.correo.toLowerCase()) {
-                    usuarioActual.balance = userTarget.balance;
+                    usuarioActual.balanceUSDT = userTarget.balanceUSDT;
+                    usuarioActual.balanceCUP = userTarget.balanceCUP;
+                    usuarioActual.balance = userTarget.balanceUSDT;
                     usuarioActual.recargasCount = userTarget.recargasCount;
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                 }
