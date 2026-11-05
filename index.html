@@ -335,10 +335,19 @@
             box-shadow: 0 0 18px rgba(0, 240, 255, 0.22), inset 0 0 10px rgba(0, 240, 255, 0.05);
             overflow: hidden;
             gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .order-card-pro:hover {
+            border-color: #10b981;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
+            transform: translateY(-1px);
         }
         .order-info { flex: 1; min-width: 0; }
         .order-info h4 { font-size: 0.86rem; font-weight: 900; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .order-info p { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .order-right-action { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         
         .badge-status { 
             padding: 5px 10px; 
@@ -346,12 +355,17 @@
             font-size: 0.7rem; 
             font-weight: 900; 
             text-transform: uppercase; 
-            flex-shrink: 0; 
             text-align: center;
         }
         .status-pendiente { background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5); }
         .status-completado { background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.5); }
         .status-cancelado { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); }
+
+        .order-arrow-icon {
+            width: 26px; height: 26px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-glow);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        .order-arrow-icon svg { width: 12px; height: 12px; fill: var(--accent-glow); }
 
         .security-menu-box { 
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; 
@@ -706,33 +720,33 @@
 
                 <div class="section-title">SELECCIONA EL PAQUETE</div>
                 <div class="diamonds-grid">
-                    <div class="diamond-card" onclick="seleccionarOferta(110, 1.2, 300, '100+10')">
-                        <div class="diamond-img-render"><img src="https://i.imgur.com/83NqN2h.png" alt="100+10 Diamantes"></div>
+                    <div class="diamond-card" onclick="seleccionarOferta(110, 1.2, 300, '100+10', '1098794_4.jpg')">
+                        <div class="diamond-img-render"><img src="1098794_4.jpg" alt="100+10 Diamantes"></div>
                         <h4>100+10 Diamantes</h4>
                         <span class="diamond-price" id="precio-pkg-1">1.20 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(361, 3.5, 850, '310+51')">
-                        <div class="diamond-img-render"><img src="https://i.imgur.com/cI1lF10.png" alt="310+51 Diamantes"></div>
+                    <div class="diamond-card" onclick="seleccionarOferta(361, 3.5, 850, '310+51', '1098795_4.jpg')">
+                        <div class="diamond-img-render"><img src="1098795_4.jpg" alt="310+51 Diamantes"></div>
                         <h4>310+51 Diamantes</h4>
                         <span class="diamond-price" id="precio-pkg-2">3.50 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(572, 5.0, 2100, '520+52')">
-                        <div class="diamond-img-render"><img src="https://i.imgur.com/k6lP9Xq.png" alt="520+52 Diamantes"></div>
+                    <div class="diamond-card" onclick="seleccionarOferta(572, 5.0, 2100, '520+52', '1098799_4.jpg')">
+                        <div class="diamond-img-render"><img src="1098799_4.jpg" alt="520+52 Diamantes"></div>
                         <h4>520+52 Diamantes</h4>
                         <span class="diamond-price" id="precio-pkg-3">5.00 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(1166, 8.5, 3300, '1050+105')">
-                        <div class="diamond-img-render"><img src="https://i.imgur.com/Z4u2lqA.png" alt="1050+105 Diamantes"></div>
+                    <div class="diamond-card" onclick="seleccionarOferta(1166, 8.5, 3300, '1050+105', '1098800_4.jpg')">
+                        <div class="diamond-img-render"><img src="1098800_4.jpg" alt="1050+105 Diamantes"></div>
                         <h4>1050+105 Diamantes</h4>
                         <span class="diamond-price" id="precio-pkg-4">8.50 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(2398, 17.4, 5300, '2160+216')">
-                        <div class="diamond-img-render"><img src="https://i.imgur.com/Z4u2lqA.png" alt="2160+216 Diamantes"></div>
+                    <div class="diamond-card" onclick="seleccionarOferta(2398, 17.4, 5300, '2160+216', '1098801_4.jpg')">
+                        <div class="diamond-img-render"><img src="1098801_4.jpg" alt="2160+216 Diamantes"></div>
                         <h4>2160+216 Diamantes</h4>
                         <span class="diamond-price" id="precio-pkg-5">17.40 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(6160, 40.0, 12300, '5580+558')">
-                        <div class="diamond-img-render"><img src="https://i.imgur.com/Z4u2lqA.png" alt="5580+558 Diamantes"></div>
+                    <div class="diamond-card" onclick="seleccionarOferta(6160, 40.0, 12300, '5580+558', '1098802_4.jpg')">
+                        <div class="diamond-img-render"><img src="1098802_4.jpg" alt="5580+558 Diamantes"></div>
                         <h4>5580+558 Diamantes</h4>
                         <span class="diamond-price" id="precio-pkg-6">40.00 USDT</span>
                     </div>
@@ -775,6 +789,37 @@
                         </div>
                     </div>
                     <div id="lista-depositos-container"></div>
+                </div>
+            </div>
+
+            <!-- SUB-VISTA COMPROBANTE DE RECARGA ENTREGADA -->
+            <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
+                <button class="nav-top-icon-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Órdenes</button>
+                
+                <div style="background: linear-gradient(135deg, #0d1322 0%, #07090e 100%); border: 2px solid #10b981; border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; position: relative; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
+                    <div style="position: absolute; top: 14px; left: 14px; font-weight: 900; font-size: 0.85rem;"><span class="brand-white">Lester</span> <span class="brand-blue">Tienda</span></div>
+                    
+                    <div style="position: absolute; top: 12px; right: 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 4px 10px; border-radius: 8px; font-size: 0.68rem; font-weight: 900; text-transform: uppercase;">
+                        COMPLETADO •
+                    </div>
+
+                    <div style="width: 110px; height: 100px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
+                        <img id="comp-img-diamantes" src="1098794_4.jpg" alt="Diamantes" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2; filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4));">
+                        <div style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        </div>
+                    </div>
+
+                    <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">FREE-FIRE</div>
+                    <h2 id="comp-titulo-diamantes" style="font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 0.4rem;">100+10 Diamantes</h2>
+                    <p style="color: #10b981; font-size: 0.85rem; font-weight: 800; margin-bottom: 1.2rem;">Entregado correctamente</p>
+
+                    <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem; text-align: left; font-size: 0.78rem; display: flex; flex-direction: column; gap: 6px;">
+                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">ID de Jugador:</span> <span id="comp-id-jugador" style="color:#fff; font-weight:bold;">123456789</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Fecha:</span> <span id="comp-fecha" style="color:#fff; font-weight:bold;">05/11/2026</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Precio Pagado:</span> <span id="comp-precio" style="color:var(--accent-glow); font-weight:bold;">1.20 USDT</span></div>
+                    </div>
                 </div>
             </div>
 
@@ -821,16 +866,16 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;">
                     
-                    <!-- Opción 1: USDT BEP 20 -->
+                    <!-- Opción 1: USDT BEP 20 con el logotipo oficial de Tether USDT -->
                     <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s;" onclick="abrirVistaWalletDetalle('usdt')">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div style="width: 38px; height: 38px; background: rgba(38, 166, 154, 0.15); border: 1px solid #26a69a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <svg viewBox="0 0 32 32" width="20" height="20"><path fill="#26a69a" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/></svg>
+                                    <svg viewBox="0 0 2000 2000" width="22" height="22"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
                                 </div>
                                 <div>
                                     <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">USDT BEP 20</h3>
-                                    <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Billetera de Criptomonedas</span>
+                                    <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Tether USD (Mercado Global)</span>
                                 </div>
                             </div>
                             <span style="color: var(--accent-glow); font-size: 0.8rem; font-weight: bold;">&gt;</span>
@@ -1555,8 +1600,6 @@
         function validarTxIdInput(input) {
             const val = input.value.trim();
             const errDiv = document.getElementById('err-txid');
-            // Validar que si contiene caracteres extraños o letras no válidas (ej. 'L' aislada o caracteres sospechosos fuera de hash hexadecimal estándar o alfanumérico largo)
-            // Aquí exigimos que sea alfanumérico válido de transacción o comience con 0x y tenga longitud adecuada
             const esValido = /^(0x)?[a-fA-F0-9]{10,}$/.test(val) || (/^[a-zA-Z0-9]{15,}$/.test(val) && !/[^a-zA-Z0-9]/.test(val));
 
             if (val.length > 0 && !esValido) {
@@ -1662,12 +1705,12 @@
             }
         }
 
-        function seleccionarOferta(diamantesNum, precioUsdt, precioSaldo, textoDetalle) {
+        function seleccionarOferta(diamantesNum, precioUsdt, precioSaldo, textoDetalle, imagenNombre) {
             let precioFinal = metodoPagoActual === 'usdt' ? precioUsdt : precioSaldo;
             if (usuarioActual && usuarioActual.descuentosDisponibles > 0 && metodoPagoActual === 'usdt') {
                 precioFinal *= 0.95;
             }
-            ofertaSeleccionada = { diamantes: textoDetalle, diamantesNum, precio: precioFinal, moneda: metodoPagoActual };
+            ofertaSeleccionada = { diamantes: textoDetalle, diamantesNum, precio: precioFinal, moneda: metodoPagoActual, imagen: imagenNombre };
             document.querySelectorAll('.diamond-card').forEach(c => c.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
         }
@@ -1736,6 +1779,7 @@
                     diamantesNum: ofertaSeleccionada.diamantesNum,
                     precio: ofertaSeleccionada.precio,
                     moneda: ofertaSeleccionada.moneda,
+                    imagen: ofertaSeleccionada.imagen,
                     estado: 'Pendiente' 
                 };
                 
@@ -1792,19 +1836,30 @@
             if(misRecargas.length === 0) {
                 htmlCompras = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:1.5rem;'>No tienes compras de recargas registradas.</p>";
             } else {
-                misRecargas.slice().reverse().forEach(o => {
+                misRecargas.slice().reverse().forEach((o, indexOriginal) => {
+                    let realIndex = solicitudesGlobales.recargas.length - 1 - indexOriginal;
                     let claseEstado = "status-pendiente";
                     if(o.estado === 'Aprobada' || o.estado === 'Completado') claseEstado = "status-completado";
                     if(o.estado === 'Cancelado') claseEstado = "status-cancelado";
                     let sufijoMoneda = o.moneda === 'saldo' ? ' $' : ' USDT';
 
+                    let clickableAttr = (o.estado === 'Completado' || o.estado === 'Aprobada') ? `onclick="verComprobanteRecarga(${realIndex})"` : '';
+                    let flechaIcon = (o.estado === 'Completado' || o.estado === 'Aprobada') ? `
+                        <div class="order-right-action">
+                            <span class="badge-status ${claseEstado}">${o.estado}</span>
+                            <div class="order-arrow-icon">
+                                <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                            </div>
+                        </div>
+                    ` : `<span class="badge-status ${claseEstado}">${o.estado}</span>`;
+
                     htmlCompras += `
-                        <div class="order-card-pro">
+                        <div class="order-card-pro" ${clickableAttr}>
                             <div class="order-info">
                                 <h4>Free Fire - ${o.detalle} Diamantes</h4>
                                 <p>ID: ${o.idJugador} | Precio: ${o.precio}${sufijoMoneda}</p>
                             </div>
-                            <span class="badge-status ${claseEstado}">${o.estado}</span>
+                            ${flechaIcon}
                         </div>
                     `;
                 });
@@ -1821,7 +1876,7 @@
                     if(d.estado === 'Cancelado') claseEstado = "status-cancelado";
 
                     htmlDepositos += `
-                        <div class="order-card-pro">
+                        <div class="order-card-pro" style="cursor: default;">
                             <div class="order-info">
                                 <h4>Depósito - ${d.monto}</h4>
                                 <p>${d.telefonoTransfirio || 'N/A'}</p>
@@ -1832,6 +1887,27 @@
                 });
             }
             containerDepositos.innerHTML = htmlDepositos;
+        }
+
+        function verComprobanteRecarga(index) {
+            const orden = solicitudesGlobales.recargas[index];
+            if(!orden) return;
+
+            document.getElementById('comp-titulo-diamantes').innerText = `${orden.detalle} Diamantes`;
+            document.getElementById('comp-id-jugador').innerText = orden.idJugador;
+            document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
+            document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? '$' : 'USDT'}`;
+            
+            let imgSrc = orden.imagen || '1098794_4.jpg';
+            document.getElementById('comp-img-diamantes').src = imgSrc;
+
+            mostrarCarga("Cargando comprobante...");
+            setTimeout(() => {
+                ocultarCarga();
+                document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+                document.getElementById('seccion-comprobante-recarga').style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 250);
         }
 
         function actualizarEstadisticasInicio() {
