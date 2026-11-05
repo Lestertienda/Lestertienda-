@@ -131,15 +131,15 @@
         .brand-white { color: #ffffff; }
         .brand-blue { color: var(--accent-glow); }
         
-        .nav-top-icons { display: flex; gap: 8px; align-items: center; }
+        .nav-top-icons { display: flex; gap: 6px; align-items: center; }
         
         .header-wallet-pill {
-            background: #07090e; border: 1px solid var(--border-color); padding: 4px 10px;
-            border-radius: 20px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: border-color 0.2s;
+            background: #07090e; border: 1px solid var(--border-color); padding: 4px 8px;
+            border-radius: 20px; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: border-color 0.2s;
         }
         .header-wallet-pill:hover { border-color: var(--accent-glow); }
-        .header-wallet-pill svg { width: 13px; height: 13px; fill: var(--accent-glow); }
-        .header-wallet-pill span { font-size: 0.73rem; font-weight: 900; color: var(--accent-glow); }
+        .header-wallet-pill svg { width: 12px; height: 12px; fill: var(--accent-glow); flex-shrink: 0; }
+        .header-wallet-pill span { font-size: 0.68rem; font-weight: 900; color: var(--accent-glow); }
 
         .nav-top-icon-btn {
             background: #07090e; border: 1px solid var(--border-color); width: 32px; height: 32px;
@@ -197,9 +197,8 @@
 
         .neon-badge-top-right {
             position: absolute; top: 12px; right: 12px;
-            background: rgba(255, 59, 48, 0.2); border: 1px solid rgba(255, 59, 48, 0.6);
-            color: #ff3b30; padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 900;
-            text-transform: uppercase; box-shadow: 0 0 10px rgba(255, 59, 48, 0.3); z-index: 3;
+            padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 900;
+            text-transform: uppercase; z-index: 3;
         }
 
         .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); }
@@ -373,12 +372,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
         .security-btn {
-            width: 100%; background: #07090e; border: 1px solid var(--border-color); color: var(--text-main);
+            width: 100%; background: #ffffff; border: 1px solid var(--border-color); color: #0d1322;
             padding: 0.85rem 1rem; border-radius: 12px; font-weight: 700; font-size: 0.85rem; display: flex;
             align-items: center; gap: 12px; cursor: pointer; text-align: left; transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .security-btn:hover { border-color: var(--accent-glow); background: rgba(0,240,255,0.02); }
-        .security-btn svg { width: 18px; height: 18px; fill: var(--accent-glow); flex-shrink: 0; }
+        .security-btn:hover { border-color: var(--accent-glow); background: #f8fbff; }
+        .security-btn svg { width: 18px; height: 18px; fill: var(--primary-blue); flex-shrink: 0; }
 
         .ceo-box {
             background: linear-gradient(135deg, #130a0a 0%, #07090e 100%);
@@ -395,7 +395,7 @@
             background: #07090e; border: 1px solid #ff3b30; border-radius: 12px; padding: 1rem; margin-top: 0.8rem;
         }
         .ceo-action-form h4 { font-size: 0.85rem; color: #ff3b30; margin-bottom: 0.6rem; font-weight: 900; }
-        .ceo-action-form input {
+        .ceo-action-form input, .ceo-action-form select {
             width: 100%; background: #0d1322; border: 1px solid var(--border-color);
             padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
         }
@@ -584,15 +584,17 @@
             </div>
             <div class="nav-top-icons">
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet">
-                    <!-- Logotipo Oficial real de USDT -->
-                    <svg viewBox="0 0 2000 2000" width="13" height="13"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
+                    <!-- Logotipo real oficial de USDT -->
+                    <svg viewBox="0 0 2000 2000" width="12" height="12"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
                     <span id="header-wallet-balance">0.00 USDT</span>
+                </div>
+                <!-- NUEVO: Pill de Saldo Interno en el Navbar Superior -->
+                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Interno">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    <span id="header-saldo-balance" style="color: #10b981;">0 $</span>
                 </div>
                 <button class="nav-top-icon-btn" onclick="iniciarDescargaDirectaApp()" title="Descargar Aplicación">
                     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-                </button>
-                <button class="nav-top-icon-btn" onclick="mostrarNotificacion('Sin notificaciones nuevas')">
-                    <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/></svg>
                 </button>
             </div>
         </header>
@@ -648,7 +650,11 @@
 
             <!-- SECCIÓN SELECTOR DE JUEGOS -->
             <div id="seccion-juegos-selector" class="vista-sec" style="display: none;">
-                <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver</button>
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver
+                    </button>
+                </div>
                 
                 <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">SELECCIONA EL JUEGO</h2>
 
@@ -695,7 +701,11 @@
 
             <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE -->
             <div id="seccion-freefire" class="vista-sec" style="display: none;">
-                <button class="nav-top-icon-btn" onclick="irASelectorJuegos()" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Juegos</button>
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="irASelectorJuegos()" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Juegos
+                    </button>
+                </div>
                 
                 <div class="section-title">PLAYER ID (Solo números de Free Fire)</div>
                 <div class="form-group">
@@ -706,7 +716,7 @@
                 <div class="payment-method-selector-grid">
                     <div id="btn-pay-usdt" class="pay-method-pill-btn active" onclick="seleccionarMetodoPago('usdt')">
                         <div style="width: 22px; height: 22px; background: #26a69a; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <!-- Logotipo real de USDT -->
+                            <!-- Logotipo oficial real de USDT -->
                             <svg viewBox="0 0 2000 2000" width="14" height="14"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
                         </div>
                         <span>USDT</span>
@@ -721,7 +731,7 @@
                 </div>
 
                 <div class="section-title">SELECCIONA EL PAQUETE</div>
-                <!-- AQUÍ USAMOS LOS NOMBRES EXACTOS DE TUS FOTOS DE DIAMANTES PARA QUE SE VEAN PERFECTO -->
+                <!-- IMÁGENES EXACTAS DE DIAMANTES 100% VISIBLES -->
                 <div class="diamonds-grid">
                     <div class="diamond-card" onclick="seleccionarOferta(110, 1.2, 300, '100+10', '1098794_4.jpg')">
                         <div class="diamond-img-render"><img src="1098794_4.jpg" alt="100+10 Diamantes" onerror="this.onerror=null; this.src='icon-192.png';"></div>
@@ -795,28 +805,32 @@
                 </div>
             </div>
 
-            <!-- SUB-VISTA COMPROBANTE DE RECARGA ENTREGADA -->
+            <!-- SUB-VISTA COMPROBANTE DE RECARGA -->
             <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
-                <button class="nav-top-icon-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Órdenes</button>
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Órdenes
+                    </button>
+                </div>
                 
-                <div style="background: linear-gradient(135deg, #0d1322 0%, #07090e 100%); border: 2px solid #10b981; border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; position: relative; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
+                <div id="comp-box-main" style="background: linear-gradient(135deg, #0d1322 0%, #07090e 100%); border: 2px solid #10b981; border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; position: relative; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
                     <div style="position: absolute; top: 14px; left: 14px; font-weight: 900; font-size: 0.85rem;"><span class="brand-white">Lester</span> <span class="brand-blue">Tienda</span></div>
                     
-                    <div style="position: absolute; top: 12px; right: 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 4px 10px; border-radius: 8px; font-size: 0.68rem; font-weight: 900; text-transform: uppercase;">
+                    <div id="comp-badge-status" style="position: absolute; top: 12px; right: 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 4px 10px; border-radius: 8px; font-size: 0.68rem; font-weight: 900; text-transform: uppercase;">
                         COMPLETADO •
                     </div>
 
                     <div style="width: 110px; height: 100px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
                         <img id="comp-img-diamantes" src="1098794_4.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='icon-192.png';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2; filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4));">
-                        <div style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
+                        <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                         </div>
                     </div>
 
                     <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">FREE-FIRE</div>
                     <h2 id="comp-titulo-diamantes" style="font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 0.4rem;">100+10 Diamantes</h2>
-                    <p style="color: #10b981; font-size: 0.85rem; font-weight: 800; margin-bottom: 1.2rem;">Entregado correctamente</p>
+                    <p id="comp-subtext-status" style="color: #10b981; font-size: 0.85rem; font-weight: 800; margin-bottom: 1.2rem;">Entregado correctamente</p>
 
                     <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem; text-align: left; font-size: 0.78rem; display: flex; flex-direction: column; gap: 6px;">
                         <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">ID de Jugador:</span> <span id="comp-id-jugador" style="color:#fff; font-weight:bold;">123456789</span></div>
@@ -833,7 +847,7 @@
                     <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.6rem;">Socios nuevos registrados con tu enlace personal.</p>
                     
                     <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px;">
-                        <span id="contador-meta-referidos" style="color: #fff;">0 / 10 referidos para el próximo premio</span>
+                        <span id="contador-meta-referidos" style="color: #fff;">0 / 10 referidos válidos para el premio</span>
                         <span style="color: var(--accent-glow);">VIP</span>
                     </div>
                     <div style="width: 100%; background: #07090e; height: 8px; border-radius: 4px; margin-bottom: 0.8rem; overflow: hidden; border: 1px solid var(--border-color);">
@@ -841,7 +855,7 @@
                     </div>
 
                     <div id="badge-premio-disponible" style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; color: #10b981; padding: 0.6rem; border-radius: 10px; text-align: center; font-size: 0.78rem; font-weight: bold; margin-bottom: 1rem; display: none;">
-                        ¡Premio disponible al llegar a 10 referidos! Reclámalo con el CEO.
+                        ¡Premio disponible al llegar a 10 referidos válidos! Reclámalo con el CEO.
                     </div>
 
                     <div class="section-title">LISTA DE SOCIOS INVITADOS</div>
@@ -869,11 +883,13 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;">
                     
-                    <!-- Opción 1: USDT BEP 20 con el logotipo oficial de Tether USDT -->
-                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s;" onclick="abrirVistaWalletDetalle('usdt')">
+                    <!-- USDT BEP 20 con etiqueta configurable desde el CEO -->
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('usdt')">
+                        <div id="wallet-badge-usdt" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div style="width: 38px; height: 38px; background: rgba(38, 166, 154, 0.15); border: 1px solid #26a69a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <!-- Logotipo oficial real USDT -->
                                     <svg viewBox="0 0 2000 2000" width="22" height="22"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
                                 </div>
                                 <div>
@@ -885,8 +901,9 @@
                         </div>
                     </div>
 
-                    <!-- Opción 2: Saldo (Transferencia Móvil) -->
-                    <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s;" onclick="abrirVistaWalletDetalle('saldo')">
+                    <!-- Recarga Saldo con etiqueta configurable desde el CEO -->
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('saldo')">
+                        <div id="wallet-badge-saldo" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div style="width: 38px; height: 38px; background: rgba(0, 102, 255, 0.15); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -901,8 +918,9 @@
                         </div>
                     </div>
 
-                    <!-- Opción 3: Tarjeta (Próximamente) -->
-                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s;" onclick="abrirVistaWalletDetalle('tarjeta')">
+                    <!-- Pago con Tarjeta con etiqueta configurable desde el CEO -->
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('tarjeta')">
+                        <div id="wallet-badge-tarjeta" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div style="width: 38px; height: 38px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -922,14 +940,18 @@
 
             <!-- SUB-VISTA DETALLE WALLET USDT BEP 20 -->
             <div id="seccion-wallet-usdt" class="vista-sec" style="display: none;">
-                <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Billeteras</button>
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Billeteras
+                    </button>
+                </div>
                 
                 <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(38,166,154,0.15);">
                     <h3 style="font-size: 1.05rem; font-weight: 900; color: #fff; margin-bottom: 0.8rem;">Recarga USDT BEP 20</h3>
                     
                     <div class="form-group">
                         <label>La red BEP 20 a transferir será esta:</label>
-                        <div class="form-control no-left-icon" style="font-size: 0.72rem; background: #07090e; color: #26a69a; text-align: center; word-break: break-all; padding: 0.8rem; margin-bottom: 0.5rem; font-weight: 800;">0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2</div>
+                        <div class="form-control no-left-icon" id="wallet-direccion-usdt-display" style="font-size: 0.72rem; background: #07090e; color: #26a69a; text-align: center; word-break: break-all; padding: 0.8rem; margin-bottom: 0.5rem; font-weight: 800;">0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2</div>
                         <button class="btn-main" style="background: #26a69a; margin-top: 0;" onclick="copiarDireccionUSDTNuevo()">Copiar Dirección</button>
                     </div>
 
@@ -950,7 +972,11 @@
 
             <!-- SUB-VISTA DETALLE WALLET SALDO -->
             <div id="seccion-wallet-saldo" class="vista-sec" style="display: none;">
-                <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Billeteras</button>
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Billeteras
+                    </button>
+                </div>
                 
                 <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(0,240,255,0.15);">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
@@ -965,7 +991,7 @@
 
                     <div class="form-group">
                         <label>Número Oficial para Recibir el Pago</label>
-                        <div class="form-control no-left-icon" style="font-weight: 900; font-size: 1.1rem; background: #07090e; color: var(--accent-glow); text-align: center; letter-spacing: 1px;">59578110</div>
+                        <div class="form-control no-left-icon" id="wallet-numero-saldo-display" style="font-weight: 900; font-size: 1.1rem; background: #07090e; color: var(--accent-glow); text-align: center; letter-spacing: 1px;">59578110</div>
                         <button class="btn-main" style="margin-top: 0.5rem; background: var(--bg-card); color: #fff; border: 1px solid var(--border-color);" onclick="copiarNumeroWallet()">Copiar Número</button>
                     </div>
 
@@ -1002,9 +1028,20 @@
                     <p id="perfil-correo" style="color: var(--text-muted); font-size: 0.78rem; margin-top: 0.2rem;">correo@gmail.com</p>
                     <p id="perfil-rango-label" style="color: var(--accent-glow); font-size: 0.72rem; font-weight: bold; margin-top: 0.3rem;">CLIENTE PRO</p>
 
-                    <div class="profile-stats-grid">
-                        <div class="stat-col"><h4 id="stat-saldo-usdt">0.00</h4><span>Wallet USDT</span></div>
-                        <div class="stat-col"><h4 id="stat-saldo-cup">0</h4><span>Saldo Interno</span></div>
+                    <!-- NUEVAS ESTADÍSTICAS EN EL PERFIL: REFERIDOS VÁLIDOS, NO ACTIVOS Y CANTIDAD DE RECARGAS -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.9rem;">
+                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                            <h4 id="stat-ref-validos" style="font-size: 0.88rem; font-weight: 900; color: #10b981;">0</h4>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos Válidos</span>
+                        </div>
+                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                            <h4 id="stat-ref-no-activos" style="font-size: 0.88rem; font-weight: 900; color: #f59e0b;">0</h4>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos No Activos</span>
+                        </div>
+                    </div>
+                    <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center; margin-top: 8px;">
+                        <h4 id="stat-cantidad-recargas-perfil" style="font-size: 0.88rem; font-weight: 900; color: var(--accent-glow);">0</h4>
+                        <span style="font-size: 0.65rem; color: var(--text-muted);">Cantidad Total de Recargas Realizadas</span>
                     </div>
                 </div>
 
@@ -1240,7 +1277,22 @@
         let metodoPagoActual = 'usdt';
         let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
         let listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
-        let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", etiquetaBloodStrike: "PRÓXIMAMENTE" };
+        
+        let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { 
+            etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", 
+            colorFF: "rojo",
+            etiquetaBloodStrike: "PRÓXIMAMENTE",
+            colorBS: "amarillo",
+            etiquetaWalletUSDT: "",
+            colorWUSDT: "verde",
+            etiquetaWalletSaldo: "",
+            colorWSaldo: "verde",
+            etiquetaWalletTarjeta: "",
+            colorWTarjeta: "rojo",
+            numeroSaldoOficial: "59578110",
+            direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
+            ocultarTopRecargasHoy: false
+        };
 
         const BIN_ID = '6aeaa0e1ffd5d16053a44254';
         const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
@@ -1346,20 +1398,95 @@
             }
         }
 
+        function getColorHex(colorNombre) {
+            switch(colorNombre) {
+                case 'verde': return '#10b981';
+                case 'rojo': return '#ff3b30';
+                case 'amarillo': return '#f59e0b';
+                case 'azul': return '#0066ff';
+                default: return '#10b981';
+            }
+        }
+
         function aplicarConfiguracionVisual() {
+            // Free Fire Badge
             const badgeFF = document.getElementById('freefire-custom-badge');
-            let textoFF = tiendaConfig.etiquetaFreeFire || "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE";
+            let textoFF = tiendaConfig.etiquetaFreeFire || "";
             if(badgeFF) {
                 badgeFF.innerText = textoFF;
+                let colHex = getColorHex(tiendaConfig.colorFF || 'rojo');
+                badgeFF.style.background = `rgba(${colHex === '#ff3b30' ? '255, 59, 48' : (colHex === '#10b981' ? '16, 185, 129' : '245, 158, 11')}, 0.2)`;
+                badgeFF.style.borderColor = colHex;
+                badgeFF.style.color = colHex;
                 badgeFF.style.display = textoFF.trim() === "" ? "none" : "block";
             }
 
+            // Blood Strike Badge
             const badgeBS = document.getElementById('bloodstrike-custom-badge');
-            let textoBS = tiendaConfig.etiquetaBloodStrike || "PRÓXIMAMENTE";
+            let textoBS = tiendaConfig.etiquetaBloodStrike || "";
             if(badgeBS) {
                 badgeBS.innerText = textoBS;
+                let colHexBS = getColorHex(tiendaConfig.colorBS || 'amarillo');
+                badgeBS.style.background = `rgba(245, 158, 11, 0.2)`;
+                badgeBS.style.borderColor = colHexBS;
+                badgeBS.style.color = colHexBS;
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
+
+            // Wallet USDT Badge
+            const wUsdt = document.getElementById('wallet-badge-usdt');
+            if(wUsdt) {
+                let t = tiendaConfig.etiquetaWalletUSDT || "";
+                if(t) {
+                    let c = getColorHex(tiendaConfig.colorWUSDT || 'verde');
+                    wUsdt.innerText = t;
+                    wUsdt.style.background = `rgba(16,185,129,0.2)`;
+                    wUsdt.style.color = c;
+                    wUsdt.style.border = `1px solid ${c}`;
+                    wUsdt.style.display = 'block';
+                } else {
+                    wUsdt.style.display = 'none';
+                }
+            }
+
+            // Wallet Saldo Badge
+            const wSaldo = document.getElementById('wallet-badge-saldo');
+            if(wSaldo) {
+                let t = tiendaConfig.etiquetaWalletSaldo || "";
+                if(t) {
+                    let c = getColorHex(tiendaConfig.colorWSaldo || 'verde');
+                    wSaldo.innerText = t;
+                    wSaldo.style.background = `rgba(16,185,129,0.2)`;
+                    wSaldo.style.color = c;
+                    wSaldo.style.border = `1px solid ${c}`;
+                    wSaldo.style.display = 'block';
+                } else {
+                    wSaldo.style.display = 'none';
+                }
+            }
+
+            // Wallet Tarjeta Badge
+            const wTarjeta = document.getElementById('wallet-badge-tarjeta');
+            if(wTarjeta) {
+                let t = tiendaConfig.etiquetaWalletTarjeta || "";
+                if(t) {
+                    let c = getColorHex(tiendaConfig.colorWTarjeta || 'rojo');
+                    wTarjeta.innerText = t;
+                    wTarjeta.style.background = `rgba(255,59,48,0.2)`;
+                    wTarjeta.style.color = c;
+                    wTarjeta.style.border = `1px solid ${c}`;
+                    wTarjeta.style.display = 'block';
+                } else {
+                    wTarjeta.style.display = 'none';
+                }
+            }
+
+            // Actualizar número oficial y dirección
+            const numDisp = document.getElementById('wallet-numero-saldo-display');
+            if(numDisp && tiendaConfig.numeroSaldoOficial) numDisp.innerText = tiendaConfig.numeroSaldoOficial;
+
+            const dirDisp = document.getElementById('wallet-direccion-usdt-display');
+            if(dirDisp && tiendaConfig.direccionUSDTOficial) dirDisp.innerText = tiendaConfig.direccionUSDTOficial;
         }
 
         function mostrarCarga(texto = "Procesando...") { 
@@ -1792,7 +1919,7 @@
                 await guardarEnCloud();
                 ocultarCarga();
 
-                mostrarNotificacion("Recarga procesada y enviada a revisión");
+                mostrarNotificacion("Solicitud de recarga enviada correctamente");
                 actualizarPerfilUI();
                 renderizarOrdenes();
                 cambiarTabOrdenes('compras');
@@ -1846,15 +1973,15 @@
                     if(o.estado === 'Cancelado') claseEstado = "status-cancelado";
                     let sufijoMoneda = o.moneda === 'saldo' ? ' $' : ' USDT';
 
-                    let clickableAttr = (o.estado === 'Completado' || o.estado === 'Aprobada') ? `onclick="verComprobanteRecarga(${realIndex})"` : '';
-                    let flechaIcon = (o.estado === 'Completado' || o.estado === 'Aprobada') ? `
+                    let clickableAttr = `onclick="verComprobanteRecarga(${realIndex})"`;
+                    let flechaIcon = `
                         <div class="order-right-action">
                             <span class="badge-status ${claseEstado}">${o.estado}</span>
                             <div class="order-arrow-icon">
                                 <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
                             </div>
                         </div>
-                    ` : `<span class="badge-status ${claseEstado}">${o.estado}</span>`;
+                    `;
 
                     htmlCompras += `
                         <div class="order-card-pro" ${clickableAttr}>
@@ -1904,6 +2031,43 @@
             let imgSrc = orden.imagen || '1098794_4.jpg';
             document.getElementById('comp-img-diamantes').src = imgSrc;
 
+            const boxMain = document.getElementById('comp-box-main');
+            const badgeStatus = document.getElementById('comp-badge-status');
+            const subtextStatus = document.getElementById('comp-subtext-status');
+            const iconStatus = document.getElementById('comp-icon-status');
+
+            if (orden.estado === 'Completado' || orden.estado === 'Aprobada') {
+                boxMain.style.borderColor = '#10b981';
+                badgeStatus.innerText = 'COMPLETADO •';
+                badgeStatus.style.background = 'rgba(16, 185, 129, 0.2)';
+                badgeStatus.style.borderColor = '#10b981';
+                badgeStatus.style.color = '#10b981';
+                subtextStatus.innerText = 'Entregado correctamente';
+                subtextStatus.style.color = '#10b981';
+                iconStatus.style.background = '#10b981';
+                iconStatus.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
+            } else if (orden.estado === 'Pendiente') {
+                boxMain.style.borderColor = '#f59e0b';
+                badgeStatus.innerText = 'PENDIENTE';
+                badgeStatus.style.background = 'rgba(245, 158, 11, 0.2)';
+                badgeStatus.style.borderColor = '#f59e0b';
+                badgeStatus.style.color = '#f59e0b';
+                subtextStatus.innerText = 'Pendiente de revisión';
+                subtextStatus.style.color = '#f59e0b';
+                iconStatus.style.background = '#f59e0b';
+                iconStatus.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>';
+            } else {
+                boxMain.style.borderColor = '#ef4444';
+                badgeStatus.innerText = 'CANCELADO';
+                badgeStatus.style.background = 'rgba(239, 68, 68, 0.2)';
+                badgeStatus.style.borderColor = '#ef4444';
+                badgeStatus.style.color = '#ef4444';
+                subtextStatus.innerText = 'Orden cancelada';
+                subtextStatus.style.color = '#ef4444';
+                iconStatus.style.background = '#ef4444';
+                iconStatus.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+            }
+
             mostrarCarga("Cargando comprobante...");
             setTimeout(() => {
                 ocultarCarga();
@@ -1917,8 +2081,16 @@
             solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
             listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
 
+            const cardVivo = document.querySelector('.live-history-card');
+            if (tiendaConfig.ocultarTopRecargasHoy) {
+                if(cardVivo) cardVivo.style.display = 'none';
+                return;
+            } else {
+                if(cardVivo) cardVivo.style.display = 'block';
+            }
+
             const hoy = new Date().toDateString();
-            const recargasHoyList = solicitudesGlobales.recargas.filter(r => new Date(r.id || r.fecha).toDateString() === hoy);
+            const recargasHoyList = solicitudesGlobales.recargas.filter(r => (r.estado === 'Completado' || r.estado === 'Aprobada') && new Date(r.id || r.fecha).toDateString() === hoy);
             document.getElementById('contador-recargas-hoy').innerText = recargasHoyList.length;
 
             let acumuladoUsuarios = {};
@@ -1944,7 +2116,7 @@
             let vivoHTML = "";
 
             if(listaTop.length === 0) {
-                vivoHTML = "<p style='color:var(--text-muted); font-size:0.75rem; text-align:center; padding:1rem;'>No hay compras registradas hoy.</p>";
+                vivoHTML = "<p style='color:var(--text-muted); font-size:0.75rem; text-align:center; padding:1rem;'>No hay compras completadas hoy.</p>";
             } else {
                 listaTop.forEach(item => {
                     let horaStr = new Date(item.ultimaHora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -2113,12 +2285,12 @@
         }
 
         function copiarNumeroWallet() {
-            navigator.clipboard.writeText("59578110");
-            mostrarNotificacion("Número 59578110 copiado al portapapeles");
+            navigator.clipboard.writeText(tiendaConfig.numeroSaldoOficial || "59578110");
+            mostrarNotificacion("Número copiado al portapapeles");
         }
 
         function copiarDireccionUSDTNuevo() {
-            navigator.clipboard.writeText("0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2");
+            navigator.clipboard.writeText(tiendaConfig.direccionUSDTOficial || "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2");
             mostrarNotificacion("Dirección BEP-20 copiada al portapapeles");
         }
 
@@ -2192,7 +2364,9 @@
             if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
 
             const saldoUsdtTexto = `${(usuarioActual.balanceUSDT || 0).toFixed(2)} USDT`;
+            const saldoCupTexto = `${(usuarioActual.balanceCUP || 0)} $`;
             document.getElementById('header-wallet-balance').innerText = saldoUsdtTexto;
+            document.getElementById('header-saldo-balance').innerText = saldoCupTexto;
             document.getElementById('profile-wallet-balance').innerText = saldoUsdtTexto;
 
             document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
@@ -2210,31 +2384,58 @@
                 avatarCircle.innerText = usuarioActual.nombre.charAt(0).toUpperCase();
             }
 
-            document.getElementById('stat-saldo-usdt').innerText = (usuarioActual.balanceUSDT || 0).toFixed(2);
-            document.getElementById('stat-saldo-cup').innerText = usuarioActual.balanceCUP || 0;
+            // Calcular referidos válidos (que hayan depositado o tengan recargas) y no activos
+            solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
+            listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
+
+            let referidosList = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase().trim() === usuarioActual.nombre.toLowerCase().trim());
+            let referidosValidos = 0;
+            let referidosNoActivos = 0;
+
+            referidosList.forEach(ref => {
+                let depositoAprobado = solicitudesGlobales.depositos.some(d => d.correo.toLowerCase() === ref.correo.toLowerCase() && d.estado === 'Aprobado');
+                let recargaRealizada = solicitudesGlobales.recargas.some(r => r.correo.toLowerCase() === ref.correo.toLowerCase() && (r.estado === 'Completado' || r.estado === 'Aprobada'));
+                if (depositoAprobado || recargaRealizada || ref.recargasCount > 0) {
+                    referidosValidos++;
+                } else {
+                    referidosNoActivos++;
+                }
+            });
+
+            document.getElementById('stat-ref-validos').innerText = referidosValidos;
+            document.getElementById('stat-ref-no-activos').innerText = referidosNoActivos;
             
-            let referidosLista = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase().trim() === usuarioActual.nombre.toLowerCase().trim());
-            let referidosCount = referidosLista.length;
+            let misRecargasTotal = solicitudesGlobales.recargas.filter(r => r.correo.toLowerCase() === usuarioActual.correo.toLowerCase() && (r.estado === 'Completado' || r.estado === 'Aprobada')).length;
+            document.getElementById('stat-cantidad-recargas-perfil').innerText = misRecargasTotal;
+
             document.getElementById('enlace-ref').innerText = "https://lestertienda.github.io/Lestertienda-/?ref=" + usuarioActual.nombre;
             
             let listaDetalladaHTML = "";
-            if (referidosCount === 0) {
+            if (referidosList.length === 0) {
                 listaDetalladaHTML = "<span style='color: var(--text-muted);'>Aún no tienes referidos registrados.</span>";
             } else {
-                referidosLista.forEach(ref => {
-                    listaDetalladaHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(26,35,58,0.4);">
-                        <span style="color: #fff; font-weight: 700;">${ref.nombre}</span>
-                        <span style="color: var(--accent-glow); font-size: 0.7rem;">${ref.correo}</span>
+                referidosList.forEach(ref => {
+                    let depositoAprobado = solicitudesGlobales.depositos.some(d => d.correo.toLowerCase() === ref.correo.toLowerCase() && d.estado === 'Aprobado');
+                    let recargaRealizada = solicitudesGlobales.recargas.some(r => r.correo.toLowerCase() === ref.correo.toLowerCase() && (r.estado === 'Completado' || r.estado === 'Aprobada'));
+                    let esValido = (depositoAprobado || recargaRealizada || ref.recargasCount > 0);
+                    let badgeEstado = esValido ? "<span style='color:#10b981; font-weight:bold;'>Válido</span>" : "<span style='color:#f59e0b;'>No activo</span>";
+
+                    listaDetalladaHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(26,35,58,0.4);">
+                        <div>
+                            <span style="color: #fff; font-weight: 700; display:block;">${ref.nombre}</span>
+                            <span style="color: var(--text-muted); font-size:0.65rem;">${ref.correo}</span>
+                        </div>
+                        <div>${badgeEstado}</div>
                     </div>`;
                 });
             }
             document.getElementById('lista-detallada-referidos').innerHTML = listaDetalladaHTML;
 
-            let porcentajeMeta = Math.min(100, (referidosCount / 10) * 100);
-            document.getElementById('contador-meta-referidos').innerText = `${referidosCount} / 10 referidos para el próximo premio`;
+            let porcentajeMeta = Math.min(100, (referidosValidos / 10) * 100);
+            document.getElementById('contador-meta-referidos').innerText = `${referidosValidos} / 10 referidos válidos para el premio`;
             document.getElementById('barra-progreso-referidos').style.width = `${porcentajeMeta}%`;
 
-            if(referidosCount >= 10) {
+            if(referidosValidos >= 10) {
                 document.getElementById('badge-premio-disponible').style.display = 'block';
             } else {
                 document.getElementById('badge-premio-disponible').style.display = 'none';
@@ -2335,6 +2536,8 @@
                         <button class="ceo-btn" onclick="cargarAccionCEO('eliminar_cuenta_correo')">Eliminar por Correo</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_game')">Etiqueta Free Fire</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_blood')">Etiqueta Blood Strike</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('config_wallets')">Configurar Wallets & Red</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('control_top_hoy')">Control Top en Vivo</button>
                     `;
                 }
 
@@ -2398,17 +2601,20 @@
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Lista de Usuarios Registrados:</h4>";
                 if(listaUsuariosGlobales.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay usuarios.</p>";
                 
-                listaUsuariosGlobales.forEach(u => {
+                listaUsuariosGlobales.forEach((u, uIdx) => {
                     let rText = u.rango === 2 ? "CEO / Supremo" : (u.rango === 1 ? "Admin (Rango 1)" : "Cliente (Rango 0)");
                     if(u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
                     if(u.balanceCUP === undefined) u.balanceCUP = 0;
                     
-                    html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4;">
+                    html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4; position:relative;">
                         <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
                         <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
                         <b>Wallet USDT:</b> <span style="color:var(--accent-glow); font-weight:bold;">${u.balanceUSDT.toFixed(2)}</span><br>
                         <b>Saldo Interno:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP}</span><br>
                         <b>Rango:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
+                        <div style="margin-top:6px;">
+                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoQuitarUsuarioTopOLista('${u.correo}')">Quitar de la App</button>
+                        </div>
                     </div>`;
                 });
                 res.innerHTML = html;
@@ -2417,7 +2623,7 @@
                     <div class="ceo-action-form">
                         <h4>Acreditar Saldo / USDT</h4>
                         <input type="email" id="ceo-acreditar-correo" placeholder="Correo del usuario">
-                        <select id="ceo-acreditar-tipo" style="width:100%; background:#0d1322; border:1px solid var(--border-color); padding:0.65rem; border-radius:8px; color:#fff; margin-bottom:0.6rem; font-size:0.82rem; outline:none;">
+                        <select id="ceo-acreditar-tipo">
                             <option value="cup">Saldo Interno (CUP)</option>
                             <option value="usdt">Wallet USDT</option>
                         </select>
@@ -2430,7 +2636,7 @@
                     <div class="ceo-action-form">
                         <h4>Desacreditar Saldo / USDT</h4>
                         <input type="email" id="ceo-desacreditar-correo" placeholder="Correo del usuario">
-                        <select id="ceo-desacreditar-tipo" style="width:100%; background:#0d1322; border:1px solid var(--border-color); padding:0.65rem; border-radius:8px; color:#fff; margin-bottom:0.6rem; font-size:0.82rem; outline:none;">
+                        <select id="ceo-desacreditar-tipo">
                             <option value="cup">Saldo Interno (CUP)</option>
                             <option value="usdt">Wallet USDT</option>
                         </select>
@@ -2458,20 +2664,116 @@
             } else if(accion === 'etiqueta_game' && esCEO) {
                 res.innerHTML = `
                     <div class="ceo-action-form">
-                        <h4>Crear / Editar Etiqueta Free Fire</h4>
+                        <h4>Etiqueta Free Fire</h4>
                         <input type="text" id="ceo-etiqueta-texto" placeholder="Texto de la etiqueta" value="${tiendaConfig.etiquetaFreeFire || ''}">
-                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta</button>
+                        <select id="ceo-color-ff">
+                            <option value="rojo" ${tiendaConfig.colorFF==='rojo'?'selected':''}>Rojo</option>
+                            <option value="verde" ${tiendaConfig.colorFF==='verde'?'selected':''}>Verde</option>
+                            <option value="amarillo" ${tiendaConfig.colorFF==='amarillo'?'selected':''}>Amarillo</option>
+                            <option value="azul" ${tiendaConfig.colorFF==='azul'?'selected':''}>Azul</option>
+                        </select>
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta Free Fire</button>
                     </div>
                 `;
             } else if(accion === 'etiqueta_blood' && esCEO) {
                 res.innerHTML = `
                     <div class="ceo-action-form" style="border-color:#f59e0b;">
-                        <h4 style="color:#f59e0b;">Crear / Editar Etiqueta Blood Strike</h4>
+                        <h4 style="color:#f59e0b;">Etiqueta Blood Strike</h4>
                         <input type="text" id="ceo-etiqueta-blood-texto" placeholder="Texto de la etiqueta" value="${tiendaConfig.etiquetaBloodStrike || ''}">
+                        <select id="ceo-color-bs">
+                            <option value="amarillo" ${tiendaConfig.colorBS==='amarillo'?'selected':''}>Amarillo</option>
+                            <option value="rojo" ${tiendaConfig.colorBS==='rojo'?'selected':''}>Rojo</option>
+                            <option value="verde" ${tiendaConfig.colorBS==='verde'?'selected':''}>Verde</option>
+                            <option value="azul" ${tiendaConfig.colorBS==='azul'?'selected':''}>Azul</option>
+                        </select>
                         <button class="btn-main" style="margin-top:0; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
                     </div>
                 `;
+            } else if(accion === 'config_wallets' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form" style="border-color:#26a69a;">
+                        <h4 style="color:#26a69a;">Configurar Redes, Wallets y Tarjeta</h4>
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Número Saldo (Transferencia):</label>
+                        <input type="text" id="ceo-num-saldo" value="${tiendaConfig.numeroSaldoOficial || '59578110'}">
+                        
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Dirección USDT BEP 20:</label>
+                        <input type="text" id="ceo-dir-usdt" value="${tiendaConfig.direccionUSDTOficial || '0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2'}">
+
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Wallet USDT:</label>
+                        <input type="text" id="ceo-wusdt-text" placeholder="Ej. Activo" value="${tiendaConfig.etiquetaWalletUSDT || ''}">
+                        <select id="ceo-wusdt-color">
+                            <option value="verde" ${tiendaConfig.colorWUSDT==='verde'?'selected':''}>Verde</option>
+                            <option value="rojo" ${tiendaConfig.colorWUSDT==='rojo'?'selected':''}>Rojo</option>
+                            <option value="amarillo" ${tiendaConfig.colorWUSDT==='amarillo'?'selected':''}>Amarillo</option>
+                        </select>
+
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Recarga Saldo:</label>
+                        <input type="text" id="ceo-wsaldo-text" placeholder="Ej. Rápido" value="${tiendaConfig.etiquetaWalletSaldo || ''}">
+                        <select id="ceo-wsaldo-color">
+                            <option value="verde" ${tiendaConfig.colorWSaldo==='verde'?'selected':''}>Verde</option>
+                            <option value="rojo" ${tiendaConfig.colorWSaldo==='rojo'?'selected':''}>Rojo</option>
+                            <option value="amarillo" ${tiendaConfig.colorWSaldo==='amarillo'?'selected':''}>Amarillo</option>
+                        </select>
+
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Pago Tarjeta:</label>
+                        <input type="text" id="ceo-wtarjeta-text" placeholder="Ej. Próximamente" value="${tiendaConfig.etiquetaWalletTarjeta || ''}">
+                        <select id="ceo-wtarjeta-color">
+                            <option value="rojo" ${tiendaConfig.colorWTarjeta==='rojo'?'selected':''}>Rojo</option>
+                            <option value="verde" ${tiendaConfig.colorWTarjeta==='verde'?'selected':''}>Verde</option>
+                            <option value="amarillo" ${tiendaConfig.colorWTarjeta==='amarillo'?'selected':''}>Amarillo</option>
+                        </select>
+
+                        <button class="btn-main" style="margin-top:0; background:#26a69a;" onclick="ejecutarGuardarConfigWalletsCEO()">Guardar Cambios de Wallets</button>
+                    </div>
+                `;
+            } else if(accion === 'control_top_hoy' && esCEO) {
+                let oculto = tiendaConfig.ocultarTopRecargasHoy ? "Habilitar Top Hoy" : "Ocultar / Desactivar Top Recargas Hoy";
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Control de Historial en Tiempo Real</h4>
+                        <button class="btn-main" style="background:#f59e0b; margin-top:0;" onclick="ejecutarToggleTopHoy()">${oculto}</button>
+                    </div>
+                `;
             }
+        }
+
+        async function ceoQuitarUsuarioTopOLista(correo) {
+            let index = listaUsuariosGlobales.indexs(u => u.correo.toLowerCase() === correo.toLowerCase());
+            listaUsuariosGlobales = listaUsuariosGlobales.filter(u => u.correo.toLowerCase() !== correo.toLowerCase());
+            solicitudesGlobales.recargas = solicitudesGlobales.recargas.filter(r => r.correo.toLowerCase() !== correo.toLowerCase());
+            solicitudesGlobales.depositos = solicitudesGlobales.depositos.filter(d => d.correo.toLowerCase() !== correo.toLowerCase());
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            mostrarNotificacion("Usuario y registros eliminados de la app correctamente");
+            cargarAccionCEO('usuarios');
+            actualizarEstadisticasInicio();
+        }
+
+        async function ejecutarToggleTopHoy() {
+            tiendaConfig.ocultarTopRecargasHoy = !tiendaConfig.ocultarTopRecargasHoy;
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            aplicarConfiguracionVisual();
+            mostrarNotificacion("Estado del Top en vivo actualizado");
+            cargarAccionCEO('control_top_hoy');
+        }
+
+        async function ejecutarGuardarConfigWalletsCEO() {
+            tiendaConfig.numeroSaldoOficial = document.getElementById('ceo-num-saldo').value.trim();
+            tiendaConfig.direccionUSDTOficial = document.getElementById('ceo-dir-usdt').value.trim();
+            tiendaConfig.etiquetaWalletUSDT = document.getElementById('ceo-wusdt-text').value.trim();
+            tiendaConfig.colorWUSDT = document.getElementById('ceo-wusdt-color').value;
+            tiendaConfig.etiquetaWalletSaldo = document.getElementById('ceo-wsaldo-text').value.trim();
+            tiendaConfig.colorWSaldo = document.getElementById('ceo-wsaldo-color').value;
+            tiendaConfig.etiquetaWalletTarjeta = document.getElementById('ceo-wtarjeta-text').value.trim();
+            tiendaConfig.colorWTarjeta = document.getElementById('ceo-wtarjeta-color').value;
+
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            aplicarConfiguracionVisual();
+            mostrarNotificacion("Configuración de Wallets guardada con éxito");
         }
 
         async function ejecutarEliminarCuentaPorCorreoCEO() {
@@ -2584,8 +2886,8 @@
         }
 
         async function ejecutarGuardarEtiquetaCEO() {
-            const texto = document.getElementById('ceo-etiqueta-texto').value;
-            tiendaConfig.etiquetaFreeFire = texto;
+            tiendaConfig.etiquetaFreeFire = document.getElementById('ceo-etiqueta-texto').value;
+            tiendaConfig.colorFF = document.getElementById('ceo-color-ff').value;
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
@@ -2593,8 +2895,8 @@
         }
 
         async function ejecutarGuardarEtiquetaBloodCEO() {
-            const texto = document.getElementById('ceo-etiqueta-blood-texto').value;
-            tiendaConfig.etiquetaBloodStrike = texto;
+            tiendaConfig.etiquetaBloodStrike = document.getElementById('ceo-etiqueta-blood-texto').value;
+            tiendaConfig.colorBS = document.getElementById('ceo-color-bs').value;
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
