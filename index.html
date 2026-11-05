@@ -247,10 +247,43 @@
 
         /* LOGOTIPO REAL DE USDT (TETHER) OFICIAL CON CÍRCULO VERDE EXACTO DEL MERCADO */
         .usdt-real-badge {
-            width: 40px; height: 40px; border-radius: 50%; overflow: hidden;
+            width: 32px; height: 32px; border-radius: 50%; overflow: hidden;
             display: flex; align-items: center; justify-content: center; position: relative;
-            box-shadow: 0 0 12px rgba(38, 166, 154, 0.5); border: 2px solid #26a69a; flex-shrink: 0;
-            background: #26a69a;
+            border: 2px solid #26a69a; flex-shrink: 0; background: #26a69a;
+        }
+
+        /* ESTILO EXACTO DE LOS BOTONES DE PAGO (IMÁGENES DE REFERENCIA) */
+        .payment-method-selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+        .pay-method-pill-btn {
+            background: linear-gradient(135deg, #2b70ff 0%, #004fe3 100%);
+            border: 2px solid rgba(0, 240, 255, 0.4);
+            border-radius: 16px;
+            padding: 0.75rem 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+            opacity: 0.65;
+        }
+        .pay-method-pill-btn.active {
+            opacity: 1;
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+            transform: translateY(-2px);
+        }
+        .pay-method-pill-btn span {
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
         }
 
         .wallet-selector-card {
@@ -272,15 +305,16 @@
 
         .diamonds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.1rem; }
         .diamond-card {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
-            padding: 0.9rem 0.7rem; text-align: center; cursor: pointer; transition: border-color 0.2s;
+            background: #ffffff; border: 2px solid var(--border-color); border-radius: 16px;
+            padding: 0.9rem 0.7rem; text-align: center; cursor: pointer; transition: all 0.2s;
             display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .diamond-card:hover { border-color: var(--accent-glow); }
-        .diamond-card.selected { border-color: var(--accent-glow); background: rgba(0, 102, 255, 0.04); }
-        .diamond-img-render { width: 45px; height: 42px; margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; }
-        .diamond-card h4 { font-size: 0.82rem; font-weight: 800; margin-bottom: 0.2rem; color: #fff; }
-        .diamond-price { color: var(--accent-glow); font-weight: 900; font-size: 0.88rem; }
+        .diamond-card:hover { border-color: var(--accent-glow); transform: translateY(-2px); }
+        .diamond-card.selected { border-color: var(--accent-glow); box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); background: #f8fbff; }
+        .diamond-img-render { width: 50px; height: 46px; margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; }
+        .diamond-card h4 { font-size: 0.82rem; font-weight: 900; margin-bottom: 0.2rem; color: #0d1322; }
+        .diamond-price { color: #0066ff; font-weight: 900; font-size: 0.92rem; }
 
         .profile-header-card { 
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; 
@@ -680,51 +714,66 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE CON LOS PRECIOS EXACTOS -->
+            <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE CON BOTONES DE PAGO Y PRECIOS DINÁMICOS -->
             <div id="seccion-freefire" class="vista-sec" style="display: none;">
                 <button class="nav-top-icon-btn" onclick="irASelectorJuegos()" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Juegos</button>
                 
-                <div class="section-title">MÉTODO DE PAGO</div>
-                <div style="display:inline-flex; align-items:center; gap:6px; background:var(--bg-card); border:1px solid var(--border-color); padding:0.6rem 1rem; border-radius:10px; color:var(--accent-glow); font-weight:bold; font-size:0.82rem; margin-bottom: 1rem;">
-                    <span>USDT (BEP-20)</span>
-                </div>
-
-                <div class="section-title" id="label-player-id">PLAYER ID (Solo números de Free Fire)</div>
+                <div class="section-title">PLAYER ID (Solo números de Free Fire)</div>
                 <div class="form-group">
                     <input type="text" id="player-id-input" class="form-control no-left-icon" placeholder="Ej. 123456789" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
 
+                <!-- DOS BOTONES SUPERIORES DE PAGO (USDT y SALDO) EXACTOS COMO LAS IMÁGENES -->
+                <div class="section-title">SELECCIONA EL MÉTODO DE PAGO</div>
+                <div class="payment-method-selector-grid">
+                    <div id="btn-pay-usdt" class="pay-method-pill-btn active" onclick="seleccionarMetodoPago('usdt')">
+                        <div class="usdt-real-badge">
+                            <svg viewBox="0 0 32 32" width="20" height="20">
+                                <path fill="#FFFFFF" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
+                            </svg>
+                        </div>
+                        <span>USDT</span>
+                    </div>
+
+                    <div id="btn-pay-saldo" class="pay-method-pill-btn" onclick="seleccionarMetodoPago('saldo')">
+                        <div style="width: 32px; height: 32px; background: rgba(0, 102, 255, 0.2); border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        </div>
+                        <span>Saldo</span>
+                    </div>
+                </div>
+
                 <div class="section-title">SELECCIONA EL PAQUETE</div>
                 <div class="diamonds-grid">
-                    <div class="diamond-card" onclick="seleccionarOferta(110, 1.2)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
-                        <h4>110 Diamantes</h4>
-                        <span class="diamond-price" id="precio-110">1.20 USDT</span>
+                    <div class="diamond-card" onclick="seleccionarOferta(110, 1.2, 300, '100+10')">
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="42" height="42"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
+                        <h4>100+10 Diamantes</h4>
+                        <span class="diamond-price" id="precio-pkg-1">1.20 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(361, 3.5)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
-                        <h4>361 Diamantes</h4>
-                        <span class="diamond-price" id="precio-361">3.50 USDT</span>
+                    <div class="diamond-card" onclick="seleccionarOferta(361, 3.5, 850, '310+51')">
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="42" height="42"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg></div>
+                        <h4>310+51 Diamantes</h4>
+                        <span class="diamond-price" id="precio-pkg-2">3.50 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(572, 5.0)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><polygon points="32,2 60,18 48,56 16,56 4,18" fill="#00a8ff"/><polygon points="32,8 52,22 42,50 22,50 12,22" fill="#00f0ff"/><polygon points="32,8 45,22 32,46 19,22" fill="#ffffff" opacity="0.9"/></svg></div>
-                        <h4>572 Diamantes</h4>
-                        <span class="diamond-price" id="precio-572">5.00 USDT</span>
+                    <div class="diamond-card" onclick="seleccionarOferta(572, 5.0, 2100, '520+52')">
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="42" height="42"><polygon points="32,2 60,18 48,56 16,56 4,18" fill="#00a8ff"/><polygon points="32,8 52,22 42,50 22,50 12,22" fill="#00f0ff"/><polygon points="32,8 45,22 32,46 19,22" fill="#ffffff" opacity="0.9"/></svg></div>
+                        <h4>520+52 Diamantes</h4>
+                        <span class="diamond-price" id="precio-pkg-3">5.00 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(1166, 8.5)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#f59e0b" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#f59e0b"/></svg></div>
-                        <h4>1166 Diamantes</h4>
-                        <span class="diamond-price" id="precio-1166">8.50 USDT</span>
+                    <div class="diamond-card" onclick="seleccionarOferta(1166, 8.5, 3300, '1050+105')">
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="42" height="42"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#f59e0b" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#f59e0b"/></svg></div>
+                        <h4>1050+105 Diamantes</h4>
+                        <span class="diamond-price" id="precio-pkg-4">8.50 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(2398, 17.4)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#00f0ff" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#00f0ff"/></svg></div>
-                        <h4>2398 Diamantes</h4>
-                        <span class="diamond-price" id="precio-2398">17.40 USDT</span>
+                    <div class="diamond-card" onclick="seleccionarOferta(2398, 17.4, 5300, '2160+216')">
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="42" height="42"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#00f0ff" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#00f0ff" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#00f0ff"/></svg></div>
+                        <h4>2160+216 Diamantes</h4>
+                        <span class="diamond-price" id="precio-pkg-5">17.40 USDT</span>
                     </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(6160, 40.0)">
-                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="38" height="38"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#a855f7" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#a855f7" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#a855f7"/></svg></div>
-                        <h4>6160 Diamantes</h4>
-                        <span class="diamond-price" id="precio-6160">40.00 USDT</span>
+                    <div class="diamond-card" onclick="seleccionarOferta(6160, 40.0, 12300, '5580+558')">
+                        <div class="diamond-img-render"><svg viewBox="0 0 64 64" width="42" height="42"><rect x="12" y="30" width="40" height="24" rx="4" fill="#1e293b" stroke="#a855f7" stroke-width="2"/><path d="M10 26h44v8H10z" fill="#334155" stroke="#a855f7" stroke-width="2"/><circle cx="32" cy="38" r="4" fill="#a855f7"/></svg></div>
+                        <h4>5580+558 Diamantes</h4>
+                        <span class="diamond-price" id="precio-pkg-6">40.00 USDT</span>
                     </div>
                 </div>
 
@@ -757,8 +806,8 @@
                 <div id="panel-ordenes-depositos" style="display: none;">
                     <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN USDT</span>
-                            <h3 id="stat-total-depositado-usdt" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0.00 USDT</h3>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN WALLET</span>
+                            <h3 id="stat-total-depositado-usdt" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0.00</h3>
                         </div>
                         <div style="width: 36px; height: 36px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -804,97 +853,42 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN WALLET -->
+            <!-- SECCIÓN WALLET / DEPÓSITO DE SALDO ACTUALIZADA CON NÚMERO 59578110 -->
             <div id="seccion-wallet" class="vista-sec" style="display: none;">
                 <div id="wallet-main-list">
-                    <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">SELECCIONAR MÉTODO DE PAGO</h2>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1rem;">Selecciona tu método para ver las instrucciones o depositar.</p>
-                    
-                    <div class="wallet-selector-card">
-                        <div class="wallet-info-left">
-                            <div class="usdt-real-badge">
-                                <!-- LOGOTIPO OFICIAL REAL DE USDT (TETHER) -->
-                                <svg viewBox="0 0 32 32" width="24" height="24">
-                                    <path fill="#FFFFFF" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
-                                </svg>
-                            </div>
-                            <div class="wallet-details">
-                                <h4>USDT (BEP-20)</h4>
-                                <span>Tether USD - Binance Smart Chain</span>
-                            </div>
-                        </div>
-                        <button class="btn-seleccionar-wallet" onclick="abrirSubVistaWallet()">
-                            SELECCIONAR
-                            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-                        </button>
-                    </div>
-
-                    <div class="wallet-selector-card">
-                        <div class="wallet-info-left">
-                            <div style="width: 40px; height: 40px; background: rgba(0, 102, 255, 0.15); border: 2px solid var(--primary-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                            </div>
-                            <div class="wallet-details">
-                                <h4>Saldo</h4>
-                                <span>Paga directo con tu balance interno</span>
-                            </div>
-                        </div>
-                        <button class="btn-seleccionar-wallet" onclick="mostrarNotificacion('Próximamente disponible')">
-                            SELECCIONAR
-                            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-                        </button>
-                    </div>
-
-                    <div class="wallet-selector-card">
-                        <div class="wallet-info-left">
-                            <div style="width: 40px; height: 40px; background: rgba(245, 158, 11, 0.15); border: 2px solid #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="#f59e0b"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-                            </div>
-                            <div class="wallet-details">
-                                <h4>Tarjeta</h4>
-                                <span>Visa / Mastercard / Débito y Crédito</span>
-                            </div>
-                        </div>
-                        <button class="btn-seleccionar-wallet" onclick="mostrarNotificacion('Próximamente disponible')">
-                            SELECCIONAR
-                            <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- SUB-VISTA DEDICADA DE WALLET -->
-                <div id="wallet-subview-panel">
-                    <button class="nav-top-icon-btn" onclick="cerrarSubVistaWallet()" style="margin-bottom: 1rem; border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow);">&lt; Volver a Métodos</button>
+                    <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">RECARGAR SALDO / WALLET</h2>
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1rem;">Transfiere al número oficial e introduce los datos de tu pago.</p>
                     
                     <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(0,240,255,0.15);">
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
-                            <div class="usdt-real-badge">
-                                <svg viewBox="0 0 32 32" width="22" height="22">
-                                    <path fill="#FFFFFF" d="M17.5,15.7v-2.1h4.4V11.2h-4.4V8.7h-3.4v2.5H9.8v2.4h4.3v2.1c-3.1,0.2-5.7,1.1-5.7,2.3c0,1.3,2.9,2.3,6.5,2.3 s6.5-1,6.5-2.3C23.2,16.8,20.6,15.9,17.5,15.7z M15.8,18.9c-2.4,0-4.4-0.5-4.4-1.1c0-0.6,2-1.1,4.4-1.1s4.4,0.5,4.4,1.1 C20.2,18.4,18.2,18.9,15.8,18.9z"/>
-                                </svg>
+                            <div style="width: 40px; height: 40px; background: rgba(0, 102, 255, 0.2); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                             </div>
                             <div>
-                                <h3 style="font-size: 0.95rem; font-weight: 900; color: #fff;">USDT (BEP-20)</h3>
-                                <span style="font-size: 0.7rem; color: #10b981; font-weight: bold;">Red Binance Smart Chain Activa</span>
+                                <h3 style="font-size: 0.95rem; font-weight: 900; color: #fff;">Transferencia Móvil / Saldo</h3>
+                                <span style="font-size: 0.7rem; color: #10b981; font-weight: bold;">Recarga rápida y segura</span>
                             </div>
                         </div>
 
-                        <p style="color: #ff3b30; font-size: 0.72rem; margin-bottom: 0.8rem; font-weight: bold;">El depósito se acredita tras verificar el Hash de la transacción.</p>
-                        
                         <div class="form-group">
-                            <label>Wallet Oficial de Depósito (BEP-20)</label>
-                            <div class="form-control no-left-icon" id="wallet-text" style="font-family: monospace; font-size: 0.72rem; background: #07090e; color: var(--accent-glow); word-break: break-all;">0x8B9a2f78D2bc67Bc6172386Ef9cd30e3F7829069</div>
-                            <button class="btn-main" style="margin-top: 0.5rem; background: var(--bg-card); color: #fff; border: 1px solid var(--border-color);" onclick="copiarWallet()">Copiar Wallet</button>
+                            <label>Número Oficial para Recibir el Pago</label>
+                            <div class="form-control no-left-icon" id="wallet-num-text" style="font-weight: 900; font-size: 1.1rem; background: #07090e; color: var(--accent-glow); text-align: center; letter-spacing: 1px;">59578110</div>
+                            <button class="btn-main" style="margin-top: 0.5rem; background: var(--bg-card); color: #fff; border: 1px solid var(--border-color);" onclick="copiarNumeroWallet()">Copiar Número</button>
                         </div>
 
                         <div class="form-group" style="margin-top: 1rem;">
-                            <label>Monto exacto enviado (Mínimo 1.2 USDT)</label>
-                            <input type="number" id="monto-deposito" class="form-control no-left-icon" placeholder="Ej. 5.00">
+                            <label>Monto exacto transferido</label>
+                            <input type="number" id="monto-deposito" class="form-control no-left-icon" placeholder="Ej. 300">
                         </div>
 
                         <div class="form-group" style="margin-top: 1rem;">
-                            <label>ID de Transferencia / Hash (TxID obligatoria)</label>
-                            <input type="text" id="txid-deposito" class="form-control no-left-icon" placeholder="Ej. 0x9a8b... o número de orden">
+                            <label>Tu número con el que transfirió el saldo</label>
+                            <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>ID de Transferencia / Comprobante / Hash</label>
+                            <input type="text" id="txid-deposito" class="form-control no-left-icon" placeholder="Número de confirmación o de orden">
                         </div>
 
                         <button class="btn-main" onclick="confirmarendioDeposito()">CONFIRMAR DEPÓSITO</button>
@@ -923,7 +917,7 @@
 
                     <div class="profile-stats-grid">
                         <div class="stat-col"><h4 id="stat-recargas">0</h4><span>Recargas</span></div>
-                        <div class="stat-col"><h4 id="stat-saldo">0.00</h4><span>Saldo USDT</span></div>
+                        <div class="stat-col"><h4 id="stat-saldo">0.00</h4><span>Saldo</span></div>
                         <div class="stat-col"><h4 id="stat-referidos">0</h4><span>Referidos</span></div>
                     </div>
                 </div>
@@ -935,7 +929,7 @@
                 <div id="seccion-seguridad" style="display: none;" class="security-menu-box">
                     <button class="security-btn" onclick="toggleSubPanel('panel-transferir-usdt')">
                         <svg viewBox="0 0 24 24"><path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 8h14v2H5V8zm14 10H5v-2h14v2zm0-4H5v-2h14v2z"/></svg>
-                        Transferir USDT a Otro Usuario
+                        Transferir Saldo a Otro Usuario
                     </button>
                     <div id="panel-transferir-usdt" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
                         <div class="form-group">
@@ -943,7 +937,7 @@
                             <input type="text" id="trans-destino" class="form-control no-left-icon" placeholder="Ej. usuario o correo@gmail.com">
                         </div>
                         <div class="form-group">
-                            <label>Monto a transferir (USDT)</label>
+                            <label>Monto a transferir</label>
                             <input type="number" id="trans-monto" class="form-control no-left-icon" placeholder="0.00">
                         </div>
                         <div class="form-group">
@@ -1157,6 +1151,7 @@
 
         let usuarioActual = JSON.parse(localStorage.getItem('lester_usuario')) || null;
         let ofertaSeleccionada = null;
+        let metodoPagoActual = 'usdt'; // 'usdt' o 'saldo'
         let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
         let listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
         let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", etiquetaBloodStrike: "PRÓXIMAMENTE" };
@@ -1303,18 +1298,6 @@
         function togglePass(idInput) {
             const input = document.getElementById(idInput);
             input.type = input.type === "password" ? "text" : "password";
-        }
-
-        function abrirSubVistaWallet() {
-            document.getElementById('wallet-main-list').style.display = 'none';
-            document.getElementById('wallet-subview-panel').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function cerrarSubVistaWallet() {
-            document.getElementById('wallet-subview-panel').style.display = 'none';
-            document.getElementById('wallet-main-list').style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function validarCampoUser(input) {
@@ -1478,10 +1461,6 @@
         }
 
         function cambiarSeccion(seccion, elemento) {
-            if (seccion !== 'wallet') {
-                cerrarSubVistaWallet();
-            }
-
             mostrarCarga("Cargando sección...");
             setTimeout(() => {
                 ocultarCarga();
@@ -1522,26 +1501,45 @@
                 document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
                 document.getElementById('seccion-freefire').style.display = 'flex';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                actualizarPreciosDiamantesUI();
+                seleccionarMetodoPago('usdt'); // Por defecto USDT
             }, 300);
         }
 
-        function actualizarPreciosDiamantesUI() {
-            let p110 = 1.2, p361 = 3.5, p572 = 5.0, p1166 = 8.5, p2398 = 17.4, p6160 = 40.0;
-            if (usuarioActual && usuarioActual.descuentosDisponibles > 0) {
-                p110 *= 0.95; p361 *= 0.95; p572 *= 0.95; p1166 *= 0.95; p2398 *= 0.95; p6160 *= 0.95;
+        function seleccionarMetodoPago(metodo) {
+            metodoPagoActual = metodo;
+            ofertaSeleccionada = null;
+            document.querySelectorAll('.diamond-card').forEach(c => c.classList.remove('selected'));
+
+            const btnUsdt = document.getElementById('btn-pay-usdt');
+            const btnSaldo = document.getElementById('btn-pay-saldo');
+
+            if (metodo === 'usdt') {
+                btnUsdt.classList.add('active');
+                btnSaldo.classList.remove('active');
+                document.getElementById('precio-pkg-1').innerText = "1.20 USDT";
+                document.getElementById('precio-pkg-2').innerText = "3.50 USDT";
+                document.getElementById('precio-pkg-3').innerText = "5.00 USDT";
+                document.getElementById('precio-pkg-4').innerText = "8.50 USDT";
+                document.getElementById('precio-pkg-5').innerText = "17.40 USDT";
+                document.getElementById('precio-pkg-6').innerText = "40.00 USDT";
+            } else {
+                btnSaldo.classList.add('active');
+                btnUsdt.classList.remove('active');
+                document.getElementById('precio-pkg-1').innerText = "300 $";
+                document.getElementById('precio-pkg-2').innerText = "850 $";
+                document.getElementById('precio-pkg-3').innerText = "2100 $";
+                document.getElementById('precio-pkg-4').innerText = "3300 $";
+                document.getElementById('precio-pkg-5').innerText = "5300 $";
+                document.getElementById('precio-pkg-6').innerText = "12300 $";
             }
-            document.getElementById('precio-110').innerText = p110.toFixed(2) + " USDT";
-            document.getElementById('precio-361').innerText = p361.toFixed(2) + " USDT";
-            document.getElementById('precio-572').innerText = p572.toFixed(2) + " USDT";
-            document.getElementById('precio-1166').innerText = p1166.toFixed(2) + " USDT";
-            document.getElementById('precio-2398').innerText = p2398.toFixed(2) + " USDT";
-            document.getElementById('precio-6160').innerText = p6160.toFixed(2) + " USDT";
         }
 
-        function seleccionarOferta(diamantes, precioBase) {
-            let precioFinal = usuarioActual && usuarioActual.descuentosDisponibles > 0 ? precioBase * 0.95 : precioBase;
-            ofertaSeleccionada = { diamantes, precio: precioFinal };
+        function seleccionarOferta(diamantesNum, precioUsdt, precioSaldo, textoDetalle) {
+            let precioFinal = metodoPagoActual === 'usdt' ? precioUsdt : precioSaldo;
+            if (usuarioActual && usuarioActual.descuentosDisponibles > 0 && metodoPagoActual === 'usdt') {
+                precioFinal *= 0.95;
+            }
+            ofertaSeleccionada = { diamantes: textoDetalle, diamantesNum, precio: precioFinal, moneda: metodoPagoActual };
             document.querySelectorAll('.diamond-card').forEach(c => c.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
         }
@@ -1551,7 +1549,6 @@
             const playerId = playerIdInput.value.trim();
 
             if(!playerId || playerId.length < 6) {
-                abrirFreeFire();
                 playerIdInput.classList.add('input-error-shake');
                 mostrarNotificacion("Introduce un ID de Free Fire válido");
                 return;
@@ -1562,8 +1559,12 @@
                 return;
             }
 
+            // Validar saldo insuficiente si paga con Saldo interno
             if (usuarioActual.balance < ofertaSeleccionada.precio) {
-                mostrarNotificacion("Saldo insuficiente en USDT");
+                mostrarNotificacion("Saldo insuficiente. Redirigiendo a Wallet para recargar...");
+                setTimeout(() => {
+                    cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'));
+                }, 1200);
                 return;
             }
 
@@ -1591,8 +1592,9 @@
                     correo: usuarioActual.correo.toLowerCase(),
                     idJugador: playerId, 
                     detalle: `${ofertaSeleccionada.diamantes} Diamantes`, 
-                    diamantesNum: ofertaSeleccionada.diamantes,
+                    diamantesNum: ofertaSeleccionada.diamantesNum,
                     precio: ofertaSeleccionada.precio,
+                    moneda: ofertaSeleccionada.moneda,
                     estado: 'Pendiente' 
                 };
                 
@@ -1642,8 +1644,8 @@
             let misDepositos = solicitudesGlobales.depositos.filter(d => d.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
 
             document.getElementById('stat-total-recargas-realizadas').innerText = misRecargas.length;
-            let totalDepositadoUSDT = misDepositos.filter(d => d.estado === 'Aprobado').reduce((acc, curr) => acc + curr.monto, 0);
-            document.getElementById('stat-total-depositado-usdt').innerText = totalDepositadoUSDT.toFixed(2) + " USDT";
+            let totalDepositadoWallet = misDepositos.filter(d => d.estado === 'Aprobado').reduce((acc, curr) => acc + curr.monto, 0);
+            document.getElementById('stat-total-depositado-usdt').innerText = totalDepositadoWallet.toFixed(2);
 
             let htmlCompras = "";
             if(misRecargas.length === 0) {
@@ -1653,12 +1655,13 @@
                     let claseEstado = "status-pendiente";
                     if(o.estado === 'Aprobada' || o.estado === 'Completado') claseEstado = "status-completado";
                     if(o.estado === 'Cancelado') claseEstado = "status-cancelado";
+                    let sufijoMoneda = o.moneda === 'saldo' ? ' $' : ' USDT';
 
                     htmlCompras += `
                         <div class="order-card-pro">
                             <div class="order-info">
-                                <h4>Free Fire - ${o.detalle}</h4>
-                                <p>ID: ${o.idJugador} | Precio: ${o.precio.toFixed(2)} USDT</p>
+                                <h4>Free Fire - ${o.detalle} Diamantes</h4>
+                                <p>ID: ${o.idJugador} | Precio: ${o.precio}${sufijoMoneda}</p>
                             </div>
                             <span class="badge-status ${claseEstado}">${o.estado}</span>
                         </div>
@@ -1679,8 +1682,8 @@
                     htmlDepositos += `
                         <div class="order-card-pro">
                             <div class="order-info">
-                                <h4>Depósito USDT - ${d.monto} USDT</h4>
-                                <p>TxID: ${d.txid || 'N/A'}</p>
+                                <h4>Recarga Saldo - ${d.monto}</h4>
+                                <p>Tel: ${d.telefonoTransfirio || 'N/A'} | Comprobante: ${d.txid || 'N/A'}</p>
                             </div>
                             <span class="badge-status ${claseEstado}">${d.estado}</span>
                         </div>
@@ -1705,19 +1708,18 @@
                     acumuladoUsuarios[correoKey] = {
                         usuario: r.usuario,
                         correo: r.correo,
-                        totalDiamantes: 0,
+                        totalDiamantesTexto: r.detalle || '100+10',
                         totalGasto: 0,
                         ultimaHora: (r.id || r.fecha)
                     };
                 }
-                acumuladoUsuarios[correoKey].totalDiamantes += (r.diamantesNum || parseInt(r.detalle) || 110);
                 acumuladoUsuarios[correoKey].totalGasto += (r.precio || 1.20);
                 if((r.id || r.fecha) > acumuladoUsuarios[correoKey].ultimaHora) {
                     acumuladoUsuarios[correoKey].ultimaHora = (r.id || r.fecha);
                 }
             });
 
-            let listaTop = Object.values(acumuladoUsuarios).sort((a, b) => b.totalDiamantes - a.totalDiamantes);
+            let listaTop = Object.values(acumuladoUsuarios);
             let vivoHTML = "";
 
             if(listaTop.length === 0) {
@@ -1735,10 +1737,10 @@
                                 <div class="history-avatar">${avatarC}</div>
                                 <div class="history-user-details">
                                     <h5>${item.usuario}</h5>
-                                    <p>Free Fire LATAM · <b>+${item.totalDiamantes} Diamantes</b></p>
+                                    <p>Free Fire LATAM · <b>+${item.totalDiamantesTexto}</b></p>
                                 </div>
                             </div>
-                            <span class="history-price">${item.totalGasto.toFixed(2)} USDT</span>
+                            <span class="history-price">${item.totalGasto.toFixed(2)}</span>
                         </div>
                     `;
                 });
@@ -1839,7 +1841,7 @@
             }
 
             if (usuarioActual.balance < monto) {
-                mostrarNotificacion("Saldo insuficiente en tu balance USDT");
+                mostrarNotificacion("Saldo insuficiente en tu balance");
                 return;
             }
 
@@ -1878,13 +1880,13 @@
 
                 actualizarPerfilUI();
                 renderizarOrdenes();
-                mostrarNotificacion(`Transferencia de ${monto.toFixed(2)} USDT exitosa`);
+                mostrarNotificacion(`Transferencia de ${monto.toFixed(2)} exitosa`);
             }, 800);
         }
 
-        function copiarWallet() {
-            navigator.clipboard.writeText("0x8B9a2f78D2bc67Bc6172386Ef9cd30e3F7829069");
-            mostrarNotificacion("Wallet copiada al portapapeles");
+        function copiarNumeroWallet() {
+            navigator.clipboard.writeText("59578110");
+            mostrarNotificacion("Número 59578110 copiado al portapapeles");
         }
 
         function copiarEnlaceRef() {
@@ -1907,15 +1909,21 @@
 
         function confirmarendioDeposito() {
             const monto = parseFloat(document.getElementById('monto-deposito').value);
+            const telefonoTransfirio = document.getElementById('telefono-transfirio').value.trim();
             const txid = document.getElementById('txid-deposito').value.trim();
 
-            if(isNaN(monto) || monto < 1.2) {
-                mostrarNotificacion("El monto mínimo es 1.2 USDT");
+            if(isNaN(monto) || monto <= 0) {
+                mostrarNotificacion("Introduce un monto válido");
                 return;
             }
 
-            if(!txid || txid.length < 5) {
-                mostrarNotificacion("Debes introducir un ID de transferencia o Hash válido");
+            if(!telefonoTransfirio || telefonoTransfirio.length < 6) {
+                mostrarNotificacion("Introduce el número con el que realizaste la transferencia");
+                return;
+            }
+
+            if(!txid || txid.length < 3) {
+                mostrarNotificacion("Debes introducir el ID o comprobante de transferencia");
                 return;
             }
 
@@ -1926,6 +1934,7 @@
                     correo: usuarioActual.correo.toLowerCase(),
                     usuario: usuarioActual.nombre, 
                     monto: monto, 
+                    telefonoTransfirio: telefonoTransfirio,
                     txid: txid,
                     estado: 'Pendiente' 
                 };
@@ -1937,9 +1946,9 @@
 
                 mostrarNotificacion("Depósito enviado a revisión");
                 document.getElementById('monto-deposito').value = '';
+                document.getElementById('telefono-transfirio').value = '';
                 document.getElementById('txid-deposito').value = '';
                 
-                cerrarSubVistaWallet();
                 renderizarOrdenes();
                 cambiarTabOrdenes('depositos');
                 cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
@@ -1955,7 +1964,7 @@
             }
             if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
 
-            const saldoTexto = `${usuarioActual.balance.toFixed(2)} USDT`;
+            const saldoTexto = `${usuarioActual.balance.toFixed(2)}`;
             document.getElementById('header-wallet-balance').innerText = saldoTexto;
             document.getElementById('profile-wallet-balance').innerText = saldoTexto;
 
@@ -2142,15 +2151,16 @@
                 });
                 res.innerHTML = html;
             } else if(accion === 'solicitudes_deposito' && esCEO) {
-                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Solicitudes de Depósito:</h4>";
+                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Solicitudes de Depósito de Saldo:</h4>";
                 let pendientesDeps = solicitudesGlobales.depositos.filter(d => d.estado === 'Pendiente');
                 if(pendientesDeps.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay depósitos pendientes.</p>";
                 
                 solicitudesGlobales.depositos.forEach((d, idx) => {
                     if(d.estado === 'Pendiente') {
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
-                            <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto:</b> ${d.monto} USDT<br>
-                            <b>TxID:</b> <span style="color:var(--accent-glow);">${d.txid || 'No proporcionado'}</span>
+                            <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto:</b> ${d.monto}<br>
+                            <b>Teléfono Transfirió:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span><br>
+                            <b>Comprobante:</b> <span style="color:var(--accent-glow);">${d.txid || 'N/A'}</span>
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
                                 <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
                                 <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
@@ -2171,7 +2181,7 @@
                         <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
                         <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
                         <b>Contraseña:</b> <span style="color:var(--accent-glow);">${u.pass}</span><br>
-                        <b>Cantidad de USDT:</b> <span style="color:#10b981; font-weight:bold;">${(u.balance || 0).toFixed(2)} USDT</span><br>
+                        <b>Saldo:</b> <span style="color:#10b981; font-weight:bold;">${(u.balance || 0).toFixed(2)}</span><br>
                         <b>Cantidad de recarga:</b> <span style="color:#fff;">${u.recargasCount || 0}</span><br>
                         <b>Cantidad de referido:</b> <span style="color:var(--accent-glow);">${numReferidos}</span><br>
                         <b>Rango de el usuario:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
@@ -2181,18 +2191,18 @@
             } else if(accion === 'acreditar') {
                 res.innerHTML = `
                     <div class="ceo-action-form">
-                        <h4>Acreditar Saldo USDT</h4>
+                        <h4>Acreditar Saldo</h4>
                         <input type="email" id="ceo-acreditar-correo" placeholder="Correo del usuario">
-                        <input type="number" id="ceo-acreditar-monto" placeholder="Monto a sumar (Ej. 10)">
+                        <input type="number" id="ceo-acreditar-monto" placeholder="Monto a sumar (Ej. 300)">
                         <button class="btn-main" style="margin-top:0;" onclick="ejecutarAcreditarCEO()">Aplicar Acreditación</button>
                     </div>
                 `;
             } else if(accion === 'desacreditar') {
                 res.innerHTML = `
                     <div class="ceo-action-form">
-                        <h4>Desacreditar Saldo USDT</h4>
+                        <h4>Desacreditar Saldo</h4>
                         <input type="email" id="ceo-desacreditar-correo" placeholder="Correo del usuario">
-                        <input type="number" id="ceo-desacreditar-monto" placeholder="Monto a restar (Ej. 5)">
+                        <input type="number" id="ceo-desacreditar-monto" placeholder="Monto a restar (Ej. 100)">
                         <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarDesacreditarCEO()">Aplicar Desacreditación</button>
                     </div>
                 `;
@@ -2267,7 +2277,7 @@
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             await guardarEnCloud();
 
-            mostrarNotificacion(`Acreditados ${monto} USDT a ${correo}`);
+            mostrarNotificacion(`Acreditados ${monto} a ${correo}`);
             cargarAccionCEO('usuarios');
         }
 
@@ -2290,7 +2300,7 @@
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             await guardarEnCloud();
 
-            mostrarNotificacion(`Descontados ${monto} USDT a ${correo}`);
+            mostrarNotificacion(`Descontados ${monto} a ${correo}`);
             cargarAccionCEO('usuarios');
         }
 
@@ -2365,7 +2375,7 @@
             
             actualizarPerfilUI();
             renderizarOrdenes();
-            mostrarNotificacion(`Depósito de ${montoADepositar.toFixed(2)} USDT aprobado`);
+            mostrarNotificacion(`Depósito de ${montoADepositar.toFixed(2)} aprobado`);
             cargarAccionCEO('solicitudes_deposito');
         }
 
