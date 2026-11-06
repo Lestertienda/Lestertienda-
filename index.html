@@ -464,7 +464,7 @@
         <img src="icon-192.png" alt="Soporte">
     </div>
 
-    <!-- Inputs Ocultos para Subir Imágenes en Base64 Permanente -->
+    <!-- Inputs Ocultos para Subir Imágenes con Optimización Automática -->
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
     <input type="file" id="ceo-banner-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenBannerCEO(event)">
     <input type="file" id="ceo-catalogo-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenCatalogoCEO(event)">
@@ -631,7 +631,7 @@
                 
                 <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">SELECCIONA EL JUEGO</h2>
 
-                <!-- Tarjeta Free Fire con Banner de Fondo Completo y Degradado Neón -->
+                <!-- Tarjeta Free Fire -->
                 <div class="game-card-character" onclick="abrirFreeFire()">
                     <div id="banner-bg-freefire" class="game-card-banner-img" style="background-image: url('IMG_20261105_143324_728.jpg');">
                         <div class="neon-overlay-gradient"></div>
@@ -648,7 +648,7 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta Blood Strike con Banner de Fondo Completo y Degradado Neón -->
+                <!-- Tarjeta Blood Strike -->
                 <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
                     <div id="banner-bg-blood" class="game-card-banner-img" style="background-image: url('IMG_20261105_143001_158.jpg');">
                         <div class="neon-overlay-gradient"></div>
@@ -1268,7 +1268,6 @@
             aplicarConfiguracionVisual();
             renderizarPaquetesTienda();
 
-            // ACTUALIZACIÓN AUTOMÁTICA EN TIEMPO REAL CADA 5 SEGUNDOS
             setInterval(() => {
                 sincronizarConCloudAutoSilencioso();
             }, 5000);
@@ -1422,7 +1421,6 @@
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
-            // APLICAR BANNERS DE FONDO COMPLETO CON SOPORTE BASE64 PERMANENTE
             const bannerFFBg = document.getElementById('banner-bg-freefire');
             if(bannerFFBg && tiendaConfig.bannerFreeFireImg) {
                 bannerFFBg.style.backgroundImage = `url('${tiendaConfig.bannerFreeFireImg}')`;
@@ -1459,7 +1457,9 @@
             container.innerHTML = html;
         }
 
-        // FUNCIONES DE CARGA Y CONVERSIÓN PERMANENTE A BASE64 DESDE EL PANEL CEO
+        // ==========================================
+        // COMPRESIÓN DE IMÁGENES ULTRA OPTIMIZADA PARA JSONBIN
+        // ==========================================
         function abrirSelectorImagenBanner(tipoJuego) {
             window.tipoBannerSeleccionado = tipoJuego;
             document.getElementById('ceo-banner-image-uploader').click();
@@ -1468,8 +1468,9 @@
         function procesarImagenBannerCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
+            mostrarCarga("Optimizando y guardando banner...");
             const reader = new FileReader();
-            reader.onload = async function(e) {
+            reader.onload = function(e) {
                 const img = new Image();
                 img.src = e.target.result;
                 img.onload = async function() {
@@ -1477,7 +1478,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 800; // Alta resolución optimizada para banners
+                    const maxDim = 550; // Resolución compacta ideal para banners móviles
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1486,7 +1487,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.70);
 
                     if(window.tipoBannerSeleccionado === 'freefire') {
                         tiendaConfig.bannerFreeFireImg = compressedBase64;
@@ -1495,8 +1496,9 @@
                     }
                     localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                     await guardarEnCloud();
+                    ocultarCarga();
                     aplicarConfiguracionVisual();
-                    mostrarNotificacion("Banner actualizado y guardado permanentemente");
+                    mostrarNotificacion("¡Banner guardado en la nube con éxito!");
                 };
             };
             reader.readAsDataURL(file);
@@ -1510,8 +1512,9 @@
         function procesarImagenCatalogoCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
+            mostrarCarga("Optimizando imagen de paquete...");
             const reader = new FileReader();
-            reader.onload = async function(e) {
+            reader.onload = function(e) {
                 const img = new Image();
                 img.src = e.target.result;
                 img.onload = async function() {
@@ -1519,7 +1522,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 300; // Tamaño optimizado para iconos de catálogo
+                    const maxDim = 250; // Resolución compacta ideal para iconos de diamantes
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1528,16 +1531,17 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
 
                     let idx = window.indicePaqueteSeleccionado;
                     if(tiendaConfig.paquetesDiamantes[idx]) {
                         tiendaConfig.paquetesDiamantes[idx].imagen = compressedBase64;
                         localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                         await guardarEnCloud();
+                        ocultarCarga();
                         renderizarPaquetesTienda();
                         cargarAccionCEO('catalogo_precios');
-                        mostrarNotificacion(`Imagen de "${tiendaConfig.paquetesDiamantes[idx].nombre}" actualizada`);
+                        mostrarNotificacion(`Imagen de "${tiendaConfig.paquetesDiamantes[idx].nombre}" guardada correctamente`);
                     }
                 };
             };
@@ -2194,15 +2198,15 @@
             if(!file) return;
 
             const reader = new FileReader();
-            reader.onload = async function(e) {
+            reader.onload = function(e) {
                 const img = new Image();
                 img.src = e.target.result;
-                img.onload = function() {
+                img.onload = async function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 250;
+                    const maxDim = 200;
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -2211,7 +2215,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.70);
 
                     usuarioActual.avatar = compressedBase64;
                     let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
@@ -2220,7 +2224,7 @@
                     localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                     localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                     
-                    guardarEnCloud();
+                    await guardarEnCloud();
                     actualizarPerfilUI();
                     actualizarEstadisticasInicio();
                     mostrarNotificacion("Foto de perfil guardada");
