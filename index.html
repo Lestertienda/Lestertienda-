@@ -980,6 +980,18 @@
                     </div>
                 </div>
 
+                <!-- Botones profesionales estilo capturas de perfil -->
+                <div class="security-menu-box" style="margin-top: 0; margin-bottom: 1rem;">
+                    <button class="security-btn" onclick="abrirSeccionDatosPersonales()">
+                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        Datos personales
+                    </button>
+                    <button class="security-btn" onclick="abrirSeccionLegalGeneral()">
+                        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        Legal (Términos, reembolsos, privacidad)
+                    </button>
+                </div>
+
                 <button class="btn-main" style="background: #07090e; border: 1px solid var(--primary-blue); color: var(--accent-glow); margin-bottom: 1rem;" onclick="toggleSeguridadPanel()">
                     SEGURIDAD Y CONFIGURACIÓN
                 </button>
@@ -1070,15 +1082,103 @@
                 <div id="panel-ceo-container" style="display: none;"></div>
             </div>
 
+            <!-- SUB-VISTA DATOS PERSONALES PRO -->
+            <div id="seccion-datos-personales" class="vista-sec" style="display: none;">
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('perfil', document.getElementById('nav-btn-perfil'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver
+                    </button>
+                </div>
+
+                <div class="profile-header-card" style="text-align: left; padding: 1.4rem;">
+                    <h2 style="font-size: 1.15rem; font-weight: 900; color: #fff; margin-bottom: 0.2rem;">Datos personales</h2>
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Tu información de identidad y contacto seguro.</p>
+
+                    <div class="profile-avatar-wrapper" style="margin-bottom: 1.2rem;">
+                        <div class="profile-avatar-circle" id="DP-avatar-circle" onclick="abrirSelectorGaleria()">L</div>
+                        <div class="avatar-edit-badge" onclick="abrirSelectorGaleria()">
+                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        </div>
+                    </div>
+                    <div style="text-align: center; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 1.2rem;">Toca la foto para cambiarla</div>
+
+                    <div class="form-group">
+                        <label>Nombre completo (Como apareces en tus documentos)</label>
+                        <input type="text" id="dp-nombre-completo" class="form-control no-left-icon" placeholder="Ej. Daniel González Pérez">
+                        <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-top: 4px;">Nos ayuda a identificarte si hay algún problema con un pago[span_0](start_span)[span_0](end_span).</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nombre de usuario</label>
+                        <input type="text" id="dp-username" class="form-control no-left-icon" readonly style="color: var(--accent-glow); font-weight: bold;">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número de móvil</label>
+                        <input type="text" id="dp-movil-input" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+                        <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-top: 4px;">Verifícalo para entrar y recuperar tu cuenta por SMS[span_1](start_span)[span_1](end_span).</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo electrónico</label>
+                        <input type="email" id="dp-correo" class="form-control no-left-icon" readonly style="color: var(--text-muted);">
+                        <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-top: 4px;">Para cambiarlo, escríbenos por soporte: hay que verificarlo de nuevo[span_2](start_span)[span_2](end_span).</span>
+                    </div>
+
+                    <button class="btn-main" style="margin-top: 1rem;" onclick="guardarDatosPersonalesPro()">Guardar cambios</button>
+                </div>
+            </div>
+
+            <!-- SUB-VISTA INFORMACIÓN LEGAL DETALLADA -->
+            <div id="seccion-info-legal-detallada" class="vista-sec" style="display: none;">
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('perfil', document.getElementById('nav-btn-perfil'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver
+                    </button>
+                </div>
+
+                <div class="profile-header-card" style="text-align: left; padding: 1.4rem;">
+                    <h2 style="font-size: 1.15rem; font-weight: 900; color: #fff; margin-bottom: 0.2rem;">Legal</h2>
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Las reglas de la tienda, claras y en un solo sitio[span_3](start_span)[span_3](end_span).</p>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="security-btn" onclick="abrirContenidoLegal('terminos')">
+                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            Términos y condiciones (Cómo funcionan compras, saldo...)[span_4](start_span)[span_4](end_span)
+                        </div>
+                        <div class="security-btn" onclick="abrirContenidoLegal('reembolso')">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                            Política de reembolso (Cuándo y cómo se devuelve tu dinero)[span_5](start_span)[span_5](end_span)
+                        </div>
+                        <div class="security-btn" onclick="abrirContenidoLegal('privacidad')">
+                            <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                            Política de privacidad (Qué datos guardamos y para qué)[span_6](start_span)[span_6](end_span)
+                        </div>
+                        <div class="security-btn" onclick="abrirContenidoLegal('cookies')">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
+                            Política de cookies (Qué se guarda en tu navegador)[span_7](start_span)[span_7](end_span)
+                        </div>
+                        <div class="security-btn" onclick="abrirContenidoLegal('nosotros')">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                            Sobre nosotros (Quiénes somos y desde cuándo)[span_8](start_span)[span_8](end_span)
+                        </div>
+                    </div>
+
+                    <div id="contenedor-texto-legal-dinamico" style="margin-top: 1.2rem; background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; display: none;">
+                        <!-- Texto generado dinámicamente -->
+                    </div>
+                </div>
+            </div>
+
             <!-- FOOTER LEGAL -->
             <footer class="footer-legal-container">
                 <h4>Información Legal</h4>
                 <div class="footer-links-grid">
-                    <span onclick="mostrarNotificacion('Términos y Condiciones')">Términos</span> &bull; 
-                    <span onclick="mostrarNotificacion('Política de Privacidad')">Privacidad</span> &bull; 
-                    <span onclick="mostrarNotificacion('Política de Pagos')">Pagos</span> &bull; 
-                    <span onclick="mostrarNotificacion('Reembolsos')">Reembolsos</span> &bull; 
-                    <span onclick="mostrarNotificacion('Contacto')">Soporte</span>
+                    <span onclick="abrirSeccionLegalGeneral()">Términos</span> &bull; 
+                    <span onclick="abrirSeccionLegalGeneral()">Privacidad</span> &bull; 
+                    <span onclick="abrirSeccionLegalGeneral()">Pagos</span> &bull; 
+                    <span onclick="abrirSeccionLegalGeneral()">Reembolsos</span> &bull; 
+                    <span onclick="mostrarModalSoporte()">Soporte</span>
                 </div>
                 <div class="footer-copy">
                     &copy; 2026 <span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span> &mdash; Todos los derechos reservados.
@@ -1491,7 +1591,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 260; // Reducido para garantizar que JSONBin nunca rechace la subida
+                    const maxDim = 220; // Super optimizado para evitar límite en nube
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1500,7 +1600,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.40);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.35);
 
                     if(window.tipoBannerSeleccionado === 'freefire') {
                         tiendaConfig.bannerFreeFireImg = compressedBase64;
@@ -1536,7 +1636,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 90; // Reducido para evitar límite de tamaño en la nube
+                    const maxDim = 70; // Ultra optimizado para evitar saturación de JSON
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1545,7 +1645,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.35);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.30);
 
                     let idx = window.indicePaqueteSeleccionado;
                     if(tiendaConfig.paquetesDiamantes[idx]) {
@@ -1781,6 +1881,77 @@
                     aplicarConfiguracionVisual();
                 }
             }, 300);
+        }
+
+        function abrirSeccionDatosPersonales() {
+            document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+            document.getElementById('seccion-datos-personales').style.display = 'flex';
+            if(usuarioActual) {
+                document.getElementById('dp-nombre-completo').value = usuarioActual.nombreCompleto || '';
+                document.getElementById('dp-username').value = '@' + usuarioActual.nombre;
+                document.getElementById('dp-correo').value = usuarioActual.correo;
+                document.getElementById('dp-movil-input').value = usuarioActual.telefonoMovil || '';
+                let circulo = document.getElementById('DP-avatar-circle');
+                if(usuarioActual.avatar) {
+                    circulo.innerHTML = `<img src="${usuarioActual.avatar}">`;
+                } else {
+                    circulo.innerText = usuarioActual.nombre.charAt(0).toUpperCase();
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function abrirSeccionLegalGeneral() {
+            document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+            document.getElementById('seccion-info-legal-detallada').style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function abrirContenidoLegal(tipo) {
+            const caja = document.getElementById('contenedor-texto-legal-dinamico');
+            caja.style.display = 'block';
+            
+            let contenido = "";
+            if(tipo === 'terminos') {
+                contenido = `<b style="color:#fff; font-size:0.85rem;">Términos y condiciones</b><br><br>
+                1. <b>Funcionamiento de compras:</b> Todas las recargas de Free Fire y saldo se procesan de manera digital mediante ID de jugador o transferencias de saldo y USDT.<br>
+                2. <b>Saldo y Billetera:</b> El saldo móvil y USDT depositado es personal e intransferible, utilizable exclusivamente para adquirir los productos disponibles en Lester Tienda.<br>
+                3. <b>Responsabilidad:</b> El usuario es responsable de introducir correctamente su ID de juego. Los errores de ID proporcionados por el cliente no son reembolsables.`;
+            } else if(tipo === 'reembolso') {
+                contenido = `<b style="color:#fff; font-size:0.85rem;">Política de reembolso</b><br><br>
+                1. <b>Cuándo aplica:</b> Se emite reembolso o devolución de saldo únicamente si la orden presenta un fallo técnico comprobado por el equipo de soporte y no pudo ser entregada en un plazo de 24 horas.<br>
+                2. <b>Cómo se devuelve:</b> El importe reembolsado se acredita directamente al balance de tu Wallet interna o saldo móvil en la plataforma de forma inmediata una vez aprobado por administración.`;
+            } else if(tipo === 'privacidad') {
+                contenido = `<b style="color:#fff; font-size:0.85rem;">Política de privacidad</b><br><br>
+                1. <b>Datos que guardamos:</b> Almacenamos tu nombre de usuario, correo electrónico registrado, número de teléfono móvil verificado e historial de transacciones.<br>
+                2. <b>Para qué se usan:</b> Tus datos se utilizan estrictamente para validar tus pagos, procesar tus recargas de forma segura y permitirte recuperar el acceso a tu cuenta en caso de pérdida de contraseña.`;
+            } else if(tipo === 'cookies') {
+                contenido = `<b style="color:#fff; font-size:0.85rem;">Política de cookies</b><br><br>
+                Utilizamos almacenamiento local (LocalStorage) y cookies técnicas estrictamente necesarias para recordar tu sesión iniciada, preferencias de interfaz y datos de la aplicación en tu navegador de forma segura.`;
+            } else if(tipo === 'nosotros') {
+                contenido = `<b style="color:#fff; font-size:0.85rem;">Sobre nosotros</b><br><br>
+                Lester Tienda es la plataforma líder de comercio electrónico y recargas para gamers en la región, ofreciendo entregas instantáneas, soporte personalizado y un entorno de confianza desde 2026.`;
+            }
+            caja.innerHTML = contenido;
+        }
+
+        function guardarDatosPersonalesPro() {
+            const nombreCompleto = document.getElementById('dp-nombre-completo').value.trim();
+            const telf = document.getElementById('dp-movil-input').value.trim();
+
+            usuarioActual.nombreCompleto = nombreCompleto;
+            usuarioActual.telefonoMovil = telf;
+
+            let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+            if(fresh) {
+                fresh.nombreCompleto = nombreCompleto;
+                fresh.telefonoMovil = telf;
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            guardarEnCloud();
+            mostrarNotificacion("Datos personales guardados correctamente");
         }
 
         function abrirVistaWalletDetalle(opcion) {
@@ -2220,7 +2391,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 150;
+                    const maxDim = 120; // Optimizado para evitar errores de tamaño
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -2229,7 +2400,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.50);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.35);
 
                     usuarioActual.avatar = compressedBase64;
                     let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
@@ -2535,7 +2706,7 @@
                 return;
             }
             if(nue !== con) {
-                mostrarNotificacion(" Las nuevas contraseñas no coinciden");
+                mostrarNotificacion("Las nuevas contraseñas no coinciden");
                 return;
             }
 
