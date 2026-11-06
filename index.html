@@ -184,6 +184,7 @@
         .game-card-banner-img {
             height: 175px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
             overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;
+            background-color: #0d1322;
         }
         
         .neon-overlay-gradient {
@@ -755,7 +756,7 @@
 
                     <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
-                        <img id="comp-img-diamantes" src="IMG_20261105_143324_728.jpg" alt="Diamantes" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
+                        <img id="comp-img-diamantes" src="" alt="Diamantes" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
                         <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                         </div>
@@ -1439,7 +1440,7 @@
                 if(tiendaConfig.bannerFreeFireImg && tiendaConfig.bannerFreeFireImg.trim() !== "") {
                     bannerFFBg.style.backgroundImage = `url('${tiendaConfig.bannerFreeFireImg}')`;
                 } else {
-                    bannerFFBg.style.backgroundImage = `url('IMG_20261105_143324_728.jpg')`;
+                    bannerFFBg.style.backgroundImage = 'none';
                 }
             }
 
@@ -1448,7 +1449,7 @@
                 if(tiendaConfig.bannerBloodImg && tiendaConfig.bannerBloodImg.trim() !== "") {
                     bannerBloodBg.style.backgroundImage = `url('${tiendaConfig.bannerBloodImg}')`;
                 } else {
-                    bannerBloodBg.style.backgroundImage = `url('IMG_20261105_143001_158.jpg')`;
+                    bannerBloodBg.style.backgroundImage = 'none';
                 }
             }
 
@@ -1466,10 +1467,10 @@
             let html = "";
             paquetes.forEach(p => {
                 let precioMostrado = metodoPagoActual === 'usdt' ? `${p.precioUsdt.toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
-                let imgSource = (p.imagen && p.imagen.trim() !== "") ? p.imagen : 'IMG_20261105_143324_728.jpg';
+                let imgHtml = (p.imagen && p.imagen.trim() !== "") ? `<img src="${p.imagen}" alt="${p.nombre}">` : `<svg viewBox="0 0 24 24" width="36" height="36" fill="#0066ff"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg>`;
                 html += `
-                    <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${imgSource}')">
-                        <div class="diamond-img-render"><img src="${imgSource}" alt="${p.nombre}" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';"></div>
+                    <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${p.imagen || ''}')">
+                        <div class="diamond-img-render">${imgHtml}</div>
                         <h4>${p.nombre}</h4>
                         <span class="diamond-price">${precioMostrado}</span>
                     </div>
@@ -1500,7 +1501,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 450; 
+                    const maxDim = 350; 
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1509,7 +1510,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.60);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.50);
 
                     if(window.tipoBannerSeleccionado === 'freefire') {
                         tiendaConfig.bannerFreeFireImg = compressedBase64;
@@ -1545,7 +1546,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 180; 
+                    const maxDim = 120; 
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1554,7 +1555,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.60);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.45);
 
                     let idx = window.indicePaqueteSeleccionado;
                     if(tiendaConfig.paquetesDiamantes[idx]) {
@@ -2100,7 +2101,7 @@
             document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
             document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? 'saldo' : 'USDT'}`;
             
-            let imgSrc = (orden.imagen && orden.imagen.trim() !== "") ? orden.imagen : 'IMG_20261105_143324_728.jpg';
+            let imgSrc = (orden.imagen && orden.imagen.trim() !== "") ? orden.imagen : '';
             document.getElementById('comp-img-diamantes').src = imgSrc;
 
             const boxMain = document.getElementById('comp-box-main');
@@ -2229,7 +2230,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 200;
+                    const maxDim = 150;
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -2238,7 +2239,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.50);
 
                     usuarioActual.avatar = compressedBase64;
                     let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
@@ -2716,15 +2717,20 @@
             } else if(accion === 'catalogo_precios' && esCEO) {
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Catálogo de Precios e Imágenes de Paquetes:</h4>";
                 (tiendaConfig.paquetesDiamantes || []).forEach((p, pIdx) => {
-                    let imgThumb = (p.imagen && p.imagen.trim() !== "") ? p.imagen : 'IMG_20261105_143324_728.jpg';
+                    let imgThumb = (p.imagen && p.imagen.trim() !== "") ? p.imagen : '';
+                    let thumbHtml = imgThumb ? `<img src="${imgThumb}" style="width:28px; height:28px; object-fit:contain; border-radius:4px; background:#1a233a;" alt="Icon">` : `<div style="width:28px; height:28px; background:#1a233a; border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--accent-glow); font-size:0.6rem;">Sin Img</div>`;
+                    
                     html += `
                         <div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem;">
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
                                 <div style="display:flex; align-items:center; gap:8px;">
-                                    <img src="${imgThumb}" style="width:28px; height:28px; object-fit:contain; border-radius:4px; background:#1a233a;" alt="Icon">
+                                    ${thumbHtml}
                                     <b style="color:#fff;">${p.nombre}</b>
                                 </div>
-                                <button class="ceo-btn" style="padding:4px 8px; font-size:0.68rem;" onclick="abrirSelectorImagenCatalogo(${pIdx})">Cambiar Imagen</button>
+                                <div style="display:flex; gap:4px;">
+                                    <button class="ceo-btn" style="padding:4px 8px; font-size:0.68rem;" onclick="abrirSelectorImagenCatalogo(${pIdx})">Subir</button>
+                                    <button class="ceo-btn" style="padding:4px 8px; font-size:0.68rem; border-color:#ff3b30; color:#ff3b30;" onclick="eliminarImagenPaqueteCEO(${pIdx})">Quitar</button>
+                                </div>
                             </div>
                             <div style="display:flex; gap:6px; margin-top:6px;">
                                 <div style="flex:1;">
@@ -2857,6 +2863,17 @@
             await guardarEnCloud();
             renderizarPaquetesTienda();
             mostrarNotificacion("Precio actualizado en tiempo real");
+        }
+
+        async function eliminarImagenPaqueteCEO(pIdx) {
+            if(tiendaConfig.paquetesDiamantes[pIdx]) {
+                tiendaConfig.paquetesDiamantes[pIdx].imagen = "";
+                localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                await guardarEnCloud();
+                renderizarPaquetesTienda();
+                cargarAccionCEO('catalogo_precios');
+                mostrarNotificacion("Imagen del paquete eliminada");
+            }
         }
 
         async function ceoQuitarUsuarioPorNombre(nombreUser) {
