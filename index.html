@@ -587,7 +587,6 @@
                 <div class="nav-brand-logo">
                     <img src="icon-192.png" alt="Logo">
                 </div>
-                <!-- ETIQUETA LESTER BLANCO Y TIENDA AZUL -->
                 <div class="nav-brand-title"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
             </div>
             <div class="nav-top-icons">
@@ -736,7 +735,6 @@
                 </div>
 
                 <div class="section-title">SELECCIONA EL PAQUETE</div>
-                <!-- IMÁGENES EXACTAS DE DIAMANTES 100% VISIBLES CON NOMBRES EXACTOS -->
                 <div class="diamonds-grid" id="contenedor-grid-paquetes"></div>
 
                 <button class="btn-main" onclick="procesarRecarga()">COMPLETAR RECARGA</button>
@@ -797,7 +795,7 @@
                     <!-- IMAGEN CON ANIMACIÓN FLUIDA Y LENTA -->
                     <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
-                        <img id="comp-img-diamantes" src="1098794_4.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='icon-192.png';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
+                        <img id="comp-img-diamantes" src="1098794_4.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='1098803.jpg';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
                         <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                         </div>
@@ -858,7 +856,6 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;">
                     
-                    <!-- USDT BEP 20 -->
                     <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('usdt')">
                         <div id="wallet-badge-usdt" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -875,7 +872,6 @@
                         </div>
                     </div>
 
-                    <!-- Saldo Móvil (Actualizado sin recargar saldo transferencia) -->
                     <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('saldo')">
                         <div id="wallet-badge-saldo" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -892,7 +888,6 @@
                         </div>
                     </div>
 
-                    <!-- Pago con Tarjeta -->
                     <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('tarjeta')">
                         <div id="wallet-badge-tarjeta" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -986,9 +981,16 @@
             <!-- SECCIÓN PERFIL -->
             <div id="seccion-perfil" class="vista-sec" style="display: none;">
                 <div class="profile-header-card">
-                    <div class="profile-wallet-pill-corner">
-                        <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                        <span id="profile-wallet-balance">0.00 USDT</span>
+                    <div class="profile-wallet-pill-corner" style="display: flex; gap: 8px; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <span id="profile-wallet-balance">0.00 USDT</span>
+                        </div>
+                        <span style="color: var(--border-color);">|</span>
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <span id="profile-saldo-movil-top" style="color: #ffffff; font-size: 0.73rem; font-weight: 900;">0 saldo</span>
+                        </div>
                     </div>
 
                     <div class="profile-avatar-wrapper">
@@ -1002,7 +1004,7 @@
                     <p id="perfil-correo" style="color: var(--text-muted); font-size: 0.78rem; margin-top: 0.2rem;">correo@gmail.com</p>
                     <p id="perfil-rango-label" style="color: var(--accent-glow); font-size: 0.72rem; font-weight: bold; margin-top: 0.3rem;">CLIENTE PRO</p>
 
-                    <!-- ESTADÍSTICAS EN EL PERFIL: Saldo móvil abajo de la billetera, saldo en blanco -->
+                    <!-- ESTADÍSTICAS EN EL PERFIL: Saldo Móvil en la posición correcta -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.9rem;">
                         <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
                             <h4 id="stat-saldo-movil-perfil" style="font-size: 0.88rem; font-weight: 900; color: #ffffff;">0 saldo</h4>
@@ -1274,12 +1276,12 @@
             direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
             ocultarTopRecargasHoy: false,
             paquetesDiamantes: [
-                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098794_4.jpg' },
-                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098795_4.jpg' },
-                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098799_4.jpg' },
-                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098800_4.jpg' },
-                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098801_4.jpg' },
-                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098802_4.jpg' }
+                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098803.jpg' },
+                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098803.jpg' },
+                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098803.jpg' },
+                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098803.jpg' },
+                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098803.jpg' },
+                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098803.jpg' }
             ],
             etiquetasCustomCEO: []
         };
@@ -1323,7 +1325,6 @@
             aplicarConfiguracionVisual();
             renderizarPaquetesTienda();
 
-            // Sincronización en tiempo real cada 10 segundos
             setInterval(() => {
                 sincronizarConCloudAutoSilencioso();
             }, 10000);
@@ -1353,14 +1354,14 @@
                     }
                     if (resultado.record.config) {
                         tiendaConfig = resultado.record.config;
-                        if(!tiendaConfig.paquetesDiamantes) {
+                        if(!tiendaConfig.paquetesDiamantes || tiendaConfig.paquetesDiamantes.length === 0) {
                             tiendaConfig.paquetesDiamantes = [
-                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098794_4.jpg' },
-                                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098795_4.jpg' },
-                                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098799_4.jpg' },
-                                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098800_4.jpg' },
-                                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098801_4.jpg' },
-                                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098802_4.jpg' }
+                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098803.jpg' },
+                                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098803.jpg' },
+                                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098803.jpg' },
+                                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098803.jpg' },
+                                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098803.jpg' },
+                                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098803.jpg' }
                             ];
                         }
                         if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
@@ -1532,12 +1533,23 @@
             const container = document.getElementById('contenedor-grid-paquetes');
             if(!container) return;
             let paquetes = tiendaConfig.paquetesDiamantes || [];
+            if(paquetes.length === 0) {
+                paquetes = [
+                    { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098803.jpg' },
+                    { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098803.jpg' },
+                    { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098803.jpg' },
+                    { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098803.jpg' },
+                    { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098803.jpg' },
+                    { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098803.jpg' }
+                ];
+            }
             let html = "";
             paquetes.forEach(p => {
                 let precioMostrado = metodoPagoActual === 'usdt' ? `${p.precioUsdt.toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
+                let imgSource = p.imagen || '1098803.jpg';
                 html += `
-                    <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${p.imagen}')">
-                        <div class="diamond-img-render"><img src="${p.imagen}" alt="${p.nombre}" onerror="this.onerror=null; this.src='icon-192.png';"></div>
+                    <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${imgSource}')">
+                        <div class="diamond-img-render"><img src="${imgSource}" alt="${p.nombre}" onerror="this.onerror=null; this.src='1098803.jpg';"></div>
                         <h4>${p.nombre}</h4>
                         <span class="diamond-price">${precioMostrado}</span>
                     </div>
@@ -2075,7 +2087,7 @@
             document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
             document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? 'saldo' : 'USDT'}`;
             
-            let imgSrc = orden.imagen || '1098794_4.jpg';
+            let imgSrc = orden.imagen || '1098803.jpg';
             document.getElementById('comp-img-diamantes').src = imgSrc;
 
             const boxMain = document.getElementById('comp-box-main');
@@ -2415,6 +2427,7 @@
             document.getElementById('header-wallet-balance').innerText = saldoUsdtTexto;
             document.getElementById('header-saldo-balance').innerText = saldoMovilTexto;
             document.getElementById('profile-wallet-balance').innerText = saldoUsdtTexto;
+            document.getElementById('profile-saldo-movil-top').innerText = saldoMovilTexto;
             document.getElementById('stat-saldo-movil-perfil').innerText = saldoMovilTexto;
 
             document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
@@ -2670,7 +2683,7 @@
                 res.innerHTML = `
                     <div class="ceo-action-form" style="border-color:#ff3b30;">
                         <h4 style="color:#ff3b30;">Quitar Usuario del Top / Sistema por Nombre</h4>
-                        <input type="text" id="ceo-eliminar-nombre-input" placeholder="Nombreexacto de usuario">
+                        <input type="text" id="ceo-eliminar-nombre-input" placeholder="Nombre exacto de usuario">
                         <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarQuitarUsuarioPorNombreCEO()">Quitar Usuario Definitivamente</button>
                     </div>
                 `;
@@ -2847,7 +2860,7 @@
             actualizarEstadisticasInicio();
         }
 
-        async function ceoQuitarUsuarioTopOLista(nombre) {
+        function ceoQuitarUsuarioTopOLista(nombre) {
             ejecutarQuitarUsuarioPorNombreCEO();
         }
 
