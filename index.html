@@ -182,18 +182,14 @@
         .game-card-character:hover { border-color: var(--accent-glow); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); }
         
         .game-card-banner-img {
-            background: linear-gradient(135deg, #07090e 0%, #0d1322 100%);
-            height: 165px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
-            overflow: hidden;
+            height: 175px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
+            overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;
         }
         
-        .neon-diamonds-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.35;
-            background-image: 
-                radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.25) 0%, transparent 40%),
-                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.2) 0%, transparent 40%),
-                linear-gradient(45deg, transparent 48%, rgba(0, 240, 255, 0.15) 50%, transparent 52%);
-            background-size: 100% 100%, 100% 100%, 40px 40px;
+        .neon-overlay-gradient {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
+            background: linear-gradient(180deg, rgba(7,9,14,0.3) 0%, rgba(7,9,14,0.85) 100%);
+            z-index: 1;
         }
 
         .neon-badge-top-right {
@@ -202,16 +198,7 @@
             text-transform: uppercase; z-index: 3;
         }
 
-        /* Banner personalizado con imagen integrada por el CEO */
-        .banner-custom-img-container {
-            position: absolute; right: 15px; bottom: 10px; width: 90px; height: 90px;
-            z-index: 2; pointer-events: none; display: flex; align-items: center; justify-content: center;
-        }
-        .banner-custom-img-container img {
-            width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4));
-        }
-
-        .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); }
+        .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); position: relative; z-index: 2; }
 
         .invite-banner {
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
@@ -433,16 +420,6 @@
         .nav-item svg { width: 19px; height: 19px; fill: var(--text-muted); transition: fill 0.2s; }
         .nav-item.active, .nav-item:hover { color: var(--accent-glow); }
         .nav-item.active svg, .nav-item:hover svg { fill: var(--accent-glow); }
-
-        /* Estilos fijos para etiquetas y elementos de diseño */
-        .fixed-custom-banner-label {
-            padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 0.75rem;
-            display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .fixed-custom-banner-label.verde { background: #10b981; color: #fff; border: 1px solid #059669; }
-        .fixed-custom-banner-label.rojo { background: #ff3b30; color: #fff; border: 1px solid #dc2626; }
-        .fixed-custom-banner-label.amarillo { background: #f59e0b; color: #fff; border: 1px solid #d97706; }
-        .fixed-custom-banner-label.azul { background: #0066ff; color: #fff; border: 1px solid #2563eb; }
     </style>
 </head>
 <body>
@@ -487,8 +464,10 @@
         <img src="icon-192.png" alt="Soporte">
     </div>
 
+    <!-- Inputs Ocultos para Subir Imágenes Individuales del Catálogo y Banners -->
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
     <input type="file" id="ceo-banner-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenBannerCEO(event)">
+    <input type="file" id="ceo-catalogo-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenCatalogoCEO(event)">
 
     <!-- 1. AUTENTICACIÓN -->
     <div id="auth-screen" class="auth-container">
@@ -579,7 +558,6 @@
                 <div class="nav-brand-title"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
             </div>
             <div class="nav-top-icons">
-                <!-- LOGO OFICIAL Y REAL DE USDT BEP-20 -->
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet USDT">
                     <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT Logo">
                     <span id="header-wallet-balance" style="color: #00f0ff;">0.00 USDT</span>
@@ -643,7 +621,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN SELECTOR DE JUEGOS CON BANNERS PROFESIONALES E IMÁGENES INTEGRADAS -->
+            <!-- SECCIÓN SELECTOR DE JUEGOS -->
             <div id="seccion-juegos-selector" class="vista-sec" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
@@ -653,20 +631,15 @@
                 
                 <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">SELECCIONA EL JUEGO</h2>
 
-                <!-- Tarjeta Free Fire con Banner Futurista y Contenedor de Imagen Interno -->
+                <!-- Tarjeta Free Fire con Banner de Fondo Completo y Degradado Neón -->
                 <div class="game-card-character" onclick="abrirFreeFire()">
-                    <div class="game-card-banner-img">
-                        <div class="neon-diamonds-bg"></div>
+                    <div id="banner-bg-freefire" class="game-card-banner-img" style="background-image: url('IMG_20261105_143324_728.jpg');">
+                        <div class="neon-overlay-gradient"></div>
                         <div id="freefire-custom-badge" class="neon-badge-top-right">SOLO DISPONIBLE PARA EEUU, SUR Y NORTE</div>
                         
                         <div style="z-index: 2; position: relative;">
-                            <span style="background: rgba(0, 102, 255, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:var(--accent-glow); font-weight: bold; display: inline-block; margin-bottom: 4px;">Recarga por ID</span>
-                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Free Fire</h3>
-                        </div>
-
-                        <!-- IMAGEN DENTRO DEL BANNER FIJA Y ELEGANTE (Gestionada por el CEO) -->
-                        <div class="banner-custom-img-container" id="banner-img-freefire-wrap">
-                            <img id="banner-img-freefire-el" src="IMG_20261105_143324_728.jpg" alt="Banner Free Fire" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';">
+                            <span style="background: rgba(0, 102, 255, 0.4); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:var(--accent-glow); font-weight: bold; display: inline-block; margin-bottom: 4px; backdrop-filter: blur(4px);">Recarga por ID</span>
+                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Free Fire</h3>
                         </div>
                     </div>
                     <div class="game-card-footer">
@@ -675,19 +648,15 @@
                     </div>
                 </div>
 
-                <!-- Tarjeta Blood Strike con Banner Futurista -->
+                <!-- Tarjeta Blood Strike con Banner de Fondo Completo y Degradado Neón -->
                 <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
-                    <div class="game-card-banner-img" style="background: linear-gradient(135deg, #1a0808 0%, #0d1322 100%);">
-                        <div class="neon-diamonds-bg"></div>
-                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">PRÓXIMAMENTE</div>
+                    <div id="banner-bg-blood" class="game-card-banner-img" style="background-image: url('IMG_20261105_143001_158.jpg');">
+                        <div class="neon-overlay-gradient"></div>
+                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.3); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">PRÓXIMAMENTE</div>
                         
                         <div style="z-index: 2; position: relative;">
-                            <span style="background: rgba(245, 158, 11, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:#f59e0b; font-weight: bold; display: inline-block; margin-bottom: 4px;">Shooter Pro</span>
-                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Blood Strike</h3>
-                        </div>
-
-                        <div class="banner-custom-img-container" id="banner-img-blood-wrap">
-                            <img id="banner-img-blood-el" src="IMG_20261105_143001_158.jpg" alt="Banner Blood Strike" onerror="this.onerror=null; this.src='IMG_20261105_143001_158.jpg';">
+                            <span style="background: rgba(245, 158, 11, 0.4); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:#f59e0b; font-weight: bold; display: inline-block; margin-bottom: 4px; backdrop-filter: blur(4px);">Shooter Pro</span>
+                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Blood Strike</h3>
                         </div>
                     </div>
                     <div class="game-card-footer">
@@ -894,7 +863,7 @@
                 </div>
             </div>
 
-            <!-- SUB-VISTA DETALLE WALLET USDT BEP 20 CON LOGO OFICIAL -->
+            <!-- SUB-VISTA DETALLE WALLET USDT BEP 20 -->
             <div id="seccion-wallet-usdt" class="vista-sec" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
@@ -1299,9 +1268,10 @@
             aplicarConfiguracionVisual();
             renderizarPaquetesTienda();
 
+            // ACTUALIZACIÓN AUTOMÁTICA EN TIEMPO REAL CADA 5 SEGUNDOS
             setInterval(() => {
                 sincronizarConCloudAutoSilencioso();
-            }, 10000);
+            }, 5000);
         };
 
         async function sincronizarConCloudAuto() {
@@ -1435,7 +1405,7 @@
             if(badgeFF) {
                 badgeFF.innerText = textoFF;
                 let colHex = getColorHex(tiendaConfig.colorFF || 'rojo');
-                badgeFF.style.background = `rgba(${colHex === '#ff3b30' ? '255, 59, 48' : (colHex === '#10b981' ? '16, 185, 129' : '245, 158, 11')}, 0.2)`;
+                badgeFF.style.background = `rgba(${colHex === '#ff3b30' ? '255, 59, 48' : (colHex === '#10b981' ? '16, 185, 129' : '245, 158, 11')}, 0.3)`;
                 badgeFF.style.borderColor = colHex;
                 badgeFF.style.color = colHex;
                 badgeFF.style.display = textoFF.trim() === "" ? "none" : "block";
@@ -1446,21 +1416,21 @@
             if(badgeBS) {
                 badgeBS.innerText = textoBS;
                 let colHexBS = getColorHex(tiendaConfig.colorBS || 'amarillo');
-                badgeBS.style.background = `rgba(245, 158, 11, 0.2)`;
+                badgeBS.style.background = `rgba(245, 158, 11, 0.3)`;
                 badgeBS.style.borderColor = colHexBS;
                 badgeBS.style.color = colHexBS;
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
-            // Aplicar imágenes dentro de los banners principales
-            const bannerFFEl = document.getElementById('banner-img-freefire-el');
-            if(bannerFFEl && tiendaConfig.bannerFreeFireImg) {
-                bannerFFEl.src = tiendaConfig.bannerFreeFireImg;
+            // APLICAR BANNERS DE FONDO COMPLETO
+            const bannerFFBg = document.getElementById('banner-bg-freefire');
+            if(bannerFFBg && tiendaConfig.bannerFreeFireImg) {
+                bannerFFBg.style.backgroundImage = `url('${tiendaConfig.bannerFreeFireImg}')`;
             }
 
-            const bannerBloodEl = document.getElementById('banner-img-blood-el');
-            if(bannerBloodEl && tiendaConfig.bannerBloodImg) {
-                bannerBloodEl.src = tiendaConfig.bannerBloodImg;
+            const bannerBloodBg = document.getElementById('banner-bg-blood');
+            if(bannerBloodBg && tiendaConfig.bannerBloodImg) {
+                bannerBloodBg.style.backgroundImage = `url('${tiendaConfig.bannerBloodImg}')`;
             }
 
             const numDisp = document.getElementById('wallet-numero-saldo-display');
@@ -1474,16 +1444,6 @@
             const container = document.getElementById('contenedor-grid-paquetes');
             if(!container) return;
             let paquetes = tiendaConfig.paquetesDiamantes || [];
-            if(paquetes.length === 0) {
-                paquetes = [
-                    { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
-                    { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
-                    { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
-                    { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
-                    { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
-                    { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
-                ];
-            }
             let html = "";
             paquetes.forEach(p => {
                 let precioMostrado = metodoPagoActual === 'usdt' ? `${p.precioUsdt.toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
@@ -1499,6 +1459,7 @@
             container.innerHTML = html;
         }
 
+        // FUNCIONES DE CARGA Y CAMBIO DE IMÁGENES DESDE EL PANEL CEO
         function abrirSelectorImagenBanner(tipoJuego) {
             window.tipoBannerSeleccionado = tipoJuego;
             document.getElementById('ceo-banner-image-uploader').click();
@@ -1517,7 +1478,30 @@
                 localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                 await guardarEnCloud();
                 aplicarConfiguracionVisual();
-                mostrarNotificacion("Imagen de banner actualizada correctamente");
+                mostrarNotificacion("Banner actualizado correctamente");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function abrirSelectorImagenCatalogo(indexPaquete) {
+            window.indicePaqueteSeleccionado = indexPaquete;
+            document.getElementById('ceo-catalogo-image-uploader').click();
+        }
+
+        function procesarImagenCatalogoCEO(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                let idx = window.indicePaqueteSeleccionado;
+                if(tiendaConfig.paquetesDiamantes[idx]) {
+                    tiendaConfig.paquetesDiamantes[idx].imagen = e.target.result;
+                    localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                    await guardarEnCloud();
+                    renderizarPaquetesTienda();
+                    cargarAccionCEO('catalogo_precios');
+                    mostrarNotificacion(`Imagen de "${tiendaConfig.paquetesDiamantes[idx].nombre}" actualizada`);
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -2558,9 +2542,9 @@
                         <button class="ceo-btn" onclick="cargarAccionCEO('control_total_historial')">Control Total Historial</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_game')">Etiqueta Free Fire</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_blood')">Etiqueta Blood Strike</button>
-                        <button class="ceo-btn" onclick="abrirSelectorImagenBanner('freefire')">Imagen Banner Free Fire</button>
-                        <button class="ceo-btn" onclick="abrirSelectorImagenBanner('blood')">Imagen Banner Blood Strike</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('catalogo_precios')">Catálogo de Precios</button>
+                        <button class="ceo-btn" onclick="abrirSelectorImagenBanner('freefire')">Banner Free Fire</button>
+                        <button class="ceo-btn" onclick="abrirSelectorImagenBanner('blood')">Banner Blood Strike</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('catalogo_precios')">Catálogo & Imágenes</button>
                     `;
                 }
 
@@ -2665,11 +2649,18 @@
                 });
                 res.innerHTML = html;
             } else if(accion === 'catalogo_precios' && esCEO) {
-                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Catálogo de Precios (Tiempo Real):</h4>";
+                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Catálogo de Precios e Imágenes de Paquetes:</h4>";
                 (tiendaConfig.paquetesDiamantes || []).forEach((p, pIdx) => {
+                    let imgThumb = p.imagen || 'IMG_20261105_143324_728.jpg';
                     html += `
                         <div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem;">
-                            <b>${p.nombre}</b><br>
+                            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <img src="${imgThumb}" style="width:28px; height:28px; object-fit:contain; border-radius:4px; background:#1a233a;" alt="Icon">
+                                    <b style="color:#fff;">${p.nombre}</b>
+                                </div>
+                                <button class="ceo-btn" style="padding:4px 8px; font-size:0.68rem;" onclick="abrirSelectorImagenCatalogo(${pIdx})">Cambiar Imagen</button>
+                            </div>
                             <div style="display:flex; gap:6px; margin-top:6px;">
                                 <div style="flex:1;">
                                     <label style="font-size:0.65rem; color:var(--text-muted);">USDT:</label>
