@@ -88,7 +88,10 @@
             font-size: 0.82rem; cursor: pointer; border-radius: 8px; color: var(--text-muted); transition: all 0.3s;
         }
         .auth-tab.active { background: var(--primary-blue); color: #fff; }
-        .brand-logo-text { font-size: 1.5rem; font-weight: 900; color: #fff; text-align: center; margin-bottom: 1.4rem; }
+        
+        .brand-logo-text { font-size: 1.5rem; font-weight: 900; text-align: center; margin-bottom: 1.4rem; }
+        .brand-lester { color: #ffffff; }
+        .brand-tienda { color: var(--primary-blue); }
         
         .form-group { margin-bottom: 1.1rem; position: relative; }
         .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600; }
@@ -128,8 +131,6 @@
         }
         .nav-brand-logo img { width: 100%; height: 100%; object-fit: cover; }
         .nav-brand-title { font-size: 0.92rem; font-weight: 900; }
-        .brand-white { color: #ffffff; }
-        .brand-blue { color: var(--accent-glow); }
         
         .nav-top-icons { display: flex; gap: 6px; align-items: center; }
         
@@ -317,10 +318,6 @@
         }
         .avatar-edit-badge svg { width: 11px; height: 11px; fill: #fff; }
 
-        .profile-stats-grid { display: grid; grid-template-columns: 1fr 1fr; background: #07090e; border-radius: 10px; padding: 0.6rem; margin: 0.9rem 0 0 0; border: 1px solid var(--border-color); gap: 8px; }
-        .stat-col h4 { font-size: 0.88rem; font-weight: 900; color: var(--accent-glow); }
-        .stat-col span { font-size: 0.68rem; color: var(--text-muted); }
-
         .order-card-pro {
             background: var(--bg-card); 
             border: 1.5px solid var(--accent-glow); 
@@ -366,19 +363,29 @@
         }
         .order-arrow-icon svg { width: 12px; height: 12px; fill: var(--accent-glow); }
 
+        /* Animación lenta y fluida para el diamante en comprobantes */
+        @keyframes floatingDiamond {
+            0% { transform: translateY(0px) scale(1); filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4)); }
+            50% { transform: translateY(-8px) scale(1.03); filter: drop-shadow(0 12px 20px rgba(0,240,255,0.6)); }
+            100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4)); }
+        }
+        .animated-diamond-img {
+            animation: floatingDiamond 3.5s ease-in-out infinite;
+        }
+
         .security-menu-box { 
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; 
             padding: 1.2rem; margin-top: 1.2rem; display: flex; flex-direction: column; gap: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
         .security-btn {
-            width: 100%; background: #ffffff; border: 1px solid var(--border-color); color: #0d1322;
-            padding: 0.85rem 1rem; border-radius: 12px; font-weight: 700; font-size: 0.85rem; display: flex;
-            align-items: center; gap: 12px; cursor: pointer; text-align: left; transition: all 0.2s;
+            width: 100%; background: #07090e; border: 1px solid var(--primary-blue); color: #fff;
+            padding: 0.7rem 0.9rem; border-radius: 10px; font-weight: 700; font-size: 0.8rem; display: flex;
+            align-items: center; gap: 10px; cursor: pointer; text-align: left; transition: all 0.2s;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .security-btn:hover { border-color: var(--accent-glow); background: #f8fbff; }
-        .security-btn svg { width: 18px; height: 18px; fill: var(--primary-blue); flex-shrink: 0; }
+        .security-btn:hover { border-color: var(--accent-glow); background: #0d1322; }
+        .security-btn svg { width: 16px; height: 16px; fill: var(--accent-glow); flex-shrink: 0; }
 
         .ceo-box {
             background: linear-gradient(135deg, #130a0a 0%, #07090e 100%);
@@ -501,7 +508,7 @@
             <div id="tab-log" class="auth-tab" onclick="cambiarTabAuth('login')">Iniciar Sesión</div>
         </div>
 
-        <h1 class="brand-logo-text"><span class="brand-white">Lester</span> <span class="brand-blue">Tienda</span></h1>
+        <h1 class="brand-logo-text"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></h1>
 
         <div id="form-registro">
             <div class="form-group">
@@ -580,18 +587,17 @@
                 <div class="nav-brand-logo">
                     <img src="icon-192.png" alt="Logo">
                 </div>
-                <div class="nav-brand-title"><span class="brand-white">Lester</span> <span class="brand-blue">Tienda</span></div>
+                <!-- ETIQUETA LESTER BLANCO Y TIENDA AZUL -->
+                <div class="nav-brand-title"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
             </div>
             <div class="nav-top-icons">
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet">
-                    <!-- Logotipo real oficial de USDT -->
                     <svg viewBox="0 0 2000 2000" width="12" height="12"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
                     <span id="header-wallet-balance">0.00 USDT</span>
                 </div>
-                <!-- NUEVO: Pill de Saldo Interno en el Navbar Superior -->
-                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Interno">
+                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Móvil">
                     <svg viewBox="0 0 24 24" width="12" height="12" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                    <span id="header-saldo-balance" style="color: #10b981;">0 $</span>
+                    <span id="header-saldo-balance" style="color: #ffffff;">0 saldo</span>
                 </div>
                 <button class="nav-top-icon-btn" onclick="iniciarDescargaDirectaApp()" title="Descargar Aplicación">
                     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
@@ -630,7 +636,7 @@
                     </div>
                 </div>
 
-                <div class="live-history-card">
+                <div class="live-history-card" id="live-card-container">
                     <div class="live-history-header">
                         <div class="live-history-title-box">
                             <h3>Historial de compras en tiempo real</h3>
@@ -716,7 +722,6 @@
                 <div class="payment-method-selector-grid">
                     <div id="btn-pay-usdt" class="pay-method-pill-btn active" onclick="seleccionarMetodoPago('usdt')">
                         <div style="width: 22px; height: 22px; background: #26a69a; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <!-- Logotipo oficial real de USDT -->
                             <svg viewBox="0 0 2000 2000" width="14" height="14"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
                         </div>
                         <span>USDT</span>
@@ -726,44 +731,13 @@
                         <div style="width: 22px; height: 22px; background: #0066ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg viewBox="0 0 24 24" width="13" height="13" fill="#fff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
-                        <span>Saldo</span>
+                        <span>Saldo Móvil</span>
                     </div>
                 </div>
 
                 <div class="section-title">SELECCIONA EL PAQUETE</div>
-                <!-- IMÁGENES EXACTAS DE DIAMANTES 100% VISIBLES -->
-                <div class="diamonds-grid">
-                    <div class="diamond-card" onclick="seleccionarOferta(110, 1.2, 300, '100+10', '1098794_4.jpg')">
-                        <div class="diamond-img-render"><img src="1098794_4.jpg" alt="100+10 Diamantes" onerror="this.onerror=null; this.src='icon-192.png';"></div>
-                        <h4>100+10 Diamantes</h4>
-                        <span class="diamond-price" id="precio-pkg-1">1.20 USDT</span>
-                    </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(361, 3.5, 850, '310+51', '1098795_4.jpg')">
-                        <div class="diamond-img-render"><img src="1098795_4.jpg" alt="310+51 Diamantes" onerror="this.onerror=null; this.src='icon-192.png';"></div>
-                        <h4>310+51 Diamantes</h4>
-                        <span class="diamond-price" id="precio-pkg-2">3.50 USDT</span>
-                    </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(572, 5.0, 2100, '520+52', '1098799_4.jpg')">
-                        <div class="diamond-img-render"><img src="1098799_4.jpg" alt="520+52 Diamantes" onerror="this.onerror=null; this.src='icon-192.png';"></div>
-                        <h4>520+52 Diamantes</h4>
-                        <span class="diamond-price" id="precio-pkg-3">5.00 USDT</span>
-                    </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(1166, 8.5, 3300, '1050+105', '1098800_4.jpg')">
-                        <div class="diamond-img-render"><img src="1098800_4.jpg" alt="1050+105 Diamantes" onerror="this.onerror=null; this.src='icon-192.png';"></div>
-                        <h4>1050+105 Diamantes</h4>
-                        <span class="diamond-price" id="precio-pkg-4">8.50 USDT</span>
-                    </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(2398, 17.4, 5300, '2160+216', '1098801_4.jpg')">
-                        <div class="diamond-img-render"><img src="1098801_4.jpg" alt="2160+216 Diamantes" onerror="this.onerror=null; this.src='icon-192.png';"></div>
-                        <h4>2160+216 Diamantes</h4>
-                        <span class="diamond-price" id="precio-pkg-5">17.40 USDT</span>
-                    </div>
-                    <div class="diamond-card" onclick="seleccionarOferta(6160, 40.0, 12300, '5580+558', '1098802_4.jpg')">
-                        <div class="diamond-img-render"><img src="1098802_4.jpg" alt="5580+558 Diamantes" onerror="this.onerror=null; this.src='icon-192.png';"></div>
-                        <h4>5580+558 Diamantes</h4>
-                        <span class="diamond-price" id="precio-pkg-6">40.00 USDT</span>
-                    </div>
-                </div>
+                <!-- IMÁGENES EXACTAS DE DIAMANTES 100% VISIBLES CON NOMBRES EXACTOS -->
+                <div class="diamonds-grid" id="contenedor-grid-paquetes"></div>
 
                 <button class="btn-main" onclick="procesarRecarga()">COMPLETAR RECARGA</button>
             </div>
@@ -794,7 +768,7 @@
                 <div id="panel-ordenes-depositos" style="display: none;">
                     <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN SALDO</span>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN SALDO MÓVIL</span>
                             <h3 id="stat-total-depositado-saldo" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0</h3>
                         </div>
                         <div style="width: 36px; height: 36px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
@@ -805,7 +779,7 @@
                 </div>
             </div>
 
-            <!-- SUB-VISTA COMPROBANTE DE RECARGA -->
+            <!-- SUB-VISTA COMPROBANTE DE RECARGA CON ANIMACIÓN FLUIDA -->
             <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <button class="nav-top-icon-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
@@ -814,15 +788,16 @@
                 </div>
                 
                 <div id="comp-box-main" style="background: linear-gradient(135deg, #0d1322 0%, #07090e 100%); border: 2px solid #10b981; border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; position: relative; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
-                    <div style="position: absolute; top: 14px; left: 14px; font-weight: 900; font-size: 0.85rem;"><span class="brand-white">Lester</span> <span class="brand-blue">Tienda</span></div>
+                    <div style="position: absolute; top: 14px; left: 14px; font-weight: 900; font-size: 0.85rem;"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
                     
                     <div id="comp-badge-status" style="position: absolute; top: 12px; right: 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 4px 10px; border-radius: 8px; font-size: 0.68rem; font-weight: 900; text-transform: uppercase;">
-                        COMPLETADO •
+                        COMPLETADO
                     </div>
 
-                    <div style="width: 110px; height: 100px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
+                    <!-- IMAGEN CON ANIMACIÓN FLUIDA Y LENTA -->
+                    <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
-                        <img id="comp-img-diamantes" src="1098794_4.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='icon-192.png';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2; filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4));">
+                        <img id="comp-img-diamantes" src="1098794_4.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='icon-192.png';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
                         <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                         </div>
@@ -883,13 +858,12 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;">
                     
-                    <!-- USDT BEP 20 con etiqueta configurable desde el CEO -->
+                    <!-- USDT BEP 20 -->
                     <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('usdt')">
                         <div id="wallet-badge-usdt" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div style="width: 38px; height: 38px; background: rgba(38, 166, 154, 0.15); border: 1px solid #26a69a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <!-- Logotipo oficial real USDT -->
                                     <svg viewBox="0 0 2000 2000" width="22" height="22"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
                                 </div>
                                 <div>
@@ -901,7 +875,7 @@
                         </div>
                     </div>
 
-                    <!-- Recarga Saldo con etiqueta configurable desde el CEO -->
+                    <!-- Saldo Móvil (Actualizado sin recargar saldo transferencia) -->
                     <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('saldo')">
                         <div id="wallet-badge-saldo" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -910,7 +884,7 @@
                                     <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                                 </div>
                                 <div>
-                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Recargar Saldo (Transferencia)</h3>
+                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Saldo Móvil</h3>
                                     <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Saldo Interno Habilitado</span>
                                 </div>
                             </div>
@@ -918,7 +892,7 @@
                         </div>
                     </div>
 
-                    <!-- Pago con Tarjeta con etiqueta configurable desde el CEO -->
+                    <!-- Pago con Tarjeta -->
                     <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('tarjeta')">
                         <div id="wallet-badge-tarjeta" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -970,7 +944,7 @@
                 </div>
             </div>
 
-            <!-- SUB-VISTA DETALLE WALLET SALDO -->
+            <!-- SUB-VISTA DETALLE WALLET SALDO MÓVIL -->
             <div id="seccion-wallet-saldo" class="vista-sec" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
@@ -984,7 +958,7 @@
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
                         <div>
-                            <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Transferencia Móvil / Saldo</h3>
+                            <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Saldo Móvil</h3>
                             <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Recarga rápida</span>
                         </div>
                     </div>
@@ -1028,24 +1002,31 @@
                     <p id="perfil-correo" style="color: var(--text-muted); font-size: 0.78rem; margin-top: 0.2rem;">correo@gmail.com</p>
                     <p id="perfil-rango-label" style="color: var(--accent-glow); font-size: 0.72rem; font-weight: bold; margin-top: 0.3rem;">CLIENTE PRO</p>
 
-                    <!-- NUEVAS ESTADÍSTICAS EN EL PERFIL: REFERIDOS VÁLIDOS, NO ACTIVOS Y CANTIDAD DE RECARGAS -->
+                    <!-- ESTADÍSTICAS EN EL PERFIL: Saldo móvil abajo de la billetera, saldo en blanco -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.9rem;">
+                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                            <h4 id="stat-saldo-movil-perfil" style="font-size: 0.88rem; font-weight: 900; color: #ffffff;">0 saldo</h4>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">Saldo Móvil</span>
+                        </div>
                         <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
                             <h4 id="stat-ref-validos" style="font-size: 0.88rem; font-weight: 900; color: #10b981;">0</h4>
                             <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos Válidos</span>
                         </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;">
                         <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
                             <h4 id="stat-ref-no-activos" style="font-size: 0.88rem; font-weight: 900; color: #f59e0b;">0</h4>
                             <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos No Activos</span>
                         </div>
-                    </div>
-                    <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center; margin-top: 8px;">
-                        <h4 id="stat-cantidad-recargas-perfil" style="font-size: 0.88rem; font-weight: 900; color: var(--accent-glow);">0</h4>
-                        <span style="font-size: 0.65rem; color: var(--text-muted);">Cantidad Total de Recargas Realizadas</span>
+                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                            <h4 id="stat-cantidad-recargas-perfil" style="font-size: 0.88rem; font-weight: 900; color: var(--accent-glow);">0</h4>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">Total Recargas</span>
+                        </div>
                     </div>
                 </div>
 
-                <button class="btn-main" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--accent-glow); margin-bottom: 1rem;" onclick="toggleSeguridadPanel()">
+                <!-- Botón de seguridad original azul y negro -->
+                <button class="btn-main" style="background: #07090e; border: 1px solid var(--primary-blue); color: var(--accent-glow); margin-bottom: 1rem;" onclick="toggleSeguridadPanel()">
                     SEGURIDAD Y CONFIGURACIÓN
                 </button>
 
@@ -1146,7 +1127,7 @@
                     <span onclick="mostrarNotificacion('Contacto')">Soporte</span>
                 </div>
                 <div class="footer-copy">
-                    &copy; 2026 <span class="brand-white">Lester</span> <span class="brand-blue">Tienda</span> &mdash; Todos los derechos reservados.
+                    &copy; 2026 <span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span> &mdash; Todos los derechos reservados.
                 </div>
             </footer>
 
@@ -1291,7 +1272,16 @@
             colorWTarjeta: "rojo",
             numeroSaldoOficial: "59578110",
             direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
-            ocultarTopRecargasHoy: false
+            ocultarTopRecargasHoy: false,
+            paquetesDiamantes: [
+                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098794_4.jpg' },
+                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098795_4.jpg' },
+                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098799_4.jpg' },
+                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098800_4.jpg' },
+                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098801_4.jpg' },
+                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098802_4.jpg' }
+            ],
+            etiquetasCustomCEO: []
         };
 
         const BIN_ID = '6aeaa0e1ffd5d16053a44254';
@@ -1331,6 +1321,12 @@
             }
             sincronizarConCloudAuto();
             aplicarConfiguracionVisual();
+            renderizarPaquetesTienda();
+
+            // Sincronización en tiempo real cada 10 segundos
+            setInterval(() => {
+                sincronizarConCloudAutoSilencioso();
+            }, 10000);
         };
 
         async function sincronizarConCloudAuto() {
@@ -1357,6 +1353,17 @@
                     }
                     if (resultado.record.config) {
                         tiendaConfig = resultado.record.config;
+                        if(!tiendaConfig.paquetesDiamantes) {
+                            tiendaConfig.paquetesDiamantes = [
+                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098794_4.jpg' },
+                                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098795_4.jpg' },
+                                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098799_4.jpg' },
+                                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098800_4.jpg' },
+                                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098801_4.jpg' },
+                                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098802_4.jpg' }
+                            ];
+                        }
+                        if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
                         localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                     }
                 }
@@ -1372,11 +1379,49 @@
                 actualizarPerfilUI();
                 actualizarEstadisticasInicio();
                 aplicarConfiguracionVisual();
+                renderizarPaquetesTienda();
             } catch (error) {
                 console.error('Error al sincronizar con JSONBin:', error);
             } finally {
                 ocultarCarga();
             }
+        }
+
+        async function sincronizarConCloudAutoSilencioso() {
+            try {
+                const respuesta = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': MASTER_KEY }
+                });
+                const resultado = await respuesta.json();
+                if (resultado.record) {
+                    if (resultado.record.usuarios) {
+                        listaUsuariosGlobales = resultado.record.usuarios;
+                        localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                    }
+                    if (resultado.record.solicitudes) {
+                        solicitudesGlobales = resultado.record.solicitudes;
+                        localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                        renderizarOrdenes();
+                    }
+                    if (resultado.record.config) {
+                        tiendaConfig = resultado.record.config;
+                        localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                        aplicarConfiguracionVisual();
+                        renderizarPaquetesTienda();
+                    }
+                }
+                if (usuarioActual) {
+                    let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                    if(fresh) {
+                        usuarioActual = fresh;
+                        if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                        if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
+                        localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                        actualizarPerfilUI();
+                    }
+                }
+                actualizarEstadisticasInicio();
+            } catch (e) {}
         }
 
         async function guardarEnCloud() {
@@ -1409,7 +1454,6 @@
         }
 
         function aplicarConfiguracionVisual() {
-            // Free Fire Badge
             const badgeFF = document.getElementById('freefire-custom-badge');
             let textoFF = tiendaConfig.etiquetaFreeFire || "";
             if(badgeFF) {
@@ -1421,7 +1465,6 @@
                 badgeFF.style.display = textoFF.trim() === "" ? "none" : "block";
             }
 
-            // Blood Strike Badge
             const badgeBS = document.getElementById('bloodstrike-custom-badge');
             let textoBS = tiendaConfig.etiquetaBloodStrike || "";
             if(badgeBS) {
@@ -1433,7 +1476,6 @@
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
-            // Wallet USDT Badge
             const wUsdt = document.getElementById('wallet-badge-usdt');
             if(wUsdt) {
                 let t = tiendaConfig.etiquetaWalletUSDT || "";
@@ -1449,7 +1491,6 @@
                 }
             }
 
-            // Wallet Saldo Badge
             const wSaldo = document.getElementById('wallet-badge-saldo');
             if(wSaldo) {
                 let t = tiendaConfig.etiquetaWalletSaldo || "";
@@ -1465,7 +1506,6 @@
                 }
             }
 
-            // Wallet Tarjeta Badge
             const wTarjeta = document.getElementById('wallet-badge-tarjeta');
             if(wTarjeta) {
                 let t = tiendaConfig.etiquetaWalletTarjeta || "";
@@ -1481,12 +1521,29 @@
                 }
             }
 
-            // Actualizar número oficial y dirección
             const numDisp = document.getElementById('wallet-numero-saldo-display');
             if(numDisp && tiendaConfig.numeroSaldoOficial) numDisp.innerText = tiendaConfig.numeroSaldoOficial;
 
             const dirDisp = document.getElementById('wallet-direccion-usdt-display');
             if(dirDisp && tiendaConfig.direccionUSDTOficial) dirDisp.innerText = tiendaConfig.direccionUSDTOficial;
+        }
+
+        function renderizarPaquetesTienda() {
+            const container = document.getElementById('contenedor-grid-paquetes');
+            if(!container) return;
+            let paquetes = tiendaConfig.paquetesDiamantes || [];
+            let html = "";
+            paquetes.forEach(p => {
+                let precioMostrado = metodoPagoActual === 'usdt' ? `${p.precioUsdt.toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
+                html += `
+                    <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${p.imagen}')">
+                        <div class="diamond-img-render"><img src="${p.imagen}" alt="${p.nombre}" onerror="this.onerror=null; this.src='icon-192.png';"></div>
+                        <h4>${p.nombre}</h4>
+                        <span class="diamond-price">${precioMostrado}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
         function mostrarCarga(texto = "Procesando...") { 
@@ -1803,6 +1860,7 @@
                 document.getElementById('seccion-freefire').style.display = 'flex';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 seleccionarMetodoPago('usdt');
+                renderizarPaquetesTienda();
             }, 300);
         }
 
@@ -1817,22 +1875,11 @@
             if (metodo === 'usdt') {
                 btnUsdt.classList.add('active');
                 btnSaldo.classList.remove('active');
-                document.getElementById('precio-pkg-1').innerText = "1.20 USDT";
-                document.getElementById('precio-pkg-2').innerText = "3.50 USDT";
-                document.getElementById('precio-pkg-3').innerText = "5.00 USDT";
-                document.getElementById('precio-pkg-4').innerText = "8.50 USDT";
-                document.getElementById('precio-pkg-5').innerText = "17.40 USDT";
-                document.getElementById('precio-pkg-6').innerText = "40.00 USDT";
             } else {
                 btnSaldo.classList.add('active');
                 btnUsdt.classList.remove('active');
-                document.getElementById('precio-pkg-1').innerText = "300 $";
-                document.getElementById('precio-pkg-2').innerText = "850 $";
-                document.getElementById('precio-pkg-3').innerText = "2100 $";
-                document.getElementById('precio-pkg-4').innerText = "3300 $";
-                document.getElementById('precio-pkg-5').innerText = "5300 $";
-                document.getElementById('precio-pkg-6').innerText = "12300 $";
             }
+            renderizarPaquetesTienda();
         }
 
         function seleccionarOferta(diamantesNum, precioUsdt, precioSaldo, textoDetalle, imagenNombre) {
@@ -1867,7 +1914,7 @@
                 }
             } else {
                 if (usuarioActual.balanceCUP < ofertaSeleccionada.precio) {
-                    mostrarNotificacion("Saldo insuficiente. Redirigiendo a Wallet para recargar saldo...");
+                    mostrarNotificacion("Saldo insuficiente. Redirigiendo a Wallet para recargar saldo móvil...");
                     setTimeout(() => {
                         cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'));
                     }, 1200);
@@ -1905,7 +1952,7 @@
                     usuario: usuarioActual.nombre, 
                     correo: usuarioActual.correo.toLowerCase(),
                     idJugador: playerId, 
-                    detalle: `${ofertaSeleccionada.diamantes} Diamantes`, 
+                    detalle: `${ofertaSeleccionada.diamantes}`, 
                     diamantesNum: ofertaSeleccionada.diamantesNum,
                     precio: ofertaSeleccionada.precio,
                     moneda: ofertaSeleccionada.moneda,
@@ -1969,9 +2016,9 @@
                 misRecargas.slice().reverse().forEach((o, indexOriginal) => {
                     let realIndex = solicitudesGlobales.recargas.length - 1 - indexOriginal;
                     let claseEstado = "status-pendiente";
-                    if(o.estado === 'Aprobada' || o.estado === 'Completado') claseEstado = "status-completado";
+                    if(o.estado === 'Completado' || o.estado === 'Aprobada') claseEstado = "status-completado";
                     if(o.estado === 'Cancelado') claseEstado = "status-cancelado";
-                    let sufijoMoneda = o.moneda === 'saldo' ? ' $' : ' USDT';
+                    let sufijoMoneda = o.moneda === 'saldo' ? ' saldo' : ' USDT';
 
                     let clickableAttr = `onclick="verComprobanteRecarga(${realIndex})"`;
                     let flechaIcon = `
@@ -2008,7 +2055,7 @@
                     htmlDepositos += `
                         <div class="order-card-pro" style="cursor: default;">
                             <div class="order-info">
-                                <h4>Depósito - ${d.monto}</h4>
+                                <h4>Depósito - ${d.monto} saldo</h4>
                                 <p>${d.telefonoTransfirio || 'N/A'}</p>
                             </div>
                             <span class="badge-status ${claseEstado}">${d.estado}</span>
@@ -2026,7 +2073,7 @@
             document.getElementById('comp-titulo-diamantes').innerText = `${orden.detalle} Diamantes`;
             document.getElementById('comp-id-jugador').innerText = orden.idJugador;
             document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
-            document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? '$' : 'USDT'}`;
+            document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? 'saldo' : 'USDT'}`;
             
             let imgSrc = orden.imagen || '1098794_4.jpg';
             document.getElementById('comp-img-diamantes').src = imgSrc;
@@ -2038,7 +2085,7 @@
 
             if (orden.estado === 'Completado' || orden.estado === 'Aprobada') {
                 boxMain.style.borderColor = '#10b981';
-                badgeStatus.innerText = 'COMPLETADO •';
+                badgeStatus.innerText = 'COMPLETADO';
                 badgeStatus.style.background = 'rgba(16, 185, 129, 0.2)';
                 badgeStatus.style.borderColor = '#10b981';
                 badgeStatus.style.color = '#10b981';
@@ -2081,7 +2128,7 @@
             solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
             listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
 
-            const cardVivo = document.querySelector('.live-history-card');
+            const cardVivo = document.getElementById('live-card-container');
             if (tiendaConfig.ocultarTopRecargasHoy) {
                 if(cardVivo) cardVivo.style.display = 'none';
                 return;
@@ -2122,7 +2169,7 @@
                     let horaStr = new Date(item.ultimaHora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                     let uObj = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === (item.correo || '').toLowerCase() || u.nombre.toLowerCase() === item.usuario.toLowerCase());
                     let avatarC = (uObj && uObj.avatar) ? `<img src="${uObj.avatar}">` : item.usuario.charAt(0).toUpperCase();
-                    let monedaTxt = item.monedaGasto === 'saldo' ? '$' : 'USDT';
+                    let monedaTxt = item.monedaGasto === 'saldo' ? ' saldo' : ' USDT';
 
                     vivoHTML += `
                         <div class="history-item-row">
@@ -2134,7 +2181,7 @@
                                     <p>Free Fire LATAM · <b>+${item.totalDiamantesTexto}</b></p>
                                 </div>
                             </div>
-                            <span class="history-price">${item.totalGasto.toFixed(2)} ${monedaTxt}</span>
+                            <span class="history-price">${item.totalGasto.toFixed(2)}${monedaTxt}</span>
                         </div>
                     `;
                 });
@@ -2342,7 +2389,7 @@
                 await guardarEnCloud();
                 ocultarCarga();
 
-                mostrarNotificacion("Depósito enviado a revisión");
+                mostrarNotificacion("Depósito de saldo móvil enviado a revisión");
                 document.getElementById('monto-deposito').value = '';
                 document.getElementById('telefono-transfirio').value = '';
                 
@@ -2364,10 +2411,11 @@
             if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
 
             const saldoUsdtTexto = `${(usuarioActual.balanceUSDT || 0).toFixed(2)} USDT`;
-            const saldoCupTexto = `${(usuarioActual.balanceCUP || 0)} $`;
+            const saldoMovilTexto = `${(usuarioActual.balanceCUP || 0)} saldo`;
             document.getElementById('header-wallet-balance').innerText = saldoUsdtTexto;
-            document.getElementById('header-saldo-balance').innerText = saldoCupTexto;
+            document.getElementById('header-saldo-balance').innerText = saldoMovilTexto;
             document.getElementById('profile-wallet-balance').innerText = saldoUsdtTexto;
+            document.getElementById('stat-saldo-movil-perfil').innerText = saldoMovilTexto;
 
             document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
             document.getElementById('perfil-correo').innerText = usuarioActual.correo;
@@ -2384,7 +2432,6 @@
                 avatarCircle.innerText = usuarioActual.nombre.charAt(0).toUpperCase();
             }
 
-            // Calcular referidos válidos (que hayan depositado o tengan recargas) y no activos
             solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
             listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
 
@@ -2533,11 +2580,12 @@
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_recarga')">Recargas (${solicitudesGlobales.recargas.length})</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_deposito')">Depósitos (${solicitudesGlobales.depositos.length})</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('cambiar_rango')">Gestionar Rangos</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('eliminar_cuenta_correo')">Eliminar por Correo</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('eliminar_usuario_nombre')">Quitar Usuario por Nombre</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_game')">Etiqueta Free Fire</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_blood')">Etiqueta Blood Strike</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('config_wallets')">Configurar Wallets & Red</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('control_top_hoy')">Control Top en Vivo</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('catalogo_precios')">Catálogo de Precios</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('agregar_etiqueta_custom')">Agregar Etiqueta Custom</button>
                     `;
                 }
 
@@ -2572,7 +2620,7 @@
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
                             <b>User:</b> ${s.usuario} | <b>ID:</b> ${s.idJugador} | <b>Detalle:</b> ${s.detalle} (${s.moneda})
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
-                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarRecarga(${idx})">Completar</button>
+                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarRecarga(${idx})">Completar (Aprobar)</button>
                                 <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarRecarga(${idx})">Cancelar</button>
                             </div>
                         </div>`;
@@ -2580,15 +2628,15 @@
                 });
                 res.innerHTML = html;
             } else if(accion === 'solicitudes_deposito' && esCEO) {
-                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Solicitudes de Depósito de Saldo:</h4>";
+                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Solicitudes de Depósito Saldo Móvil:</h4>";
                 let pendientesDeps = solicitudesGlobales.depositos.filter(d => d.estado === 'Pendiente');
                 if(pendientesDeps.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay depósitos pendientes.</p>";
                 
                 solicitudesGlobales.depositos.forEach((d, idx) => {
                     if(d.estado === 'Pendiente') {
                         html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
-                            <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto:</b> ${d.monto}<br>
-                            <b>Datos / TxID:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span>
+                            <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto:</b> ${d.monto} saldo<br>
+                            <b>Número / TxID:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span>
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
                                 <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
                                 <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
@@ -2610,21 +2658,64 @@
                         <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
                         <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
                         <b>Wallet USDT:</b> <span style="color:var(--accent-glow); font-weight:bold;">${u.balanceUSDT.toFixed(2)}</span><br>
-                        <b>Saldo Interno:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP}</span><br>
+                        <b>Saldo Móvil:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP} saldo</span><br>
                         <b>Rango:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
                         <div style="margin-top:6px;">
-                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoQuitarUsuarioTopOLista('${u.correo}')">Quitar de la App</button>
+                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoQuitarUsuarioPorNombre('${u.nombre}')">Quitar Usuario</button>
                         </div>
                     </div>`;
+                });
+                res.innerHTML = html;
+            } else if(accion === 'eliminar_usuario_nombre' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form" style="border-color:#ff3b30;">
+                        <h4 style="color:#ff3b30;">Quitar Usuario del Top / Sistema por Nombre</h4>
+                        <input type="text" id="ceo-eliminar-nombre-input" placeholder="Nombreexacto de usuario">
+                        <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarQuitarUsuarioPorNombreCEO()">Quitar Usuario Definitivamente</button>
+                    </div>
+                `;
+            } else if(accion === 'agregar_etiqueta_custom' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form" style="border-color:#00f0ff;">
+                        <h4 style="color:#00f0ff;">Agregar Etiqueta Personalizada</h4>
+                        <input type="text" id="ceo-custom-tag-text" placeholder="Texto de la etiqueta">
+                        <select id="ceo-custom-tag-color">
+                            <option value="verde">Verde</option>
+                            <option value="rojo">Rojo</option>
+                            <option value="amarillo">Amarillo</option>
+                            <option value="azul">Azul</option>
+                        </select>
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarAgregarEtiquetaCustomCEO()">Guardar Etiqueta</button>
+                    </div>
+                `;
+            } else if(accion === 'catalogo_precios' && esCEO) {
+                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Catálogo de Precios (Tiempo Real):</h4>";
+                (tiendaConfig.paquetesDiamantes || []).forEach((p, pIdx) => {
+                    html += `
+                        <div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem;">
+                            <b>${p.nombre}</b><br>
+                            <div style="display:flex; gap:6px; margin-top:6px;">
+                                <div style="flex:1;">
+                                    <label style="font-size:0.65rem; color:var(--text-muted);">USDT:</label>
+                                    <input type="number" id="precio-usdt-${pIdx}" value="${p.precioUsdt}" step="0.1" style="width:100%; background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:4px; border-radius:4px;">
+                                </div>
+                                <div style="flex:1;">
+                                    <label style="font-size:0.65rem; color:var(--text-muted);">Saldo Móvil:</label>
+                                    <input type="number" id="precio-saldo-${pIdx}" value="${p.precioSaldo}" style="width:100%; background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:4px; border-radius:4px;">
+                                </div>
+                            </div>
+                            <button class="btn-main" style="margin-top:6px; padding:4px; font-size:0.75rem;" onclick="guardarPrecioPaqueteCEO(${pIdx})">Actualizar Precio</button>
+                        </div>
+                    `;
                 });
                 res.innerHTML = html;
             } else if(accion === 'acreditar') {
                 res.innerHTML = `
                     <div class="ceo-action-form">
-                        <h4>Acreditar Saldo / USDT</h4>
+                        <h4>Acreditar Saldo Móvil / USDT</h4>
                         <input type="email" id="ceo-acreditar-correo" placeholder="Correo del usuario">
                         <select id="ceo-acreditar-tipo">
-                            <option value="cup">Saldo Interno (CUP)</option>
+                            <option value="cup">Saldo Móvil</option>
                             <option value="usdt">Wallet USDT</option>
                         </select>
                         <input type="number" id="ceo-acreditar-monto" placeholder="Monto a sumar">
@@ -2634,10 +2725,10 @@
             } else if(accion === 'desacreditar') {
                 res.innerHTML = `
                     <div class="ceo-action-form">
-                        <h4>Desacreditar Saldo / USDT</h4>
+                        <h4>Desacreditar Saldo Móvil / USDT</h4>
                         <input type="email" id="ceo-desacreditar-correo" placeholder="Correo del usuario">
                         <select id="ceo-desacreditar-tipo">
-                            <option value="cup">Saldo Interno (CUP)</option>
+                            <option value="cup">Saldo Móvil</option>
                             <option value="usdt">Wallet USDT</option>
                         </select>
                         <input type="number" id="ceo-desacreditar-monto" placeholder="Monto a restar">
@@ -2651,14 +2742,6 @@
                         <input type="email" id="ceo-rango-correo" placeholder="Correo del usuario">
                         <input type="number" id="ceo-rango-valor" placeholder="Nuevo rango (0=Quitar, 1=Admin Parcial, 2=CEO)">
                         <button class="btn-main" style="margin-top:0;" onclick="ejecutarCambiarRangoCEO()">Actualizar Rango</button>
-                    </div>
-                `;
-            } else if(accion === 'eliminar_cuenta_correo' && esCEO) {
-                res.innerHTML = `
-                    <div class="ceo-action-form" style="border-color:#ff3b30;">
-                        <h4 style="color:#ff3b30;">Eliminar Cuenta por Correo</h4>
-                        <input type="email" id="ceo-eliminar-correo" placeholder="Correo del usuario a eliminar">
-                        <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarEliminarCuentaPorCorreoCEO()">Eliminar Cuenta Definitivamente</button>
                     </div>
                 `;
             } else if(accion === 'etiqueta_game' && esCEO) {
@@ -2693,7 +2776,7 @@
                 res.innerHTML = `
                     <div class="ceo-action-form" style="border-color:#26a69a;">
                         <h4 style="color:#26a69a;">Configurar Redes, Wallets y Tarjeta</h4>
-                        <label style="font-size:0.72rem; color:var(--text-muted);">Número Saldo (Transferencia):</label>
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Número Saldo Móvil:</label>
                         <input type="text" id="ceo-num-saldo" value="${tiendaConfig.numeroSaldoOficial || '59578110'}">
                         
                         <label style="font-size:0.72rem; color:var(--text-muted);">Dirección USDT BEP 20:</label>
@@ -2707,7 +2790,7 @@
                             <option value="amarillo" ${tiendaConfig.colorWUSDT==='amarillo'?'selected':''}>Amarillo</option>
                         </select>
 
-                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Recarga Saldo:</label>
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Saldo Móvil:</label>
                         <input type="text" id="ceo-wsaldo-text" placeholder="Ej. Rápido" value="${tiendaConfig.etiquetaWalletSaldo || ''}">
                         <select id="ceo-wsaldo-color">
                             <option value="verde" ${tiendaConfig.colorWSaldo==='verde'?'selected':''}>Verde</option>
@@ -2726,38 +2809,60 @@
                         <button class="btn-main" style="margin-top:0; background:#26a69a;" onclick="ejecutarGuardarConfigWalletsCEO()">Guardar Cambios de Wallets</button>
                     </div>
                 `;
-            } else if(accion === 'control_top_hoy' && esCEO) {
-                let oculto = tiendaConfig.ocultarTopRecargasHoy ? "Habilitar Top Hoy" : "Ocultar / Desactivar Top Recargas Hoy";
-                res.innerHTML = `
-                    <div class="ceo-action-form">
-                        <h4>Control de Historial en Tiempo Real</h4>
-                        <button class="btn-main" style="background:#f59e0b; margin-top:0;" onclick="ejecutarToggleTopHoy()">${oculto}</button>
-                    </div>
-                `;
             }
         }
 
-        async function ceoQuitarUsuarioTopOLista(correo) {
-            let index = listaUsuariosGlobales.indexs(u => u.correo.toLowerCase() === correo.toLowerCase());
-            listaUsuariosGlobales = listaUsuariosGlobales.filter(u => u.correo.toLowerCase() !== correo.toLowerCase());
-            solicitudesGlobales.recargas = solicitudesGlobales.recargas.filter(r => r.correo.toLowerCase() !== correo.toLowerCase());
-            solicitudesGlobales.depositos = solicitudesGlobales.depositos.filter(d => d.correo.toLowerCase() !== correo.toLowerCase());
+        async function guardarPrecioPaqueteCEO(pIdx) {
+            let pUsdt = parseFloat(document.getElementById(`precio-usdt-${pIdx}`).value);
+            let pSaldo = parseFloat(document.getElementById(`precio-saldo-${pIdx}`).value);
+            if(isNaN(pUsdt) || isNaN(pSaldo)) { mostrarNotificacion("Introduce precios válidos"); return; }
+
+            tiendaConfig.paquetesDiamantes[pIdx].precioUsdt = pUsdt;
+            tiendaConfig.paquetesDiamantes[pIdx].precioSaldo = pSaldo;
+
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            renderizarPaquetesTienda();
+            mostrarNotificacion("Precio actualizado en tiempo real");
+        }
+
+        async function ejecutarQuitarUsuarioPorNombreCEO() {
+            const nombreUser = document.getElementById('ceo-eliminar-nombre-input').value.trim();
+            if(!nombreUser) { mostrarNotificacion("Introduce el nombre de usuario"); return; }
+
+            let index = listaUsuariosGlobales.findIndex(u => u.nombre.toLowerCase() === nombreUser.toLowerCase());
+            if(index === -1) { mostrarNotificacion("No se encontró ningún usuario con ese nombre"); return; }
+
+            let usuarioEliminado = listaUsuariosGlobales[index];
+            listaUsuariosGlobales.splice(index, 1);
+            solicitudesGlobales.recargas = solicitudesGlobales.recargas.filter(r => r.usuario.toLowerCase() !== nombreUser.toLowerCase());
+            solicitudesGlobales.depositos = solicitudesGlobales.depositos.filter(d => d.usuario.toLowerCase() !== nombreUser.toLowerCase());
 
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
             await guardarEnCloud();
-            mostrarNotificacion("Usuario y registros eliminados de la app correctamente");
+
+            mostrarNotificacion(`Usuario ${usuarioEliminado.nombre} quitado del sistema correctamente`);
             cargarAccionCEO('usuarios');
             actualizarEstadisticasInicio();
         }
 
-        async function ejecutarToggleTopHoy() {
-            tiendaConfig.ocultarTopRecargasHoy = !tiendaConfig.ocultarTopRecargasHoy;
+        async function ceoQuitarUsuarioTopOLista(nombre) {
+            ejecutarQuitarUsuarioPorNombreCEO();
+        }
+
+        async function ejecutarAgregarEtiquetaCustomCEO() {
+            let texto = document.getElementById('ceo-custom-tag-text').value.trim();
+            let color = document.getElementById('ceo-custom-tag-color').value;
+            if(!texto) { mostrarNotificacion("Escribe el texto de la etiqueta"); return; }
+
+            if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
+            tiendaConfig.etiquetasCustomCEO.push({ texto, color });
+
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
-            mostrarNotificacion("Estado del Top en vivo actualizado");
-            cargarAccionCEO('control_top_hoy');
+            mostrarNotificacion("Etiqueta personalizada agregada con éxito");
         }
 
         async function ejecutarGuardarConfigWalletsCEO() {
@@ -2774,22 +2879,6 @@
             await guardarEnCloud();
             aplicarConfiguracionVisual();
             mostrarNotificacion("Configuración de Wallets guardada con éxito");
-        }
-
-        async function ejecutarEliminarCuentaPorCorreoCEO() {
-            const correo = document.getElementById('ceo-eliminar-correo').value.trim().toLowerCase();
-            if(!correo) { mostrarNotificacion("Introduce el correo del usuario"); return; }
-
-            let index = listaUsuariosGlobales.findIndex(u => u.correo.toLowerCase() === correo);
-            if(index === -1) { mostrarNotificacion("No se encontró ningún usuario con ese correo"); return; }
-
-            let usuarioEliminado = listaUsuariosGlobales[index];
-            listaUsuariosGlobales.splice(index, 1);
-            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
-            await guardarEnCloud();
-
-            mostrarNotificacion(`Cuenta de ${usuarioEliminado.nombre} eliminada correctamente`);
-            cargarAccionCEO('usuarios');
         }
 
         async function ejecutarAcreditarCEO() {
@@ -2933,7 +3022,7 @@
             
             actualizarPerfilUI();
             renderizarOrdenes();
-            mostrarNotificacion(`Depósito aprobado y acreditado`);
+            mostrarNotificacion(`Depósito aprobado y acreditado en saldo móvil`);
             cargarAccionCEO('solicitudes_deposito');
         }
 
