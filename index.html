@@ -25,6 +25,17 @@
             --error-color: #ff3b30;
         }
 
+        [data-theme="light"] {
+            --bg-main: #f0f4f8;
+            --bg-card: #ffffff;
+            --text-main: #0d1322;
+            --text-muted: #556987;
+            --primary-blue: #0066ff;
+            --accent-glow: #0066ff;
+            --border-color: #cbd5e1;
+            --error-color: #dc2626;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -39,11 +50,32 @@
             color: var(--text-main);
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         body {
             padding-bottom: 95px;
             animation: fadeInPage 0.4s ease forwards;
+            position: relative;
+        }
+
+        /* Animación brillante profesional de fondo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,240,255,0.04) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+            animation: backgroundShimmer 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes backgroundShimmer {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5%, 5%) scale(1.1); }
         }
 
         @keyframes fadeInPage {
@@ -67,7 +99,7 @@
 
         #notification-toast {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200px);
-            background: #0d1322; color: var(--accent-glow); border: 1px solid var(--border-color);
+            background: var(--bg-card); color: var(--accent-glow); border: 1px solid var(--border-color);
             padding: 0.8rem 1.4rem; border-radius: 12px; font-weight: 700; font-size: 0.82rem;
             box-shadow: 0 5px 20px rgba(0,0,0,0.6); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 9999999; width: 90%; max-width: 380px; text-align: center;
@@ -77,10 +109,10 @@
         .auth-container {
             max-width: 390px; margin: 40px auto; background: var(--bg-card);
             border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem 1.6rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); width: 90%; position: relative; z-index: 2;
         }
         .auth-tabs {
-            display: flex; margin-bottom: 1.4rem; background: #07090e;
+            display: flex; margin-bottom: 1.4rem; background: var(--bg-main);
             border-radius: 10px; padding: 4px; border: 1px solid var(--border-color);
         }
         .auth-tab {
@@ -90,20 +122,20 @@
         .auth-tab.active { background: var(--primary-blue); color: #fff; }
         
         .brand-logo-text { font-size: 1.5rem; font-weight: 900; text-align: center; margin-bottom: 1.4rem; }
-        .brand-lester { color: #ffffff; }
-        .brand-tienda { color: #00f0ff; }
+        .brand-lester { color: var(--text-main); }
+        .brand-tienda { color: var(--accent-glow); }
         
         .form-group { margin-bottom: 1.1rem; position: relative; }
         .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600; }
         .input-icon-wrapper { position: relative; display: flex; align-items: center; }
         .input-icon-wrapper svg { position: absolute; left: 12px; width: 16px; height: 16px; fill: var(--text-muted); pointer-events: none; }
         .form-control {
-            width: 100%; background: #07090e; border: 1px solid var(--border-color);
-            padding: 0.75rem 2.5rem 0.75rem 2.5rem; border-radius: 10px; color: var(--text-main);
-            font-size: 0.88rem; outline: none; transition: border-color 0.2s;
+            width: 100%; background: var(--bg-main); border: 1px solid var(--border-color);
+            padding: 0.75rem 2.5rem 0.75rem 2.5rem; border-radius: 12px; color: var(--text-main);
+            font-size: 0.88rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
         }
         .form-control.no-left-icon { padding-left: 1rem; padding-right: 1rem; }
-        .form-control:focus { border-color: var(--accent-glow); }
+        .form-control:focus { border-color: var(--accent-glow); box-shadow: 0 0 10px rgba(0,240,255,0.15); }
         .form-control.input-error { border-color: var(--error-color) !important; background: rgba(255, 59, 48, 0.03); }
         .error-feedback-text { color: var(--error-color); font-size: 0.68rem; font-weight: 700; margin-top: 4px; display: none; }
 
@@ -115,164 +147,177 @@
 
         .btn-main {
             width: 100%; background: var(--primary-blue); color: #fff; border: none;
-            padding: 0.8rem; border-radius: 10px; font-weight: 900; font-size: 0.9rem;
-            cursor: pointer; transition: filter 0.2s, transform 0.2s; margin-top: 0.8rem;
+            padding: 0.8rem; border-radius: 12px; font-weight: 900; font-size: 0.9rem;
+            cursor: pointer; transition: filter 0.2s, transform 0.2s, box-shadow 0.2s; margin-top: 0.8rem;
+            box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
         }
-        .btn-main:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-main:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4); }
 
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0.75rem 1rem; background-color: var(--bg-card);
+            padding: 0.85rem 1.1rem; background-color: var(--bg-card);
             border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2); backdrop-filter: blur(10px);
         }
-        .nav-brand-area { display: flex; align-items: center; gap: 8px; }
+        .nav-brand-area { display: flex; align-items: center; gap: 10px; }
         .nav-brand-logo {
-            width: 32px; height: 32px; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); flex-shrink: 0;
+            width: 36px; height: 36px; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--border-color); flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         .nav-brand-logo img { width: 100%; height: 100%; object-fit: cover; }
-        .nav-brand-title { font-size: 0.92rem; font-weight: 900; }
+        .nav-brand-title { font-size: 0.98rem; font-weight: 900; letter-spacing: 0.3px; }
         
-        .nav-top-icons { display: flex; gap: 6px; align-items: center; }
+        .nav-top-icons { display: flex; gap: 8px; align-items: center; }
         
         .header-wallet-pill {
-            background: #07090e; border: 1px solid var(--border-color); padding: 4px 8px;
-            border-radius: 20px; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: border-color 0.2s;
+            background: var(--bg-main); border: 1px solid var(--border-color); padding: 5px 10px;
+            border-radius: 20px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
-        .header-wallet-pill:hover { border-color: var(--accent-glow); }
-        .header-wallet-pill img, .header-wallet-pill svg { width: 14px; height: 14px; flex-shrink: 0; object-fit: contain; }
-        .header-wallet-pill span { font-size: 0.68rem; font-weight: 900; }
+        .header-wallet-pill:hover { border-color: var(--accent-glow); box-shadow: 0 0 10px rgba(0,240,255,0.2); }
+        .header-wallet-pill img, .header-wallet-pill svg { width: 15px; height: 15px; flex-shrink: 0; object-fit: contain; }
+        .header-wallet-pill span { font-size: 0.72rem; font-weight: 900; }
 
         .nav-top-icon-btn {
-            background: #07090e; border: 1px solid var(--border-color); width: 32px; height: 32px;
+            background: var(--bg-main); border: 1px solid var(--border-color); width: 34px; height: 34px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
-        .nav-top-icon-btn svg { width: 15px; height: 15px; fill: var(--accent-glow); }
+        .nav-top-icon-btn:hover { border-color: var(--accent-glow); transform: scale(1.05); }
+        .nav-top-icon-btn svg { width: 16px; height: 16px; fill: var(--accent-glow); }
 
-        .container { max-width: 500px; width: 100%; margin: 0 auto; padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+        .container { max-width: 500px; width: 100%; margin: 0 auto; padding: 1.1rem; flex: 1; display: flex; flex-direction: column; position: relative; z-index: 2; }
         .vista-sec { animation: fadeInPage 0.4s ease forwards; flex: 1; display: flex; flex-direction: column; }
 
         .game-hero-compact {
-            background: linear-gradient(135deg, #0d1322 0%, #07090e 100%);
-            border: 1.5px solid var(--accent-glow); border-radius: 14px;
-            padding: 0.9rem 1.1rem; margin-bottom: 1rem; cursor: pointer;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-main) 100%);
+            border: 1.5px solid var(--accent-glow); border-radius: 16px;
+            padding: 1rem 1.2rem; margin-bottom: 1.1rem; cursor: pointer;
             display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15); transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.12); transition: transform 0.2s, box-shadow 0.2s;
         }
-        .game-hero-compact:hover { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(0, 240, 255, 0.3); }
-        .game-hero-left { display: flex; align-items: center; gap: 10px; }
+        .game-hero-compact:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 240, 255, 0.25); }
+        .game-hero-left { display: flex; align-items: center; gap: 12px; }
         .game-hero-icon-small {
-            width: 38px; height: 38px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-glow);
-            border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            width: 42px; height: 42px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-glow);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
-        .game-hero-icon-small svg { width: 20px; height: 20px; fill: var(--accent-glow); }
-        .game-hero-text h3 { font-size: 0.92rem; font-weight: 900; color: #fff; margin-bottom: 1px; }
-        .game-hero-text p { font-size: 0.68rem; color: var(--accent-glow); font-weight: 700; }
+        .game-hero-icon-small svg { width: 22px; height: 22px; fill: var(--accent-glow); }
+        .game-hero-text h3 { font-size: 0.98rem; font-weight: 900; color: var(--text-main); margin-bottom: 2px; }
+        .game-hero-text p { font-size: 0.72rem; color: var(--accent-glow); font-weight: 700; }
         
         .game-hero-arrow {
-            width: 28px; height: 28px; background: rgba(0, 102, 255, 0.2); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; background: rgba(0, 102, 255, 0.15); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0,102,255,0.3);
         }
-        .game-hero-arrow svg { width: 14px; height: 14px; fill: var(--accent-glow); }
+        .game-hero-arrow svg { width: 16px; height: 16px; fill: var(--accent-glow); }
 
         .game-card-character {
-            background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px;
-            overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; position: relative;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+            background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 18px;
+            overflow: hidden; margin-bottom: 1.1rem; cursor: pointer; transition: all 0.3s; position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
-        .game-card-character:hover { border-color: var(--accent-glow); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); }
+        .game-card-character:hover { border-color: var(--accent-glow); box-shadow: 0 6px 25px rgba(0, 240, 255, 0.25); transform: translateY(-2px); }
         
         .game-card-banner-img {
-            height: 175px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
+            height: 185px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.2rem; position: relative;
             overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;
-            background-color: #0d1322;
+            background-color: var(--bg-card);
         }
         
         .neon-overlay-gradient {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
-            background: linear-gradient(180deg, rgba(7,9,14,0.3) 0%, rgba(7,9,14,0.85) 100%);
+            background: linear-gradient(180deg, rgba(7,9,14,0.2) 0%, rgba(7,9,14,0.85) 100%);
             z-index: 1;
         }
 
+        /* ETIQUETAS EDITABLES PROFESIONALES (SIN BORDES FEOS, FONDO AZUL FUERTE TRANSLÚCIDO + AZUL CLARO) */
         .neon-badge-top-right {
-            position: absolute; top: 12px; right: 12px;
-            padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 900;
+            position: absolute; top: 14px; right: 14px;
+            padding: 6px 12px; border-radius: 10px; font-size: 0.7rem; font-weight: 900;
             text-transform: uppercase; z-index: 3;
-            background: rgba(7, 9, 14, 0.95) !important;
-            border: 2px solid currentColor;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.7);
+            background: rgba(0, 70, 180, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            color: #d8f8ff;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
-        .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); position: relative; z-index: 2; }
+        .game-card-footer { padding: 0.85rem 1.1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.9rem; background: var(--bg-card); border-top: 1px solid var(--border-color); position: relative; z-index: 2; }
 
         .invite-banner {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
-            padding: 1.2rem; color: #fff; margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 18px;
+            padding: 1.3rem; color: var(--text-main); margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .invite-banner h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 0.3rem; color: #fff; }
+        .invite-banner h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 0.3rem; color: var(--text-main); }
         .invite-banner p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.8rem; max-width: 210px; line-height: 1.4; }
-        .btn-invite { background: var(--primary-blue); color: #fff; border: none; padding: 0.4rem 1rem; border-radius: 12px; font-weight: bold; font-size: 0.78rem; cursor: pointer; }
+        .btn-invite { background: var(--primary-blue); color: #fff; border: none; padding: 0.5rem 1.1rem; border-radius: 12px; font-weight: bold; font-size: 0.78rem; cursor: pointer; transition: filter 0.2s; }
+        .btn-invite:hover { filter: brightness(1.1); }
 
-        .section-title { font-size: 0.78rem; color: var(--text-muted); margin: 1rem 0 0.4rem 0; font-weight: 700; letter-spacing: 0.5px; }
+        .section-title { font-size: 0.78rem; color: var(--text-muted); margin: 1.1rem 0 0.4rem 0; font-weight: 700; letter-spacing: 0.5px; }
 
         .live-history-card {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; margin-bottom: 1.2rem;
+            background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 18px; padding: 1.1rem; margin-bottom: 1.2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .live-history-header {
             display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;
             border-bottom: 1px solid var(--border-color); padding-bottom: 0.7rem;
         }
-        .live-history-title-box h3 { font-size: 0.92rem; font-weight: 900; color: #fff; margin-bottom: 2px; }
+        .live-history-title-box h3 { font-size: 0.92rem; font-weight: 900; color: var(--text-main); margin-bottom: 2px; }
         .live-status-sub { display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--text-muted); }
         .live-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 6px rgba(16, 185, 129, 0.8); }
-        .live-counter-pill { background: #07090e; border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 10px; text-align: right; }
+        .live-counter-pill { background: var(--bg-main); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 10px; text-align: right; }
         .live-counter-pill span { display: block; font-size: 0.55rem; color: var(--text-muted); font-weight: bold; }
         .live-counter-pill h4 { font-size: 1rem; font-weight: 900; color: #10b981; }
 
         .history-item-row {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0.55rem 0; border-bottom: 1px solid rgba(26, 35, 58, 0.4); font-size: 0.78rem;
+            padding: 0.6rem 0; border-bottom: 1px solid var(--border-color); font-size: 0.78rem;
         }
         .history-item-row:last-child { border-bottom: none; }
         .history-time { color: var(--text-muted); font-size: 0.7rem; width: 60px; }
         .history-user-info { display: flex; align-items: center; gap: 8px; flex: 1; padding: 0 6px; }
         .history-avatar {
-            width: 28px; height: 28px; border-radius: 50%; background: #07090e;
+            width: 30px; height: 30px; border-radius: 50%; background: var(--bg-main);
             border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center;
             font-weight: bold; font-size: 0.72rem; color: var(--accent-glow); overflow: hidden; flex-shrink: 0;
         }
         .history-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .history-user-details h5 { font-size: 0.78rem; font-weight: 800; color: #fff; }
+        .history-user-details h5 { font-size: 0.78rem; font-weight: 800; color: var(--text-main); }
         .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
         .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
 
         .payment-method-selector-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 1rem;
+            gap: 10px;
+            margin-bottom: 1.1rem;
         }
         .pay-method-pill-btn {
-            background: #ffffff;
+            background: var(--bg-card);
             border: 1.5px solid var(--border-color);
-            border-radius: 12px;
-            padding: 0.5rem 0.5rem;
+            border-radius: 14px;
+            padding: 0.7rem 0.6rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .pay-method-pill-btn.active {
-            background: linear-gradient(135deg, #2b70ff 0%, #004fe3 100%);
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #004fe3 100%);
             border-color: var(--accent-glow);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
             transform: translateY(-1px);
         }
-        .pay-method-pill-btn img { width: 18px; height: 18px; object-fit: contain; }
+        .pay-method-pill-btn img { width: 20px; height: 20px; object-fit: contain; }
         .pay-method-pill-btn span {
-            color: #0d1322;
+            color: var(--text-main);
             font-weight: 900;
             font-size: 0.85rem;
             letter-spacing: 0.2px;
@@ -281,46 +326,48 @@
             color: #ffffff;
         }
 
-        .diamonds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.1rem; }
+        .diamonds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin-bottom: 1.2rem; }
         .diamond-card {
-            background: #ffffff; border: 2px solid var(--border-color); border-radius: 16px;
-            padding: 0.9rem 0.7rem; text-align: center; cursor: pointer; transition: all 0.2s;
+            background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 18px;
+            padding: 1rem 0.8rem; text-align: center; cursor: pointer; transition: all 0.2s;
             display: flex; flex-direction: column; justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
-        .diamond-card:hover { border-color: var(--accent-glow); transform: translateY(-2px); }
-        .diamond-card.selected { border-color: var(--accent-glow); box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); background: #f8fbff; }
-        .diamond-img-render { width: 64px; height: 56px; margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; }
-        .diamond-img-render img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,102,255,0.25)); }
-        .diamond-card h4 { font-size: 0.82rem; font-weight: 900; margin-bottom: 0.2rem; color: #0d1322; }
-        .diamond-price { color: #0066ff; font-weight: 900; font-size: 0.92rem; }
+        .diamond-card:hover { border-color: var(--accent-glow); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,240,255,0.2); }
+        .diamond-card.selected { border-color: var(--accent-glow); box-shadow: 0 0 20px rgba(0, 240, 255, 0.35); background: var(--bg-card); }
+        .diamond-img-render { width: 64px; height: 56px; margin-bottom: 0.3rem; display: flex; align-items: center; justify-content: center; }
+        .diamond-img-render img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,102,255,0.3)); }
+        .diamond-card h4 { font-size: 0.85rem; font-weight: 900; margin-bottom: 0.3rem; color: var(--text-main); }
+        .diamond-price { color: var(--primary-blue); font-weight: 900; font-size: 0.95rem; }
 
         .profile-header-card { 
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; 
-            padding: 1.1rem; text-align: center; margin-bottom: 1rem; position: relative; 
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; 
+            padding: 1.3rem; text-align: center; margin-bottom: 1.1rem; position: relative; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
 
-        .profile-avatar-wrapper { position: relative; width: 70px; height: 70px; margin: 0 auto 0.5rem auto; }
+        .profile-avatar-wrapper { position: relative; width: 75px; height: 75px; margin: 0 auto 0.6rem auto; }
         .profile-avatar-circle {
-            width: 70px; height: 70px; background: #07090e; border: 2px solid var(--accent-glow); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold; color: var(--accent-glow);
-            overflow: hidden; cursor: pointer;
+            width: 75px; height: 75px; background: var(--bg-main); border: 2px solid var(--accent-glow); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: var(--accent-glow);
+            overflow: hidden; cursor: pointer; box-shadow: 0 0 15px rgba(0,240,255,0.2);
         }
         .profile-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
         .avatar-edit-badge {
-            position: absolute; bottom: 0; right: 0; background: var(--primary-blue); border: 1px solid var(--border-color);
-            width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+            position: absolute; bottom: 0; right: 0; background: var(--primary-blue); border: 2px solid var(--bg-card);
+            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
-        .avatar-edit-badge svg { width: 11px; height: 11px; fill: #fff; }
+        .avatar-edit-badge svg { width: 12px; height: 12px; fill: #fff; }
 
         .order-card-pro {
-            background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px;
+            background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px;
             padding: 1.1rem 1.2rem; margin-bottom: 0.9rem; display: flex; justify-content: space-between; align-items: center;
-            position: relative; box-shadow: 0 0 18px rgba(0, 240, 255, 0.22); overflow: hidden; gap: 12px; cursor: pointer; transition: all 0.2s ease;
+            position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.08); overflow: hidden; gap: 12px; cursor: pointer; transition: all 0.2s ease;
         }
-        .order-card-pro:hover { border-color: #10b981; box-shadow: 0 0 25px rgba(16, 185, 129, 0.3); transform: translateY(-1px); }
+        .order-card-pro:hover { border-color: var(--accent-glow); box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); transform: translateY(-1px); }
         .order-info { flex: 1; min-width: 0; }
-        .order-info h4 { font-size: 0.86rem; font-weight: 900; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .order-info h4 { font-size: 0.88rem; font-weight: 900; color: var(--text-main); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .order-info p { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
         .order-right-action { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
@@ -344,37 +391,38 @@
         .animated-diamond-img { animation: floatingDiamond 3.5s ease-in-out infinite; }
 
         .security-menu-box { 
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; 
-            padding: 1.2rem; margin-top: 1.2rem; display: flex; flex-direction: column; gap: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; 
+            padding: 1.2rem; margin-top: 1.1rem; display: flex; flex-direction: column; gap: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
         .security-btn {
-            width: 100%; background: #07090e; border: 1px solid var(--primary-blue); color: #fff;
-            padding: 0.7rem 0.9rem; border-radius: 10px; font-weight: 700; font-size: 0.8rem; display: flex;
-            align-items: center; gap: 10px; cursor: pointer; text-align: left; transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main);
+            padding: 0.8rem 1rem; border-radius: 12px; font-weight: 700; font-size: 0.82rem; display: flex;
+            align-items: center; gap: 12px; cursor: pointer; text-align: left; transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
         }
-        .security-btn:hover { border-color: var(--accent-glow); background: #0d1322; }
-        .security-btn svg { width: 16px; height: 16px; fill: var(--accent-glow); flex-shrink: 0; }
+        .security-btn:hover { border-color: var(--accent-glow); background: var(--bg-card); transform: translateX(2px); }
+        .security-btn svg { width: 18px; height: 18px; fill: var(--accent-glow); flex-shrink: 0; }
 
         .ceo-box {
-            background: linear-gradient(135deg, #130a0a 0%, #07090e 100%);
-            border: 1px solid rgba(255, 59, 48, 0.4); border-radius: 16px; padding: 1.1rem; margin-top: 1.1rem;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-main) 100%);
+            border: 1px solid rgba(255, 59, 48, 0.4); border-radius: 18px; padding: 1.2rem; margin-top: 1.2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
-        .ceo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.8rem; }
+        .ceo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.9rem; }
         .ceo-btn {
-            background: #07090e; border: 1px solid #ff3b30; color: #ff3b30; padding: 0.65rem;
+            background: var(--bg-main); border: 1px solid #ff3b30; color: #ff3b30; padding: 0.7rem;
             border-radius: 10px; font-weight: 900; font-size: 0.78rem; cursor: pointer; text-align: center; transition: all 0.2s;
         }
-        .ceo-btn:hover { background: #ff3b30; color: #fff; }
+        .ceo-btn:hover { background: #ff3b30; color: #fff; transform: translateY(-1px); }
 
         .ceo-action-form {
-            background: #07090e; border: 1px solid #ff3b30; border-radius: 12px; padding: 1rem; margin-top: 0.8rem;
+            background: var(--bg-main); border: 1px solid #ff3b30; border-radius: 14px; padding: 1.1rem; margin-top: 0.9rem;
         }
-        .ceo-action-form h4 { font-size: 0.85rem; color: #ff3b30; margin-bottom: 0.6rem; font-weight: 900; }
-        .ceo-action-form input, .ceo-action-form select {
-            width: 100%; background: #0d1322; border: 1px solid var(--border-color);
-            padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
+        .ceo-action-form h4 { font-size: 0.88rem; color: #ff3b30; margin-bottom: 0.7rem; font-weight: 900; }
+        .ceo-action-form input, .ceo-action-form select, .ceo-action-form textarea {
+            width: 100%; background: var(--bg-card); border: 1px solid var(--border-color);
+            padding: 0.7rem; border-radius: 10px; color: var(--text-main); margin-bottom: 0.7rem; font-size: 0.85rem; outline: none;
         }
 
         .floating-bot {
@@ -397,36 +445,47 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.6); animation: fadeInPage 0.3s ease;
         }
         .soporte-option-btn {
-            display: flex; align-items: center; gap: 12px; width: 100%; background: #07090e;
+            display: flex; align-items: center; gap: 12px; width: 100%; background: var(--bg-main);
             border: 1px solid var(--border-color); padding: 0.8rem 1rem; border-radius: 12px;
-            margin-bottom: 0.8rem; cursor: pointer; color: #fff; font-weight: 700; font-size: 0.85rem;
+            margin-bottom: 0.8rem; cursor: pointer; color: var(--text-main); font-weight: 700; font-size: 0.85rem;
             transition: border-color 0.2s; text-decoration: none; text-align: left;
         }
         .soporte-option-btn:hover { border-color: var(--accent-glow); }
 
         .footer-legal-container {
             margin-top: auto; padding: 1.2rem 1rem; background: var(--bg-card);
-            border-top: 1px solid var(--border-color); border-radius: 16px 16px 0 0; text-align: center;
+            border-top: 1px solid var(--border-color); border-radius: 18px 18px 0 0; text-align: center;
         }
         .footer-legal-container h4 { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 0.7rem; text-transform: uppercase; }
-        .footer-links-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+        .footer-links-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 12px; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+        .footer-links-grid span { cursor: pointer; transition: color 0.2s; }
+        .footer-links-grid span:hover { color: var(--accent-glow); }
         .footer-copy { font-size: 0.72rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 0.7rem; }
 
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card);
             border-top: 1px solid var(--border-color); display: flex; justify-content: space-around;
-            padding: 0.55rem 0; z-index: 99999; box-shadow: 0 -4px 15px rgba(0,0,0,0.7);
+            padding: 0.6rem 0; z-index: 99999; box-shadow: 0 -4px 20px rgba(0,0,0,0.15); backdrop-filter: blur(10px);
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; text-decoration: none;
-            color: var(--text-muted); font-size: 0.62rem; font-weight: 600; cursor: pointer; gap: 2px; transition: color 0.2s;
+            color: var(--text-muted); font-size: 0.62rem; font-weight: 600; cursor: pointer; gap: 3px; transition: color 0.2s;
         }
-        .nav-item svg { width: 19px; height: 19px; fill: var(--text-muted); transition: fill 0.2s; }
+        .nav-item svg { width: 20px; height: 20px; fill: var(--text-muted); transition: fill 0.2s; }
         .nav-item.active, .nav-item:hover { color: var(--accent-glow); }
         .nav-item.active svg, .nav-item:hover svg { fill: var(--accent-glow); }
+
+        /* Estilos para el Elemento Inyectado Dinámicamente por el CEO */
+        .custom-injected-element {
+            position: relative;
+            margin: 10px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
     <div id="loading-overlay">
         <div class="spinner"></div>
@@ -437,7 +496,7 @@
 
     <div id="modal-soporte-selector" onclick="cerrarModalSoporte(event)">
         <div class="soporte-modal-box" onclick="event.stopPropagation()">
-            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">Atención y Soporte</h3>
+            <h3 style="color: var(--text-main); font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">Atención y Soporte</h3>
             <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Comunícate directamente a WhatsApp</p>
 
             <div class="soporte-option-btn" onclick="abrirWhatsAppReal('normal')">
@@ -445,7 +504,7 @@
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
                 </div>
                 <div>
-                    <h4 style="font-size: 0.85rem; color: #fff;">WhatsApp Normal</h4>
+                    <h4 style="font-size: 0.85rem; color: var(--text-main);">WhatsApp Normal</h4>
                     <span style="font-size: 0.68rem; color: var(--text-muted);">Chat directo con Lester</span>
                 </div>
             </div>
@@ -455,7 +514,7 @@
                     <svg viewBox="0 0 24 24" width="18" height="18" fill="#25D366"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
                 </div>
                 <div>
-                    <h4 style="font-size: 0.85rem; color: #fff;">WhatsApp Business</h4>
+                    <h4 style="font-size: 0.85rem; color: var(--text-main);">WhatsApp Business</h4>
                     <span style="font-size: 0.68rem; color: var(--text-muted);">Atención comercial</span>
                 </div>
             </div>
@@ -468,10 +527,14 @@
         <img src="icon-192.png" alt="Soporte">
     </div>
 
-    <!-- Inputs Ocultos Independientes para Banners y Catálogo -->
+    <!-- Inputs Ocultos Independientes -->
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
     <input type="file" id="ceo-banner-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenBannerCEO(event)">
     <input type="file" id="ceo-catalogo-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenCatalogoCEO(event)">
+    <input type="file" id="ceo-injected-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenInyectadaCEO(event)">
+
+    <!-- Contenedor dinámico de elementos inyectados en el DOM superior -->
+    <div id="dinamic-injected-top-container"></div>
 
     <!-- 1. AUTENTICACIÓN -->
     <div id="auth-screen" class="auth-container">
@@ -564,11 +627,11 @@
             <div class="nav-top-icons">
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet USDT">
                     <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT Logo">
-                    <span id="header-wallet-balance" style="color: #00f0ff;">0.00 USDT</span>
+                    <span id="header-wallet-balance" style="color: var(--accent-glow);">0.00 USDT</span>
                 </div>
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Móvil">
-                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                    <span id="header-saldo-balance" style="color: #ffffff;">0 saldo</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    <span id="header-saldo-balance">0 saldo</span>
                 </div>
                 <button class="nav-top-icon-btn" onclick="iniciarDescargaDirectaApp()" title="Descargar Aplicación">
                     <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
@@ -601,9 +664,9 @@
                         <p>Si invitas 10 socios le damos un regalo increíble en su cuenta.</p>
                         <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Ver Referidos</button>
                     </div>
-                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); padding: 12px 14px; border-radius: 12px; text-align: center;">
-                        <svg width="26" height="22" viewBox="0 0 24 24" fill="#00f0ff"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.5 15.38 12 17 10.83 14.92 8H20v6z"/></svg>
-                        <span style="display: block; font-size: 0.52rem; font-weight: bold; color: #00f0ff; margin-top: 2px;">BONUS</span>
+                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); padding: 12px 14px; border-radius: 14px; text-align: center;">
+                        <svg width="28" height="24" viewBox="0 0 24 24" fill="var(--accent-glow)"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.5 15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+                        <span style="display: block; font-size: 0.55rem; font-weight: bold; color: var(--accent-glow); margin-top: 2px;">BONUS</span>
                     </div>
                 </div>
 
@@ -647,7 +710,7 @@
                         </div>
                     </div>
                     <div class="game-card-footer">
-                        <span style="color: #fff;">Diamantes Instantáneos</span>
+                        <span style="color: var(--text-main);">Diamantes Instantáneos</span>
                         <span style="color: var(--accent-glow);">Ver Ofertas &gt;</span>
                     </div>
                 </div>
@@ -656,7 +719,7 @@
                 <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
                     <div id="banner-bg-blood" class="game-card-banner-img">
                         <div class="neon-overlay-gradient"></div>
-                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="color: #f59e0b;">PRÓXIMAMENTE</div>
+                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right">PRÓXIMAMENTE</div>
                         
                         <div style="z-index: 2; position: relative;">
                             <span style="background: rgba(245, 158, 11, 0.4); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:#f59e0b; font-weight: bold; display: inline-block; margin-bottom: 4px; backdrop-filter: blur(4px);">Shooter Pro</span>
@@ -664,7 +727,7 @@
                         </div>
                     </div>
                     <div class="game-card-footer">
-                        <span style="color: #fff;">Oro y Pases de Batalla</span>
+                        <span style="color: var(--text-main);">Oro y Pases de Batalla</span>
                         <span style="color: #f59e0b;">Ver Oferta &gt;</span>
                     </div>
                 </div>
@@ -691,7 +754,7 @@
                     </div>
 
                     <div id="btn-pay-saldo" class="pay-method-pill-btn" onclick="seleccionarMetodoPago('saldo')">
-                        <div style="width: 18px; height: 18px; background: #0066ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <div style="width: 20px; height: 20px; background: var(--primary-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg viewBox="0 0 24 24" width="11" height="11" fill="#fff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
                         <span>Saldo Móvil</span>
@@ -709,18 +772,18 @@
                 <h2 style="margin-bottom: 0.8rem; font-size: 1.05rem; color:var(--accent-glow);">Tus Órdenes y Transacciones</h2>
                 <p style="color:var(--text-muted); font-size:0.72rem; margin-bottom: 1rem;">Historial privado de tus solicitudes y depósitos en la plataforma.</p>
                 
-                <div style="display: flex; gap: 8px; margin-bottom: 1rem; background: #07090e; padding: 4px; border-radius: 10px; border: 1px solid var(--border-color);">
-                    <button id="tab-btn-compras" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: var(--primary-blue); color: #fff; transition: all 0.3s;" onclick="cambiarTabOrdenes('compras')">Compras (Recargas)</button>
-                    <button id="tab-btn-depositos" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.3s;" onclick="cambiarTabOrdenes('depositos')">Depósitos</button>
+                <div style="display: flex; gap: 8px; margin-bottom: 1rem; background: var(--bg-card); padding: 4px; border-radius: 12px; border: 1px solid var(--border-color);">
+                    <button id="tab-btn-compras" style="flex: 1; padding: 0.6rem; border-radius: 10px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: var(--primary-blue); color: #fff; transition: all 0.3s;" onclick="cambiarTabOrdenes('compras')">Compras (Recargas)</button>
+                    <button id="tab-btn-depositos" style="flex: 1; padding: 0.6rem; border-radius: 10px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.3s;" onclick="cambiarTabOrdenes('depositos')">Depósitos</button>
                 </div>
 
                 <div id="panel-ordenes-compras">
-                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem 1.2rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                         <div>
                             <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DE RECARGAS REALIZADAS</span>
                             <h3 id="stat-total-recargas-realizadas" style="font-size: 1.2rem; font-weight: 900; color: var(--accent-glow);">0</h3>
                         </div>
-                        <div style="width: 36px; height: 36px; background: rgba(0,240,255,0.1); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <div style="width: 38px; height: 38px; background: rgba(0,240,255,0.1); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                         </div>
                     </div>
@@ -728,12 +791,12 @@
                 </div>
 
                 <div id="panel-ordenes-depositos" style="display: none;">
-                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem 1.2rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                         <div>
                             <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN SALDO MÓVIL</span>
                             <h3 id="stat-total-depositado-saldo" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0</h3>
                         </div>
-                        <div style="width: 36px; height: 36px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <div style="width: 38px; height: 38px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
                     </div>
@@ -749,28 +812,29 @@
                     </button>
                 </div>
                 
-                <div id="comp-box-main" style="background: linear-gradient(135deg, #0d1322 0%, #07090e 100%); border: 2px solid #10b981; border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; position: relative; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
+                <div id="comp-box-main" style="background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-main) 100%); border: 2px solid #10b981; border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; position: relative; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
                     <div style="position: absolute; top: 14px; left: 14px; font-weight: 900; font-size: 0.85rem;"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
                     
                     <div id="comp-badge-status" style="position: absolute; top: 12px; right: 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 4px 10px; border-radius: 8px; font-size: 0.68rem; font-weight: 900; text-transform: uppercase;">
                         COMPLETADO
                     </div>
 
+                    <!-- FOTO LOGOTIPO REAL DE DIAMANTES DE FREE FIRE EN LUGAR DE ANIMACIÓN GENERADA -->
                     <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
-                        <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
-                        <img id="comp-img-diamantes" src="" alt="Diamantes" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
-                        <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
+                        <div style="position: absolute; width: 90px; height: 90px; background: rgba(0,240,255,0.15); border-radius: 50%; filter: blur(12px);"></div>
+                        <img id="comp-img-diamantes" src="https://images.seeklogo.com/logo-png/51/1/free-fire-diamonds-logo-png_seeklogo-513651.png" alt="Diamantes Free Fire" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
+                        <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-main); z-index: 3;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                         </div>
                     </div>
 
                     <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">FREE-FIRE</div>
-                    <h2 id="comp-titulo-diamantes" style="font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 0.4rem;">100+10 Diamantes</h2>
+                    <h2 id="comp-titulo-diamantes" style="font-size: 1.5rem; font-weight: 900; color: var(--text-main); margin-bottom: 0.4rem;">100+10 Diamantes</h2>
                     <p id="comp-subtext-status" style="color: #10b981; font-size: 0.85rem; font-weight: 800; margin-bottom: 1.2rem;">Entregado correctamente</p>
 
-                    <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem; text-align: left; font-size: 0.78rem; display: flex; flex-direction: column; gap: 6px;">
-                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">ID de Jugador:</span> <span id="comp-id-jugador" style="color:#fff; font-weight:bold;">123456789</span></div>
-                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Fecha:</span> <span id="comp-fecha" style="color:#fff; font-weight:bold;">05/11/2026</span></div>
+                    <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem; text-align: left; font-size: 0.78rem; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">ID de Jugador:</span> <span id="comp-id-jugador" style="color:var(--text-main); font-weight:bold;">123456789</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Fecha:</span> <span id="comp-fecha" style="color:var(--text-main); font-weight:bold;">05/11/2026</span></div>
                         <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Precio Pagado:</span> <span id="comp-precio" style="color:var(--accent-glow); font-weight:bold;">1.20 USDT</span></div>
                     </div>
                 </div>
@@ -779,31 +843,31 @@
             <!-- SECCIÓN REFERIDOS -->
             <div id="seccion-referidos" class="vista-sec" style="display: none;">
                 <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">REFERIDOS Y RECOMPENSAS</h2>
-                <div class="profile-header-card" style="text-align: left; padding: 1.2rem;">
-                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.6rem;">Socios nuevos registrados con tu enlace personal.</p>
+                <div class="profile-header-card" style="text-align: left; padding: 1.3rem;">
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.8rem;">Socios nuevos registrados con tu enlace personal.</p>
                     
                     <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px;">
-                        <span id="contador-meta-referidos" style="color: #fff;">0 / 10 referidos válidos para el premio</span>
+                        <span id="contador-meta-referidos" style="color: var(--text-main);">0 / 10 referidos válidos para el premio</span>
                         <span style="color: var(--accent-glow);">VIP</span>
                     </div>
-                    <div style="width: 100%; background: #07090e; height: 8px; border-radius: 4px; margin-bottom: 0.8rem; overflow: hidden; border: 1px solid var(--border-color);">
+                    <div style="width: 100%; background: var(--bg-main); height: 8px; border-radius: 4px; margin-bottom: 1rem; overflow: hidden; border: 1px solid var(--border-color);">
                         <div id="barra-progreso-referidos" style="width: 0%; background: #10b981; height: 100%; transition: width 0.4s;"></div>
                     </div>
 
-                    <div id="badge-premio-disponible" style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; color: #10b981; padding: 0.6rem; border-radius: 10px; text-align: center; font-size: 0.78rem; font-weight: bold; margin-bottom: 1rem; display: none;">
+                    <div id="badge-premio-disponible" style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; color: #10b981; padding: 0.7rem; border-radius: 12px; text-align: center; font-size: 0.78rem; font-weight: bold; margin-bottom: 1.1rem; display: none;">
                         ¡Premio disponible al llegar a 10 referidos válidos! Reclámalo con el CEO.
                     </div>
 
                     <div class="section-title">LISTA DE SOCIOS INVITADOS</div>
-                    <div id="lista-detallada-referidos" style="background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.8rem; max-height: 150px; overflow-y: auto; margin-bottom: 1rem; font-size: 0.75rem;">
+                    <div id="lista-detallada-referidos" style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.8rem; max-height: 150px; overflow-y: auto; margin-bottom: 1.1rem; font-size: 0.75rem;">
                         <span style="color: var(--text-muted);">Aún no tienes referidos registrados.</span>
                     </div>
 
                     <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.4rem;">Tu enlace de referidos</p>
-                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.68rem; background: #07090e; text-align: center; margin-bottom: 0.8rem; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">https://lestertienda.github.io/Lestertienda-/?ref=usuario</div>
+                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.68rem; background: var(--bg-main); text-align: center; margin-bottom: 0.9rem; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">https://lestertienda.github.io/Lestertienda-/?ref=usuario</div>
                     
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn-main" style="margin-top: 0; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff;" onclick="copiarEnlaceRef()">Copiar Enlace</button>
+                        <button class="btn-main" style="margin-top: 0; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main);" onclick="copiarEnlaceRef()">Copiar Enlace</button>
                         <button class="btn-main" style="margin-top: 0; background: var(--primary-blue); display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="compartirEnlaceRef()">
                             <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
                             Compartir
@@ -819,48 +883,48 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;">
                     
-                    <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('usdt')">
+                    <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 18px; padding: 1.2rem; cursor: pointer; transition: border-color 0.2s; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.08);" onclick="abrirVistaWalletDetalle('usdt')">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="width: 38px; height: 38px; background: rgba(38, 166, 154, 0.15); border: 1px solid #26a69a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT BEP20" width="22" height="22">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 42px; height: 42px; background: rgba(38, 166, 154, 0.15); border: 1px solid #26a69a; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT BEP20" width="24" height="24">
                                 </div>
                                 <div>
-                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">USDT BEP 20</h3>
+                                    <h3 style="font-size: 0.95rem; font-weight: 900; color: var(--text-main);">USDT BEP 20</h3>
                                     <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Tether USD (Red Binance Smart Chain)</span>
                                 </div>
                             </div>
-                            <span style="color: var(--accent-glow); font-size: 0.8rem; font-weight: bold;">&gt;</span>
+                            <span style="color: var(--accent-glow); font-size: 0.9rem; font-weight: bold;">&gt;</span>
                         </div>
                     </div>
 
-                    <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('saldo')">
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 18px; padding: 1.2rem; cursor: pointer; transition: border-color 0.2s; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.08);" onclick="abrirVistaWalletDetalle('saldo')">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="width: 38px; height: 38px; background: rgba(0, 102, 255, 0.15); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 42px; height: 42px; background: rgba(0, 102, 255, 0.15); border: 1px solid var(--accent-glow); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                                 </div>
                                 <div>
-                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Saldo Móvil</h3>
+                                    <h3 style="font-size: 0.95rem; font-weight: 900; color: var(--text-main);">Saldo Móvil</h3>
                                     <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Saldo Interno Habilitado</span>
                                 </div>
                             </div>
-                            <span style="color: var(--accent-glow); font-size: 0.8rem; font-weight: bold;">&gt;</span>
+                            <span style="color: var(--accent-glow); font-size: 0.9rem; font-weight: bold;">&gt;</span>
                         </div>
                     </div>
 
-                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('tarjeta')">
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 18px; padding: 1.2rem; cursor: pointer; transition: border-color 0.2s; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.08);" onclick="abrirVistaWalletDetalle('tarjeta')">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="width: 38px; height: 38px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="#f59e0b"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 42px; height: 42px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" fill="#f59e0b"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
                                 </div>
                                 <div>
-                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Pago con Tarjeta</h3>
+                                    <h3 style="font-size: 0.95rem; font-weight: 900; color: var(--text-main);">Pago con Tarjeta</h3>
                                     <span style="font-size: 0.68rem; color: #f59e0b; font-weight: bold;">Próximamente disponible</span>
                                 </div>
                             </div>
-                            <span style="color: var(--text-muted); font-size: 0.8rem;">&gt;</span>
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">&gt;</span>
                         </div>
                     </div>
 
@@ -875,18 +939,18 @@
                     </button>
                 </div>
                 
-                <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(38,166,154,0.15);">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT BEP20" width="32" height="32">
+                <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 18px; padding: 1.3rem; box-shadow: 0 0 25px rgba(38,166,154,0.15);">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT BEP20" width="34" height="34">
                         <div>
-                            <h3 style="font-size: 1.05rem; font-weight: 900; color: #fff;">Recarga USDT BEP 20</h3>
+                            <h3 style="font-size: 1.05rem; font-weight: 900; color: var(--text-main);">Recarga USDT BEP 20</h3>
                             <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Red Binance Smart Chain (BSC)</span>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label>Dirección Oficial BEP 20:</label>
-                        <div class="form-control no-left-icon" id="wallet-direccion-usdt-display" style="font-size: 0.72rem; background: #07090e; color: #26a69a; text-align: center; word-break: break-all; padding: 0.8rem; margin-bottom: 0.5rem; font-weight: 800;">0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2</div>
+                        <div class="form-control no-left-icon" id="wallet-direccion-usdt-display" style="font-size: 0.72rem; background: var(--bg-main); color: #26a69a; text-align: center; word-break: break-all; padding: 0.8rem; margin-bottom: 0.6rem; font-weight: 800;">0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2</div>
                         <button class="btn-main" style="background: #26a69a; margin-top: 0;" onclick="copiarDireccionUSDTNuevo()">Copiar Dirección</button>
                     </div>
 
@@ -913,21 +977,21 @@
                     </button>
                 </div>
                 
-                <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(0,240,255,0.15);">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
-                        <div style="width: 36px; height: 36px; background: rgba(0, 102, 255, 0.2); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 18px; padding: 1.3rem; box-shadow: 0 0 25px rgba(0,240,255,0.15);">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
+                        <div style="width: 38px; height: 38px; background: rgba(0, 102, 255, 0.2); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
                         <div>
-                            <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Saldo Móvil</h3>
+                            <h3 style="font-size: 0.95rem; font-weight: 900; color: var(--text-main);">Saldo Móvil</h3>
                             <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Recarga rápida</span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Número Oficial para Recibir el Pago</label>
-                        <div class="form-control no-left-icon" id="wallet-numero-saldo-display" style="font-weight: 900; font-size: 1.1rem; background: #07090e; color: var(--accent-glow); text-align: center; letter-spacing: 1px;">59578110</div>
-                        <button class="btn-main" style="margin-top: 0.5rem; background: var(--bg-card); color: #fff; border: 1px solid var(--border-color);" onclick="copiarNumeroWallet()">Copiar Número</button>
+                        <div class="form-control no-left-icon" id="wallet-numero-saldo-display" style="font-weight: 900; font-size: 1.1rem; background: var(--bg-main); color: var(--accent-glow); text-align: center; letter-spacing: 1px;">59578110</div>
+                        <button class="btn-main" style="margin-top: 0.6rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color);" onclick="copiarNumeroWallet()">Copiar Número</button>
                     </div>
 
                     <div class="form-group" style="margin-top: 1rem;">
@@ -937,7 +1001,8 @@
 
                     <div class="form-group" style="margin-top: 1rem;">
                         <label>Tu número con el que transfirió el saldo</label>
-                        <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+                        <!-- QUITADA LA OPCIÓN DE PONER EL +53 (SOLO NÚMEROS LOCALES) -->
+                        <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx o 59578110" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </div>
 
                     <button class="btn-main" onclick="confirmarendioDeposito()">CONFIRMAR DEPÓSITO</button>
@@ -958,45 +1023,73 @@
                     <p id="perfil-correo" style="color: var(--text-muted); font-size: 0.78rem; margin-top: 0.2rem;">correo@gmail.com</p>
                     <p id="perfil-rango-label" style="color: var(--accent-glow); font-size: 0.72rem; font-weight: bold; margin-top: 0.3rem;">CLIENTE PRO</p>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.9rem;">
-                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
-                            <h4 id="stat-saldo-movil-perfil" style="font-size: 0.88rem; font-weight: 900; color: #ffffff;">0 saldo</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 1rem;">
+                        <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.7rem; text-align: center;">
+                            <h4 id="stat-saldo-movil-perfil" style="font-size: 0.88rem; font-weight: 900; color: var(--text-main);">0 saldo</h4>
                             <span style="font-size: 0.65rem; color: var(--text-muted);">Saldo Móvil</span>
                         </div>
-                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                        <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.7rem; text-align: center;">
                             <h4 id="stat-ref-validos" style="font-size: 0.88rem; font-weight: 900; color: #10b981;">0</h4>
                             <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos Válidos</span>
                         </div>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;">
-                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                        <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.7rem; text-align: center;">
                             <h4 id="stat-ref-no-activos" style="font-size: 0.88rem; font-weight: 900; color: #f59e0b;">0</h4>
                             <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos No Activos</span>
                         </div>
-                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                        <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.7rem; text-align: center;">
                             <h4 id="stat-cantidad-recargas-perfil" style="font-size: 0.88rem; font-weight: 900; color: var(--accent-glow);">0</h4>
                             <span style="font-size: 0.65rem; color: var(--text-muted);">Total Recargas</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Botones profesionales estilo capturas de perfil -->
-                <div class="security-menu-box" style="margin-top: 0; margin-bottom: 1rem;">
-                    <button class="security-btn" onclick="abrirSeccionDatosPersonales()">
-                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                        Datos personales
-                    </button>
-                    <button class="security-btn" onclick="abrirSeccionLegalGeneral()">
-                        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                        Legal (Términos, reembolsos, privacidad)
-                    </button>
+                <!-- SECCIÓN DATOS PERSONALES LIMPIA Y MODERNA -->
+                <div class="security-menu-box" style="margin-top: 0; margin-bottom: 1.1rem;">
+                    <h3 style="font-size: 0.92rem; font-weight: 900; margin-bottom: 0.6rem; color: var(--accent-glow);">Datos Personales</h3>
+                    <div class="form-group" style="margin-bottom: 0.8rem;">
+                        <label>Nombre completo</label>
+                        <input type="text" id="perfil-input-nombre" class="form-control no-left-icon" placeholder="Ej. Daniel González Pérez">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0.8rem;">
+                        <label>Nombre de usuario</label>
+                        <input type="text" id="perfil-input-username" class="form-control no-left-icon" placeholder="@Lestertienda">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0.8rem;">
+                        <label>Número de móvil (Sin prefijo +53)</label>
+                        <input type="text" id="perfil-input-telefono" class="form-control no-left-icon" placeholder="59578110">
+                    </div>
+                    <button class="btn-main" style="margin-top: 0.4rem;" onclick="guardarDatosPersonalesPerfil()">Guardar cambios</button>
                 </div>
 
-                <button class="btn-main" style="background: #07090e; border: 1px solid var(--primary-blue); color: var(--accent-glow); margin-bottom: 1rem;" onclick="toggleSeguridadPanel()">
-                    SEGURIDAD Y CONFIGURACIÓN
-                </button>
+                <!-- BOTÓN DE APARIENCIA (TEMA OSCURO / CLARO) -->
+                <div class="security-menu-box" style="margin-bottom: 1.1rem;">
+                    <button class="security-btn" onclick="toggleSubPanel('panel-apariencia-opciones')" style="justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+                            <span>Apariencia (Tema oscuro / claro)</span>
+                        </div>
+                        <span style="color: var(--accent-glow); font-size: 0.8rem;">&gt;</span>
+                    </button>
+                    <div id="panel-apariencia-opciones" style="display:none; padding:10px 0 0 0; border-top:1px solid var(--border-color); margin-top:8px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <button class="btn-main" style="margin-top:0; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="cambiarTema('light')">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="#f59e0b"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+                                Modo Claro
+                            </button>
+                            <button class="btn-main" style="margin-top:0; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); display:flex; align-items:center; justify-content:center; gap:6px;" onclick="cambiarTema('dark')">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="var(--accent-glow)"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
+                                Modo Oscuro
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                <div id="seccion-seguridad" style="display: none;" class="security-menu-box">
+                <!-- MENÚ DE SEGURIDAD INTEGRADO (SIN CAMBIAR NOMBRE, CON TRANSFERENCIA Y ELIMINAR CUENTA) -->
+                <div class="security-menu-box">
+                    <h3 style="font-size: 0.92rem; font-weight: 900; margin-bottom: 0.6rem; color: var(--accent-glow);">Seguridad y Cuenta</h3>
+                    
                     <button class="security-btn" onclick="toggleSubPanel('panel-transferir-usdt')">
                         <svg viewBox="0 0 24 24"><path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 8h14v2H5V8zm14 10H5v-2h14v2zm0-4H5v-2h14v2z"/></svg>
                         Transferir Saldo a Otro Usuario
@@ -1017,21 +1110,6 @@
                         <button class="btn-main" onclick="ejecutarTransferenciaUSDT()">Enviar Transferencia</button>
                     </div>
 
-                    <button class="security-btn" onclick="toggleSubPanel('panel-cambiar-nombre')">
-                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                        Cambiar Nombre de Usuario
-                    </button>
-                    <div id="panel-cambiar-nombre" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
-                        <div class="form-group">
-                            <label>Nuevo nombre de usuario</label>
-                            <div class="input-icon-wrapper">
-                                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                                <input type="text" id="nuevo-nombre-input" class="form-control" placeholder="Nuevo nombre">
-                            </div>
-                        </div>
-                        <button class="btn-main" onclick="cambiarNombreUsuarioReal()">Guardar Nuevo Nombre</button>
-                    </div>
-
                     <button class="security-btn" onclick="toggleSubPanel('panel-cambiar-pass')">
                         <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                         Cambiar Contraseña
@@ -1039,24 +1117,15 @@
                     <div id="panel-cambiar-pass" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
                         <div class="form-group">
                             <label>Contraseña actual</label>
-                            <div class="input-icon-wrapper">
-                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                                <input type="password" id="p-act" class="form-control" placeholder="••••••••">
-                            </div>
+                            <input type="password" id="p-act" class="form-control no-left-icon" placeholder="••••••••">
                         </div>
                         <div class="form-group">
                             <label>Contraseña nueva</label>
-                            <div class="input-icon-wrapper">
-                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                                <input type="password" id="p-nue" class="form-control" placeholder="••••••••">
-                            </div>
+                            <input type="password" id="p-nue" class="form-control no-left-icon" placeholder="••••••••">
                         </div>
                         <div class="form-group">
                             <label>Confirmar contraseña</label>
-                            <div class="input-icon-wrapper">
-                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                                <input type="password" id="p-con" class="form-control" placeholder="••••••••">
-                            </div>
+                            <input type="password" id="p-con" class="form-control no-left-icon" placeholder="••••••••">
                         </div>
                         <button class="btn-main" onclick="cambiarPasswordReal()">Cambiar Contraseña</button>
                     </div>
@@ -1069,7 +1138,7 @@
                         <p style="color:#ff3b30; font-size:0.75rem; font-weight:bold; margin-bottom:6px; text-align:center;">¿Estás seguro de eliminar tu cuenta?</p>
                         <div style="display:flex; gap:6px;">
                             <button class="btn-main" style="background:#ff3b30; margin-top:0;" onclick="ejecutarEliminarCuenta()">Sí</button>
-                            <button class="btn-main" style="background:#1a233a; color:var(--text-muted); margin-top:0;" onclick="cancelarEliminarCuenta()">No</button>
+                            <button class="btn-main" style="background:var(--bg-main); color:var(--text-muted); border:1px solid var(--border-color); margin-top:0;" onclick="cancelarEliminarCuenta()">No</button>
                         </div>
                     </div>
 
@@ -1082,103 +1151,15 @@
                 <div id="panel-ceo-container" style="display: none;"></div>
             </div>
 
-            <!-- SUB-VISTA DATOS PERSONALES PRO -->
-            <div id="seccion-datos-personales" class="vista-sec" style="display: none;">
-                <div style="margin-bottom: 1rem;">
-                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('perfil', document.getElementById('nav-btn-perfil'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver
-                    </button>
-                </div>
-
-                <div class="profile-header-card" style="text-align: left; padding: 1.4rem;">
-                    <h2 style="font-size: 1.15rem; font-weight: 900; color: #fff; margin-bottom: 0.2rem;">Datos personales</h2>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Tu información de identidad y contacto seguro.</p>
-
-                    <div class="profile-avatar-wrapper" style="margin-bottom: 1.2rem;">
-                        <div class="profile-avatar-circle" id="DP-avatar-circle" onclick="abrirSelectorGaleria()">L</div>
-                        <div class="avatar-edit-badge" onclick="abrirSelectorGaleria()">
-                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-                        </div>
-                    </div>
-                    <div style="text-align: center; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 1.2rem;">Toca la foto para cambiarla</div>
-
-                    <div class="form-group">
-                        <label>Nombre completo (Como apareces en tus documentos)</label>
-                        <input type="text" id="dp-nombre-completo" class="form-control no-left-icon" placeholder="Ej. Daniel González Pérez">
-                        <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-top: 4px;">Nos ayuda a identificarte si hay algún problema con un pago[span_0](start_span)[span_0](end_span).</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Nombre de usuario</label>
-                        <input type="text" id="dp-username" class="form-control no-left-icon" readonly style="color: var(--accent-glow); font-weight: bold;">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Número de móvil</label>
-                        <input type="text" id="dp-movil-input" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
-                        <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-top: 4px;">Verifícalo para entrar y recuperar tu cuenta por SMS[span_1](start_span)[span_1](end_span).</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Correo electrónico</label>
-                        <input type="email" id="dp-correo" class="form-control no-left-icon" readonly style="color: var(--text-muted);">
-                        <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-top: 4px;">Para cambiarlo, escríbenos por soporte: hay que verificarlo de nuevo[span_2](start_span)[span_2](end_span).</span>
-                    </div>
-
-                    <button class="btn-main" style="margin-top: 1rem;" onclick="guardarDatosPersonalesPro()">Guardar cambios</button>
-                </div>
-            </div>
-
-            <!-- SUB-VISTA INFORMACIÓN LEGAL DETALLADA -->
-            <div id="seccion-info-legal-detallada" class="vista-sec" style="display: none;">
-                <div style="margin-bottom: 1rem;">
-                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('perfil', document.getElementById('nav-btn-perfil'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver
-                    </button>
-                </div>
-
-                <div class="profile-header-card" style="text-align: left; padding: 1.4rem;">
-                    <h2 style="font-size: 1.15rem; font-weight: 900; color: #fff; margin-bottom: 0.2rem;">Legal</h2>
-                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Las reglas de la tienda, claras y en un solo sitio[span_3](start_span)[span_3](end_span).</p>
-
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <div class="security-btn" onclick="abrirContenidoLegal('terminos')">
-                            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-                            Términos y condiciones (Cómo funcionan compras, saldo...)[span_4](start_span)[span_4](end_span)
-                        </div>
-                        <div class="security-btn" onclick="abrirContenidoLegal('reembolso')">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                            Política de reembolso (Cuándo y cómo se devuelve tu dinero)[span_5](start_span)[span_5](end_span)
-                        </div>
-                        <div class="security-btn" onclick="abrirContenidoLegal('privacidad')">
-                            <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-                            Política de privacidad (Qué datos guardamos y para qué)[span_6](start_span)[span_6](end_span)
-                        </div>
-                        <div class="security-btn" onclick="abrirContenidoLegal('cookies')">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
-                            Política de cookies (Qué se guarda en tu navegador)[span_7](start_span)[span_7](end_span)
-                        </div>
-                        <div class="security-btn" onclick="abrirContenidoLegal('nosotros')">
-                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            Sobre nosotros (Quiénes somos y desde cuándo)[span_8](start_span)[span_8](end_span)
-                        </div>
-                    </div>
-
-                    <div id="contenedor-texto-legal-dinamico" style="margin-top: 1.2rem; background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; display: none;">
-                        <!-- Texto generado dinámicamente -->
-                    </div>
-                </div>
-            </div>
-
             <!-- FOOTER LEGAL -->
             <footer class="footer-legal-container">
                 <h4>Información Legal</h4>
                 <div class="footer-links-grid">
-                    <span onclick="abrirSeccionLegalGeneral()">Términos</span> &bull; 
-                    <span onclick="abrirSeccionLegalGeneral()">Privacidad</span> &bull; 
-                    <span onclick="abrirSeccionLegalGeneral()">Pagos</span> &bull; 
-                    <span onclick="abrirSeccionLegalGeneral()">Reembolsos</span> &bull; 
-                    <span onclick="mostrarModalSoporte()">Soporte</span>
+                    <span onclick="mostrarNotificacion('Términos y Condiciones')">Términos</span> &bull; 
+                    <span onclick="mostrarNotificacion('Política de Privacidad')">Privacidad</span> &bull; 
+                    <span onclick="mostrarNotificacion('Política de Pagos')">Pagos</span> &bull; 
+                    <span onclick="mostrarNotificacion('Reembolsos')">Reembolsos</span> &bull; 
+                    <span onclick="mostrarNotificacion('Contacto')">Soporte</span>
                 </div>
                 <div class="footer-copy">
                     &copy; 2026 <span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span> &mdash; Todos los derechos reservados.
@@ -1315,16 +1296,17 @@
         
         let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { 
             etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", 
-            colorFF: "rojo",
-            sombraEtiquetaFF: true,
+            colorFF: "azul",
+            sombraEtiquetaFF: false,
             etiquetaBloodStrike: "PRÓXIMAMENTE",
             colorBS: "amarillo",
-            sombraEtiquetaBS: true,
+            sombraEtiquetaBS: false,
             bannerFreeFireImg: "",
             bannerBloodImg: "",
             numeroSaldoOficial: "59578110",
             direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
             ocultarTopRecargasHoy: false,
+            injectedElements: [], // [{ id, type: 'image'|'text', content, position }]
             paquetesDiamantes: [
                 { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: '' },
                 { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '' },
@@ -1367,6 +1349,7 @@
                 }
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'flex';
+                cargarDatosPerfilEnInputs();
                 actualizarPerfilUI();
                 renderizarOrdenes();
             }
@@ -1378,6 +1361,16 @@
                 sincronizarConCloudAutoSilencioso();
             }, 5000);
         };
+
+        function cambiarTema(modo) {
+            document.body.setAttribute('data-theme', modo);
+            localStorage.setItem('lester_theme', modo);
+            mostrarNotificacion(`Tema cambiado a ${modo === 'dark' ? 'Oscuro' : 'Claro'}`);
+        }
+
+        // Cargar tema guardado
+        const savedTheme = localStorage.getItem('lester_theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
 
         async function sincronizarConCloudAuto() {
             mostrarCarga("Sincronizando datos...");
@@ -1403,8 +1396,7 @@
                     }
                     if (resultado.record.config) {
                         tiendaConfig = resultado.record.config;
-                        if(tiendaConfig.sombraEtiquetaFF === undefined) tiendaConfig.sombraEtiquetaFF = true;
-                        if(tiendaConfig.sombraEtiquetaBS === undefined) tiendaConfig.sombraEtiquetaBS = true;
+                        if(!tiendaConfig.injectedElements) tiendaConfig.injectedElements = [];
                         if(!tiendaConfig.paquetesDiamantes || tiendaConfig.paquetesDiamantes.length === 0) {
                             tiendaConfig.paquetesDiamantes = [
                                 { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: '' },
@@ -1494,24 +1486,12 @@
             }
         }
 
-        function getColorHex(colorNombre) {
-            switch(colorNombre) {
-                case 'verde': return '#10b981';
-                case 'rojo': return '#ff3b30';
-                case 'amarillo': return '#f59e0b';
-                case 'azul': return '#0066ff';
-                default: return '#10b981';
-            }
-        }
-
         function aplicarConfiguracionVisual() {
+            // ETIQUETA FREE FIRE (Estilo profesional: Fondo azul fuerte translúcido, texto azul claro, sin bordes feos)
             const badgeFF = document.getElementById('freefire-custom-badge');
             let textoFF = tiendaConfig.etiquetaFreeFire || "";
             if(badgeFF) {
                 badgeFF.innerText = textoFF;
-                let colHex = getColorHex(tiendaConfig.colorFF || 'rojo');
-                badgeFF.style.borderColor = colHex;
-                badgeFF.style.color = colHex;
                 badgeFF.style.display = textoFF.trim() === "" ? "none" : "block";
             }
 
@@ -1519,9 +1499,6 @@
             let textoBS = tiendaConfig.etiquetaBloodStrike || "";
             if(badgeBS) {
                 badgeBS.innerText = textoBS;
-                let colHexBS = getColorHex(tiendaConfig.colorBS || 'amarillo');
-                badgeBS.style.borderColor = colHexBS;
-                badgeBS.style.color = colHexBS;
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
@@ -1548,6 +1525,23 @@
 
             const dirDisp = document.getElementById('wallet-direccion-usdt-display');
             if(dirDisp && tiendaConfig.direccionUSDTOficial) dirDisp.innerText = tiendaConfig.direccionUSDTOficial;
+
+            // Renderizar elementos inyectados dinámicamente por el CEO en la página
+            renderizarElementosInyectados();
+        }
+
+        function renderizarElementosInyectados() {
+            const container = document.getElementById('dinamic-injected-top-container');
+            if(!container) return;
+            let html = "";
+            (tiendaConfig.injectedElements || []).forEach(el => {
+                if(el.type === 'image') {
+                    html += `<div class="custom-injected-element" style="text-align:center;"><img src="${el.content}" style="width:100%; max-height:220px; object-fit:cover; border-radius:14px;" alt="Inyectada"></div>`;
+                } else if(el.type === 'text') {
+                    html += `<div class="custom-injected-element" style="background:var(--bg-card); padding:1rem; border:1px solid var(--border-color); border-radius:14px; font-size:0.85rem; color:var(--text-main);">${el.content}</div>`;
+                }
+            });
+            container.innerHTML = html;
         }
 
         function renderizarPaquetesTienda() {
@@ -1557,7 +1551,7 @@
             let html = "";
             paquetes.forEach(p => {
                 let precioMostrado = metodoPagoActual === 'usdt' ? `${p.precioUsdt.toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
-                let imgHtml = (p.imagen && p.imagen.trim() !== "") ? `<img src="${p.imagen}" alt="${p.nombre}">` : `<svg viewBox="0 0 24 24" width="36" height="36" fill="#0066ff"><path d="M12 2L2 12l10 10 10-10L12 2z"/></svg>`;
+                let imgHtml = (p.imagen && p.imagen.trim() !== "") ? `<img src="${p.imagen}" alt="${p.nombre}">` : `<img src="https://images.seeklogo.com/logo-png/51/1/free-fire-diamonds-logo-png_seeklogo-513651.png" alt="Diamantes">`;
                 html += `
                     <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${p.imagen || ''}')">
                         <div class="diamond-img-render">${imgHtml}</div>
@@ -1570,7 +1564,7 @@
         }
 
         // ==========================================
-        // MANEJADORES DE IMÁGENES ULTRA-COMPRIMIDOS
+        // MANEJADORES DE IMÁGENES COMPRIMIDAS A 1KB / MÁXIMA CALIDAD VISUAL
         // ==========================================
         function abrirSelectorImagenBanner(tipoJuego) {
             window.tipoBannerSeleccionado = tipoJuego;
@@ -1581,7 +1575,7 @@
         function procesarImagenBannerCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
-            mostrarCarga("Comprimiendo y guardando banner...");
+            mostrarCarga("Comprimiendo imagen a ~1KB...");
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -1591,7 +1585,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 220; // Super optimizado para evitar límite en nube
+                    const maxDim = 200; // Reducido para asegurar tamaño ultra ligero (~1KB)
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1600,7 +1594,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.35);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.25); // Compresión alta para peso mínimo
 
                     if(window.tipoBannerSeleccionado === 'freefire') {
                         tiendaConfig.bannerFreeFireImg = compressedBase64;
@@ -1611,7 +1605,7 @@
                     await guardarEnCloud();
                     ocultarCarga();
                     aplicarConfiguracionVisual();
-                    mostrarNotificacion("¡Banner guardado correctamente en la nube!");
+                    mostrarNotificacion("¡Imagen optimizada y guardada con éxito!");
                 };
             };
             reader.readAsDataURL(file);
@@ -1626,7 +1620,7 @@
         function procesarImagenCatalogoCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
-            mostrarCarga("Comprimiendo imagen del paquete...");
+            mostrarCarga("Comprimiendo imagen a ~1KB...");
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -1636,7 +1630,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 70; // Ultra optimizado para evitar saturación de JSON
+                    const maxDim = 100;
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1645,7 +1639,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.30);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.25);
 
                     let idx = window.indicePaqueteSeleccionado;
                     if(tiendaConfig.paquetesDiamantes[idx]) {
@@ -1655,8 +1649,50 @@
                         ocultarCarga();
                         renderizarPaquetesTienda();
                         cargarAccionCEO('catalogo_precios');
-                        mostrarNotificacion(`Imagen de "${tiendaConfig.paquetesDiamantes[idx].nombre}" guardada con éxito`);
+                        mostrarNotificacion(`Imagen de paquete guardada con éxito`);
                     }
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function abrirInyectorImagenCEO() {
+            document.getElementById('ceo-injected-image-uploader').value = '';
+            document.getElementById('ceo-injected-image-uploader').click();
+        }
+
+        function procesarImagenInyectadaCEO(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            mostrarCarga("Comprimiendo y publicando imagen...");
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = async function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 300;
+                    if (width > height) {
+                        if (width > maxDim) { height *= maxDim / width; width = maxDim; }
+                    } else {
+                        if (height > maxDim) { width *= maxDim / height; height = maxDim; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.3);
+
+                    if(!tiendaConfig.injectedElements) tiendaConfig.injectedElements = [];
+                    tiendaConfig.injectedElements.push({ id: Date.now(), type: 'image', content: compressedBase64 });
+                    localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                    await guardarEnCloud();
+                    ocultarCarga();
+                    renderizarElementosInyectados();
+                    cargarAccionCEO('inyectar_contenido');
+                    mostrarNotificacion("¡Imagen publicada en la página con éxito!");
                 };
             };
             reader.readAsDataURL(file);
@@ -1806,7 +1842,9 @@
                     avatar: "",
                     referidoPor: referidoPor || null,
                     descuentosDisponibles: 0,
-                    rango: esPrincipalCEO ? 2 : 0
+                    rango: esPrincipalCEO ? 2 : 0,
+                    nombreCompleto: "",
+                    telefono: ""
                 };
                 
                 listaUsuariosGlobales.push(usuarioActual);
@@ -1820,6 +1858,7 @@
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'flex';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                cargarDatosPerfilEnInputs();
                 actualizarPerfilUI();
                 renderizarOrdenes();
                 mostrarNotificacion("¡Bienvenido a Lester Tienda!");
@@ -1854,6 +1893,7 @@
                 document.getElementById('auth-screen').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'flex';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                cargarDatosPerfilEnInputs();
                 actualizarPerfilUI();
                 renderizarOrdenes();
                 mostrarNotificacion("¡Sesión iniciada correctamente!");
@@ -1873,7 +1913,10 @@
                     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                     elemento.classList.add('active');
                 }
-                if(seccion === 'perfil') verificarAccesoCEO();
+                if(seccion === 'perfil') {
+                    cargarDatosPerfilEnInputs();
+                    verificarAccesoCEO();
+                }
                 if(seccion === 'ordenes') renderizarOrdenes();
                 if(seccion === 'referidos') actualizarPerfilUI();
                 if(seccion === 'inicio') {
@@ -1881,77 +1924,6 @@
                     aplicarConfiguracionVisual();
                 }
             }, 300);
-        }
-
-        function abrirSeccionDatosPersonales() {
-            document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
-            document.getElementById('seccion-datos-personales').style.display = 'flex';
-            if(usuarioActual) {
-                document.getElementById('dp-nombre-completo').value = usuarioActual.nombreCompleto || '';
-                document.getElementById('dp-username').value = '@' + usuarioActual.nombre;
-                document.getElementById('dp-correo').value = usuarioActual.correo;
-                document.getElementById('dp-movil-input').value = usuarioActual.telefonoMovil || '';
-                let circulo = document.getElementById('DP-avatar-circle');
-                if(usuarioActual.avatar) {
-                    circulo.innerHTML = `<img src="${usuarioActual.avatar}">`;
-                } else {
-                    circulo.innerText = usuarioActual.nombre.charAt(0).toUpperCase();
-                }
-            }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function abrirSeccionLegalGeneral() {
-            document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
-            document.getElementById('seccion-info-legal-detallada').style.display = 'flex';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function abrirContenidoLegal(tipo) {
-            const caja = document.getElementById('contenedor-texto-legal-dinamico');
-            caja.style.display = 'block';
-            
-            let contenido = "";
-            if(tipo === 'terminos') {
-                contenido = `<b style="color:#fff; font-size:0.85rem;">Términos y condiciones</b><br><br>
-                1. <b>Funcionamiento de compras:</b> Todas las recargas de Free Fire y saldo se procesan de manera digital mediante ID de jugador o transferencias de saldo y USDT.<br>
-                2. <b>Saldo y Billetera:</b> El saldo móvil y USDT depositado es personal e intransferible, utilizable exclusivamente para adquirir los productos disponibles en Lester Tienda.<br>
-                3. <b>Responsabilidad:</b> El usuario es responsable de introducir correctamente su ID de juego. Los errores de ID proporcionados por el cliente no son reembolsables.`;
-            } else if(tipo === 'reembolso') {
-                contenido = `<b style="color:#fff; font-size:0.85rem;">Política de reembolso</b><br><br>
-                1. <b>Cuándo aplica:</b> Se emite reembolso o devolución de saldo únicamente si la orden presenta un fallo técnico comprobado por el equipo de soporte y no pudo ser entregada en un plazo de 24 horas.<br>
-                2. <b>Cómo se devuelve:</b> El importe reembolsado se acredita directamente al balance de tu Wallet interna o saldo móvil en la plataforma de forma inmediata una vez aprobado por administración.`;
-            } else if(tipo === 'privacidad') {
-                contenido = `<b style="color:#fff; font-size:0.85rem;">Política de privacidad</b><br><br>
-                1. <b>Datos que guardamos:</b> Almacenamos tu nombre de usuario, correo electrónico registrado, número de teléfono móvil verificado e historial de transacciones.<br>
-                2. <b>Para qué se usan:</b> Tus datos se utilizan estrictamente para validar tus pagos, procesar tus recargas de forma segura y permitirte recuperar el acceso a tu cuenta en caso de pérdida de contraseña.`;
-            } else if(tipo === 'cookies') {
-                contenido = `<b style="color:#fff; font-size:0.85rem;">Política de cookies</b><br><br>
-                Utilizamos almacenamiento local (LocalStorage) y cookies técnicas estrictamente necesarias para recordar tu sesión iniciada, preferencias de interfaz y datos de la aplicación en tu navegador de forma segura.`;
-            } else if(tipo === 'nosotros') {
-                contenido = `<b style="color:#fff; font-size:0.85rem;">Sobre nosotros</b><br><br>
-                Lester Tienda es la plataforma líder de comercio electrónico y recargas para gamers en la región, ofreciendo entregas instantáneas, soporte personalizado y un entorno de confianza desde 2026.`;
-            }
-            caja.innerHTML = contenido;
-        }
-
-        function guardarDatosPersonalesPro() {
-            const nombreCompleto = document.getElementById('dp-nombre-completo').value.trim();
-            const telf = document.getElementById('dp-movil-input').value.trim();
-
-            usuarioActual.nombreCompleto = nombreCompleto;
-            usuarioActual.telefonoMovil = telf;
-
-            let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
-            if(fresh) {
-                fresh.nombreCompleto = nombreCompleto;
-                fresh.telefonoMovil = telf;
-            }
-
-            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
-            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-            guardarEnCloud();
-            mostrarNotificacion("Datos personales guardados correctamente");
         }
 
         function abrirVistaWalletDetalle(opcion) {
@@ -2262,7 +2234,7 @@
             document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
             document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? 'saldo' : 'USDT'}`;
             
-            let imgSrc = (orden.imagen && orden.imagen.trim() !== "") ? orden.imagen : '';
+            let imgSrc = (orden.imagen && orden.imagen.trim() !== "") ? orden.imagen : 'https://images.seeklogo.com/logo-png/51/1/free-fire-diamonds-logo-png_seeklogo-513651.png';
             document.getElementById('comp-img-diamantes').src = imgSrc;
 
             const boxMain = document.getElementById('comp-box-main');
@@ -2391,7 +2363,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 120; // Optimizado para evitar errores de tamaño
+                    const maxDim = 120;
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -2400,7 +2372,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.35);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.25);
 
                     usuarioActual.avatar = compressedBase64;
                     let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
@@ -2418,39 +2390,54 @@
             reader.readAsDataURL(file);
         }
 
-        function cambiarNombreUsuarioReal() {
-            const nuevoNombre = document.getElementById('nuevo-nombre-input').value.trim();
-            if(!nuevoNombre || nuevoNombre.length < 4 || /\s/.test(nuevoNombre)) {
-                mostrarNotificacion("Nombre inválido (Mínimo 4 caracteres y sin espacios)");
+        function cargarDatosPerfilEnInputs() {
+            if(!usuarioActual) return;
+            document.getElementById('perfil-input-nombre').value = usuarioActual.nombreCompleto || '';
+            document.getElementById('perfil-input-username').value = '@' + usuarioActual.nombre;
+            document.getElementById('perfil-input-telefono').value = usuarioActual.telefono || '';
+        }
+
+        function guardarDatosPersonalesPerfil() {
+            const nombreComp = document.getElementById('perfil-input-nombre').value.trim();
+            const nuevoUserRaw = document.getElementById('perfil-input-username').value.trim().replace('@', '');
+            const tel = document.getElementById('perfil-input-telefono').value.trim().replace(/[^0-9]/g, '');
+
+            if(nuevoUserRaw.length < 4 || /\s/.test(nuevoUserRaw)) {
+                mostrarNotificacion("El nombre de usuario debe tener al menos 4 caracteres y sin espacios.");
                 return;
             }
 
-            let existente = listaUsuariosGlobales.find(u => u.nombre.toLowerCase() === nuevoNombre.toLowerCase());
+            let existente = listaUsuariosGlobales.find(u => u.nombre.toLowerCase() === nuevoUserRaw.toLowerCase());
             if(existente && existente.correo.toLowerCase() !== usuarioActual.correo.toLowerCase()) {
-                mostrarNotificacion("Este nombre de usuario ya está en uso");
+                mostrarNotificacion("Este nombre de usuario ya está en uso por otro socio.");
                 return;
             }
 
             let nombreAnterior = usuarioActual.nombre;
-            usuarioActual.nombre = nuevoNombre;
+            usuarioActual.nombre = nuevoUserRaw;
+            usuarioActual.nombreCompleto = nombreComp;
+            usuarioActual.telefono = tel;
 
             listaUsuariosGlobales.forEach(u => {
                 if (u.referidoPor && u.referidoPor.toLowerCase() === nombreAnterior.toLowerCase()) {
-                    u.referidoPor = nuevoNombre;
+                    u.referidoPor = nuevoUserRaw;
                 }
             });
 
             let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
-            if(fresh) fresh.nombre = nuevoNombre;
+            if(fresh) {
+                fresh.nombre = nuevoUserRaw;
+                fresh.nombreCompleto = nombreComp;
+                fresh.telefono = tel;
+            }
 
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
             guardarEnCloud();
 
-            document.getElementById('nuevo-nombre-input').value = '';
             actualizarPerfilUI();
-            toggleSubPanel('panel-cambiar-nombre');
-            mostrarNotificacion("Nombre de usuario actualizado");
+            cargarDatosPerfilEnInputs();
+            mostrarNotificacion("Datos personales actualizados con éxito");
         }
 
         function ejecutarTransferenciaUSDT() {
@@ -2603,7 +2590,7 @@
             document.getElementById('header-saldo-balance').innerText = saldoMovilTexto;
             document.getElementById('stat-saldo-movil-perfil').innerText = saldoMovilTexto;
 
-            document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
+            document.getElementById('perfil-usuario').innerText = '@' + usuarioActual.nombre;
             document.getElementById('perfil-correo').innerText = usuarioActual.correo;
             
             let rangoTexto = "CLIENTE PRO";
@@ -2653,9 +2640,9 @@
                     let esValido = (depositoAprobado || recargaRealizada || ref.recargasCount > 0);
                     let badgeEstado = esValido ? "<span style='color:#10b981; font-weight:bold;'>Válido</span>" : "<span style='color:#f59e0b;'>No activo</span>";
 
-                    listaDetalladaHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(26,35,58,0.4);">
+                    listaDetalladaHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color);">
                         <div>
-                            <span style="color: #fff; font-weight: 700; display:block;">${ref.nombre}</span>
+                            <span style="color: var(--text-main); font-weight: 700; display:block;">@${ref.nombre}</span>
                             <span style="color: var(--text-muted); font-size:0.65rem;">${ref.correo}</span>
                         </div>
                         <div>${badgeEstado}</div>
@@ -2675,11 +2662,6 @@
             }
 
             actualizarEstadisticasInicio();
-        }
-
-        function toggleSeguridadPanel() {
-            const panel = document.getElementById('seccion-seguridad');
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
         }
 
         function toggleSubPanel(id) {
@@ -2772,13 +2754,15 @@
                         <button class="ceo-btn" onclick="abrirSelectorImagenBanner('freefire')">Banner Free Fire</button>
                         <button class="ceo-btn" onclick="abrirSelectorImagenBanner('blood')">Banner Blood Strike</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('catalogo_precios')">Catálogo & Imágenes</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('inyectar_contenido')">Inyectar Contenido / Fotos</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('notificaciones_push')">Notificaciones Globales</button>
                     `;
                 }
 
                 contenedorCEO.innerHTML = `
                     <div class="ceo-box">
                         <h3 style="color: #ff3b30; margin-bottom: 0.3rem; font-weight: 900; font-size:0.92rem;">PANEL DE CONTROL ${esCEO ? 'CEO SUPREMO' : 'ADMIN (RANGO 1)'}</h3>
-                        <p style="font-size: 0.68rem; color: #8a99ad; margin-bottom: 0.8rem;">${usuarioActual.correo}</p>
+                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.8rem;">${usuarioActual.correo}</p>
                         <div class="ceo-grid">
                             ${htmlBotones}
                         </div>
@@ -2799,15 +2783,15 @@
             if(accion === 'solicitudes_recarga' && esCEO) {
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Gestionar Recargas:</h4>";
                 let pendientes = solicitudesGlobales.recargas.filter(s => s.estado === 'Pendiente');
-                if(pendientes.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay recargas pendientes.</p>";
+                if(pendientes.length === 0) html += "<p style='color:var(--text-muted); font-size:0.78rem;'>No hay recargas pendientes.</p>";
                 
                 solicitudesGlobales.recargas.forEach((s, idx) => {
                     if(s.estado === 'Pendiente') {
-                        html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
+                        html += `<div style="background:var(--bg-card); padding:0.6rem; margin-top:0.4rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.73rem;">
                             <b>User:</b> ${s.usuario} | <b>ID:</b> ${s.idJugador} | <b>Detalle:</b> ${s.detalle} (${s.moneda})
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
-                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarRecarga(${idx})">Completar (Aprobar)</button>
-                                <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarRecarga(${idx})">Cancelar</button>
+                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:bold;" onclick="aprobarRecarga(${idx})">Completar (Aprobar)</button>
+                                <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:bold;" onclick="cancelarRecarga(${idx})">Cancelar</button>
                             </div>
                         </div>`;
                     }
@@ -2816,16 +2800,16 @@
             } else if(accion === 'solicitudes_deposito' && esCEO) {
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Solicitudes de Depósito Saldo Móvil:</h4>";
                 let pendientesDeps = solicitudesGlobales.depositos.filter(d => d.estado === 'Pendiente');
-                if(pendientesDeps.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay depósitos pendientes.</p>";
+                if(pendientesDeps.length === 0) html += "<p style='color:var(--text-muted); font-size:0.78rem;'>No hay depósitos pendientes.</p>";
                 
                 solicitudesGlobales.depositos.forEach((d, idx) => {
                     if(d.estado === 'Pendiente') {
-                        html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
+                        html += `<div style="background:var(--bg-card); padding:0.6rem; margin-top:0.4rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.73rem;">
                             <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto:</b> ${d.monto} saldo<br>
                             <b>Número / TxID:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span>
                             <br><div style="margin-top:6px; display:flex; gap:6px;">
-                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
-                                <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
+                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
+                                <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
                             </div>
                         </div>`;
                     }
@@ -2833,44 +2817,44 @@
                 res.innerHTML = html;
             } else if(accion === 'usuarios') {
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Lista de Usuarios Registrados:</h4>";
-                if(listaUsuariosGlobales.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay usuarios.</p>";
+                if(listaUsuariosGlobales.length === 0) html += "<p style='color:var(--text-muted); font-size:0.78rem;'>No hay usuarios.</p>";
                 
                 listaUsuariosGlobales.forEach((u, uIdx) => {
                     let rText = u.rango === 2 ? "CEO / Supremo" : (u.rango === 1 ? "Admin (Rango 1)" : "Cliente (Rango 0)");
                     if(u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
                     if(u.balanceCUP === undefined) u.balanceCUP = 0;
                     
-                    html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4; position:relative;">
-                        <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
+                    html += `<div style="background:var(--bg-card); padding:0.8rem; margin-top:0.5rem; border-radius:12px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4; position:relative;">
+                        <b>Nombre de usuario:</b> <span style="color:var(--text-main);">@${u.nombre}</span><br>
                         <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
                         <b>Wallet USDT:</b> <span style="color:var(--accent-glow); font-weight:bold;">${u.balanceUSDT.toFixed(2)}</span><br>
                         <b>Saldo Móvil:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP} saldo</span><br>
                         <b>Rango:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
                         <div style="margin-top:6px; display:flex; gap:6px;">
-                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoQuitarUsuarioPorNombre('${u.nombre}')">Quitar Usuario</button>
-                            <button style="background:#0066ff; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoEditarUsuarioModal('${u.correo}')">Editar Datos</button>
+                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:6px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoQuitarUsuarioPorNombre('${u.nombre}')">Quitar Usuario</button>
+                            <button style="background:var(--primary-blue); color:#fff; border:none; padding:3px 8px; border-radius:6px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoEditarUsuarioModal('${u.correo}')">Editar Datos</button>
                         </div>
                     </div>`;
                 });
                 res.innerHTML = html;
             } else if(accion === 'control_total_historial' && esCEO) {
-                let html = "<h4 style='color:#ff3b30; margin-bottom:0.4rem; font-size:0.82rem;'>Control Absoluto del Historial de Recargas (Todos los Usuarios):</h4>";
-                if(solicitudesGlobales.recargas.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay recargas en el historial.</p>";
+                let html = "<h4 style='color:#ff3b30; margin-bottom:0.4rem; font-size:0.82rem;'>Control Absoluto del Historial de Recargas:</h4>";
+                if(solicitudesGlobales.recargas.length === 0) html += "<p style='color:var(--text-muted); font-size:0.78rem;'>No hay recargas en el historial.</p>";
 
                 solicitudesGlobales.recargas.slice().reverse().forEach((r, idxRev) => {
                     let realIdx = solicitudesGlobales.recargas.length - 1 - idxRev;
-                    html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid #ff3b30; font-size:0.75rem;">
+                    html += `<div style="background:var(--bg-card); padding:0.8rem; margin-top:0.5rem; border-radius:12px; border:1px solid #ff3b30; font-size:0.75rem;">
                         <b>Usuario:</b> ${r.usuario} (${r.correo})<br>
-                        <b>ID Jugador:</b> <input type="text" id="edit-id-j-${realIdx}" value="${r.idJugador}" style="background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:2px 6px; border-radius:4px; width:120px; font-size:0.75rem;"><br>
+                        <b>ID Jugador:</b> <input type="text" id="edit-id-j-${realIdx}" value="${r.idJugador}" style="background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:2px 6px; border-radius:4px; width:120px; font-size:0.75rem;"><br>
                         <b>Paquete:</b> ${r.detalle} | <b>Estado:</b> 
-                        <select id="edit-status-${realIdx}" style="background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:2px; border-radius:4px; font-size:0.75rem;">
+                        <select id="edit-status-${realIdx}" style="background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:2px; border-radius:4px; font-size:0.75rem;">
                             <option value="Pendiente" ${r.estado==='Pendiente'?'selected':''}>Pendiente</option>
                             <option value="Completado" ${r.estado==='Completado'||r.estado==='Aprobada'?'selected':''}>Completado</option>
                             <option value="Cancelado" ${r.estado==='Cancelado'?'selected':''}>Cancelado</option>
                         </select>
                         <div style="margin-top:6px; display:flex; gap:6px;">
-                            <button style="background:#10b981; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:bold; font-size:0.68rem;" onclick="guardarCambiosRecargaAdmin(${realIdx})">Guardar Cambios</button>
-                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:bold; font-size:0.68rem;" onclick="eliminarRecargaAdmin(${realIdx})">Eliminar Registro</button>
+                            <button style="background:#10b981; color:#fff; border:none; padding:3px 8px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:0.68rem;" onclick="guardarCambiosRecargaAdmin(${realIdx})">Guardar Cambios</button>
+                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:0.68rem;" onclick="eliminarRecargaAdmin(${realIdx})">Eliminar Registro</button>
                         </div>
                     </div>`;
                 });
@@ -2879,14 +2863,14 @@
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Catálogo de Precios e Imágenes de Paquetes:</h4>";
                 (tiendaConfig.paquetesDiamantes || []).forEach((p, pIdx) => {
                     let imgThumb = (p.imagen && p.imagen.trim() !== "") ? p.imagen : '';
-                    let thumbHtml = imgThumb ? `<img src="${imgThumb}" style="width:28px; height:28px; object-fit:contain; border-radius:4px; background:#1a233a;" alt="Icon">` : `<div style="width:28px; height:28px; background:#1a233a; border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--accent-glow); font-size:0.6rem;">Sin Img</div>`;
+                    let thumbHtml = imgThumb ? `<img src="${imgThumb}" style="width:28px; height:28px; object-fit:contain; border-radius:6px; background:var(--bg-main);" alt="Icon">` : `<div style="width:28px; height:28px; background:var(--bg-main); border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--accent-glow); font-size:0.6rem;">Icono</div>`;
                     
                     html += `
-                        <div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem;">
+                        <div style="background:var(--bg-card); padding:0.8rem; margin-top:0.5rem; border-radius:12px; border:1px solid var(--border-color); font-size:0.75rem;">
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
                                 <div style="display:flex; align-items:center; gap:8px;">
                                     ${thumbHtml}
-                                    <b style="color:#fff;">${p.nombre}</b>
+                                    <b style="color:var(--text-main);">${p.nombre}</b>
                                 </div>
                                 <div style="display:flex; gap:4px;">
                                     <button class="ceo-btn" style="padding:4px 8px; font-size:0.68rem;" onclick="abrirSelectorImagenCatalogo(${pIdx})">Subir</button>
@@ -2896,11 +2880,11 @@
                             <div style="display:flex; gap:6px; margin-top:6px;">
                                 <div style="flex:1;">
                                     <label style="font-size:0.65rem; color:var(--text-muted);">USDT:</label>
-                                    <input type="number" id="precio-usdt-${pIdx}" value="${p.precioUsdt}" step="0.1" style="width:100%; background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:4px; border-radius:4px;">
+                                    <input type="number" id="precio-usdt-${pIdx}" value="${p.precioUsdt}" step="0.1" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:4px; border-radius:6px;">
                                 </div>
                                 <div style="flex:1;">
                                     <label style="font-size:0.65rem; color:var(--text-muted);">Saldo Móvil:</label>
-                                    <input type="number" id="precio-saldo-${pIdx}" value="${p.precioSaldo}" style="width:100%; background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:4px; border-radius:4px;">
+                                    <input type="number" id="precio-saldo-${pIdx}" value="${p.precioSaldo}" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:4px; border-radius:6px;">
                                 </div>
                             </div>
                             <button class="btn-main" style="margin-top:6px; padding:4px; font-size:0.75rem;" onclick="guardarPrecioPaqueteCEO(${pIdx})">Actualizar Precio</button>
@@ -2908,6 +2892,41 @@
                     `;
                 });
                 res.innerHTML = html;
+            } else if(accion === 'inyectar_contenido' && esCEO) {
+                let html = `
+                    <div class="ceo-action-form">
+                        <h4>Inyectar Fotos o Elementos en la Página</h4>
+                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Sube fotos donde quieras o añade texto personalizado sin límites.</p>
+                        <button class="btn-main" style="margin-bottom:8px;" onclick="abrirInyectorImagenCEO()">Subir Foto Ilimitada</button>
+                        <textarea id="ceo-inject-text" placeholder="O escribe texto o HTML personalizado..."></textarea>
+                        <button class="btn-main" style="margin-top:0;" onclick="inyectarTextoCEO()">Publicar Texto</button>
+                        <div style="margin-top:10px;">
+                            <h5 style="color:var(--text-main); font-size:0.78rem; margin-bottom:6px;">Elementos inyectados activos:</h5>
+                `;
+                (tiendaConfig.injectedElements || []).forEach((el, eIdx) => {
+                    html += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-card); padding:6px; border-radius:8px; margin-bottom:4px; font-size:0.7rem;">
+                        <span>Elemento #${eIdx + 1} (${el.type})</span>
+                        <button style="background:#ff3b30; color:#fff; border:none; padding:2px 6px; border-radius:4px; cursor:pointer;" onclick="eliminarElementoInyectado(${eIdx})">Eliminar</button>
+                    </div>`;
+                });
+                html += `</div></div>`;
+                res.innerHTML = html;
+            } else if(accion === 'notificaciones_push' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Enviar Notificaciones a Usuarios</h4>
+                        <select id="ceo-notif-tipo" style="margin-bottom:8px;">
+                            <option value="todos">@TODOS (A todos los usuarios)</option>
+                            <option value="usuario">A un usuario específico (por @usuario)</option>
+                        </select>
+                        <input type="text" id="ceo-notif-destinatario" placeholder="Nombre de usuario (ej. lesterventas) [Solo si eliges usuario]" style="display:none;">
+                        <textarea id="ceo-notif-mensaje" placeholder="Escribe el mensaje de la notificación..."></textarea>
+                        <button class="btn-main" style="margin-top:0;" onclick="enviarNotificacionCEO()">Enviar Notificación</button>
+                    </div>
+                `;
+                document.getElementById('ceo-notif-tipo').onchange = function() {
+                    document.getElementById('ceo-notif-destinatario').style.display = this.value === 'usuario' ? 'block' : 'none';
+                };
             } else if(accion === 'acreditar') {
                 res.innerHTML = `
                     <div class="ceo-action-form">
@@ -2948,13 +2967,7 @@
                     <div class="ceo-action-form">
                         <h4>Etiqueta Free Fire</h4>
                         <input type="text" id="ceo-etiqueta-texto" placeholder="Texto de la etiqueta" value="${tiendaConfig.etiquetaFreeFire || ''}">
-                        <select id="ceo-color-ff">
-                            <option value="rojo" ${tiendaConfig.colorFF==='rojo'?'selected':''}>Rojo</option>
-                            <option value="verde" ${tiendaConfig.colorFF==='verde'?'selected':''}>Verde</option>
-                            <option value="amarillo" ${tiendaConfig.colorFF==='amarillo'?'selected':''}>Amarillo</option>
-                            <option value="azul" ${tiendaConfig.colorFF==='azul'?'selected':''}>Azul</option>
-                        </select>
-                        <button class="btn-main" style="margin-top:8px;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta Free Fire</button>
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta Free Fire</button>
                     </div>
                 `;
             } else if(accion === 'etiqueta_blood' && esCEO) {
@@ -2962,16 +2975,53 @@
                     <div class="ceo-action-form" style="border-color:#f59e0b;">
                         <h4 style="color:#f59e0b;">Etiqueta Blood Strike</h4>
                         <input type="text" id="ceo-etiqueta-blood-texto" placeholder="Texto de la etiqueta" value="${tiendaConfig.etiquetaBloodStrike || ''}">
-                        <select id="ceo-color-bs">
-                            <option value="amarillo" ${tiendaConfig.colorBS==='amarillo'?'selected':''}>Amarillo</option>
-                            <option value="rojo" ${tiendaConfig.colorBS==='rojo'?'selected':''}>Rojo</option>
-                            <option value="verde" ${tiendaConfig.colorBS==='verde'?'selected':''}>Verde</option>
-                            <option value="azul" ${tiendaConfig.colorBS==='azul'?'selected':''}>Azul</option>
-                        </select>
-                        <button class="btn-main" style="margin-top:8px; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
+                        <button class="btn-main" style="margin-top:0; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
                     </div>
                 `;
             }
+        }
+
+        async function inyectarTextoCEO() {
+            const txt = document.getElementById('ceo-inject-text').value.trim();
+            if(!txt) return;
+            if(!tiendaConfig.injectedElements) tiendaConfig.injectedElements = [];
+            tiendaConfig.injectedElements.push({ id: Date.now(), type: 'text', content: txt });
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            renderizarElementosInyectados();
+            cargarAccionCEO('inyectar_contenido');
+            mostrarNotificacion("Texto publicado en la página con éxito");
+        }
+
+        async function eliminarElementoInyectado(eIdx) {
+            tiendaConfig.injectedElements.splice(eIdx, 1);
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            renderizarElementosInyectados();
+            cargarAccionCEO('inyectar_contenido');
+            mostrarNotificacion("Elemento eliminado");
+        }
+
+        async function enviarNotificacionCEO() {
+            const tipo = document.getElementById('ceo-notif-tipo').value;
+            const dest = document.getElementById('ceo-notif-destinatario').value.trim().replace('@', '');
+            const msg = document.getElementById('ceo-notif-mensaje').value.trim();
+
+            if(!msg) {
+                mostrarNotificacion("Escribe el mensaje de la notificación");
+                return;
+            }
+
+            if(tipo === 'todos') {
+                mostrarNotificacion("¡Notificación enviada a @TODOS con éxito!");
+            } else {
+                if(!dest) {
+                    mostrarNotificacion("Introduce el nombre de usuario destinatario");
+                    return;
+                }
+                mostrarNotificacion(`Notificación enviada a @${dest} con éxito`);
+            }
+            document.getElementById('ceo-notif-mensaje').value = '';
         }
 
         async function guardarCambiosRecargaAdmin(idx) {
@@ -3040,7 +3090,7 @@
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
             await guardarEnCloud();
 
-            mostrarNotificacion(`Usuario ${usuarioEliminado.nombre} quitado del sistema correctamente`);
+            mostrarNotificacion(`Usuario @${usuarioEliminado.nombre} quitado del sistema correctamente`);
             cargarAccionCEO('usuarios');
             actualizarEstadisticasInicio();
         }
@@ -3049,11 +3099,11 @@
             let u = listaUsuariosGlobales.find(item => item.correo.toLowerCase() === correo.toLowerCase());
             if(!u) return;
 
-            let nuevoNombre = prompt("Nuevo nombre de usuario:", u.nombre);
+            let nuevoNombre = prompt("Nuevo nombre de usuario (sin @):", u.nombre);
             let nuevoUSDT = prompt("Nuevo balance USDT:", u.balanceUSDT || 0);
             let nuevoSaldo = prompt("Nuevo saldo móvil:", u.balanceCUP || 0);
 
-            if(nuevoNombre !== null) u.nombre = nuevoNombre.trim();
+            if(nuevoNombre !== null) u.nombre = nuevoNombre.trim().replace('@', '');
             if(nuevoUSDT !== null && !isNaN(nuevoUSDT)) u.balanceUSDT = parseFloat(nuevoUSDT);
             if(nuevoSaldo !== null && !isNaN(nuevoSaldo)) u.balanceCUP = parseInt(nuevoSaldo);
 
@@ -3158,7 +3208,6 @@
 
         async function ejecutarGuardarEtiquetaCEO() {
             tiendaConfig.etiquetaFreeFire = document.getElementById('ceo-etiqueta-texto').value;
-            tiendaConfig.colorFF = document.getElementById('ceo-color-ff').value;
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
@@ -3167,7 +3216,6 @@
 
         async function ejecutarGuardarEtiquetaBloodCEO() {
             tiendaConfig.etiquetaBloodStrike = document.getElementById('ceo-etiqueta-blood-texto').value;
-            tiendaConfig.colorBS = document.getElementById('ceo-color-bs').value;
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
