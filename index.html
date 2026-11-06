@@ -464,7 +464,7 @@
         <img src="icon-192.png" alt="Soporte">
     </div>
 
-    <!-- Inputs Ocultos para Subir Imágenes con Optimización Automática -->
+    <!-- Inputs Ocultos Independientes para Banners y Catálogo -->
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
     <input type="file" id="ceo-banner-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenBannerCEO(event)">
     <input type="file" id="ceo-catalogo-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenCatalogoCEO(event)">
@@ -1458,17 +1458,18 @@
         }
 
         // ==========================================
-        // COMPRESIÓN DE IMÁGENES ULTRA OPTIMIZADA PARA JSONBIN
+        // MANEJADORES DE IMÁGENES AISLADOS Y SEGUROS PARA CADA SECCIÓN
         // ==========================================
         function abrirSelectorImagenBanner(tipoJuego) {
             window.tipoBannerSeleccionado = tipoJuego;
+            document.getElementById('ceo-banner-image-uploader').value = '';
             document.getElementById('ceo-banner-image-uploader').click();
         }
 
         function procesarImagenBannerCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
-            mostrarCarga("Optimizando y guardando banner...");
+            mostrarCarga("Optimizando y subiendo banner...");
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -1478,7 +1479,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 550; // Resolución compacta ideal para banners móviles
+                    const maxDim = 500; // Resolución compacta ideal para banners móviles
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1487,7 +1488,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.70);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
 
                     if(window.tipoBannerSeleccionado === 'freefire') {
                         tiendaConfig.bannerFreeFireImg = compressedBase64;
@@ -1498,7 +1499,7 @@
                     await guardarEnCloud();
                     ocultarCarga();
                     aplicarConfiguracionVisual();
-                    mostrarNotificacion("¡Banner guardado en la nube con éxito!");
+                    mostrarNotificacion("¡Banner guardado correctamente en la nube!");
                 };
             };
             reader.readAsDataURL(file);
@@ -1506,13 +1507,14 @@
 
         function abrirSelectorImagenCatalogo(indexPaquete) {
             window.indicePaqueteSeleccionado = indexPaquete;
+            document.getElementById('ceo-catalogo-image-uploader').value = '';
             document.getElementById('ceo-catalogo-image-uploader').click();
         }
 
         function procesarImagenCatalogoCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
-            mostrarCarga("Optimizando imagen de paquete...");
+            mostrarCarga("Optimizando foto del paquete...");
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -1522,7 +1524,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 250; // Resolución compacta ideal para iconos de diamantes
+                    const maxDim = 200; // Resolución compacta ideal para iconos de diamantes
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1531,7 +1533,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.70);
 
                     let idx = window.indicePaqueteSeleccionado;
                     if(tiendaConfig.paquetesDiamantes[idx]) {
@@ -1541,7 +1543,7 @@
                         ocultarCarga();
                         renderizarPaquetesTienda();
                         cargarAccionCEO('catalogo_precios');
-                        mostrarNotificacion(`Imagen de "${tiendaConfig.paquetesDiamantes[idx].nombre}" guardada correctamente`);
+                        mostrarNotificacion(`Imagen de "${tiendaConfig.paquetesDiamantes[idx].nombre}" guardada con éxito`);
                     }
                 };
             };
