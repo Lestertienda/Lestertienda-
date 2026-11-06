@@ -464,7 +464,7 @@
         <img src="icon-192.png" alt="Soporte">
     </div>
 
-    <!-- Inputs Ocultos para Subir Imágenes Individuales del Catálogo y Banners -->
+    <!-- Inputs Ocultos para Subir Imágenes en Base64 Permanente -->
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
     <input type="file" id="ceo-banner-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenBannerCEO(event)">
     <input type="file" id="ceo-catalogo-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenCatalogoCEO(event)">
@@ -1422,7 +1422,7 @@
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
-            // APLICAR BANNERS DE FONDO COMPLETO
+            // APLICAR BANNERS DE FONDO COMPLETO CON SOPORTE BASE64 PERMANENTE
             const bannerFFBg = document.getElementById('banner-bg-freefire');
             if(bannerFFBg && tiendaConfig.bannerFreeFireImg) {
                 bannerFFBg.style.backgroundImage = `url('${tiendaConfig.bannerFreeFireImg}')`;
@@ -1459,7 +1459,7 @@
             container.innerHTML = html;
         }
 
-        // FUNCIONES DE CARGA Y CAMBIO DE IMÁGENES DESDE EL PANEL CEO
+        // FUNCIONES DE CARGA Y CONVERSIÓN PERMANENTE A BASE64 DESDE EL PANEL CEO
         function abrirSelectorImagenBanner(tipoJuego) {
             window.tipoBannerSeleccionado = tipoJuego;
             document.getElementById('ceo-banner-image-uploader').click();
@@ -1470,15 +1470,34 @@
             if(!file) return;
             const reader = new FileReader();
             reader.onload = async function(e) {
-                if(window.tipoBannerSeleccionado === 'freefire') {
-                    tiendaConfig.bannerFreeFireImg = e.target.result;
-                } else {
-                    tiendaConfig.bannerBloodImg = e.target.result;
-                }
-                localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-                await guardarEnCloud();
-                aplicarConfiguracionVisual();
-                mostrarNotificacion("Banner actualizado correctamente");
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = async function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 800; // Alta resolución optimizada para banners
+                    if (width > height) {
+                        if (width > maxDim) { height *= maxDim / width; width = maxDim; }
+                    } else {
+                        if (height > maxDim) { width *= maxDim / height; height = maxDim; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+                    if(window.tipoBannerSeleccionado === 'freefire') {
+                        tiendaConfig.bannerFreeFireImg = compressedBase64;
+                    } else {
+                        tiendaConfig.bannerBloodImg = compressedBase64;
+                    }
+                    localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                    await guardarEnCloud();
+                    aplicarConfiguracionVisual();
+                    mostrarNotificacion("Banner actualizado y guardado permanentemente");
+                };
             };
             reader.readAsDataURL(file);
         }
@@ -1493,15 +1512,34 @@
             if(!file) return;
             const reader = new FileReader();
             reader.onload = async function(e) {
-                let idx = window.indicePaqueteSeleccionado;
-                if(tiendaConfig.paquetesDiamantes[idx]) {
-                    tiendaConfig.paquetesDiamantes[idx].imagen = e.target.result;
-                    localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-                    await guardarEnCloud();
-                    renderizarPaquetesTienda();
-                    cargarAccionCEO('catalogo_precios');
-                    mostrarNotificacion(`Imagen de "${tiendaConfig.paquetesDiamantes[idx].nombre}" actualizada`);
-                }
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = async function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 300; // Tamaño optimizado para iconos de catálogo
+                    if (width > height) {
+                        if (width > maxDim) { height *= maxDim / width; width = maxDim; }
+                    } else {
+                        if (height > maxDim) { width *= maxDim / height; height = maxDim; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+                    let idx = window.indicePaqueteSeleccionado;
+                    if(tiendaConfig.paquetesDiamantes[idx]) {
+                        tiendaConfig.paquetesDiamantes[idx].imagen = compressedBase64;
+                        localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                        await guardarEnCloud();
+                        renderizarPaquetesTienda();
+                        cargarAccionCEO('catalogo_precios');
+                        mostrarNotificacion(`Imagen de "${tiendaConfig.paquetesDiamantes[idx].nombre}" actualizada`);
+                    }
+                };
             };
             reader.readAsDataURL(file);
         }
