@@ -91,7 +91,7 @@
         
         .brand-logo-text { font-size: 1.5rem; font-weight: 900; text-align: center; margin-bottom: 1.4rem; }
         .brand-lester { color: #ffffff; }
-        .brand-tienda { color: var(--primary-blue); }
+        .brand-tienda { color: #00f0ff; }
         
         .form-group { margin-bottom: 1.1rem; position: relative; }
         .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600; }
@@ -592,10 +592,10 @@
             <div class="nav-top-icons">
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet">
                     <svg viewBox="0 0 2000 2000" width="12" height="12"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
-                    <span id="header-wallet-balance">0.00 USDT</span>
+                    <span id="header-wallet-balance" style="color: var(--accent-glow);">0.00 USDT</span>
                 </div>
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Móvil">
-                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                     <span id="header-saldo-balance" style="color: #ffffff;">0 saldo</span>
                 </div>
                 <button class="nav-top-icon-btn" onclick="iniciarDescargaDirectaApp()" title="Descargar Aplicación">
@@ -795,7 +795,7 @@
                     <!-- IMAGEN CON ANIMACIÓN FLUIDA Y LENTA -->
                     <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
-                        <img id="comp-img-diamantes" src="1098794_4.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='1098803.jpg';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
+                        <img id="comp-img-diamantes" src="IMG_20261105_143324_728.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='1098794_3.jpg';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
                         <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                         </div>
@@ -984,11 +984,11 @@
                     <div class="profile-wallet-pill-corner" style="display: flex; gap: 8px; align-items: center;">
                         <div style="display: flex; align-items: center; gap: 4px;">
                             <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                            <span id="profile-wallet-balance">0.00 USDT</span>
+                            <span id="profile-wallet-balance" style="color: var(--accent-glow);">0.00 USDT</span>
                         </div>
                         <span style="color: var(--border-color);">|</span>
                         <div style="display: flex; align-items: center; gap: 4px;">
-                            <svg viewBox="0 0 24 24" width="13" height="13" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="#ffffff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                             <span id="profile-saldo-movil-top" style="color: #ffffff; font-size: 0.73rem; font-weight: 900;">0 saldo</span>
                         </div>
                     </div>
@@ -1276,12 +1276,12 @@
             direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
             ocultarTopRecargasHoy: false,
             paquetesDiamantes: [
-                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098803.jpg' },
-                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098803.jpg' },
-                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098803.jpg' },
-                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098803.jpg' },
-                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098803.jpg' },
-                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098803.jpg' }
+                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
+                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
+                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
+                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
+                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
             ],
             etiquetasCustomCEO: []
         };
@@ -1356,12 +1356,12 @@
                         tiendaConfig = resultado.record.config;
                         if(!tiendaConfig.paquetesDiamantes || tiendaConfig.paquetesDiamantes.length === 0) {
                             tiendaConfig.paquetesDiamantes = [
-                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098803.jpg' },
-                                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098803.jpg' },
-                                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098803.jpg' },
-                                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098803.jpg' },
-                                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098803.jpg' },
-                                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098803.jpg' }
+                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
+                                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
+                                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
+                                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
+                                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
                             ];
                         }
                         if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
@@ -1449,7 +1449,7 @@
                 case 'verde': return '#10b981';
                 case 'rojo': return '#ff3b30';
                 case 'amarillo': return '#f59e0b';
-                case 'azul': return '#0066ff';
+                case 'azul': return '#00f0ff';
                 default: return '#10b981';
             }
         }
@@ -1535,21 +1535,21 @@
             let paquetes = tiendaConfig.paquetesDiamantes || [];
             if(paquetes.length === 0) {
                 paquetes = [
-                    { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: '1098803.jpg' },
-                    { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '1098803.jpg' },
-                    { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '1098803.jpg' },
-                    { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '1098803.jpg' },
-                    { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '1098803.jpg' },
-                    { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '1098803.jpg' }
+                    { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                    { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
+                    { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
+                    { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
+                    { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
+                    { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
                 ];
             }
             let html = "";
             paquetes.forEach(p => {
                 let precioMostrado = metodoPagoActual === 'usdt' ? `${p.precioUsdt.toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
-                let imgSource = p.imagen || '1098803.jpg';
+                let imgSource = p.imagen || 'IMG_20261105_143324_728.jpg';
                 html += `
                     <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${imgSource}')">
-                        <div class="diamond-img-render"><img src="${imgSource}" alt="${p.nombre}" onerror="this.onerror=null; this.src='1098803.jpg';"></div>
+                        <div class="diamond-img-render"><img src="${imgSource}" alt="${p.nombre}" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';"></div>
                         <h4>${p.nombre}</h4>
                         <span class="diamond-price">${precioMostrado}</span>
                     </div>
@@ -2087,7 +2087,7 @@
             document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
             document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? 'saldo' : 'USDT'}`;
             
-            let imgSrc = orden.imagen || '1098803.jpg';
+            let imgSrc = orden.imagen || 'IMG_20261105_143324_728.jpg';
             document.getElementById('comp-img-diamantes').src = imgSrc;
 
             const boxMain = document.getElementById('comp-box-main');
