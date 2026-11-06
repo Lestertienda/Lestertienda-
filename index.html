@@ -139,7 +139,7 @@
             border-radius: 20px; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: border-color 0.2s;
         }
         .header-wallet-pill:hover { border-color: var(--accent-glow); }
-        .header-wallet-pill svg { width: 12px; height: 12px; flex-shrink: 0; }
+        .header-wallet-pill img, .header-wallet-pill svg { width: 14px; height: 14px; flex-shrink: 0; object-fit: contain; }
         .header-wallet-pill span { font-size: 0.68rem; font-weight: 900; }
 
         .nav-top-icon-btn {
@@ -183,7 +183,7 @@
         
         .game-card-banner-img {
             background: linear-gradient(135deg, #07090e 0%, #0d1322 100%);
-            height: 155px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
+            height: 165px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
             overflow: hidden;
         }
         
@@ -200,6 +200,15 @@
             position: absolute; top: 12px; right: 12px;
             padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 900;
             text-transform: uppercase; z-index: 3;
+        }
+
+        /* Banner personalizado con imagen integrada por el CEO */
+        .banner-custom-img-container {
+            position: absolute; right: 15px; bottom: 10px; width: 90px; height: 90px;
+            z-index: 2; pointer-events: none; display: flex; align-items: center; justify-content: center;
+        }
+        .banner-custom-img-container img {
+            width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4));
         }
 
         .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); }
@@ -270,6 +279,7 @@
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
             transform: translateY(-1px);
         }
+        .pay-method-pill-btn img { width: 18px; height: 18px; object-fit: contain; }
         .pay-method-pill-btn span {
             color: #0d1322;
             font-weight: 900;
@@ -380,10 +390,9 @@
             position: fixed; bottom: 85px; right: 20px; width: 56px; height: 56px;
             background: transparent; border: 2px solid var(--accent-glow); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.5); cursor: grab; z-index: 99998;
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.5); cursor: pointer; z-index: 99998;
             touch-action: none; user-select: none; overflow: hidden; padding: 0;
         }
-        .floating-bot:active { cursor: grabbing; }
         .floating-bot img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
 
         #modal-soporte-selector {
@@ -425,16 +434,15 @@
         .nav-item.active, .nav-item:hover { color: var(--accent-glow); }
         .nav-item.active svg, .nav-item:hover svg { fill: var(--accent-glow); }
 
-        /* Estilos para etiquetas dinámicas flotantes customizadas */
-        .floating-custom-tag {
-            position: absolute; cursor: move; z-index: 999; user-select: none;
+        /* Estilos fijos para etiquetas y elementos de diseño */
+        .fixed-custom-banner-label {
             padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 0.75rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px;
+            display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
-        .floating-custom-tag.verde { background: #10b981; color: #fff; border: 1px solid #059669; }
-        .floating-custom-tag.rojo { background: #ff3b30; color: #fff; border: 1px solid #dc2626; }
-        .floating-custom-tag.amarillo { background: #f59e0b; color: #fff; border: 1px solid #d97706; }
-        .floating-custom-tag.azul { background: #0066ff; color: #fff; border: 1px solid #2563eb; }
+        .fixed-custom-banner-label.verde { background: #10b981; color: #fff; border: 1px solid #059669; }
+        .fixed-custom-banner-label.rojo { background: #ff3b30; color: #fff; border: 1px solid #dc2626; }
+        .fixed-custom-banner-label.amarillo { background: #f59e0b; color: #fff; border: 1px solid #d97706; }
+        .fixed-custom-banner-label.azul { background: #0066ff; color: #fff; border: 1px solid #2563eb; }
     </style>
 </head>
 <body>
@@ -480,12 +488,7 @@
     </div>
 
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
-    <input type="file" id="ceo-image-uploader-hidden" accept="image/*" style="display: none;" onchange="procesarImagenFlotanteCEO(event)">
-
-    <!-- Contenedor global para etiquetas flotantes customizadas en tiempo real -->
-    <div id="contenedor-etiquetas-flotantes"></div>
-    <!-- Contenedor global para imágenes flotantes añadidas por CEO -->
-    <div id="contenedor-imagenes-flotantes"></div>
+    <input type="file" id="ceo-banner-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenBannerCEO(event)">
 
     <!-- 1. AUTENTICACIÓN -->
     <div id="auth-screen" class="auth-container">
@@ -576,10 +579,10 @@
                 <div class="nav-brand-title"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
             </div>
             <div class="nav-top-icons">
-                <!-- Disposición limpia: USDT en Azul, Saldo Móvil en Blanco -->
-                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet">
-                    <svg viewBox="0 0 2000 2000" width="12" height="12"><path fill="#0066ff" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
-                    <span id="header-wallet-balance" style="color: #0066ff;">0.00 USDT</span>
+                <!-- LOGO OFICIAL Y REAL DE USDT BEP-20 -->
+                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet USDT">
+                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT Logo">
+                    <span id="header-wallet-balance" style="color: #00f0ff;">0.00 USDT</span>
                 </div>
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Móvil">
                     <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -640,7 +643,7 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN SELECTOR DE JUEGOS -->
+            <!-- SECCIÓN SELECTOR DE JUEGOS CON BANNERS PROFESIONALES E IMÁGENES INTEGRADAS -->
             <div id="seccion-juegos-selector" class="vista-sec" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
@@ -650,18 +653,20 @@
                 
                 <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">SELECCIONA EL JUEGO</h2>
 
+                <!-- Tarjeta Free Fire con Banner Futurista y Contenedor de Imagen Interno -->
                 <div class="game-card-character" onclick="abrirFreeFire()">
                     <div class="game-card-banner-img">
                         <div class="neon-diamonds-bg"></div>
-                        <div id="freefire-custom-badge" class="neon-badge-top-right">
-                            SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
-                        </div>
+                        <div id="freefire-custom-badge" class="neon-badge-top-right">SOLO DISPONIBLE PARA EEUU, SUR Y NORTE</div>
+                        
                         <div style="z-index: 2; position: relative;">
                             <span style="background: rgba(0, 102, 255, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:var(--accent-glow); font-weight: bold; display: inline-block; margin-bottom: 4px;">Recarga por ID</span>
                             <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Free Fire</h3>
                         </div>
-                        <div style="z-index: 2; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(0,240,255,0.1); border: 1px solid var(--accent-glow); width: 60px; height: 60px; border-radius: 14px; box-shadow: 0 0 15px rgba(0,240,255,0.3);">
-                            <svg viewBox="0 0 64 64" width="36" height="36"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg>
+
+                        <!-- IMAGEN DENTRO DEL BANNER FIJA Y ELEGANTE (Gestionada por el CEO) -->
+                        <div class="banner-custom-img-container" id="banner-img-freefire-wrap">
+                            <img id="banner-img-freefire-el" src="IMG_20261105_143324_728.jpg" alt="Banner Free Fire" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';">
                         </div>
                     </div>
                     <div class="game-card-footer">
@@ -670,18 +675,19 @@
                     </div>
                 </div>
 
+                <!-- Tarjeta Blood Strike con Banner Futurista -->
                 <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
                     <div class="game-card-banner-img" style="background: linear-gradient(135deg, #1a0808 0%, #0d1322 100%);">
                         <div class="neon-diamonds-bg"></div>
-                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">
-                            PRÓXIMAMENTE
-                        </div>
+                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">PRÓXIMAMENTE</div>
+                        
                         <div style="z-index: 2; position: relative;">
                             <span style="background: rgba(245, 158, 11, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:#f59e0b; font-weight: bold; display: inline-block; margin-bottom: 4px;">Shooter Pro</span>
                             <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Blood Strike</h3>
                         </div>
-                        <div style="z-index: 2; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(245,158,11,0.1); border: 1px solid #f59e0b; width: 60px; height: 60px; border-radius: 14px; box-shadow: 0 0 15px rgba(245,158,11,0.3);">
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="#f59e0b"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
+
+                        <div class="banner-custom-img-container" id="banner-img-blood-wrap">
+                            <img id="banner-img-blood-el" src="IMG_20261105_143001_158.jpg" alt="Banner Blood Strike" onerror="this.onerror=null; this.src='IMG_20261105_143001_158.jpg';">
                         </div>
                     </div>
                     <div class="game-card-footer">
@@ -707,15 +713,13 @@
                 <div class="section-title">SELECCIONA EL MÉTODO DE PAGO</div>
                 <div class="payment-method-selector-grid">
                     <div id="btn-pay-usdt" class="pay-method-pill-btn active" onclick="seleccionarMetodoPago('usdt')">
-                        <div style="width: 22px; height: 22px; background: #0066ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg viewBox="0 0 2000 2000" width="14" height="14"><path fill="#0066ff" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
-                        </div>
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT">
                         <span>USDT</span>
                     </div>
 
                     <div id="btn-pay-saldo" class="pay-method-pill-btn" onclick="seleccionarMetodoPago('saldo')">
-                        <div style="width: 22px; height: 22px; background: #0066ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg viewBox="0 0 24 24" width="13" height="13" fill="#fff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        <div style="width: 18px; height: 18px; background: #0066ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" width="11" height="11" fill="#fff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
                         <span>Saldo Móvil</span>
                     </div>
@@ -764,7 +768,7 @@
                 </div>
             </div>
 
-            <!-- SUB-VISTA COMPROBANTE DE RECARGA CON ANIMACIÓN FLUIDA -->
+            <!-- SUB-VISTA COMPROBANTE DE RECARGA -->
             <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <button class="nav-top-icon-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
@@ -779,7 +783,6 @@
                         COMPLETADO
                     </div>
 
-                    <!-- IMAGEN CON ANIMACIÓN FLUIDA Y LENTA -->
                     <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
                         <img id="comp-img-diamantes" src="IMG_20261105_143324_728.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
@@ -843,16 +846,15 @@
                 
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;">
                     
-                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('usdt')">
-                        <div id="wallet-badge-usdt" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
+                    <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('usdt')">
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div style="width: 38px; height: 38px; background: rgba(38, 166, 154, 0.15); border: 1px solid #26a69a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <svg viewBox="0 0 2000 2000" width="22" height="22"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
+                                    <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT BEP20" width="22" height="22">
                                 </div>
                                 <div>
                                     <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">USDT BEP 20</h3>
-                                    <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Tether USD (Mercado Global)</span>
+                                    <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Tether USD (Red Binance Smart Chain)</span>
                                 </div>
                             </div>
                             <span style="color: var(--accent-glow); font-size: 0.8rem; font-weight: bold;">&gt;</span>
@@ -860,7 +862,6 @@
                     </div>
 
                     <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('saldo')">
-                        <div id="wallet-badge-saldo" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div style="width: 38px; height: 38px; background: rgba(0, 102, 255, 0.15); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -876,7 +877,6 @@
                     </div>
 
                     <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('tarjeta')">
-                        <div id="wallet-badge-tarjeta" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
                         <div style="display: flex; align-items: center; justify-content: space-between;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <div style="width: 38px; height: 38px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
@@ -894,7 +894,7 @@
                 </div>
             </div>
 
-            <!-- SUB-VISTA DETALLE WALLET USDT BEP 20 -->
+            <!-- SUB-VISTA DETALLE WALLET USDT BEP 20 CON LOGO OFICIAL -->
             <div id="seccion-wallet-usdt" class="vista-sec" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
@@ -903,10 +903,16 @@
                 </div>
                 
                 <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(38,166,154,0.15);">
-                    <h3 style="font-size: 1.05rem; font-weight: 900; color: #fff; margin-bottom: 0.8rem;">Recarga USDT BEP 20</h3>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg?v=035" alt="USDT BEP20" width="32" height="32">
+                        <div>
+                            <h3 style="font-size: 1.05rem; font-weight: 900; color: #fff;">Recarga USDT BEP 20</h3>
+                            <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Red Binance Smart Chain (BSC)</span>
+                        </div>
+                    </div>
                     
                     <div class="form-group">
-                        <label>La red BEP 20 a transferir será esta:</label>
+                        <label>Dirección Oficial BEP 20:</label>
                         <div class="form-control no-left-icon" id="wallet-direccion-usdt-display" style="font-size: 0.72rem; background: #07090e; color: #26a69a; text-align: center; word-break: break-all; padding: 0.8rem; margin-bottom: 0.5rem; font-weight: 800;">0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2</div>
                         <button class="btn-main" style="background: #26a69a; margin-top: 0;" onclick="copiarDireccionUSDTNuevo()">Copiar Dirección</button>
                     </div>
@@ -1234,18 +1240,13 @@
         let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
         let listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
         
-        // Paquetes actualizados con las imágenes hermosas solicitadas
         let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { 
             etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", 
             colorFF: "rojo",
             etiquetaBloodStrike: "PRÓXIMAMENTE",
             colorBS: "amarillo",
-            etiquetaWalletUSDT: "",
-            colorWUSDT: "verde",
-            etiquetaWalletSaldo: "",
-            colorWSaldo: "verde",
-            etiquetaWalletTarjeta: "",
-            colorWTarjeta: "rojo",
+            bannerFreeFireImg: "IMG_20261105_143324_728.jpg",
+            bannerBloodImg: "IMG_20261105_143001_158.jpg",
             numeroSaldoOficial: "59578110",
             direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
             ocultarTopRecargasHoy: false,
@@ -1256,9 +1257,7 @@
                 { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
                 { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
                 { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
-            ],
-            etiquetasCustomCEO: [],
-            imagenesCustomCEO: []
+            ]
         };
 
         const BIN_ID = '6aeaa0e1ffd5d16053a44254';
@@ -1299,7 +1298,6 @@
             sincronizarConCloudAuto();
             aplicarConfiguracionVisual();
             renderizarPaquetesTienda();
-            renderizarElementosFlotantesCEO();
 
             setInterval(() => {
                 sincronizarConCloudAutoSilencioso();
@@ -1340,8 +1338,8 @@
                                 { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
                             ];
                         }
-                        if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
-                        if(!tiendaConfig.imagenesCustomCEO) tiendaConfig.imagenesCustomCEO = [];
+                        if(!tiendaConfig.bannerFreeFireImg) tiendaConfig.bannerFreeFireImg = 'IMG_20261105_143324_728.jpg';
+                        if(!tiendaConfig.bannerBloodImg) tiendaConfig.bannerBloodImg = 'IMG_20261105_143001_158.jpg';
                         localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                     }
                 }
@@ -1358,7 +1356,6 @@
                 actualizarEstadisticasInicio();
                 aplicarConfiguracionVisual();
                 renderizarPaquetesTienda();
-                renderizarElementosFlotantesCEO();
             } catch (error) {
                 console.error('Error al sincronizar con JSONBin:', error);
             } finally {
@@ -1387,7 +1384,6 @@
                         localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                         aplicarConfiguracionVisual();
                         renderizarPaquetesTienda();
-                        renderizarElementosFlotantesCEO();
                     }
                 }
                 if (usuarioActual) {
@@ -1456,6 +1452,17 @@
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
+            // Aplicar imágenes dentro de los banners principales
+            const bannerFFEl = document.getElementById('banner-img-freefire-el');
+            if(bannerFFEl && tiendaConfig.bannerFreeFireImg) {
+                bannerFFEl.src = tiendaConfig.bannerFreeFireImg;
+            }
+
+            const bannerBloodEl = document.getElementById('banner-img-blood-el');
+            if(bannerBloodEl && tiendaConfig.bannerBloodImg) {
+                bannerBloodEl.src = tiendaConfig.bannerBloodImg;
+            }
+
             const numDisp = document.getElementById('wallet-numero-saldo-display');
             if(numDisp && tiendaConfig.numeroSaldoOficial) numDisp.innerText = tiendaConfig.numeroSaldoOficial;
 
@@ -1492,142 +1499,25 @@
             container.innerHTML = html;
         }
 
-        // Renderizar etiquetas e imágenes flotantes personalizadas en tiempo real con capacidad de arrastre
-        function renderizarElementosFlotantesCEO() {
-            const contEtiquetas = document.getElementById('contenedor-etiquetas-flotantes');
-            const contImagenes = document.getElementById('contenedor-imagenes-flotantes');
-            if(!contEtiquetas || !contImagenes) return;
-
-            let htmlEtq = "";
-            (tiendaConfig.etiquetasCustomCEO || []).forEach((etq, idx) => {
-                htmlEtq += `
-                    <div class="floating-custom-tag ${etq.color || 'verde'}" id="custom-tag-${idx}" style="top: ${etq.y || 100}px; left: ${etq.x || 20}px;" onpointerdown="iniciarArrastreElemento(event, 'etiqueta', ${idx})">
-                        <span>${etq.texto}</span>
-                        ${ (usuarioActual && usuarioActual.rango >= 1) ? `<span onclick="event.stopPropagation(); eliminarEtiquetaCEO(${idx})" style="cursor:pointer; font-size:0.6rem; background:rgba(0,0,0,0.3); padding:2px 5px; border-radius:4px;">✕</span>` : '' }
-                    </div>
-                `;
-            });
-            contEtiquetas.innerHTML = htmlEtq;
-
-            let htmlImg = "";
-            (tiendaConfig.imagenesCustomCEO || []).forEach((imgObj, idx) => {
-                htmlImg += `
-                    <div style="position: absolute; top: ${imgObj.y || 200}px; left: ${imgObj.x || 50}px; width: ${imgObj.width || 80}px; height: ${imgObj.height || 80}px; z-index: 998; cursor: move;" id="custom-img-${idx}" onpointerdown="iniciarArrastreElemento(event, 'imagen', ${idx})">
-                        <img src="${imgObj.src}" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); border-radius: 8px;">
-                        ${ (usuarioActual && usuarioActual.rango >= 1) ? `<button onclick="event.stopPropagation(); redimensionarImagenCEO(${idx})" style="position:absolute; top:-8px; right:-8px; background:#0066ff; color:#fff; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; cursor:pointer;" title="Cambiar tamaño">↗</button><button onclick="event.stopPropagation(); eliminarImagenCEO(${idx})" style="position:absolute; top:-8px; left:-8px; background:#ff3b30; color:#fff; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; cursor:pointer;">✕</button>` : '' }
-                    </div>
-                `;
-            });
-            contImagenes.innerHTML = htmlImg;
+        function abrirSelectorImagenBanner(tipoJuego) {
+            window.tipoBannerSeleccionado = tipoJuego;
+            document.getElementById('ceo-banner-image-uploader').click();
         }
 
-        let elementoArrastrando = null;
-        let tipoArrastre = null;
-        let indexArrastre = null;
-        let offsetX = 0, offsetY = 0;
-
-        function iniciarArrastreElemento(e, tipo, idx) {
-            if(!(usuarioActual && usuarioActual.rango >= 1)) return;
-            tipoArrastre = tipo;
-            indexArrastre = idx;
-            elementoArrastrando = document.getElementById(tipo === 'etiqueta' ? `custom-tag-${idx}` : `custom-img-${idx}`);
-            if(!elementoArrastrando) return;
-
-            const rect = elementoArrastrando.getBoundingClientRect();
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
-
-            window.addEventListener('pointermove', moverElementoFlotante);
-            window.addEventListener('pointerup', soltarElementoFlotante);
-            e.preventDefault();
-        }
-
-        function moverElementoFlotante(e) {
-            if(!elementoArrastrando) return;
-            let nuevoX = e.clientX - offsetX;
-            let nuevoY = e.clientY - offsetY;
-
-            elementoArrastrando.style.left = nuevoX + 'px';
-            elementoArrastrando.style.top = nuevoY + 'px';
-        }
-
-        async function soltarElementoFlotante() {
-            if(!elementoArrastrando) return;
-            const rect = elementoArrastrando.getBoundingClientRect();
-            let finalX = rect.left;
-            let finalY = rect.top;
-
-            if(tipoArrastre === 'etiqueta') {
-                if(tiendaConfig.etiquetasCustomCEO[indexArrastre]) {
-                    tiendaConfig.etiquetasCustomCEO[indexArrastre].x = finalX;
-                    tiendaConfig.etiquetasCustomCEO[indexArrastre].y = finalY;
-                }
-            } else if(tipoArrastre === 'imagen') {
-                if(tiendaConfig.imagenesCustomCEO[indexArrastre]) {
-                    tiendaConfig.imagenesCustomCEO[indexArrastre].x = finalX;
-                    tiendaConfig.imagenesCustomCEO[indexArrastre].y = finalY;
-                }
-            }
-
-            window.removeEventListener('pointermove', moverElementoFlotante);
-            window.removeEventListener('pointerup', soltarElementoFlotante);
-            elementoArrastrando = null;
-
-            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-            await guardarEnCloud();
-        }
-
-        function eliminarEtiquetaCEO(idx) {
-            tiendaConfig.etiquetasCustomCEO.splice(idx, 1);
-            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-            guardarEnCloud();
-            renderizarElementosFlotantesCEO();
-            mostrarNotificacion("Etiqueta eliminada");
-        }
-
-        function eliminarImagenCEO(idx) {
-            tiendaConfig.imagenesCustomCEO.splice(idx, 1);
-            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-            guardarEnCloud();
-            renderizarElementosFlotantesCEO();
-            mostrarNotificacion("Imagen eliminada");
-        }
-
-        function redimensionarImagenCEO(idx) {
-            let imgObj = tiendaConfig.imagenesCustomCEO[idx];
-            let actualW = imgObj.width || 80;
-            let nuevoW = prompt("Introduce el nuevo tamaño en píxeles (ej. 60, 100, 150):", actualW);
-            if(nuevoW && !isNaN(nuevoW)) {
-                imgObj.width = parseInt(nuevoW);
-                imgObj.height = parseInt(nuevoW);
-                localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-                guardarEnCloud();
-                renderizarElementosFlotantesCEO();
-                mostrarNotificacion("Tamaño de imagen actualizado");
-            }
-        }
-
-        function abrirSelectorImagenCEO() {
-            document.getElementById('ceo-image-uploader-hidden').click();
-        }
-
-        function procesarImagenFlotanteCEO(event) {
+        function procesarImagenBannerCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
             const reader = new FileReader();
             reader.onload = async function(e) {
-                if(!tiendaConfig.imagenesCustomCEO) tiendaConfig.imagenesCustomCEO = [];
-                tiendaConfig.imagenesCustomCEO.push({
-                    src: e.target.result,
-                    x: 100,
-                    y: 200,
-                    width: 80,
-                    height: 80
-                });
+                if(window.tipoBannerSeleccionado === 'freefire') {
+                    tiendaConfig.bannerFreeFireImg = e.target.result;
+                } else {
+                    tiendaConfig.bannerBloodImg = e.target.result;
+                }
                 localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                 await guardarEnCloud();
-                renderizarElementosFlotantesCEO();
-                mostrarNotificacion("Imagen agregada flotando en pantalla");
+                aplicarConfiguracionVisual();
+                mostrarNotificacion("Imagen de banner actualizada correctamente");
             };
             reader.readAsDataURL(file);
         }
@@ -2605,7 +2495,7 @@
                 return;
             }
             if(nue !== con) {
-                mostrarNotificacion("Las nuevas contraseñas no coinciden");
+                mostrarNotificacion(" Las nuevas contraseñas no coinciden");
                 return;
             }
 
@@ -2668,9 +2558,9 @@
                         <button class="ceo-btn" onclick="cargarAccionCEO('control_total_historial')">Control Total Historial</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_game')">Etiqueta Free Fire</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_blood')">Etiqueta Blood Strike</button>
+                        <button class="ceo-btn" onclick="abrirSelectorImagenBanner('freefire')">Imagen Banner Free Fire</button>
+                        <button class="ceo-btn" onclick="abrirSelectorImagenBanner('blood')">Imagen Banner Blood Strike</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('catalogo_precios')">Catálogo de Precios</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('agregar_etiqueta_custom')">Agregar Etiqueta Flotante</button>
-                        <button class="ceo-btn" onclick="abrirSelectorImagenCEO()">Agregar Imagen Flotante</button>
                     `;
                 }
 
@@ -2774,20 +2664,6 @@
                     </div>`;
                 });
                 res.innerHTML = html;
-            } else if(accion === 'agregar_etiqueta_custom' && esCEO) {
-                res.innerHTML = `
-                    <div class="ceo-action-form" style="border-color:#00f0ff;">
-                        <h4 style="color:#00f0ff;">Agregar Etiqueta Flotante en Pantalla</h4>
-                        <input type="text" id="ceo-custom-tag-text" placeholder="Texto de la etiqueta">
-                        <select id="ceo-custom-tag-color">
-                            <option value="verde">Verde</option>
-                            <option value="rojo">Rojo</option>
-                            <option value="amarillo">Amarillo</option>
-                            <option value="azul">Azul</option>
-                        </select>
-                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarAgregarEtiquetaCustomCEO()">Agregar Etiqueta Flotante</button>
-                    </div>
-                `;
             } else if(accion === 'catalogo_precios' && esCEO) {
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Catálogo de Precios (Tiempo Real):</h4>";
                 (tiendaConfig.paquetesDiamantes || []).forEach((p, pIdx) => {
@@ -2951,20 +2827,6 @@
             await guardarEnCloud();
             cargarAccionCEO('usuarios');
             mostrarNotificacion("Datos de usuario actualizados");
-        }
-
-        async function ejecutarAgregarEtiquetaCustomCEO() {
-            let texto = document.getElementById('ceo-custom-tag-text').value.trim();
-            let color = document.getElementById('ceo-custom-tag-color').value;
-            if(!texto) { mostrarNotificacion("Escribe el texto de la etiqueta"); return; }
-
-            if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
-            tiendaConfig.etiquetasCustomCEO.push({ texto, color, x: 100, y: 150 });
-
-            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-            await guardarEnCloud();
-            renderizarElementosFlotantesCEO();
-            mostrarNotificacion("Etiqueta flotante añadida. Puedes moverla con el dedo o ratón.");
         }
 
         async function ejecutarAcreditarCEO() {
