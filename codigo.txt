@@ -1,0 +1,3104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lester Tienda - Pro Gaming Store</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#07090e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lester Tienda">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #07090e;
+            --bg-card: #0d1322;
+            --text-main: #ffffff;
+            --text-muted: #8a99ad;
+            --primary-blue: #0066ff;
+            --accent-glow: #00f0ff;
+            --border-color: #1a233a;
+            --error-color: #ff3b30;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        html, body {
+            min-height: 100vh;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            padding-bottom: 95px;
+            animation: fadeInPage 0.4s ease forwards;
+        }
+
+        @keyframes fadeInPage {
+            0% { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(4px);
+            display: none; justify-content: center; align-items: center; z-index: 99999;
+            flex-direction: column; gap: 12px;
+        }
+        .spinner {
+            width: 42px; height: 42px; border: 3px solid rgba(0, 240, 255, 0.2);
+            border-top: 3px solid var(--accent-glow); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .loading-text { font-size: 0.82rem; font-weight: 700; color: var(--accent-glow); letter-spacing: 0.5px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #notification-toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200px);
+            background: #0d1322; color: var(--accent-glow); border: 1px solid var(--border-color);
+            padding: 0.8rem 1.4rem; border-radius: 12px; font-weight: 700; font-size: 0.82rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999999; width: 90%; max-width: 380px; text-align: center;
+        }
+        #notification-toast.show { transform: translateX(-50%) translateY(0); }
+
+        .auth-container {
+            max-width: 390px; margin: 40px auto; background: var(--bg-card);
+            border: 1px solid var(--border-color); border-radius: 20px; padding: 2rem 1.6rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); width: 90%;
+        }
+        .auth-tabs {
+            display: flex; margin-bottom: 1.4rem; background: #07090e;
+            border-radius: 10px; padding: 4px; border: 1px solid var(--border-color);
+        }
+        .auth-tab {
+            flex: 1; text-align: center; padding: 0.6rem; font-weight: bold;
+            font-size: 0.82rem; cursor: pointer; border-radius: 8px; color: var(--text-muted); transition: all 0.3s;
+        }
+        .auth-tab.active { background: var(--primary-blue); color: #fff; }
+        
+        .brand-logo-text { font-size: 1.5rem; font-weight: 900; text-align: center; margin-bottom: 1.4rem; }
+        .brand-lester { color: #ffffff; }
+        .brand-tienda { color: #00f0ff; }
+        
+        .form-group { margin-bottom: 1.1rem; position: relative; }
+        .form-group label { display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.3rem; font-weight: 600; }
+        .input-icon-wrapper { position: relative; display: flex; align-items: center; }
+        .input-icon-wrapper svg { position: absolute; left: 12px; width: 16px; height: 16px; fill: var(--text-muted); pointer-events: none; }
+        .form-control {
+            width: 100%; background: #07090e; border: 1px solid var(--border-color);
+            padding: 0.75rem 2.5rem 0.75rem 2.5rem; border-radius: 10px; color: var(--text-main);
+            font-size: 0.88rem; outline: none; transition: border-color 0.2s;
+        }
+        .form-control.no-left-icon { padding-left: 1rem; padding-right: 1rem; }
+        .form-control:focus { border-color: var(--accent-glow); }
+        .form-control.input-error { border-color: var(--error-color) !important; background: rgba(255, 59, 48, 0.03); }
+        .error-feedback-text { color: var(--error-color); font-size: 0.68rem; font-weight: 700; margin-top: 4px; display: none; }
+
+        .toggle-password {
+            position: absolute; right: 12px; background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; height: 100%; width: 30px;
+        }
+        .toggle-password svg { width: 16px; height: 16px; fill: var(--text-muted); }
+
+        .btn-main {
+            width: 100%; background: var(--primary-blue); color: #fff; border: none;
+            padding: 0.8rem; border-radius: 10px; font-weight: 900; font-size: 0.9rem;
+            cursor: pointer; transition: filter 0.2s, transform 0.2s; margin-top: 0.8rem;
+        }
+        .btn-main:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.75rem 1rem; background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
+        }
+        .nav-brand-area { display: flex; align-items: center; gap: 8px; }
+        .nav-brand-logo {
+            width: 32px; height: 32px; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); flex-shrink: 0;
+        }
+        .nav-brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+        .nav-brand-title { font-size: 0.92rem; font-weight: 900; }
+        
+        .nav-top-icons { display: flex; gap: 6px; align-items: center; }
+        
+        .header-wallet-pill {
+            background: #07090e; border: 1px solid var(--border-color); padding: 4px 8px;
+            border-radius: 20px; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: border-color 0.2s;
+        }
+        .header-wallet-pill:hover { border-color: var(--accent-glow); }
+        .header-wallet-pill svg { width: 12px; height: 12px; fill: var(--accent-glow); flex-shrink: 0; }
+        .header-wallet-pill span { font-size: 0.68rem; font-weight: 900; color: var(--accent-glow); }
+
+        .nav-top-icon-btn {
+            background: #07090e; border: 1px solid var(--border-color); width: 32px; height: 32px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .nav-top-icon-btn svg { width: 15px; height: 15px; fill: var(--accent-glow); }
+
+        .container { max-width: 500px; width: 100%; margin: 0 auto; padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+        .vista-sec { animation: fadeInPage 0.4s ease forwards; flex: 1; display: flex; flex-direction: column; }
+
+        .game-hero-compact {
+            background: linear-gradient(135deg, #0d1322 0%, #07090e 100%);
+            border: 1.5px solid var(--accent-glow); border-radius: 14px;
+            padding: 0.9rem 1.1rem; margin-bottom: 1rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.15); transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .game-hero-compact:hover { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(0, 240, 255, 0.3); }
+        .game-hero-left { display: flex; align-items: center; gap: 10px; }
+        .game-hero-icon-small {
+            width: 38px; height: 38px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-glow);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .game-hero-icon-small svg { width: 20px; height: 20px; fill: var(--accent-glow); }
+        .game-hero-text h3 { font-size: 0.92rem; font-weight: 900; color: #fff; margin-bottom: 1px; }
+        .game-hero-text p { font-size: 0.68rem; color: var(--accent-glow); font-weight: 700; }
+        
+        .game-hero-arrow {
+            width: 28px; height: 28px; background: rgba(0, 102, 255, 0.2); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .game-hero-arrow svg { width: 14px; height: 14px; fill: var(--accent-glow); }
+
+        .game-card-character {
+            background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px;
+            overflow: hidden; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; position: relative;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+        }
+        .game-card-character:hover { border-color: var(--accent-glow); box-shadow: 0 0 25px rgba(0, 240, 255, 0.3); }
+        
+        .game-card-banner-img {
+            background: linear-gradient(135deg, #07090e 0%, #0d1322 100%);
+            height: 155px; display: flex; justify-content: space-between; align-items: flex-end; padding: 1.1rem; position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-diamonds-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.35;
+            background-image: 
+                radial-gradient(circle at 80% 20%, rgba(0, 240, 255, 0.25) 0%, transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(0, 102, 255, 0.2) 0%, transparent 40%),
+                linear-gradient(45deg, transparent 48%, rgba(0, 240, 255, 0.15) 50%, transparent 52%);
+            background-size: 100% 100%, 100% 100%, 40px 40px;
+        }
+
+        .neon-badge-top-right {
+            position: absolute; top: 12px; right: 12px;
+            padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 900;
+            text-transform: uppercase; z-index: 3;
+        }
+
+        .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); }
+
+        .invite-banner {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px;
+            padding: 1.2rem; color: #fff; margin-bottom: 1.2rem; display: flex; justify-content: space-between; align-items: center;
+        }
+        .invite-banner h3 { font-size: 1.05rem; font-weight: 900; margin-bottom: 0.3rem; color: #fff; }
+        .invite-banner p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.8rem; max-width: 210px; line-height: 1.4; }
+        .btn-invite { background: var(--primary-blue); color: #fff; border: none; padding: 0.4rem 1rem; border-radius: 12px; font-weight: bold; font-size: 0.78rem; cursor: pointer; }
+
+        .section-title { font-size: 0.78rem; color: var(--text-muted); margin: 1rem 0 0.4rem 0; font-weight: 700; letter-spacing: 0.5px; }
+
+        .live-history-card {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1rem; margin-bottom: 1.2rem;
+        }
+        .live-history-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 0.7rem;
+        }
+        .live-history-title-box h3 { font-size: 0.92rem; font-weight: 900; color: #fff; margin-bottom: 2px; }
+        .live-status-sub { display: flex; align-items: center; gap: 6px; font-size: 0.68rem; color: var(--text-muted); }
+        .live-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; box-shadow: 0 0 6px rgba(16, 185, 129, 0.8); }
+        .live-counter-pill { background: #07090e; border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 10px; text-align: right; }
+        .live-counter-pill span { display: block; font-size: 0.55rem; color: var(--text-muted); font-weight: bold; }
+        .live-counter-pill h4 { font-size: 1rem; font-weight: 900; color: #10b981; }
+
+        .history-item-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.55rem 0; border-bottom: 1px solid rgba(26, 35, 58, 0.4); font-size: 0.78rem;
+        }
+        .history-item-row:last-child { border-bottom: none; }
+        .history-time { color: var(--text-muted); font-size: 0.7rem; width: 60px; }
+        .history-user-info { display: flex; align-items: center; gap: 8px; flex: 1; padding: 0 6px; }
+        .history-avatar {
+            width: 28px; height: 28px; border-radius: 50%; background: #07090e;
+            border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.72rem; color: var(--accent-glow); overflow: hidden; flex-shrink: 0;
+        }
+        .history-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .history-user-details h5 { font-size: 0.78rem; font-weight: 800; color: #fff; }
+        .history-user-details p { font-size: 0.65rem; color: var(--text-muted); }
+        .history-price { font-weight: 900; color: #10b981; font-size: 0.78rem; text-align: right; }
+
+        .payment-method-selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+        .pay-method-pill-btn {
+            background: #ffffff;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.5rem 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .pay-method-pill-btn.active {
+            background: linear-gradient(135deg, #2b70ff 0%, #004fe3 100%);
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+            transform: translateY(-1px);
+        }
+        .pay-method-pill-btn span {
+            color: #0d1322;
+            font-weight: 900;
+            font-size: 0.85rem;
+            letter-spacing: 0.2px;
+        }
+        .pay-method-pill-btn.active span {
+            color: #ffffff;
+        }
+
+        .diamonds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.1rem; }
+        .diamond-card {
+            background: #ffffff; border: 2px solid var(--border-color); border-radius: 16px;
+            padding: 0.9rem 0.7rem; text-align: center; cursor: pointer; transition: all 0.2s;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .diamond-card:hover { border-color: var(--accent-glow); transform: translateY(-2px); }
+        .diamond-card.selected { border-color: var(--accent-glow); box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); background: #f8fbff; }
+        .diamond-img-render { width: 64px; height: 56px; margin-bottom: 0.2rem; display: flex; align-items: center; justify-content: center; }
+        .diamond-img-render img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,102,255,0.25)); }
+        .diamond-card h4 { font-size: 0.82rem; font-weight: 900; margin-bottom: 0.2rem; color: #0d1322; }
+        .diamond-price { color: #0066ff; font-weight: 900; font-size: 0.92rem; }
+
+        .profile-header-card { 
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; 
+            padding: 1.1rem; text-align: center; margin-bottom: 1rem; position: relative; 
+        }
+        .profile-wallet-pill-corner {
+            position: absolute; top: 12px; right: 12px; background: #07090e; border: 1px solid var(--border-color);
+            padding: 3px 9px; border-radius: 10px; display: flex; align-items: center; gap: 5px;
+        }
+        .profile-wallet-pill-corner svg { width: 13px; height: 13px; fill: var(--accent-glow); }
+        .profile-wallet-pill-corner span { font-size: 0.73rem; font-weight: 900; color: var(--accent-glow); }
+
+        .profile-avatar-wrapper { position: relative; width: 70px; height: 70px; margin: 0 auto 0.5rem auto; }
+        .profile-avatar-circle {
+            width: 70px; height: 70px; background: #07090e; border: 2px solid var(--accent-glow); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold; color: var(--accent-glow);
+            overflow: hidden; cursor: pointer;
+        }
+        .profile-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-edit-badge {
+            position: absolute; bottom: 0; right: 0; background: var(--primary-blue); border: 1px solid var(--border-color);
+            width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .avatar-edit-badge svg { width: 11px; height: 11px; fill: #fff; }
+
+        .order-card-pro {
+            background: var(--bg-card); 
+            border: 1.5px solid var(--accent-glow); 
+            border-radius: 16px;
+            padding: 1.1rem 1.2rem; 
+            margin-bottom: 0.9rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            position: relative;
+            box-shadow: 0 0 18px rgba(0, 240, 255, 0.22), inset 0 0 10px rgba(0, 240, 255, 0.05);
+            overflow: hidden;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .order-card-pro:hover {
+            border-color: #10b981;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
+            transform: translateY(-1px);
+        }
+        .order-info { flex: 1; min-width: 0; }
+        .order-info h4 { font-size: 0.86rem; font-weight: 900; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .order-info p { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .order-right-action { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+        
+        .badge-status { 
+            padding: 5px 10px; 
+            border-radius: 8px; 
+            font-size: 0.7rem; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            text-align: center;
+        }
+        .status-pendiente { background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5); }
+        .status-completado { background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.5); }
+        .status-cancelado { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); }
+
+        .order-arrow-icon {
+            width: 26px; height: 26px; background: rgba(0, 240, 255, 0.1); border: 1px solid var(--accent-glow);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        .order-arrow-icon svg { width: 12px; height: 12px; fill: var(--accent-glow); }
+
+        /* Animación lenta y fluida para el diamante en comprobantes */
+        @keyframes floatingDiamond {
+            0% { transform: translateY(0px) scale(1); filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4)); }
+            50% { transform: translateY(-8px) scale(1.03); filter: drop-shadow(0 12px 20px rgba(0,240,255,0.6)); }
+            100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4)); }
+        }
+        .animated-diamond-img {
+            animation: floatingDiamond 3.5s ease-in-out infinite;
+        }
+
+        .security-menu-box { 
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; 
+            padding: 1.2rem; margin-top: 1.2rem; display: flex; flex-direction: column; gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .security-btn {
+            width: 100%; background: #07090e; border: 1px solid var(--primary-blue); color: #fff;
+            padding: 0.7rem 0.9rem; border-radius: 10px; font-weight: 700; font-size: 0.8rem; display: flex;
+            align-items: center; gap: 10px; cursor: pointer; text-align: left; transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .security-btn:hover { border-color: var(--accent-glow); background: #0d1322; }
+        .security-btn svg { width: 16px; height: 16px; fill: var(--accent-glow); flex-shrink: 0; }
+
+        .ceo-box {
+            background: linear-gradient(135deg, #130a0a 0%, #07090e 100%);
+            border: 1px solid rgba(255, 59, 48, 0.4); border-radius: 16px; padding: 1.1rem; margin-top: 1.1rem;
+        }
+        .ceo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.8rem; }
+        .ceo-btn {
+            background: #07090e; border: 1px solid #ff3b30; color: #ff3b30; padding: 0.65rem;
+            border-radius: 10px; font-weight: 900; font-size: 0.78rem; cursor: pointer; text-align: center; transition: all 0.2s;
+        }
+        .ceo-btn:hover { background: #ff3b30; color: #fff; }
+
+        .ceo-action-form {
+            background: #07090e; border: 1px solid #ff3b30; border-radius: 12px; padding: 1rem; margin-top: 0.8rem;
+        }
+        .ceo-action-form h4 { font-size: 0.85rem; color: #ff3b30; margin-bottom: 0.6rem; font-weight: 900; }
+        .ceo-action-form input, .ceo-action-form select {
+            width: 100%; background: #0d1322; border: 1px solid var(--border-color);
+            padding: 0.65rem; border-radius: 8px; color: #fff; margin-bottom: 0.6rem; font-size: 0.82rem; outline: none;
+        }
+
+        .floating-bot {
+            position: fixed; bottom: 85px; right: 20px; width: 56px; height: 56px;
+            background: transparent; border: 2px solid var(--accent-glow); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 240, 255, 0.5); cursor: grab; z-index: 99998;
+            touch-action: none; user-select: none; overflow: hidden; padding: 0;
+        }
+        .floating-bot:active { cursor: grabbing; }
+        .floating-bot img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
+
+        #modal-soporte-selector {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 9999999; padding: 20px;
+        }
+        .soporte-modal-box {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px;
+            padding: 1.6rem; max-width: 340px; width: 100%; text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6); animation: fadeInPage 0.3s ease;
+        }
+        .soporte-option-btn {
+            display: flex; align-items: center; gap: 12px; width: 100%; background: #07090e;
+            border: 1px solid var(--border-color); padding: 0.8rem 1rem; border-radius: 12px;
+            margin-bottom: 0.8rem; cursor: pointer; color: #fff; font-weight: 700; font-size: 0.85rem;
+            transition: border-color 0.2s; text-decoration: none; text-align: left;
+        }
+        .soporte-option-btn:hover { border-color: var(--accent-glow); }
+
+        .footer-legal-container {
+            margin-top: auto; padding: 1.2rem 1rem; background: var(--bg-card);
+            border-top: 1px solid var(--border-color); border-radius: 16px 16px 0 0; text-align: center;
+        }
+        .footer-legal-container h4 { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 0.7rem; text-transform: uppercase; }
+        .footer-links-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 10px; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.8rem; }
+        .footer-copy { font-size: 0.72rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 0.7rem; }
+
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card);
+            border-top: 1px solid var(--border-color); display: flex; justify-content: space-around;
+            padding: 0.55rem 0; z-index: 99999; box-shadow: 0 -4px 15px rgba(0,0,0,0.7);
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; text-decoration: none;
+            color: var(--text-muted); font-size: 0.62rem; font-weight: 600; cursor: pointer; gap: 2px; transition: color 0.2s;
+        }
+        .nav-item svg { width: 19px; height: 19px; fill: var(--text-muted); transition: fill 0.2s; }
+        .nav-item.active, .nav-item:hover { color: var(--accent-glow); }
+        .nav-item.active svg, .nav-item:hover svg { fill: var(--accent-glow); }
+    </style>
+</head>
+<body>
+
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loading-label-text">Actualizando sistema...</div>
+    </div>
+    
+    <div id="notification-toast">ACCIÓN COMPLETADA</div>
+
+    <div id="modal-soporte-selector" onclick="cerrarModalSoporte(event)">
+        <div class="soporte-modal-box" onclick="event.stopPropagation()">
+            <h3 style="color: #fff; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">Atención y Soporte</h3>
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Comunícate directamente a WhatsApp</p>
+
+            <div class="soporte-option-btn" onclick="abrirWhatsAppReal('normal')">
+                <div style="width: 32px; height: 32px; background: rgba(37,211,102,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="#25D366"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.124-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.85rem; color: #fff;">WhatsApp Normal</h4>
+                    <span style="font-size: 0.68rem; color: var(--text-muted);">Chat directo con Lester</span>
+                </div>
+            </div>
+
+            <div class="soporte-option-btn" onclick="abrirWhatsAppReal('business')">
+                <div style="width: 32px; height: 32px; background: rgba(37,211,102,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="#25D366"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
+                </div>
+                <div>
+                    <h4 style="font-size: 0.85rem; color: #fff;">WhatsApp Business</h4>
+                    <span style="font-size: 0.68rem; color: var(--text-muted);">Atención comercial</span>
+                </div>
+            </div>
+            
+            <button onclick="cerrarModalSoporte()" style="background: transparent; border: none; color: var(--text-muted); font-size: 0.78rem; font-weight: bold; cursor: pointer; margin-top: 0.4rem;">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="floating-bot-soporte" class="floating-bot" onclick="mostrarModalSoporte()">
+        <img src="icon-192.png" alt="Soporte">
+    </div>
+
+    <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
+
+    <!-- 1. AUTENTICACIÓN -->
+    <div id="auth-screen" class="auth-container">
+        <div class="auth-tabs">
+            <div id="tab-reg" class="auth-tab active" onclick="cambiarTabAuth('registro')">Registrarse</div>
+            <div id="tab-log" class="auth-tab" onclick="cambiarTabAuth('login')">Iniciar Sesión</div>
+        </div>
+
+        <h1 class="brand-logo-text"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></h1>
+
+        <div id="form-registro">
+            <div class="form-group">
+                <label>Nombre de usuario</label>
+                <div class="input-icon-wrapper">
+                    <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    <input type="text" id="reg-user" class="form-control" placeholder="Ej. lester_gamer" oninput="validarCampoUser(this)">
+                </div>
+                <div id="err-reg-user" class="error-feedback-text">Mínimo 4 caracteres y sin espacios.</div>
+            </div>
+            
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                <div class="input-icon-wrapper">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <input type="email" id="reg-email" class="form-control" placeholder="correo@gmail.com" oninput="validarCampoEmail(this)">
+                </div>
+                <div id="err-reg-email" class="error-feedback-text">Introduce un correo electrónico válido.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <div class="input-icon-wrapper">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" id="reg-pass" class="form-control" placeholder="Mín. 6 carac. (Letras, números y símbolo)" oninput="validarCampoPass(this)">
+                    <button type="button" class="toggle-password" onclick="togglePass('reg-pass')">
+                        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                    </button>
+                </div>
+                <div id="err-reg-pass" class="error-feedback-text">Debe tener al menos 6 caracteres, incluir letras, números y algún símbolo (!@#$).</div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirmación de contraseña</label>
+                <div class="input-icon-wrapper">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" id="reg-pass-confirm" class="form-control" placeholder="••••••••" oninput="validarCampoPassConfirm()">
+                </div>
+                <div id="err-reg-confirm" class="error-feedback-text">Las contraseñas no coinciden.</div>
+            </div>
+
+            <div class="form-group">
+                <label>¿Quién te invitó? (Opcional)</label>
+                <input type="text" id="reg-referido" class="form-control no-left-icon" placeholder="Patrocinador">
+            </div>
+            <button class="btn-main" onclick="registrarUsuario()">REGISTRARSE</button>
+        </div>
+
+        <div id="form-login" style="display: none;">
+            <div class="form-group">
+                <label>Correo electrónico</label>
+                <div class="input-icon-wrapper">
+                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <input type="email" id="log-email" class="form-control" placeholder="correo@gmail.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <div class="input-icon-wrapper">
+                    <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                    <input type="password" id="log-pass" class="form-control" placeholder="••••••••">
+                    <button type="button" class="toggle-password" onclick="togglePass('log-pass')">
+                        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <button class="btn-main" onclick="iniciarSesion()">INICIAR SESIÓN</button>
+        </div>
+    </div>
+
+    <!-- 2. APLICACIÓN PRINCIPAL -->
+    <div id="app-screen" style="display: none; flex: 1; flex-direction: column;">
+        
+        <header class="navbar">
+            <div class="nav-brand-area">
+                <div class="nav-brand-logo">
+                    <img src="icon-192.png" alt="Logo">
+                </div>
+                <div class="nav-brand-title"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
+            </div>
+            <div class="nav-top-icons">
+                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet">
+                    <svg viewBox="0 0 2000 2000" width="12" height="12"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
+                    <span id="header-wallet-balance" style="color: var(--accent-glow);">0.00 USDT</span>
+                </div>
+                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Móvil">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                    <span id="header-saldo-balance" style="color: #ffffff;">0 saldo</span>
+                </div>
+                <button class="nav-top-icon-btn" onclick="iniciarDescargaDirectaApp()" title="Descargar Aplicación">
+                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="container">
+            
+            <!-- SECCIÓN INICIO -->
+            <div id="seccion-inicio" class="vista-sec">
+                <div class="game-hero-compact" onclick="irASelectorJuegos()">
+                    <div class="game-hero-left">
+                        <div class="game-hero-icon-small">
+                            <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S17.67 9 18.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        </div>
+                        <div class="game-hero-text">
+                            <h3>Recargas Vía ID</h3>
+                            <p>Ver Oferta</p>
+                        </div>
+                    </div>
+                    <div class="game-hero-arrow">
+                        <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                    </div>
+                </div>
+
+                <div class="invite-banner">
+                    <div>
+                        <h3>Invita y Gana</h3>
+                        <p>Si invitas 10 socios le damos un regalo increíble en su cuenta.</p>
+                        <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Ver Referidos</button>
+                    </div>
+                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); padding: 12px 14px; border-radius: 12px; text-align: center;">
+                        <svg width="26" height="22" viewBox="0 0 24 24" fill="#00f0ff"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.5 15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+                        <span style="display: block; font-size: 0.52rem; font-weight: bold; color: #00f0ff; margin-top: 2px;">BONUS</span>
+                    </div>
+                </div>
+
+                <div class="live-history-card" id="live-card-container">
+                    <div class="live-history-header">
+                        <div class="live-history-title-box">
+                            <h3>Historial de compras en tiempo real</h3>
+                            <div class="live-status-sub">
+                                <div class="live-dot"></div>
+                                <span>En vivo · Top acumulado de hoy</span>
+                            </div>
+                        </div>
+                        <div class="live-counter-pill">
+                            <span>TOTAL HOY</span>
+                            <h4 id="contador-recargas-hoy">0</h4>
+                        </div>
+                    </div>
+                    <div id="lista-historial-vivo"></div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN SELECTOR DE JUEGOS -->
+            <div id="seccion-juegos-selector" class="vista-sec" style="display: none;">
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver
+                    </button>
+                </div>
+                
+                <h2 style="margin-bottom: 1rem; font-size: 1.1rem; color:var(--accent-glow);">SELECCIONA EL JUEGO</h2>
+
+                <div class="game-card-character" onclick="abrirFreeFire()">
+                    <div class="game-card-banner-img">
+                        <div class="neon-diamonds-bg"></div>
+                        <div id="freefire-custom-badge" class="neon-badge-top-right">
+                            SOLO DISPONIBLE PARA EEUU, SUR Y NORTE
+                        </div>
+                        <div style="z-index: 2; position: relative;">
+                            <span style="background: rgba(0, 102, 255, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:var(--accent-glow); font-weight: bold; display: inline-block; margin-bottom: 4px;">Recarga por ID</span>
+                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Free Fire</h3>
+                        </div>
+                        <div style="z-index: 2; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(0,240,255,0.1); border: 1px solid var(--accent-glow); width: 60px; height: 60px; border-radius: 14px; box-shadow: 0 0 15px rgba(0,240,255,0.3);">
+                            <svg viewBox="0 0 64 64" width="36" height="36"><polygon points="32,2 58,18 46,52 18,52 6,18" fill="#00a8ff"/><polygon points="32,6 52,20 42,48 22,48 12,20" fill="#00f0ff"/><polygon points="32,6 44,20 32,44 20,20" fill="#ffffff" opacity="0.9"/></svg>
+                        </div>
+                    </div>
+                    <div class="game-card-footer">
+                        <span style="color: #fff;">Diamantes Instantáneos</span>
+                        <span style="color: var(--accent-glow);">Ver Ofertas &gt;</span>
+                    </div>
+                </div>
+
+                <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
+                    <div class="game-card-banner-img" style="background: linear-gradient(135deg, #1a0808 0%, #0d1322 100%);">
+                        <div class="neon-diamonds-bg"></div>
+                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">
+                            PRÓXIMAMENTE
+                        </div>
+                        <div style="z-index: 2; position: relative;">
+                            <span style="background: rgba(245, 158, 11, 0.25); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:#f59e0b; font-weight: bold; display: inline-block; margin-bottom: 4px;">Shooter Pro</span>
+                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff;">Blood Strike</h3>
+                        </div>
+                        <div style="z-index: 2; position: relative; display: flex; align-items: center; justify-content: center; background: rgba(245,158,11,0.1); border: 1px solid #f59e0b; width: 60px; height: 60px; border-radius: 14px; box-shadow: 0 0 15px rgba(245,158,11,0.3);">
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="#f59e0b"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
+                        </div>
+                    </div>
+                    <div class="game-card-footer">
+                        <span style="color: #fff;">Oro y Pases de Batalla</span>
+                        <span style="color: #f59e0b;">Ver Oferta &gt;</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN DETALLE DE OFERTAS DE FREE FIRE -->
+            <div id="seccion-freefire" class="vista-sec" style="display: none;">
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="irASelectorJuegos()" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Juegos
+                    </button>
+                </div>
+                
+                <div class="section-title">PLAYER ID (Solo números de Free Fire)</div>
+                <div class="form-group">
+                    <input type="text" id="player-id-input" class="form-control no-left-icon" placeholder="Ej. 123456789" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+
+                <div class="section-title">SELECCIONA EL MÉTODO DE PAGO</div>
+                <div class="payment-method-selector-grid">
+                    <div id="btn-pay-usdt" class="pay-method-pill-btn active" onclick="seleccionarMetodoPago('usdt')">
+                        <div style="width: 22px; height: 22px; background: #26a69a; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 2000 2000" width="14" height="14"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
+                        </div>
+                        <span>USDT</span>
+                    </div>
+
+                    <div id="btn-pay-saldo" class="pay-method-pill-btn" onclick="seleccionarMetodoPago('saldo')">
+                        <div style="width: 22px; height: 22px; background: #0066ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="#fff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        </div>
+                        <span>Saldo Móvil</span>
+                    </div>
+                </div>
+
+                <div class="section-title">SELECCIONA EL PAQUETE</div>
+                <div class="diamonds-grid" id="contenedor-grid-paquetes"></div>
+
+                <button class="btn-main" onclick="procesarRecarga()">COMPLETAR RECARGA</button>
+            </div>
+
+            <!-- SECCIÓN ÓRDENES -->
+            <div id="seccion-ordenes" class="vista-sec" style="display: none;">
+                <h2 style="margin-bottom: 0.8rem; font-size: 1.05rem; color:var(--accent-glow);">Tus Órdenes y Transacciones</h2>
+                <p style="color:var(--text-muted); font-size:0.72rem; margin-bottom: 1rem;">Historial privado de tus solicitudes y depósitos en la plataforma.</p>
+                
+                <div style="display: flex; gap: 8px; margin-bottom: 1rem; background: #07090e; padding: 4px; border-radius: 10px; border: 1px solid var(--border-color);">
+                    <button id="tab-btn-compras" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: var(--primary-blue); color: #fff; transition: all 0.3s;" onclick="cambiarTabOrdenes('compras')">Compras (Recargas)</button>
+                    <button id="tab-btn-depositos" style="flex: 1; padding: 0.6rem; border-radius: 8px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.3s;" onclick="cambiarTabOrdenes('depositos')">Depósitos</button>
+                </div>
+
+                <div id="panel-ordenes-compras">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DE RECARGAS REALIZADAS</span>
+                            <h3 id="stat-total-recargas-realizadas" style="font-size: 1.2rem; font-weight: 900; color: var(--accent-glow);">0</h3>
+                        </div>
+                        <div style="width: 36px; height: 36px; background: rgba(0,240,255,0.1); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                        </div>
+                    </div>
+                    <div id="lista-compras-container"></div>
+                </div>
+
+                <div id="panel-ordenes-depositos" style="display: none;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem 1.1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN SALDO MÓVIL</span>
+                            <h3 id="stat-total-depositado-saldo" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0</h3>
+                        </div>
+                        <div style="width: 36px; height: 36px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="#10b981"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        </div>
+                    </div>
+                    <div id="lista-depositos-container"></div>
+                </div>
+            </div>
+
+            <!-- SUB-VISTA COMPROBANTE DE RECARGA CON ANIMACIÓN FLUIDA -->
+            <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Órdenes
+                    </button>
+                </div>
+                
+                <div id="comp-box-main" style="background: linear-gradient(135deg, #0d1322 0%, #07090e 100%); border: 2px solid #10b981; border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; position: relative; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
+                    <div style="position: absolute; top: 14px; left: 14px; font-weight: 900; font-size: 0.85rem;"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
+                    
+                    <div id="comp-badge-status" style="position: absolute; top: 12px; right: 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 4px 10px; border-radius: 8px; font-size: 0.68rem; font-weight: 900; text-transform: uppercase;">
+                        COMPLETADO
+                    </div>
+
+                    <!-- IMAGEN CON ANIMACIÓN FLUIDA Y LENTA -->
+                    <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
+                        <img id="comp-img-diamantes" src="IMG_20261105_143324_728.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='1098794_3.jpg';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
+                        <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        </div>
+                    </div>
+
+                    <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">FREE-FIRE</div>
+                    <h2 id="comp-titulo-diamantes" style="font-size: 1.5rem; font-weight: 900; color: #fff; margin-bottom: 0.4rem;">100+10 Diamantes</h2>
+                    <p id="comp-subtext-status" style="color: #10b981; font-size: 0.85rem; font-weight: 800; margin-bottom: 1.2rem;">Entregado correctamente</p>
+
+                    <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.9rem; text-align: left; font-size: 0.78rem; display: flex; flex-direction: column; gap: 6px;">
+                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">ID de Jugador:</span> <span id="comp-id-jugador" style="color:#fff; font-weight:bold;">123456789</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Fecha:</span> <span id="comp-fecha" style="color:#fff; font-weight:bold;">05/11/2026</span></div>
+                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Precio Pagado:</span> <span id="comp-precio" style="color:var(--accent-glow); font-weight:bold;">1.20 USDT</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN REFERIDOS -->
+            <div id="seccion-referidos" class="vista-sec" style="display: none;">
+                <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">REFERIDOS Y RECOMPENSAS</h2>
+                <div class="profile-header-card" style="text-align: left; padding: 1.2rem;">
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.6rem;">Socios nuevos registrados con tu enlace personal.</p>
+                    
+                    <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px;">
+                        <span id="contador-meta-referidos" style="color: #fff;">0 / 10 referidos válidos para el premio</span>
+                        <span style="color: var(--accent-glow);">VIP</span>
+                    </div>
+                    <div style="width: 100%; background: #07090e; height: 8px; border-radius: 4px; margin-bottom: 0.8rem; overflow: hidden; border: 1px solid var(--border-color);">
+                        <div id="barra-progreso-referidos" style="width: 0%; background: #10b981; height: 100%; transition: width 0.4s;"></div>
+                    </div>
+
+                    <div id="badge-premio-disponible" style="background: rgba(16, 185, 129, 0.12); border: 1px solid #10b981; color: #10b981; padding: 0.6rem; border-radius: 10px; text-align: center; font-size: 0.78rem; font-weight: bold; margin-bottom: 1rem; display: none;">
+                        ¡Premio disponible al llegar a 10 referidos válidos! Reclámalo con el CEO.
+                    </div>
+
+                    <div class="section-title">LISTA DE SOCIOS INVITADOS</div>
+                    <div id="lista-detallada-referidos" style="background: #07090e; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.8rem; max-height: 150px; overflow-y: auto; margin-bottom: 1rem; font-size: 0.75rem;">
+                        <span style="color: var(--text-muted);">Aún no tienes referidos registrados.</span>
+                    </div>
+
+                    <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.4rem;">Tu enlace de referidos</p>
+                    <div class="form-control no-left-icon" id="enlace-ref" style="font-size: 0.68rem; background: #07090e; text-align: center; margin-bottom: 0.8rem; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">https://lestertienda.github.io/Lestertienda-/?ref=usuario</div>
+                    
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-main" style="margin-top: 0; background: var(--bg-card); border: 1px solid var(--border-color); color: #fff;" onclick="copiarEnlaceRef()">Copiar Enlace</button>
+                        <button class="btn-main" style="margin-top: 0; background: var(--primary-blue); display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="compartirEnlaceRef()">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+                            Compartir
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN WALLET -->
+            <div id="seccion-wallet" class="vista-sec" style="display: none;">
+                <h2 style="margin-bottom: 1rem; font-size: 1.05rem; color:var(--accent-glow);">MÉTODOS DE BILLETERA</h2>
+                <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Selecciona tu método de recarga o gestión de fondos.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;">
+                    
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('usdt')">
+                        <div id="wallet-badge-usdt" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 38px; height: 38px; background: rgba(38, 166, 154, 0.15); border: 1px solid #26a69a; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 2000 2000" width="22" height="22"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">USDT BEP 20</h3>
+                                    <span style="font-size: 0.68rem; color: #26a69a; font-weight: bold;">Tether USD (Mercado Global)</span>
+                                </div>
+                            </div>
+                            <span style="color: var(--accent-glow); font-size: 0.8rem; font-weight: bold;">&gt;</span>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('saldo')">
+                        <div id="wallet-badge-saldo" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 38px; height: 38px; background: rgba(0, 102, 255, 0.15); border: 1px solid var(--accent-glow); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Saldo Móvil</h3>
+                                    <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Saldo Interno Habilitado</span>
+                                </div>
+                            </div>
+                            <span style="color: var(--accent-glow); font-size: 0.8rem; font-weight: bold;">&gt;</span>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px; padding: 1.1rem; cursor: pointer; transition: border-color 0.2s; position: relative;" onclick="abrirVistaWalletDetalle('tarjeta')">
+                        <div id="wallet-badge-tarjeta" style="position: absolute; top: 12px; right: 12px; padding: 3px 8px; border-radius: 6px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; display: none;"></div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 38px; height: 38px; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" fill="#f59e0b"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Pago con Tarjeta</h3>
+                                    <span style="font-size: 0.68rem; color: #f59e0b; font-weight: bold;">Próximamente disponible</span>
+                                </div>
+                            </div>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">&gt;</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SUB-VISTA DETALLE WALLET USDT BEP 20 -->
+            <div id="seccion-wallet-usdt" class="vista-sec" style="display: none;">
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Billeteras
+                    </button>
+                </div>
+                
+                <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(38,166,154,0.15);">
+                    <h3 style="font-size: 1.05rem; font-weight: 900; color: #fff; margin-bottom: 0.8rem;">Recarga USDT BEP 20</h3>
+                    
+                    <div class="form-group">
+                        <label>La red BEP 20 a transferir será esta:</label>
+                        <div class="form-control no-left-icon" id="wallet-direccion-usdt-display" style="font-size: 0.72rem; background: #07090e; color: #26a69a; text-align: center; word-break: break-all; padding: 0.8rem; margin-bottom: 0.5rem; font-weight: 800;">0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2</div>
+                        <button class="btn-main" style="background: #26a69a; margin-top: 0;" onclick="copiarDireccionUSDTNuevo()">Copiar Dirección</button>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Monto</label>
+                        <input type="number" id="monto-usdt-deposito" class="form-control no-left-icon" placeholder="Ej. 10.00">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>ID de la transferencia (Hash / ID)</label>
+                        <input type="text" id="txid-usdt-input" class="form-control no-left-icon" placeholder="Ej. 0x1234abcd..." oninput="validarTxIdInput(this)">
+                        <div id="err-txid" class="error-feedback-text">Esto no es una ID de transferencia válida (evita letras inválidas o caracteres erróneos).</div>
+                    </div>
+
+                    <button class="btn-main" style="background: #26a69a; margin-top: 1rem;" onclick="confirmarEnvioUSDTDep()">CONFIRMAR DEPÓSITO</button>
+                </div>
+            </div>
+
+            <!-- SUB-VISTA DETALLE WALLET SALDO MÓVIL -->
+            <div id="seccion-wallet-saldo" class="vista-sec" style="display: none;">
+                <div style="margin-bottom: 1rem;">
+                    <button class="nav-top-icon-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Billeteras
+                    </button>
+                </div>
+                
+                <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px; padding: 1.2rem; box-shadow: 0 0 20px rgba(0,240,255,0.15);">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
+                        <div style="width: 36px; height: 36px; background: rgba(0, 102, 255, 0.2); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 0.92rem; font-weight: 900; color: #fff;">Saldo Móvil</h3>
+                            <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Recarga rápida</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Número Oficial para Recibir el Pago</label>
+                        <div class="form-control no-left-icon" id="wallet-numero-saldo-display" style="font-weight: 900; font-size: 1.1rem; background: #07090e; color: var(--accent-glow); text-align: center; letter-spacing: 1px;">59578110</div>
+                        <button class="btn-main" style="margin-top: 0.5rem; background: var(--bg-card); color: #fff; border: 1px solid var(--border-color);" onclick="copiarNumeroWallet()">Copiar Número</button>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Monto exacto transferido</label>
+                        <input type="number" id="monto-deposito" class="form-control no-left-icon" placeholder="Ej. 300">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Tu número con el que transfirió el saldo</label>
+                        <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx" oninput="this.value = this.value.replace(/[^0-9+]/g, '')">
+                    </div>
+
+                    <button class="btn-main" onclick="confirmarendioDeposito()">CONFIRMAR DEPÓSITO</button>
+                </div>
+            </div>
+
+            <!-- SECCIÓN PERFIL -->
+            <div id="seccion-perfil" class="vista-sec" style="display: none;">
+                <div class="profile-header-card">
+                    <div class="profile-wallet-pill-corner" style="display: flex; gap: 8px; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <span id="profile-wallet-balance" style="color: var(--accent-glow);">0.00 USDT</span>
+                        </div>
+                        <span style="color: var(--border-color);">|</span>
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                            <svg viewBox="0 0 24 24" width="13" height="13" fill="#ffffff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <span id="profile-saldo-movil-top" style="color: #ffffff; font-size: 0.73rem; font-weight: 900;">0 saldo</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-circle" id="perfil-inicial" onclick="abrirSelectorGaleria()">L</div>
+                        <div class="avatar-edit-badge" onclick="abrirSelectorGaleria()">
+                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        </div>
+                    </div>
+
+                    <h3 id="perfil-usuario" style="font-size: 1.05rem; font-weight: 900;">Usuario</h3>
+                    <p id="perfil-correo" style="color: var(--text-muted); font-size: 0.78rem; margin-top: 0.2rem;">correo@gmail.com</p>
+                    <p id="perfil-rango-label" style="color: var(--accent-glow); font-size: 0.72rem; font-weight: bold; margin-top: 0.3rem;">CLIENTE PRO</p>
+
+                    <!-- ESTADÍSTICAS EN EL PERFIL: Saldo Móvil en la posición correcta -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.9rem;">
+                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                            <h4 id="stat-saldo-movil-perfil" style="font-size: 0.88rem; font-weight: 900; color: #ffffff;">0 saldo</h4>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">Saldo Móvil</span>
+                        </div>
+                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                            <h4 id="stat-ref-validos" style="font-size: 0.88rem; font-weight: 900; color: #10b981;">0</h4>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos Válidos</span>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;">
+                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                            <h4 id="stat-ref-no-activos" style="font-size: 0.88rem; font-weight: 900; color: #f59e0b;">0</h4>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos No Activos</span>
+                        </div>
+                        <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
+                            <h4 id="stat-cantidad-recargas-perfil" style="font-size: 0.88rem; font-weight: 900; color: var(--accent-glow);">0</h4>
+                            <span style="font-size: 0.65rem; color: var(--text-muted);">Total Recargas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón de seguridad original azul y negro -->
+                <button class="btn-main" style="background: #07090e; border: 1px solid var(--primary-blue); color: var(--accent-glow); margin-bottom: 1rem;" onclick="toggleSeguridadPanel()">
+                    SEGURIDAD Y CONFIGURACIÓN
+                </button>
+
+                <div id="seccion-seguridad" style="display: none;" class="security-menu-box">
+                    <button class="security-btn" onclick="toggleSubPanel('panel-transferir-usdt')">
+                        <svg viewBox="0 0 24 24"><path d="M21 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 8h14v2H5V8zm14 10H5v-2h14v2zm0-4H5v-2h14v2z"/></svg>
+                        Transferir Saldo a Otro Usuario
+                    </button>
+                    <div id="panel-transferir-usdt" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
+                        <div class="form-group">
+                            <label>Destinatario (Nombre de usuario o Correo)</label>
+                            <input type="text" id="trans-destino" class="form-control no-left-icon" placeholder="Ej. usuario o correo@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Monto a transferir</label>
+                            <input type="number" id="trans-monto" class="form-control no-left-icon" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label>Tu contraseña actual (Confirmación)</label>
+                            <input type="password" id="trans-pass" class="form-control no-left-icon" placeholder="••••••••">
+                        </div>
+                        <button class="btn-main" onclick="ejecutarTransferenciaUSDT()">Enviar Transferencia</button>
+                    </div>
+
+                    <button class="security-btn" onclick="toggleSubPanel('panel-cambiar-nombre')">
+                        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        Cambiar Nombre de Usuario
+                    </button>
+                    <div id="panel-cambiar-nombre" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
+                        <div class="form-group">
+                            <label>Nuevo nombre de usuario</label>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                <input type="text" id="nuevo-nombre-input" class="form-control" placeholder="Nuevo nombre">
+                            </div>
+                        </div>
+                        <button class="btn-main" onclick="cambiarNombreUsuarioReal()">Guardar Nuevo Nombre</button>
+                    </div>
+
+                    <button class="security-btn" onclick="toggleSubPanel('panel-cambiar-pass')">
+                        <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                        Cambiar Contraseña
+                    </button>
+                    <div id="panel-cambiar-pass" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
+                        <div class="form-group">
+                            <label>Contraseña actual</label>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <input type="password" id="p-act" class="form-control" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Contraseña nueva</label>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <input type="password" id="p-nue" class="form-control" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar contraseña</label>
+                            <div class="input-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                                <input type="password" id="p-con" class="form-control" placeholder="••••••••">
+                            </div>
+                        </div>
+                        <button class="btn-main" onclick="cambiarPasswordReal()">Cambiar Contraseña</button>
+                    </div>
+
+                    <button class="security-btn" onclick="confirmarEliminarCuenta()" style="color:#ff3b30; border-color:rgba(255,59,48,0.2);">
+                        <svg viewBox="0 0 24 24" style="fill:#ff3b30;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        Eliminar Cuenta
+                    </button>
+                    <div id="panel-confirmar-eliminar" style="display:none; background:rgba(255,59,48,0.06); border:1px solid #ff3b30; border-radius:10px; padding:10px; margin-top:6px;">
+                        <p style="color:#ff3b30; font-size:0.75rem; font-weight:bold; margin-bottom:6px; text-align:center;">¿Estás seguro de eliminar tu cuenta?</p>
+                        <div style="display:flex; gap:6px;">
+                            <button class="btn-main" style="background:#ff3b30; margin-top:0;" onclick="ejecutarEliminarCuenta()">Sí</button>
+                            <button class="btn-main" style="background:#1a233a; color:var(--text-muted); margin-top:0;" onclick="cancelarEliminarCuenta()">No</button>
+                        </div>
+                    </div>
+
+                    <button class="security-btn" onclick="cerrarSesion()" style="color:var(--accent-glow);">
+                        <svg viewBox="0 0 24 24" style="fill:var(--accent-glow);"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                        Cerrar Sesión
+                    </button>
+                </div>
+
+                <div id="panel-ceo-container" style="display: none;"></div>
+            </div>
+
+            <!-- FOOTER LEGAL -->
+            <footer class="footer-legal-container">
+                <h4>Información Legal</h4>
+                <div class="footer-links-grid">
+                    <span onclick="mostrarNotificacion('Términos y Condiciones')">Términos</span> &bull; 
+                    <span onclick="mostrarNotificacion('Política de Privacidad')">Privacidad</span> &bull; 
+                    <span onclick="mostrarNotificacion('Política de Pagos')">Pagos</span> &bull; 
+                    <span onclick="mostrarNotificacion('Reembolsos')">Reembolsos</span> &bull; 
+                    <span onclick="mostrarNotificacion('Contacto')">Soporte</span>
+                </div>
+                <div class="footer-copy">
+                    &copy; 2026 <span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span> &mdash; Todos los derechos reservados.
+                </div>
+            </footer>
+
+        </div>
+
+        <nav class="bottom-nav">
+            <a class="nav-item active" id="nav-btn-inicio" onclick="cambiarSeccion('inicio', this)">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>Inicio</span>
+            </a>
+            <a class="nav-item" id="nav-btn-ordenes" onclick="cambiarSeccion('ordenes', this)">
+                <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                <span>Órdenes</span>
+            </a>
+            <a class="nav-item" id="nav-btn-referidos" onclick="cambiarSeccion('referidos', this)">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                <span>Referidos</span>
+            </a>
+            <a class="nav-item" id="nav-btn-wallet" onclick="cambiarSeccion('wallet', this)">
+                <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                <span>Wallet</span>
+            </a>
+            <a class="nav-item" id="nav-btn-perfil" onclick="cambiarSeccion('perfil', this)">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>Perfil</span>
+            </a>
+        </nav>
+
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error', err));
+            });
+        }
+
+        const botSoporte = document.getElementById('floating-bot-soporte');
+        let isDragging = false;
+        let startX, startY, initialX, initialY;
+
+        botSoporte.addEventListener('pointerdown', (e) => {
+            isDragging = false;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialX = botSoporte.offsetLeft;
+            initialY = botSoporte.offsetTop;
+            botSoporte.setPointerCapture(e.pointerId);
+        });
+
+        botSoporte.addEventListener('pointermove', (e) => {
+            if (!startX && !startY) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            if (Math.abs(dx) > 5 || Math.abs(dy) > 5) isDragging = true;
+            if (isDragging) {
+                let newX = initialX + dx;
+                let newY = initialY + dy;
+                newX = Math.max(5, Math.min(window.innerWidth - 65, newX));
+                newY = Math.max(5, Math.min(window.innerHeight - 65, newY));
+                botSoporte.style.left = newX + 'px';
+                botSoporte.style.top = newY + 'px';
+                botSoporte.style.right = 'auto';
+                botSoporte.style.bottom = 'auto';
+            }
+        });
+
+        botSoporte.addEventListener('pointerup', () => { startX = null; startY = null; });
+
+        function mostrarModalSoporte() {
+            if (isDragging) return;
+            document.getElementById('modal-soporte-selector').style.display = 'flex';
+        }
+
+        function cerrarModalSoporte(e) {
+            if (!e || e.target.id === 'modal-soporte-selector') {
+                document.getElementById('modal-soporte-selector').style.display = 'none';
+            }
+        }
+
+        function abrirWhatsAppReal(tipo) {
+            const numero = "5359578110";
+            const texto = encodeURIComponent("Estimado equipo de soporte / Lester, me comunico desde la plataforma para recibir asistencia con mi cuenta y transacciones.");
+            let url = tipo === 'business' ? `whatsapp://send?phone=${numero}&text=${texto}` : `https://api.whatsapp.com/send?phone=${numero}&text=${texto}`;
+            window.open(url, '_blank');
+            cerrarModalSoporte();
+        }
+
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        function iniciarDescargaDirectaApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        mostrarNotificacion("Iniciando descarga e instalación...");
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                const manifestData = {
+                    "name": "Lester Tienda",
+                    "short_name": "LesterTienda",
+                    "start_url": ".",
+                    "display": "standalone",
+                    "background_color": "#07090e",
+                    "theme_color": "#0066ff"
+                };
+                const blob = new Blob([JSON.stringify(manifestData, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'lester-tienda-installer.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                mostrarNotificacion("Descarga directa iniciada en tu dispositivo.");
+            }
+        }
+
+        let usuarioActual = JSON.parse(localStorage.getItem('lester_usuario')) || null;
+        let ofertaSeleccionada = null;
+        let metodoPagoActual = 'usdt';
+        let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
+        let listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
+        
+        let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { 
+            etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", 
+            colorFF: "rojo",
+            etiquetaBloodStrike: "PRÓXIMAMENTE",
+            colorBS: "amarillo",
+            etiquetaWalletUSDT: "",
+            colorWUSDT: "verde",
+            etiquetaWalletSaldo: "",
+            colorWSaldo: "verde",
+            etiquetaWalletTarjeta: "",
+            colorWTarjeta: "rojo",
+            numeroSaldoOficial: "59578110",
+            direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
+            ocultarTopRecargasHoy: false,
+            paquetesDiamantes: [
+                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
+                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
+                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
+                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
+                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
+            ],
+            etiquetasCustomCEO: []
+        };
+
+        const BIN_ID = '6aeaa0e1ffd5d16053a44254';
+        const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
+
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refParam = urlParams.get('ref');
+            if (refParam) {
+                localStorage.setItem('lester_ref_pendiente', refParam.trim());
+                setTimeout(() => {
+                    const inputRef = document.getElementById('reg-referido');
+                    if (inputRef) inputRef.value = refParam.trim();
+                }, 500);
+            } else {
+                let guardadoRef = localStorage.getItem('lester_ref_pendiente');
+                if (guardadoRef) {
+                    const inputRef = document.getElementById('reg-referido');
+                    if (inputRef) inputRef.value = guardadoRef;
+                }
+            }
+
+            if (usuarioActual) {
+                if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
+                let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                if(fresh) {
+                    usuarioActual = fresh;
+                    if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                    if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
+                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                }
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('app-screen').style.display = 'flex';
+                actualizarPerfilUI();
+                renderizarOrdenes();
+            }
+            sincronizarConCloudAuto();
+            aplicarConfiguracionVisual();
+            renderizarPaquetesTienda();
+
+            setInterval(() => {
+                sincronizarConCloudAutoSilencioso();
+            }, 10000);
+        };
+
+        async function sincronizarConCloudAuto() {
+            mostrarCarga("Sincronizando datos...");
+            try {
+                const respuesta = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': MASTER_KEY }
+                });
+                const resultado = await respuesta.json();
+                
+                if (resultado.record) {
+                    if (resultado.record.usuarios && Array.isArray(resultado.record.usuarios)) {
+                        listaUsuariosGlobales = resultado.record.usuarios.map(u => {
+                            if(u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
+                            if(u.balanceCUP === undefined) u.balanceCUP = 0;
+                            return u;
+                        });
+                        localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                    }
+                    if (resultado.record.solicitudes) {
+                        solicitudesGlobales = resultado.record.solicitudes;
+                        localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                        renderizarOrdenes();
+                    }
+                    if (resultado.record.config) {
+                        tiendaConfig = resultado.record.config;
+                        if(!tiendaConfig.paquetesDiamantes || tiendaConfig.paquetesDiamantes.length === 0) {
+                            tiendaConfig.paquetesDiamantes = [
+                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
+                                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
+                                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
+                                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
+                                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
+                            ];
+                        }
+                        if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
+                        localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                    }
+                }
+                if (usuarioActual) {
+                    let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                    if(fresh) {
+                        usuarioActual = fresh;
+                        if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                        if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
+                        localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                    }
+                }
+                actualizarPerfilUI();
+                actualizarEstadisticasInicio();
+                aplicarConfiguracionVisual();
+                renderizarPaquetesTienda();
+            } catch (error) {
+                console.error('Error al sincronizar con JSONBin:', error);
+            } finally {
+                ocultarCarga();
+            }
+        }
+
+        async function sincronizarConCloudAutoSilencioso() {
+            try {
+                const respuesta = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': MASTER_KEY }
+                });
+                const resultado = await respuesta.json();
+                if (resultado.record) {
+                    if (resultado.record.usuarios) {
+                        listaUsuariosGlobales = resultado.record.usuarios;
+                        localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                    }
+                    if (resultado.record.solicitudes) {
+                        solicitudesGlobales = resultado.record.solicitudes;
+                        localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                        renderizarOrdenes();
+                    }
+                    if (resultado.record.config) {
+                        tiendaConfig = resultado.record.config;
+                        localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                        aplicarConfiguracionVisual();
+                        renderizarPaquetesTienda();
+                    }
+                }
+                if (usuarioActual) {
+                    let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                    if(fresh) {
+                        usuarioActual = fresh;
+                        if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                        if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
+                        localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                        actualizarPerfilUI();
+                    }
+                }
+                actualizarEstadisticasInicio();
+            } catch (e) {}
+        }
+
+        async function guardarEnCloud() {
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY
+                    },
+                    body: JSON.stringify({
+                        usuarios: listaUsuariosGlobales,
+                        solicitudes: solicitudesGlobales,
+                        config: tiendaConfig
+                    })
+                });
+            } catch (error) {
+                console.error('Error al guardar en la nube:', error);
+            }
+        }
+
+        function getColorHex(colorNombre) {
+            switch(colorNombre) {
+                case 'verde': return '#10b981';
+                case 'rojo': return '#ff3b30';
+                case 'amarillo': return '#f59e0b';
+                case 'azul': return '#00f0ff';
+                default: return '#10b981';
+            }
+        }
+
+        function aplicarConfiguracionVisual() {
+            const badgeFF = document.getElementById('freefire-custom-badge');
+            let textoFF = tiendaConfig.etiquetaFreeFire || "";
+            if(badgeFF) {
+                badgeFF.innerText = textoFF;
+                let colHex = getColorHex(tiendaConfig.colorFF || 'rojo');
+                badgeFF.style.background = `rgba(${colHex === '#ff3b30' ? '255, 59, 48' : (colHex === '#10b981' ? '16, 185, 129' : '245, 158, 11')}, 0.2)`;
+                badgeFF.style.borderColor = colHex;
+                badgeFF.style.color = colHex;
+                badgeFF.style.display = textoFF.trim() === "" ? "none" : "block";
+            }
+
+            const badgeBS = document.getElementById('bloodstrike-custom-badge');
+            let textoBS = tiendaConfig.etiquetaBloodStrike || "";
+            if(badgeBS) {
+                badgeBS.innerText = textoBS;
+                let colHexBS = getColorHex(tiendaConfig.colorBS || 'amarillo');
+                badgeBS.style.background = `rgba(245, 158, 11, 0.2)`;
+                badgeBS.style.borderColor = colHexBS;
+                badgeBS.style.color = colHexBS;
+                badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
+            }
+
+            const wUsdt = document.getElementById('wallet-badge-usdt');
+            if(wUsdt) {
+                let t = tiendaConfig.etiquetaWalletUSDT || "";
+                if(t) {
+                    let c = getColorHex(tiendaConfig.colorWUSDT || 'verde');
+                    wUsdt.innerText = t;
+                    wUsdt.style.background = `rgba(16,185,129,0.2)`;
+                    wUsdt.style.color = c;
+                    wUsdt.style.border = `1px solid ${c}`;
+                    wUsdt.style.display = 'block';
+                } else {
+                    wUsdt.style.display = 'none';
+                }
+            }
+
+            const wSaldo = document.getElementById('wallet-badge-saldo');
+            if(wSaldo) {
+                let t = tiendaConfig.etiquetaWalletSaldo || "";
+                if(t) {
+                    let c = getColorHex(tiendaConfig.colorWSaldo || 'verde');
+                    wSaldo.innerText = t;
+                    wSaldo.style.background = `rgba(16,185,129,0.2)`;
+                    wSaldo.style.color = c;
+                    wSaldo.style.border = `1px solid ${c}`;
+                    wSaldo.style.display = 'block';
+                } else {
+                    wSaldo.style.display = 'none';
+                }
+            }
+
+            const wTarjeta = document.getElementById('wallet-badge-tarjeta');
+            if(wTarjeta) {
+                let t = tiendaConfig.etiquetaWalletTarjeta || "";
+                if(t) {
+                    let c = getColorHex(tiendaConfig.colorWTarjeta || 'rojo');
+                    wTarjeta.innerText = t;
+                    wTarjeta.style.background = `rgba(255,59,48,0.2)`;
+                    wTarjeta.style.color = c;
+                    wTarjeta.style.border = `1px solid ${c}`;
+                    wTarjeta.style.display = 'block';
+                } else {
+                    wTarjeta.style.display = 'none';
+                }
+            }
+
+            const numDisp = document.getElementById('wallet-numero-saldo-display');
+            if(numDisp && tiendaConfig.numeroSaldoOficial) numDisp.innerText = tiendaConfig.numeroSaldoOficial;
+
+            const dirDisp = document.getElementById('wallet-direccion-usdt-display');
+            if(dirDisp && tiendaConfig.direccionUSDTOficial) dirDisp.innerText = tiendaConfig.direccionUSDTOficial;
+        }
+
+        function renderizarPaquetesTienda() {
+            const container = document.getElementById('contenedor-grid-paquetes');
+            if(!container) return;
+            let paquetes = tiendaConfig.paquetesDiamantes || [];
+            if(paquetes.length === 0) {
+                paquetes = [
+                    { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                    { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
+                    { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
+                    { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
+                    { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
+                    { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
+                ];
+            }
+            let html = "";
+            paquetes.forEach(p => {
+                let precioMostrado = metodoPagoActual === 'usdt' ? `${p.precioUsdt.toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
+                let imgSource = p.imagen || 'IMG_20261105_143324_728.jpg';
+                html += `
+                    <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${imgSource}')">
+                        <div class="diamond-img-render"><img src="${imgSource}" alt="${p.nombre}" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';"></div>
+                        <h4>${p.nombre}</h4>
+                        <span class="diamond-price">${precioMostrado}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function mostrarCarga(texto = "Procesando...") { 
+            const loader = document.getElementById('loading-overlay');
+            document.getElementById('loading-label-text').innerText = texto;
+            loader.style.display = 'flex'; 
+        }
+        function ocultarCarga() { document.getElementById('loading-overlay').style.display = 'none'; }
+
+        function mostrarNotificacion(mensaje) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const toast = document.getElementById('notification-toast');
+            toast.innerText = mensaje;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        function cambiarTabAuth(tipo) {
+            if (tipo === 'registro') {
+                document.getElementById('form-registro').style.display = 'block';
+                document.getElementById('form-login').style.display = 'none';
+                document.getElementById('tab-reg').classList.add('active');
+                document.getElementById('tab-log').classList.remove('active');
+            } else {
+                document.getElementById('form-registro').style.display = 'none';
+                document.getElementById('form-login').style.display = 'block';
+                document.getElementById('tab-log').classList.add('active');
+                document.getElementById('tab-reg').classList.remove('active');
+            }
+        }
+
+        function togglePass(idInput) {
+            const input = document.getElementById(idInput);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+
+        function validarCampoUser(input) {
+            const val = input.value.trim();
+            const errDiv = document.getElementById('err-reg-user');
+            let existe = listaUsuariosGlobales.some(u => u.nombre.toLowerCase() === val.toLowerCase());
+
+            if (val.length < 4 || /\s/.test(val)) {
+                input.classList.add('input-error');
+                errDiv.innerText = "Mínimo 4 caracteres y sin espacios.";
+                errDiv.style.display = 'block';
+                return false;
+            } else if (existe) {
+                input.classList.add('input-error');
+                errDiv.innerText = "Este nombre de usuario ya existe.";
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validarCampoEmail(input) {
+            const val = input.value.trim();
+            const errDiv = document.getElementById('err-reg-email');
+            const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!regexEmail.test(val)) {
+                input.classList.add('input-error');
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validarCampoPass(input) {
+            const val = input.value;
+            const errDiv = document.getElementById('err-reg-pass');
+            const regexPass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_\-\+\=])[A-Za-z\d@$!%*#?&_\-\+\=]{6,}$/;
+
+            if (!regexPass.test(val)) {
+                input.classList.add('input-error');
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function validarCampoPassConfirm() {
+            const p1 = document.getElementById('reg-pass').value;
+            const p2 = document.getElementById('reg-pass-confirm').value;
+            const errDiv = document.getElementById('err-reg-confirm');
+            const input2 = document.getElementById('reg-pass-confirm');
+
+            if (p1 !== p2 || p2 === "") {
+                input2.classList.add('input-error');
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input2.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function registrarUsuario() {
+            const inputUser = document.getElementById('reg-user');
+            const inputEmail = document.getElementById('reg-email');
+            const inputPass = document.getElementById('reg-pass');
+            const inputConfirm = document.getElementById('reg-pass-confirm');
+
+            let v1 = validarCampoUser(inputUser);
+            let v2 = validarCampoEmail(inputEmail);
+            let v3 = validarCampoPass(inputPass);
+            let v4 = validarCampoPassConfirm();
+
+            if (!v1 || !v2 || !v3 || !v4) {
+                mostrarNotificacion("Revisa los campos marcados en rojo");
+                return;
+            }
+
+            const user = inputUser.value.trim();
+            const email = inputEmail.value.trim().toLowerCase();
+            const pass = inputPass.value;
+            let referidoPor = document.getElementById('reg-referido').value.trim();
+
+            if (!referidoPor) {
+                referidoPor = localStorage.getItem('lester_ref_pendiente') || null;
+            }
+
+            mostrarCarga("Registrando cuenta...");
+            setTimeout(async () => {
+                let esPrincipalCEO = (email === 'lesterdomingues388@gmail.com');
+                usuarioActual = { 
+                    nombre: user, 
+                    correo: email, 
+                    pass: pass, 
+                    balanceUSDT: 0.00,
+                    balanceCUP: 0,
+                    balance: 0.00,
+                    recargasCount: 0, 
+                    avatar: "",
+                    referidoPor: referidoPor || null,
+                    descuentosDisponibles: 0,
+                    rango: esPrincipalCEO ? 2 : 0
+                };
+                
+                listaUsuariosGlobales.push(usuarioActual);
+                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                localStorage.removeItem('lester_ref_pendiente');
+
+                await guardarEnCloud();
+                ocultarCarga();
+
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('app-screen').style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                actualizarPerfilUI();
+                renderizarOrdenes();
+                mostrarNotificacion("¡Bienvenido a Lester Tienda!");
+            }, 800);
+        }
+
+        function iniciarSesion() {
+            const email = document.getElementById('log-email').value.trim();
+            const pass = document.getElementById('log-pass').value.trim();
+
+            if (!email || !pass) {
+                mostrarNotificacion("Ingresa correo y contraseña");
+                return;
+            }
+
+            let encontrado = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === email.toLowerCase() && u.pass === pass);
+            if(!encontrado) {
+                mostrarNotificacion("Correo o contraseña incorrectos.");
+                return;
+            }
+
+            mostrarCarga("Iniciando sesión...");
+            setTimeout(() => {
+                ocultarCarga();
+                usuarioActual = encontrado;
+                if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
+                if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') {
+                    usuarioActual.rango = 2;
+                }
+                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('app-screen').style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                actualizarPerfilUI();
+                renderizarOrdenes();
+                mostrarNotificacion("¡Sesión iniciada correctamente!");
+            }, 800);
+        }
+
+        function cambiarSeccion(seccion, elemento) {
+            mostrarCarga("Cargando sección...");
+            setTimeout(() => {
+                ocultarCarga();
+                document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+                document.getElementById('seccion-' + seccion).style.display = 'flex';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                if(elemento) {
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    elemento.classList.add('active');
+                }
+                if(seccion === 'perfil') verificarAccesoCEO();
+                if(seccion === 'ordenes') renderizarOrdenes();
+                if(seccion === 'referidos') actualizarPerfilUI();
+                if(seccion === 'inicio') {
+                    actualizarEstadisticasInicio();
+                    aplicarConfiguracionVisual();
+                }
+            }, 300);
+        }
+
+        function abrirVistaWalletDetalle(opcion) {
+            mostrarCarga("Cargando opción...");
+            setTimeout(() => {
+                ocultarCarga();
+                document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+                if (opcion === 'usdt') {
+                    document.getElementById('seccion-wallet-usdt').style.display = 'flex';
+                } else if (opcion === 'saldo') {
+                    document.getElementById('seccion-wallet-saldo').style.display = 'flex';
+                } else if (opcion === 'tarjeta') {
+                    document.getElementById('seccion-wallet').style.display = 'flex';
+                    mostrarNotificacion("Pago con Tarjeta: Próximamente disponible");
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 200);
+        }
+
+        function validarTxIdInput(input) {
+            const val = input.value.trim();
+            const errDiv = document.getElementById('err-txid');
+            const esValido = /^(0x)?[a-fA-F0-9]{10,}$/.test(val) || (/^[a-zA-Z0-9]{15,}$/.test(val) && !/[^a-zA-Z0-9]/.test(val));
+
+            if (val.length > 0 && !esValido) {
+                input.classList.add('input-error');
+                errDiv.style.display = 'block';
+                return false;
+            } else {
+                input.classList.remove('input-error');
+                errDiv.style.display = 'none';
+                return true;
+            }
+        }
+
+        function confirmarEnvioUSDTDep() {
+            const monto = parseFloat(document.getElementById('monto-usdt-deposito').value);
+            const txInput = document.getElementById('txid-usdt-input');
+            const txId = txInput.value.trim();
+
+            if(isNaN(monto) || monto <= 0) {
+                mostrarNotificacion("Introduce un monto válido en USDT");
+                return;
+            }
+
+            if(!validarTxIdInput(txInput) || txId.length < 8) {
+                mostrarNotificacion("ID de transferencia no válida o incompleta");
+                return;
+            }
+
+            mostrarCarga("Enviando reporte de depósito...");
+            setTimeout(async () => {
+                const nuevoDep = { 
+                    id: Date.now(),
+                    correo: usuarioActual.correo.toLowerCase(),
+                    usuario: usuarioActual.nombre, 
+                    monto: monto, 
+                    telefonoTransfirio: `TxID: ${txId}`,
+                    estado: 'Pendiente' 
+                };
+                solicitudesGlobales.depositos.push(nuevoDep);
+                localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                
+                await guardarEnCloud();
+                ocultarCarga();
+
+                mostrarNotificacion("Depósito USDT enviado a revisión");
+                document.getElementById('monto-usdt-deposito').value = '';
+                document.getElementById('txid-usdt-input').value = '';
+                
+                renderizarOrdenes();
+                cambiarTabOrdenes('depositos');
+                cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
+            }, 800);
+        }
+
+        function irASelectorJuegos() {
+            mostrarCarga("Cargando juegos...");
+            setTimeout(() => {
+                ocultarCarga();
+                document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+                document.getElementById('seccion-juegos-selector').style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                aplicarConfiguracionVisual();
+            }, 300);
+        }
+
+        function abrirFreeFire() {
+            mostrarCarga("Cargando Free Fire...");
+            setTimeout(() => {
+                ocultarCarga();
+                document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+                document.getElementById('seccion-freefire').style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                seleccionarMetodoPago('usdt');
+                renderizarPaquetesTienda();
+            }, 300);
+        }
+
+        function seleccionarMetodoPago(metodo) {
+            metodoPagoActual = metodo;
+            ofertaSeleccionada = null;
+            document.querySelectorAll('.diamond-card').forEach(c => c.classList.remove('selected'));
+
+            const btnUsdt = document.getElementById('btn-pay-usdt');
+            const btnSaldo = document.getElementById('btn-pay-saldo');
+
+            if (metodo === 'usdt') {
+                btnUsdt.classList.add('active');
+                btnSaldo.classList.remove('active');
+            } else {
+                btnSaldo.classList.add('active');
+                btnUsdt.classList.remove('active');
+            }
+            renderizarPaquetesTienda();
+        }
+
+        function seleccionarOferta(diamantesNum, precioUsdt, precioSaldo, textoDetalle, imagenNombre) {
+            let precioFinal = metodoPagoActual === 'usdt' ? precioUsdt : precioSaldo;
+            if (usuarioActual && usuarioActual.descuentosDisponibles > 0 && metodoPagoActual === 'usdt') {
+                precioFinal *= 0.95;
+            }
+            ofertaSeleccionada = { diamantes: textoDetalle, diamantesNum, precio: precioFinal, moneda: metodoPagoActual, imagen: imagenNombre };
+            document.querySelectorAll('.diamond-card').forEach(c => c.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function procesarRecarga() {
+            const playerIdInput = document.getElementById('player-id-input');
+            const playerId = playerIdInput.value.trim();
+
+            if(!playerId || playerId.length < 6) {
+                playerIdInput.classList.add('input-error-shake');
+                mostrarNotificacion("Introduce un ID de Free Fire válido");
+                return;
+            }
+
+            if(!ofertaSeleccionada) {
+                mostrarNotificacion("Selecciona un paquete de diamantes");
+                return;
+            }
+
+            if (ofertaSeleccionada.moneda === 'usdt') {
+                if (usuarioActual.balanceUSDT < ofertaSeleccionada.precio) {
+                    mostrarNotificacion("Saldo USDT insuficiente. Recarga en tu Wallet USDT.");
+                    return;
+                }
+            } else {
+                if (usuarioActual.balanceCUP < ofertaSeleccionada.precio) {
+                    mostrarNotificacion("Saldo insuficiente. Redirigiendo a Wallet para recargar saldo móvil...");
+                    setTimeout(() => {
+                        cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'));
+                    }, 1200);
+                    return;
+                }
+            }
+
+            mostrarCarga("Procesando recarga...");
+            setTimeout(async () => {
+                if (ofertaSeleccionada.moneda === 'usdt') {
+                    usuarioActual.balanceUSDT -= ofertaSeleccionada.precio;
+                } else {
+                    usuarioActual.balanceCUP -= ofertaSeleccionada.precio;
+                }
+                usuarioActual.balance = usuarioActual.balanceUSDT;
+                usuarioActual.recargasCount++;
+                if (usuarioActual.descuentosDisponibles > 0) {
+                    usuarioActual.descuentosDisponibles--;
+                }
+
+                let uGlobal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                if(uGlobal) {
+                    uGlobal.balanceUSDT = usuarioActual.balanceUSDT;
+                    uGlobal.balanceCUP = usuarioActual.balanceCUP;
+                    uGlobal.balance = usuarioActual.balanceUSDT;
+                    uGlobal.recargasCount = usuarioActual.recargasCount;
+                    uGlobal.descuentosDisponibles = usuarioActual.descuentosDisponibles;
+                }
+                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+
+                const nuevaOrden = { 
+                    id: Date.now(),
+                    fecha: new Date().toISOString(),
+                    usuario: usuarioActual.nombre, 
+                    correo: usuarioActual.correo.toLowerCase(),
+                    idJugador: playerId, 
+                    detalle: `${ofertaSeleccionada.diamantes}`, 
+                    diamantesNum: ofertaSeleccionada.diamantesNum,
+                    precio: ofertaSeleccionada.precio,
+                    moneda: ofertaSeleccionada.moneda,
+                    imagen: ofertaSeleccionada.imagen,
+                    estado: 'Pendiente' 
+                };
+                
+                solicitudesGlobales.recargas.push(nuevaOrden);
+                localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                
+                await guardarEnCloud();
+                ocultarCarga();
+
+                mostrarNotificacion("Solicitud de recarga enviada correctamente");
+                actualizarPerfilUI();
+                renderizarOrdenes();
+                cambiarTabOrdenes('compras');
+                cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
+            }, 800);
+        }
+
+        function cambiarTabOrdenes(tipo) {
+            const btnCompras = document.getElementById('tab-btn-compras');
+            const btnDepositos = document.getElementById('tab-btn-depositos');
+            const panelCompras = document.getElementById('panel-ordenes-compras');
+            const panelDepositos = document.getElementById('panel-ordenes-depositos');
+
+            if(tipo === 'compras') {
+                btnCompras.style.background = 'var(--primary-blue)';
+                btnCompras.style.color = '#fff';
+                btnDepositos.style.background = 'transparent';
+                btnDepositos.style.color = 'var(--text-muted)';
+                panelCompras.style.display = 'block';
+                panelDepositos.style.display = 'none';
+            } else {
+                btnDepositos.style.background = 'var(--primary-blue)';
+                btnDepositos.style.color = '#fff';
+                btnCompras.style.background = 'transparent';
+                btnCompras.style.color = 'var(--text-muted)';
+                panelDepositos.style.display = 'block';
+                panelCompras.style.display = 'none';
+            }
+        }
+
+        function renderizarOrdenes() {
+            solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
+            const containerCompras = document.getElementById('lista-compras-container');
+            const containerDepositos = document.getElementById('lista-depositos-container');
+            
+            let misRecargas = solicitudesGlobales.recargas.filter(r => r.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+            let misDepositos = solicitudesGlobales.depositos.filter(d => d.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+
+            document.getElementById('stat-total-recargas-realizadas').innerText = misRecargas.length;
+            let totalDepositadoSaldo = misDepositos.filter(d => d.estado === 'Aprobado').reduce((acc, curr) => acc + curr.monto, 0);
+            document.getElementById('stat-total-depositado-saldo').innerText = totalDepositadoSaldo;
+
+            let htmlCompras = "";
+            if(misRecargas.length === 0) {
+                htmlCompras = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:1.5rem;'>No tienes compras de recargas registradas.</p>";
+            } else {
+                misRecargas.slice().reverse().forEach((o, indexOriginal) => {
+                    let realIndex = solicitudesGlobales.recargas.length - 1 - indexOriginal;
+                    let claseEstado = "status-pendiente";
+                    if(o.estado === 'Completado' || o.estado === 'Aprobada') claseEstado = "status-completado";
+                    if(o.estado === 'Cancelado') claseEstado = "status-cancelado";
+                    let sufijoMoneda = o.moneda === 'saldo' ? ' saldo' : ' USDT';
+
+                    let clickableAttr = `onclick="verComprobanteRecarga(${realIndex})"`;
+                    let flechaIcon = `
+                        <div class="order-right-action">
+                            <span class="badge-status ${claseEstado}">${o.estado}</span>
+                            <div class="order-arrow-icon">
+                                <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                            </div>
+                        </div>
+                    `;
+
+                    htmlCompras += `
+                        <div class="order-card-pro" ${clickableAttr}>
+                            <div class="order-info">
+                                <h4>Free Fire - ${o.detalle} Diamantes</h4>
+                                <p>ID: ${o.idJugador} | Precio: ${o.precio}${sufijoMoneda}</p>
+                            </div>
+                            ${flechaIcon}
+                        </div>
+                    `;
+                });
+            }
+            containerCompras.innerHTML = htmlCompras;
+
+            let htmlDepositos = "";
+            if(misDepositos.length === 0) {
+                htmlDepositos = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:1.5rem;'>No tienes solicitudes de depósito registradas.</p>";
+            } else {
+                misDepositos.slice().reverse().forEach(d => {
+                    let claseEstado = "status-pendiente";
+                    if(d.estado === 'Aprobado') claseEstado = "status-completado";
+                    if(d.estado === 'Cancelado') claseEstado = "status-cancelado";
+
+                    htmlDepositos += `
+                        <div class="order-card-pro" style="cursor: default;">
+                            <div class="order-info">
+                                <h4>Depósito - ${d.monto} saldo</h4>
+                                <p>${d.telefonoTransfirio || 'N/A'}</p>
+                            </div>
+                            <span class="badge-status ${claseEstado}">${d.estado}</span>
+                        </div>
+                    `;
+                });
+            }
+            containerDepositos.innerHTML = htmlDepositos;
+        }
+
+        function verComprobanteRecarga(index) {
+            const orden = solicitudesGlobales.recargas[index];
+            if(!orden) return;
+
+            document.getElementById('comp-titulo-diamantes').innerText = `${orden.detalle} Diamantes`;
+            document.getElementById('comp-id-jugador').innerText = orden.idJugador;
+            document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
+            document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? 'saldo' : 'USDT'}`;
+            
+            let imgSrc = orden.imagen || 'IMG_20261105_143324_728.jpg';
+            document.getElementById('comp-img-diamantes').src = imgSrc;
+
+            const boxMain = document.getElementById('comp-box-main');
+            const badgeStatus = document.getElementById('comp-badge-status');
+            const subtextStatus = document.getElementById('comp-subtext-status');
+            const iconStatus = document.getElementById('comp-icon-status');
+
+            if (orden.estado === 'Completado' || orden.estado === 'Aprobada') {
+                boxMain.style.borderColor = '#10b981';
+                badgeStatus.innerText = 'COMPLETADO';
+                badgeStatus.style.background = 'rgba(16, 185, 129, 0.2)';
+                badgeStatus.style.borderColor = '#10b981';
+                badgeStatus.style.color = '#10b981';
+                subtextStatus.innerText = 'Entregado correctamente';
+                subtextStatus.style.color = '#10b981';
+                iconStatus.style.background = '#10b981';
+                iconStatus.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>';
+            } else if (orden.estado === 'Pendiente') {
+                boxMain.style.borderColor = '#f59e0b';
+                badgeStatus.innerText = 'PENDIENTE';
+                badgeStatus.style.background = 'rgba(245, 158, 11, 0.2)';
+                badgeStatus.style.borderColor = '#f59e0b';
+                badgeStatus.style.color = '#f59e0b';
+                subtextStatus.innerText = 'Pendiente de revisión';
+                subtextStatus.style.color = '#f59e0b';
+                iconStatus.style.background = '#f59e0b';
+                iconStatus.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>';
+            } else {
+                boxMain.style.borderColor = '#ef4444';
+                badgeStatus.innerText = 'CANCELADO';
+                badgeStatus.style.background = 'rgba(239, 68, 68, 0.2)';
+                badgeStatus.style.borderColor = '#ef4444';
+                badgeStatus.style.color = '#ef4444';
+                subtextStatus.innerText = 'Orden cancelada';
+                subtextStatus.style.color = '#ef4444';
+                iconStatus.style.background = '#ef4444';
+                iconStatus.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+            }
+
+            mostrarCarga("Cargando comprobante...");
+            setTimeout(() => {
+                ocultarCarga();
+                document.querySelectorAll('.vista-sec').forEach(v => v.style.display = 'none');
+                document.getElementById('seccion-comprobante-recarga').style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 250);
+        }
+
+        function actualizarEstadisticasInicio() {
+            solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
+            listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
+
+            const cardVivo = document.getElementById('live-card-container');
+            if (tiendaConfig.ocultarTopRecargasHoy) {
+                if(cardVivo) cardVivo.style.display = 'none';
+                return;
+            } else {
+                if(cardVivo) cardVivo.style.display = 'block';
+            }
+
+            const hoy = new Date().toDateString();
+            const recargasHoyList = solicitudesGlobales.recargas.filter(r => (r.estado === 'Completado' || r.estado === 'Aprobada') && new Date(r.id || r.fecha).toDateString() === hoy);
+            document.getElementById('contador-recargas-hoy').innerText = recargasHoyList.length;
+
+            let acumuladoUsuarios = {};
+            recargasHoyList.forEach(r => {
+                let correoKey = r.correo ? r.correo.toLowerCase() : r.usuario.toLowerCase();
+                if (!acumuladoUsuarios[correoKey]) {
+                    acumuladoUsuarios[correoKey] = {
+                        usuario: r.usuario,
+                        correo: r.correo,
+                        totalDiamantesTexto: r.detalle || '100+10',
+                        totalGasto: 0,
+                        monedaGasto: r.moneda || 'usdt',
+                        ultimaHora: (r.id || r.fecha)
+                    };
+                }
+                acumuladoUsuarios[correoKey].totalGasto += (r.precio || 1.20);
+                if((r.id || r.fecha) > acumuladoUsuarios[correoKey].ultimaHora) {
+                    acumuladoUsuarios[correoKey].ultimaHora = (r.id || r.fecha);
+                }
+            });
+
+            let listaTop = Object.values(acumuladoUsuarios);
+            let vivoHTML = "";
+
+            if(listaTop.length === 0) {
+                vivoHTML = "<p style='color:var(--text-muted); font-size:0.75rem; text-align:center; padding:1rem;'>No hay compras completadas hoy.</p>";
+            } else {
+                listaTop.forEach(item => {
+                    let horaStr = new Date(item.ultimaHora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    let uObj = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === (item.correo || '').toLowerCase() || u.nombre.toLowerCase() === item.usuario.toLowerCase());
+                    let avatarC = (uObj && uObj.avatar) ? `<img src="${uObj.avatar}">` : item.usuario.charAt(0).toUpperCase();
+                    let monedaTxt = item.monedaGasto === 'saldo' ? ' saldo' : ' USDT';
+
+                    vivoHTML += `
+                        <div class="history-item-row">
+                            <span class="history-time">${horaStr}</span>
+                            <div class="history-user-info">
+                                <div class="history-avatar">${avatarC}</div>
+                                <div class="history-user-details">
+                                    <h5>${item.usuario}</h5>
+                                    <p>Free Fire LATAM · <b>+${item.totalDiamantesTexto}</b></p>
+                                </div>
+                            </div>
+                            <span class="history-price">${item.totalGasto.toFixed(2)}${monedaTxt}</span>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('lista-historial-vivo').innerHTML = vivoHTML;
+        }
+
+        function abrirSelectorGaleria() { document.getElementById('file-input-hidden').click(); }
+
+        function procesarFotoGaleria(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 250;
+                    if (width > height) {
+                        if (width > maxDim) { height *= maxDim / width; width = maxDim; }
+                    } else {
+                        if (height > maxDim) { width *= maxDim / height; height = maxDim; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75);
+
+                    usuarioActual.avatar = compressedBase64;
+                    let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                    if(fresh) fresh.avatar = compressedBase64;
+
+                    localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                    
+                    guardarEnCloud();
+                    actualizarPerfilUI();
+                    actualizarEstadisticasInicio();
+                    mostrarNotificacion("Foto de perfil guardada");
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function cambiarNombreUsuarioReal() {
+            const nuevoNombre = document.getElementById('nuevo-nombre-input').value.trim();
+            if(!nuevoNombre || nuevoNombre.length < 4 || /\s/.test(nuevoNombre)) {
+                mostrarNotificacion("Nombre inválido (Mínimo 4 caracteres y sin espacios)");
+                return;
+            }
+
+            let existente = listaUsuariosGlobales.find(u => u.nombre.toLowerCase() === nuevoNombre.toLowerCase());
+            if(existente && existente.correo.toLowerCase() !== usuarioActual.correo.toLowerCase()) {
+                mostrarNotificacion("Este nombre de usuario ya está en uso");
+                return;
+            }
+
+            let nombreAnterior = usuarioActual.nombre;
+            usuarioActual.nombre = nuevoNombre;
+
+            listaUsuariosGlobales.forEach(u => {
+                if (u.referidoPor && u.referidoPor.toLowerCase() === nombreAnterior.toLowerCase()) {
+                    u.referidoPor = nuevoNombre;
+                }
+            });
+
+            let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+            if(fresh) fresh.nombre = nuevoNombre;
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            guardarEnCloud();
+
+            document.getElementById('nuevo-nombre-input').value = '';
+            actualizarPerfilUI();
+            toggleSubPanel('panel-cambiar-nombre');
+            mostrarNotificacion("Nombre de usuario actualizado");
+        }
+
+        function ejecutarTransferenciaUSDT() {
+            const destinoInput = document.getElementById('trans-destino').value.trim();
+            const monto = parseFloat(document.getElementById('trans-monto').value);
+            const password = document.getElementById('trans-pass').value;
+
+            if (!destinoInput || isNaN(monto) || monto <= 0 || !password) {
+                mostrarNotificacion("Completa todos los campos correctamente");
+                return;
+            }
+
+            if (password !== usuarioActual.pass) {
+                mostrarNotificacion("Contraseña incorrecta");
+                return;
+            }
+
+            if (usuarioActual.balanceUSDT < monto) {
+                mostrarNotificacion("Saldo USDT insuficiente en tu balance");
+                return;
+            }
+
+            let destinatarioObj = listaUsuariosGlobales.find(u => 
+                u.nombre.toLowerCase() === destinoInput.toLowerCase() || 
+                u.correo.toLowerCase() === destinoInput.toLowerCase()
+            );
+
+            if (!destinatarioObj) {
+                mostrarNotificacion("El usuario destinatario no existe");
+                return;
+            }
+
+            if (destinatarioObj.correo.toLowerCase() === usuarioActual.correo.toLowerCase()) {
+                mostrarNotificacion("No puedes transferirte saldo a ti mismo");
+                return;
+            }
+
+            mostrarCarga("Procesando transferencia...");
+            setTimeout(async () => {
+                usuarioActual.balanceUSDT = parseFloat((usuarioActual.balanceUSDT - monto).toFixed(2));
+                usuarioActual.balance = usuarioActual.balanceUSDT;
+                if(destinatarioObj.balanceUSDT === undefined) destinatarioObj.balanceUSDT = destinatarioObj.balance || 0;
+                destinatarioObj.balanceUSDT = parseFloat(((parseFloat(destinatarioObj.balanceUSDT) || 0) + monto).toFixed(2));
+                destinatarioObj.balance = destinatarioObj.balanceUSDT;
+
+                let uLocal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                if (uLocal) {
+                    uLocal.balanceUSDT = usuarioActual.balanceUSDT;
+                    uLocal.balance = usuarioActual.balanceUSDT;
+                }
+
+                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                await guardarEnCloud();
+                ocultarCarga();
+
+                document.getElementById('trans-destino').value = '';
+                document.getElementById('trans-monto').value = '';
+                document.getElementById('trans-pass').value = '';
+                toggleSubPanel('panel-transferir-usdt');
+
+                actualizarPerfilUI();
+                renderizarOrdenes();
+                mostrarNotificacion(`Transferencia de ${monto.toFixed(2)} USDT exitosa`);
+            }, 800);
+        }
+
+        function copiarNumeroWallet() {
+            navigator.clipboard.writeText(tiendaConfig.numeroSaldoOficial || "59578110");
+            mostrarNotificacion("Número copiado al portapapeles");
+        }
+
+        function copiarDireccionUSDTNuevo() {
+            navigator.clipboard.writeText(tiendaConfig.direccionUSDTOficial || "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2");
+            mostrarNotificacion("Dirección BEP-20 copiada al portapapeles");
+        }
+
+        function copiarEnlaceRef() {
+            navigator.clipboard.writeText("https://lestertienda.github.io/Lestertienda-/?ref=" + encodeURIComponent(usuarioActual.nombre));
+            mostrarNotificacion("Enlace de referido copiado");
+        }
+
+        function compartirEnlaceRef() {
+            const enlace = "https://lestertienda.github.io/Lestertienda-/?ref=" + encodeURIComponent(usuarioActual.nombre);
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Lester Tienda - Free Fire',
+                    text: '¡Únete a Lester Tienda y recarga al mejor precio!',
+                    url: enlace,
+                }).catch(() => {});
+            } else {
+                copiarEnlaceRef();
+            }
+        }
+
+        function confirmarendioDeposito() {
+            const monto = parseFloat(document.getElementById('monto-deposito').value);
+            const telefonoTransfirio = document.getElementById('telefono-transfirio').value.trim();
+
+            if(isNaN(monto) || monto <= 0) {
+                mostrarNotificacion("Introduce un monto válido");
+                return;
+            }
+
+            if(!telefonoTransfirio || telefonoTransfirio.length < 6) {
+                mostrarNotificacion("Introduce el número con el que realizaste la transferencia");
+                return;
+            }
+
+            mostrarCarga("Enviando depósito...");
+            setTimeout(async () => {
+                const nuevoDep = { 
+                    id: Date.now(),
+                    correo: usuarioActual.correo.toLowerCase(),
+                    usuario: usuarioActual.nombre, 
+                    monto: monto, 
+                    telefonoTransfirio: telefonoTransfirio,
+                    estado: 'Pendiente' 
+                };
+                solicitudesGlobales.depositos.push(nuevoDep);
+                localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                
+                await guardarEnCloud();
+                ocultarCarga();
+
+                mostrarNotificacion("Depósito de saldo móvil enviado a revisión");
+                document.getElementById('monto-deposito').value = '';
+                document.getElementById('telefono-transfirio').value = '';
+                
+                renderizarOrdenes();
+                cambiarTabOrdenes('depositos');
+                cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
+            }, 800);
+        }
+
+        function actualizarPerfilUI() {
+            if(!usuarioActual) return;
+            let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+            if(fresh) {
+                usuarioActual = fresh;
+                if(usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
+                if(usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
+                localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            }
+            if(usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
+
+            const saldoUsdtTexto = `${(usuarioActual.balanceUSDT || 0).toFixed(2)} USDT`;
+            const saldoMovilTexto = `${(usuarioActual.balanceCUP || 0)} saldo`;
+            document.getElementById('header-wallet-balance').innerText = saldoUsdtTexto;
+            document.getElementById('header-saldo-balance').innerText = saldoMovilTexto;
+            document.getElementById('profile-wallet-balance').innerText = saldoUsdtTexto;
+            document.getElementById('profile-saldo-movil-top').innerText = saldoMovilTexto;
+            document.getElementById('stat-saldo-movil-perfil').innerText = saldoMovilTexto;
+
+            document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
+            document.getElementById('perfil-correo').innerText = usuarioActual.correo;
+            
+            let rangoTexto = "CLIENTE PRO";
+            if(usuarioActual.rango === 1) rangoTexto = "ADMINISTRADOR (RANGO 1)";
+            if(usuarioActual.rango === 2) rangoTexto = "CEO / ADMINISTRADOR TOTAL";
+            document.getElementById('perfil-rango-label').innerText = rangoTexto;
+
+            const avatarCircle = document.getElementById('perfil-inicial');
+            if(usuarioActual.avatar) {
+                avatarCircle.innerHTML = `<img src="${usuarioActual.avatar}">`;
+            } else {
+                avatarCircle.innerText = usuarioActual.nombre.charAt(0).toUpperCase();
+            }
+
+            solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
+            listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
+
+            let referidosList = listaUsuariosGlobales.filter(u => u.referidoPor && u.referidoPor.toLowerCase().trim() === usuarioActual.nombre.toLowerCase().trim());
+            let referidosValidos = 0;
+            let referidosNoActivos = 0;
+
+            referidosList.forEach(ref => {
+                let depositoAprobado = solicitudesGlobales.depositos.some(d => d.correo.toLowerCase() === ref.correo.toLowerCase() && d.estado === 'Aprobado');
+                let recargaRealizada = solicitudesGlobales.recargas.some(r => r.correo.toLowerCase() === ref.correo.toLowerCase() && (r.estado === 'Completado' || r.estado === 'Aprobada'));
+                if (depositoAprobado || recargaRealizada || ref.recargasCount > 0) {
+                    referidosValidos++;
+                } else {
+                    referidosNoActivos++;
+                }
+            });
+
+            document.getElementById('stat-ref-validos').innerText = referidosValidos;
+            document.getElementById('stat-ref-no-activos').innerText = referidosNoActivos;
+            
+            let misRecargasTotal = solicitudesGlobales.recargas.filter(r => r.correo.toLowerCase() === usuarioActual.correo.toLowerCase() && (r.estado === 'Completado' || r.estado === 'Aprobada')).length;
+            document.getElementById('stat-cantidad-recargas-perfil').innerText = misRecargasTotal;
+
+            document.getElementById('enlace-ref').innerText = "https://lestertienda.github.io/Lestertienda-/?ref=" + usuarioActual.nombre;
+            
+            let listaDetalladaHTML = "";
+            if (referidosList.length === 0) {
+                listaDetalladaHTML = "<span style='color: var(--text-muted);'>Aún no tienes referidos registrados.</span>";
+            } else {
+                referidosList.forEach(ref => {
+                    let depositoAprobado = solicitudesGlobales.depositos.some(d => d.correo.toLowerCase() === ref.correo.toLowerCase() && d.estado === 'Aprobado');
+                    let recargaRealizada = solicitudesGlobales.recargas.some(r => r.correo.toLowerCase() === ref.correo.toLowerCase() && (r.estado === 'Completado' || r.estado === 'Aprobada'));
+                    let esValido = (depositoAprobado || recargaRealizada || ref.recargasCount > 0);
+                    let badgeEstado = esValido ? "<span style='color:#10b981; font-weight:bold;'>Válido</span>" : "<span style='color:#f59e0b;'>No activo</span>";
+
+                    listaDetalladaHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(26,35,58,0.4);">
+                        <div>
+                            <span style="color: #fff; font-weight: 700; display:block;">${ref.nombre}</span>
+                            <span style="color: var(--text-muted); font-size:0.65rem;">${ref.correo}</span>
+                        </div>
+                        <div>${badgeEstado}</div>
+                    </div>`;
+                });
+            }
+            document.getElementById('lista-detallada-referidos').innerHTML = listaDetalladaHTML;
+
+            let porcentajeMeta = Math.min(100, (referidosValidos / 10) * 100);
+            document.getElementById('contador-meta-referidos').innerText = `${referidosValidos} / 10 referidos válidos para el premio`;
+            document.getElementById('barra-progreso-referidos').style.width = `${porcentajeMeta}%`;
+
+            if(referidosValidos >= 10) {
+                document.getElementById('badge-premio-disponible').style.display = 'block';
+            } else {
+                document.getElementById('badge-premio-disponible').style.display = 'none';
+            }
+
+            actualizarEstadisticasInicio();
+        }
+
+        function toggleSeguridadPanel() {
+            const panel = document.getElementById('seccion-seguridad');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function toggleSubPanel(id) {
+            const sub = document.getElementById(id);
+            sub.style.display = sub.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function cambiarPasswordReal() {
+            const act = document.getElementById('p-act').value;
+            const nue = document.getElementById('p-nue').value;
+            const con = document.getElementById('p-con').value;
+            const regexPass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&_\-\+\=])[A-Za-z\d@$!%*#?&_\-\+\=]{6,}$/;
+
+            if(!act || !nue || !con) {
+                mostrarNotificacion("Completa todos los campos de contraseña");
+                return;
+            }
+            if(act !== usuarioActual.pass) {
+                mostrarNotificacion("La contraseña actual es incorrecta");
+                return;
+            }
+            if(!regexPass.test(nue)) {
+                mostrarNotificacion("La nueva contraseña debe tener mín. 6 carac., letras, números y símbolos");
+                return;
+            }
+            if(nue !== con) {
+                mostrarNotificacion("Las nuevas contraseñas no coinciden");
+                return;
+            }
+
+            usuarioActual.pass = nue;
+            let uGlobal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+            if(uGlobal) uGlobal.pass = nue;
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            guardarEnCloud();
+
+            document.getElementById('p-act').value = '';
+            document.getElementById('p-nue').value = '';
+            document.getElementById('p-con').value = '';
+            mostrarNotificacion("Contraseña actualizada con éxito");
+            toggleSubPanel('panel-cambiar-pass');
+        }
+
+        function confirmarEliminarCuenta() {
+            const panelEliminar = document.getElementById('panel-confirmar-eliminar');
+            panelEliminar.style.display = panelEliminar.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function cancelarEliminarCuenta() { document.getElementById('panel-confirmar-eliminar').style.display = 'none'; }
+
+        function ejecutarEliminarCuenta() {
+            mostrarCarga("Eliminando cuenta...");
+            setTimeout(async () => {
+                listaUsuariosGlobales = listaUsuariosGlobales.filter(u => u.correo.toLowerCase() !== usuarioActual.correo.toLowerCase());
+                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                localStorage.removeItem('lester_usuario');
+                await guardarEnCloud();
+                ocultarCarga();
+                location.reload();
+            }, 800);
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('lester_usuario');
+            location.reload();
+        }
+
+        function verificarAccesoCEO() {
+            const contenedorCEO = document.getElementById('panel-ceo-container');
+            if (usuarioActual && (usuarioActual.rango >= 1 || usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com')) {
+                contenedorCEO.style.display = 'block';
+                let esCEO = (usuarioActual.rango === 2 || usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com');
+                
+                let htmlBotones = `
+                    <button class="ceo-btn" onclick="cargarAccionCEO('usuarios')">Usuarios (${listaUsuariosGlobales.length})</button>
+                    <button class="ceo-btn" onclick="cargarAccionCEO('acreditar')">Acreditar</button>
+                    <button class="ceo-btn" onclick="cargarAccionCEO('desacreditar')">Desacreditar</button>
+                `;
+
+                if(esCEO) {
+                    htmlBotones += `
+                        <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_recarga')">Recargas (${solicitudesGlobales.recargas.length})</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_deposito')">Depósitos (${solicitudesGlobales.depositos.length})</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('cambiar_rango')">Gestionar Rangos</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('eliminar_usuario_nombre')">Quitar Usuario por Nombre</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_game')">Etiqueta Free Fire</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_blood')">Etiqueta Blood Strike</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('config_wallets')">Configurar Wallets & Red</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('catalogo_precios')">Catálogo de Precios</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('agregar_etiqueta_custom')">Agregar Etiqueta Custom</button>
+                    `;
+                }
+
+                contenedorCEO.innerHTML = `
+                    <div class="ceo-box">
+                        <h3 style="color: #ff3b30; margin-bottom: 0.3rem; font-weight: 900; font-size:0.92rem;">PANEL DE CONTROL ${esCEO ? 'CEO SUPREMO' : 'ADMIN (RANGO 1)'}</h3>
+                        <p style="font-size: 0.68rem; color: #8a99ad; margin-bottom: 0.8rem;">${usuarioActual.correo}</p>
+                        <div class="ceo-grid">
+                            ${htmlBotones}
+                        </div>
+                    </div>
+                    <div id="ceo-resultado" style="margin-top: 0.8rem;"></div>
+                `;
+            } else {
+                contenedorCEO.style.display = 'none';
+            }
+        }
+
+        function cargarAccionCEO(accion) {
+            solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
+            listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
+            const res = document.getElementById('ceo-resultado');
+            let esCEO = (usuarioActual.rango === 2 || usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com');
+            
+            if(accion === 'solicitudes_recarga' && esCEO) {
+                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Gestionar Recargas:</h4>";
+                let pendientes = solicitudesGlobales.recargas.filter(s => s.estado === 'Pendiente');
+                if(pendientes.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay recargas pendientes.</p>";
+                
+                solicitudesGlobales.recargas.forEach((s, idx) => {
+                    if(s.estado === 'Pendiente') {
+                        html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
+                            <b>User:</b> ${s.usuario} | <b>ID:</b> ${s.idJugador} | <b>Detalle:</b> ${s.detalle} (${s.moneda})
+                            <br><div style="margin-top:6px; display:flex; gap:6px;">
+                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarRecarga(${idx})">Completar (Aprobar)</button>
+                                <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarRecarga(${idx})">Cancelar</button>
+                            </div>
+                        </div>`;
+                    }
+                });
+                res.innerHTML = html;
+            } else if(accion === 'solicitudes_deposito' && esCEO) {
+                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Solicitudes de Depósito Saldo Móvil:</h4>";
+                let pendientesDeps = solicitudesGlobales.depositos.filter(d => d.estado === 'Pendiente');
+                if(pendientesDeps.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay depósitos pendientes.</p>";
+                
+                solicitudesGlobales.depositos.forEach((d, idx) => {
+                    if(d.estado === 'Pendiente') {
+                        html += `<div style="background:#07090e; padding:0.6rem; margin-top:0.4rem; border-radius:8px; border:1px solid var(--border-color); font-size:0.73rem;">
+                            <b>User:</b> ${d.usuario} (${d.correo}) | <b>Monto:</b> ${d.monto} saldo<br>
+                            <b>Número / TxID:</b> <span style="color:#f59e0b; font-weight:bold;">${d.telefonoTransfirio || 'N/A'}</span>
+                            <br><div style="margin-top:6px; display:flex; gap:6px;">
+                                <button style="background:#10b981; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
+                                <button style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:bold;" onclick="cancelarDeposito(${idx})">Cancelar</button>
+                            </div>
+                        </div>`;
+                    }
+                });
+                res.innerHTML = html;
+            } else if(accion === 'usuarios') {
+                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Lista de Usuarios Registrados:</h4>";
+                if(listaUsuariosGlobales.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay usuarios.</p>";
+                
+                listaUsuariosGlobales.forEach((u, uIdx) => {
+                    let rText = u.rango === 2 ? "CEO / Supremo" : (u.rango === 1 ? "Admin (Rango 1)" : "Cliente (Rango 0)");
+                    if(u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
+                    if(u.balanceCUP === undefined) u.balanceCUP = 0;
+                    
+                    html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem; line-height:1.4; position:relative;">
+                        <b>Nombre de usuario:</b> <span style="color:#fff;">${u.nombre}</span><br>
+                        <b>Correo:</b> <span style="color:var(--text-muted);">${u.correo}</span><br>
+                        <b>Wallet USDT:</b> <span style="color:var(--accent-glow); font-weight:bold;">${u.balanceUSDT.toFixed(2)}</span><br>
+                        <b>Saldo Móvil:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP} saldo</span><br>
+                        <b>Rango:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
+                        <div style="margin-top:6px;">
+                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoQuitarUsuarioPorNombre('${u.nombre}')">Quitar Usuario</button>
+                        </div>
+                    </div>`;
+                });
+                res.innerHTML = html;
+            } else if(accion === 'eliminar_usuario_nombre' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form" style="border-color:#ff3b30;">
+                        <h4 style="color:#ff3b30;">Quitar Usuario del Top / Sistema por Nombre</h4>
+                        <input type="text" id="ceo-eliminar-nombre-input" placeholder="Nombre exacto de usuario">
+                        <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarQuitarUsuarioPorNombreCEO()">Quitar Usuario Definitivamente</button>
+                    </div>
+                `;
+            } else if(accion === 'agregar_etiqueta_custom' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form" style="border-color:#00f0ff;">
+                        <h4 style="color:#00f0ff;">Agregar Etiqueta Personalizada</h4>
+                        <input type="text" id="ceo-custom-tag-text" placeholder="Texto de la etiqueta">
+                        <select id="ceo-custom-tag-color">
+                            <option value="verde">Verde</option>
+                            <option value="rojo">Rojo</option>
+                            <option value="amarillo">Amarillo</option>
+                            <option value="azul">Azul</option>
+                        </select>
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarAgregarEtiquetaCustomCEO()">Guardar Etiqueta</button>
+                    </div>
+                `;
+            } else if(accion === 'catalogo_precios' && esCEO) {
+                let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Catálogo de Precios (Tiempo Real):</h4>";
+                (tiendaConfig.paquetesDiamantes || []).forEach((p, pIdx) => {
+                    html += `
+                        <div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem;">
+                            <b>${p.nombre}</b><br>
+                            <div style="display:flex; gap:6px; margin-top:6px;">
+                                <div style="flex:1;">
+                                    <label style="font-size:0.65rem; color:var(--text-muted);">USDT:</label>
+                                    <input type="number" id="precio-usdt-${pIdx}" value="${p.precioUsdt}" step="0.1" style="width:100%; background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:4px; border-radius:4px;">
+                                </div>
+                                <div style="flex:1;">
+                                    <label style="font-size:0.65rem; color:var(--text-muted);">Saldo Móvil:</label>
+                                    <input type="number" id="precio-saldo-${pIdx}" value="${p.precioSaldo}" style="width:100%; background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:4px; border-radius:4px;">
+                                </div>
+                            </div>
+                            <button class="btn-main" style="margin-top:6px; padding:4px; font-size:0.75rem;" onclick="guardarPrecioPaqueteCEO(${pIdx})">Actualizar Precio</button>
+                        </div>
+                    `;
+                });
+                res.innerHTML = html;
+            } else if(accion === 'acreditar') {
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Acreditar Saldo Móvil / USDT</h4>
+                        <input type="email" id="ceo-acreditar-correo" placeholder="Correo del usuario">
+                        <select id="ceo-acreditar-tipo">
+                            <option value="cup">Saldo Móvil</option>
+                            <option value="usdt">Wallet USDT</option>
+                        </select>
+                        <input type="number" id="ceo-acreditar-monto" placeholder="Monto a sumar">
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarAcreditarCEO()">Aplicar Acreditación</button>
+                    </div>
+                `;
+            } else if(accion === 'desacreditar') {
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Desacreditar Saldo Móvil / USDT</h4>
+                        <input type="email" id="ceo-desacreditar-correo" placeholder="Correo del usuario">
+                        <select id="ceo-desacreditar-tipo">
+                            <option value="cup">Saldo Móvil</option>
+                            <option value="usdt">Wallet USDT</option>
+                        </select>
+                        <input type="number" id="ceo-desacreditar-monto" placeholder="Monto a restar">
+                        <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarDesacreditarCEO()">Aplicar Desacreditación</button>
+                    </div>
+                `;
+            } else if(accion === 'cambiar_rango' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Gestionar Rangos y Admin</h4>
+                        <input type="email" id="ceo-rango-correo" placeholder="Correo del usuario">
+                        <input type="number" id="ceo-rango-valor" placeholder="Nuevo rango (0=Quitar, 1=Admin Parcial, 2=CEO)">
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarCambiarRangoCEO()">Actualizar Rango</button>
+                    </div>
+                `;
+            } else if(accion === 'etiqueta_game' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form">
+                        <h4>Etiqueta Free Fire</h4>
+                        <input type="text" id="ceo-etiqueta-texto" placeholder="Texto de la etiqueta" value="${tiendaConfig.etiquetaFreeFire || ''}">
+                        <select id="ceo-color-ff">
+                            <option value="rojo" ${tiendaConfig.colorFF==='rojo'?'selected':''}>Rojo</option>
+                            <option value="verde" ${tiendaConfig.colorFF==='verde'?'selected':''}>Verde</option>
+                            <option value="amarillo" ${tiendaConfig.colorFF==='amarillo'?'selected':''}>Amarillo</option>
+                            <option value="azul" ${tiendaConfig.colorFF==='azul'?'selected':''}>Azul</option>
+                        </select>
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta Free Fire</button>
+                    </div>
+                `;
+            } else if(accion === 'etiqueta_blood' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form" style="border-color:#f59e0b;">
+                        <h4 style="color:#f59e0b;">Etiqueta Blood Strike</h4>
+                        <input type="text" id="ceo-etiqueta-blood-texto" placeholder="Texto de la etiqueta" value="${tiendaConfig.etiquetaBloodStrike || ''}">
+                        <select id="ceo-color-bs">
+                            <option value="amarillo" ${tiendaConfig.colorBS==='amarillo'?'selected':''}>Amarillo</option>
+                            <option value="rojo" ${tiendaConfig.colorBS==='rojo'?'selected':''}>Rojo</option>
+                            <option value="verde" ${tiendaConfig.colorBS==='verde'?'selected':''}>Verde</option>
+                            <option value="azul" ${tiendaConfig.colorBS==='azul'?'selected':''}>Azul</option>
+                        </select>
+                        <button class="btn-main" style="margin-top:0; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
+                    </div>
+                `;
+            } else if(accion === 'config_wallets' && esCEO) {
+                res.innerHTML = `
+                    <div class="ceo-action-form" style="border-color:#26a69a;">
+                        <h4 style="color:#26a69a;">Configurar Redes, Wallets y Tarjeta</h4>
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Número Saldo Móvil:</label>
+                        <input type="text" id="ceo-num-saldo" value="${tiendaConfig.numeroSaldoOficial || '59578110'}">
+                        
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Dirección USDT BEP 20:</label>
+                        <input type="text" id="ceo-dir-usdt" value="${tiendaConfig.direccionUSDTOficial || '0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2'}">
+
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Wallet USDT:</label>
+                        <input type="text" id="ceo-wusdt-text" placeholder="Ej. Activo" value="${tiendaConfig.etiquetaWalletUSDT || ''}">
+                        <select id="ceo-wusdt-color">
+                            <option value="verde" ${tiendaConfig.colorWUSDT==='verde'?'selected':''}>Verde</option>
+                            <option value="rojo" ${tiendaConfig.colorWUSDT==='rojo'?'selected':''}>Rojo</option>
+                            <option value="amarillo" ${tiendaConfig.colorWUSDT==='amarillo'?'selected':''}>Amarillo</option>
+                        </select>
+
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Saldo Móvil:</label>
+                        <input type="text" id="ceo-wsaldo-text" placeholder="Ej. Rápido" value="${tiendaConfig.etiquetaWalletSaldo || ''}">
+                        <select id="ceo-wsaldo-color">
+                            <option value="verde" ${tiendaConfig.colorWSaldo==='verde'?'selected':''}>Verde</option>
+                            <option value="rojo" ${tiendaConfig.colorWSaldo==='rojo'?'selected':''}>Rojo</option>
+                            <option value="amarillo" ${tiendaConfig.colorWSaldo==='amarillo'?'selected':''}>Amarillo</option>
+                        </select>
+
+                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Pago Tarjeta:</label>
+                        <input type="text" id="ceo-wtarjeta-text" placeholder="Ej. Próximamente" value="${tiendaConfig.etiquetaWalletTarjeta || ''}">
+                        <select id="ceo-wtarjeta-color">
+                            <option value="rojo" ${tiendaConfig.colorWTarjeta==='rojo'?'selected':''}>Rojo</option>
+                            <option value="verde" ${tiendaConfig.colorWTarjeta==='verde'?'selected':''}>Verde</option>
+                            <option value="amarillo" ${tiendaConfig.colorWTarjeta==='amarillo'?'selected':''}>Amarillo</option>
+                        </select>
+
+                        <button class="btn-main" style="margin-top:0; background:#26a69a;" onclick="ejecutarGuardarConfigWalletsCEO()">Guardar Cambios de Wallets</button>
+                    </div>
+                `;
+            }
+        }
+
+        async function guardarPrecioPaqueteCEO(pIdx) {
+            let pUsdt = parseFloat(document.getElementById(`precio-usdt-${pIdx}`).value);
+            let pSaldo = parseFloat(document.getElementById(`precio-saldo-${pIdx}`).value);
+            if(isNaN(pUsdt) || isNaN(pSaldo)) { mostrarNotificacion("Introduce precios válidos"); return; }
+
+            tiendaConfig.paquetesDiamantes[pIdx].precioUsdt = pUsdt;
+            tiendaConfig.paquetesDiamantes[pIdx].precioSaldo = pSaldo;
+
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            renderizarPaquetesTienda();
+            mostrarNotificacion("Precio actualizado en tiempo real");
+        }
+
+        async function ejecutarQuitarUsuarioPorNombreCEO() {
+            const nombreUser = document.getElementById('ceo-eliminar-nombre-input').value.trim();
+            if(!nombreUser) { mostrarNotificacion("Introduce el nombre de usuario"); return; }
+
+            let index = listaUsuariosGlobales.findIndex(u => u.nombre.toLowerCase() === nombreUser.toLowerCase());
+            if(index === -1) { mostrarNotificacion("No se encontró ningún usuario con ese nombre"); return; }
+
+            let usuarioEliminado = listaUsuariosGlobales[index];
+            listaUsuariosGlobales.splice(index, 1);
+            solicitudesGlobales.recargas = solicitudesGlobales.recargas.filter(r => r.usuario.toLowerCase() !== nombreUser.toLowerCase());
+            solicitudesGlobales.depositos = solicitudesGlobales.depositos.filter(d => d.usuario.toLowerCase() !== nombreUser.toLowerCase());
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+
+            mostrarNotificacion(`Usuario ${usuarioEliminado.nombre} quitado del sistema correctamente`);
+            cargarAccionCEO('usuarios');
+            actualizarEstadisticasInicio();
+        }
+
+        function ceoQuitarUsuarioTopOLista(nombre) {
+            ejecutarQuitarUsuarioPorNombreCEO();
+        }
+
+        async function ejecutarAgregarEtiquetaCustomCEO() {
+            let texto = document.getElementById('ceo-custom-tag-text').value.trim();
+            let color = document.getElementById('ceo-custom-tag-color').value;
+            if(!texto) { mostrarNotificacion("Escribe el texto de la etiqueta"); return; }
+
+            if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
+            tiendaConfig.etiquetasCustomCEO.push({ texto, color });
+
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            aplicarConfiguracionVisual();
+            mostrarNotificacion("Etiqueta personalizada agregada con éxito");
+        }
+
+        async function ejecutarGuardarConfigWalletsCEO() {
+            tiendaConfig.numeroSaldoOficial = document.getElementById('ceo-num-saldo').value.trim();
+            tiendaConfig.direccionUSDTOficial = document.getElementById('ceo-dir-usdt').value.trim();
+            tiendaConfig.etiquetaWalletUSDT = document.getElementById('ceo-wusdt-text').value.trim();
+            tiendaConfig.colorWUSDT = document.getElementById('ceo-wusdt-color').value;
+            tiendaConfig.etiquetaWalletSaldo = document.getElementById('ceo-wsaldo-text').value.trim();
+            tiendaConfig.colorWSaldo = document.getElementById('ceo-wsaldo-color').value;
+            tiendaConfig.etiquetaWalletTarjeta = document.getElementById('ceo-wtarjeta-text').value.trim();
+            tiendaConfig.colorWTarjeta = document.getElementById('ceo-wtarjeta-color').value;
+
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            aplicarConfiguracionVisual();
+            mostrarNotificacion("Configuración de Wallets guardada con éxito");
+        }
+
+        async function ejecutarAcreditarCEO() {
+            const correo = document.getElementById('ceo-acreditar-correo').value.trim().toLowerCase();
+            const tipo = document.getElementById('ceo-acreditar-tipo').value;
+            const monto = parseFloat(document.getElementById('ceo-acreditar-monto').value);
+
+            if(!correo || isNaN(monto)) { mostrarNotificacion("Completa el correo y el monto correctamente"); return; }
+
+            let target = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === correo);
+            if(!target) { mostrarNotificacion("Usuario no encontrado"); return; }
+
+            if(target.balanceUSDT === undefined) target.balanceUSDT = target.balance || 0;
+            if(target.balanceCUP === undefined) target.balanceCUP = 0;
+
+            if (tipo === 'usdt') {
+                target.balanceUSDT = parseFloat((target.balanceUSDT + monto).toFixed(2));
+                target.balance = target.balanceUSDT;
+            } else {
+                target.balanceCUP = Math.round(target.balanceCUP + monto);
+            }
+
+            if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
+                usuarioActual.balanceUSDT = target.balanceUSDT;
+                usuarioActual.balanceCUP = target.balanceCUP;
+                usuarioActual.balance = target.balanceUSDT;
+                actualizarPerfilUI();
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            await guardarEnCloud();
+
+            mostrarNotificacion(`Acreditado ${monto} (${tipo.toUpperCase()}) a ${correo}`);
+            cargarAccionCEO('usuarios');
+        }
+
+        async function ejecutarDesacreditarCEO() {
+            const correo = document.getElementById('ceo-desacreditar-correo').value.trim().toLowerCase();
+            const tipo = document.getElementById('ceo-desacreditar-tipo').value;
+            const monto = parseFloat(document.getElementById('ceo-desacreditar-monto').value);
+
+            if(!correo || isNaN(monto)) { mostrarNotificacion("Completa el correo y el monto correctamente"); return; }
+
+            let target = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === correo);
+            if(!target) { mostrarNotificacion("Usuario no encontrado"); return; }
+
+            if(target.balanceUSDT === undefined) target.balanceUSDT = target.balance || 0;
+            if(target.balanceCUP === undefined) target.balanceCUP = 0;
+
+            if (tipo === 'usdt') {
+                target.balanceUSDT = Math.max(0, parseFloat((target.balanceUSDT - monto).toFixed(2)));
+                target.balance = target.balanceUSDT;
+            } else {
+                target.balanceCUP = Math.max(0, Math.round(target.balanceCUP - monto));
+            }
+
+            if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
+                usuarioActual.balanceUSDT = target.balanceUSDT;
+                usuarioActual.balanceCUP = target.balanceCUP;
+                usuarioActual.balance = target.balanceUSDT;
+                actualizarPerfilUI();
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            await guardarEnCloud();
+
+            mostrarNotificacion(`Descontado ${monto} (${tipo.toUpperCase()}) a ${correo}`);
+            cargarAccionCEO('usuarios');
+        }
+
+        async function ejecutarCambiarRangoCEO() {
+            const correo = document.getElementById('ceo-rango-correo').value.trim().toLowerCase();
+            const rangoVal = parseInt(document.getElementById('ceo-rango-valor').value);
+
+            if(!correo || isNaN(rangoVal)) { mostrarNotificacion("Completa el correo y el rango válido (0, 1 o 2)"); return; }
+
+            let target = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === correo);
+            if(!target) { mostrarNotificacion("Usuario no encontrado"); return; }
+
+            target.rango = rangoVal;
+            if(usuarioActual && usuarioActual.correo.toLowerCase() === target.correo.toLowerCase()) {
+                usuarioActual.rango = rangoVal;
+                actualizarPerfilUI();
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+            await guardarEnCloud();
+
+            mostrarNotificacion(`Rango actualizado a ${rangoVal} para ${correo}`);
+            cargarAccionCEO('usuarios');
+        }
+
+        async function ejecutarGuardarEtiquetaCEO() {
+            tiendaConfig.etiquetaFreeFire = document.getElementById('ceo-etiqueta-texto').value;
+            tiendaConfig.colorFF = document.getElementById('ceo-color-ff').value;
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            aplicarConfiguracionVisual();
+            mostrarNotificacion("Etiqueta Free Fire actualizada");
+        }
+
+        async function ejecutarGuardarEtiquetaBloodCEO() {
+            tiendaConfig.etiquetaBloodStrike = document.getElementById('ceo-etiqueta-blood-texto').value;
+            tiendaConfig.colorBS = document.getElementById('ceo-color-bs').value;
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+            aplicarConfiguracionVisual();
+            mostrarNotificacion("Etiqueta Blood Strike actualizada");
+        }
+
+        async function aprobarDeposito(index) {
+            let dep = solicitudesGlobales.depositos[index];
+            if (!dep) return;
+            if (dep.estado === 'Aprobado') { mostrarNotificacion("Este depósito ya fue aprobado."); return; }
+
+            dep.estado = 'Aprobado';
+            let montoADepositar = parseFloat(dep.monto) || 0;
+
+            let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase().trim() === dep.correo.toLowerCase().trim());
+            if(userTarget) {
+                if(userTarget.balanceCUP === undefined) userTarget.balanceCUP = 0;
+                userTarget.balanceCUP = Math.round(userTarget.balanceCUP + montoADepositar);
+                
+                if (userTarget.referidoPor) {
+                    let patrocinador = listaUsuariosGlobales.find(u => u.nombre.trim().toLowerCase() === userTarget.referidoPor.trim().toLowerCase());
+                    if (patrocinador) patrocinador.descuentosDisponibles = (patrocinador.descuentosDisponibles || 0) + 1;
+                }
+
+                if(usuarioActual && usuarioActual.correo.toLowerCase().trim() === userTarget.correo.toLowerCase().trim()) {
+                    usuarioActual.balanceCUP = userTarget.balanceCUP;
+                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                }
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            
+            actualizarPerfilUI();
+            renderizarOrdenes();
+            mostrarNotificacion(`Depósito aprobado y acreditado en saldo móvil`);
+            cargarAccionCEO('solicitudes_deposito');
+        }
+
+        async function cancelarDeposito(index) {
+            let dep = solicitudesGlobales.depositos[index];
+            if(!dep) return;
+            dep.estado = 'Cancelado';
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            mostrarNotificacion("Depósito cancelado");
+            cargarAccionCEO('solicitudes_deposito');
+            renderizarOrdenes();
+        }
+
+        async function aprobarRecarga(index) {
+            let rec = solicitudesGlobales.recargas[index];
+            if(!rec) return;
+            rec.estado = 'Completado';
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            mostrarNotificacion("Recarga completada con éxito");
+            cargarAccionCEO('solicitudes_recarga');
+            renderizarOrdenes();
+            actualizarEstadisticasInicio();
+        }
+
+        async function cancelarRecarga(index) {
+            let rec = solicitudesGlobales.recargas[index];
+            if(!rec) return;
+            rec.estado = 'Cancelado';
+
+            let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === rec.correo.toLowerCase());
+            if(userTarget && rec.precio) {
+                let precioRecarga = parseFloat(rec.precio) || 0;
+                if(rec.moneda === 'usdt') {
+                    if(userTarget.balanceUSDT === undefined) userTarget.balanceUSDT = userTarget.balance || 0;
+                    userTarget.balanceUSDT = parseFloat((userTarget.balanceUSDT + precioRecarga).toFixed(2));
+                    userTarget.balance = userTarget.balanceUSDT;
+                } else {
+                    if(userTarget.balanceCUP === undefined) userTarget.balanceCUP = 0;
+                    userTarget.balanceCUP = Math.round(userTarget.balanceCUP + precioRecarga);
+                }
+                userTarget.recargasCount = Math.max(0, userTarget.recargasCount - 1);
+                
+                if(usuarioActual && usuarioActual.correo.toLowerCase() === userTarget.correo.toLowerCase()) {
+                    usuarioActual.balanceUSDT = userTarget.balanceUSDT;
+                    usuarioActual.balanceCUP = userTarget.balanceCUP;
+                    usuarioActual.balance = userTarget.balanceUSDT;
+                    usuarioActual.recargasCount = userTarget.recargasCount;
+                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                }
+            }
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            
+            actualizarPerfilUI();
+            mostrarNotificacion("Recarga cancelada y saldo devuelto");
+            cargarAccionCEO('solicitudes_recarga');
+            renderizarOrdenes();
+            actualizarEstadisticasInicio();
+        }
+    </script>
+</body>
+</html>

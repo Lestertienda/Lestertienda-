@@ -139,8 +139,8 @@
             border-radius: 20px; display: flex; align-items: center; gap: 5px; cursor: pointer; transition: border-color 0.2s;
         }
         .header-wallet-pill:hover { border-color: var(--accent-glow); }
-        .header-wallet-pill svg { width: 12px; height: 12px; fill: var(--accent-glow); flex-shrink: 0; }
-        .header-wallet-pill span { font-size: 0.68rem; font-weight: 900; color: var(--accent-glow); }
+        .header-wallet-pill svg { width: 12px; height: 12px; flex-shrink: 0; }
+        .header-wallet-pill span { font-size: 0.68rem; font-weight: 900; }
 
         .nav-top-icon-btn {
             background: #07090e; border: 1px solid var(--border-color); width: 32px; height: 32px;
@@ -298,12 +298,6 @@
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; 
             padding: 1.1rem; text-align: center; margin-bottom: 1rem; position: relative; 
         }
-        .profile-wallet-pill-corner {
-            position: absolute; top: 12px; right: 12px; background: #07090e; border: 1px solid var(--border-color);
-            padding: 3px 9px; border-radius: 10px; display: flex; align-items: center; gap: 5px;
-        }
-        .profile-wallet-pill-corner svg { width: 13px; height: 13px; fill: var(--accent-glow); }
-        .profile-wallet-pill-corner span { font-size: 0.73rem; font-weight: 900; color: var(--accent-glow); }
 
         .profile-avatar-wrapper { position: relative; width: 70px; height: 70px; margin: 0 auto 0.5rem auto; }
         .profile-avatar-circle {
@@ -319,40 +313,18 @@
         .avatar-edit-badge svg { width: 11px; height: 11px; fill: #fff; }
 
         .order-card-pro {
-            background: var(--bg-card); 
-            border: 1.5px solid var(--accent-glow); 
-            border-radius: 16px;
-            padding: 1.1rem 1.2rem; 
-            margin-bottom: 0.9rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            position: relative;
-            box-shadow: 0 0 18px rgba(0, 240, 255, 0.22), inset 0 0 10px rgba(0, 240, 255, 0.05);
-            overflow: hidden;
-            gap: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 16px;
+            padding: 1.1rem 1.2rem; margin-bottom: 0.9rem; display: flex; justify-content: space-between; align-items: center;
+            position: relative; box-shadow: 0 0 18px rgba(0, 240, 255, 0.22); overflow: hidden; gap: 12px; cursor: pointer; transition: all 0.2s ease;
         }
-        .order-card-pro:hover {
-            border-color: #10b981;
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
-            transform: translateY(-1px);
-        }
+        .order-card-pro:hover { border-color: #10b981; box-shadow: 0 0 25px rgba(16, 185, 129, 0.3); transform: translateY(-1px); }
         .order-info { flex: 1; min-width: 0; }
         .order-info h4 { font-size: 0.86rem; font-weight: 900; color: #fff; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .order-info p { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
         .order-right-action { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
         
-        .badge-status { 
-            padding: 5px 10px; 
-            border-radius: 8px; 
-            font-size: 0.7rem; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            text-align: center;
-        }
+        .badge-status { padding: 5px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; text-align: center; }
         .status-pendiente { background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5); }
         .status-completado { background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.5); }
         .status-cancelado { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); }
@@ -363,15 +335,12 @@
         }
         .order-arrow-icon svg { width: 12px; height: 12px; fill: var(--accent-glow); }
 
-        /* Animación lenta y fluida para el diamante en comprobantes */
         @keyframes floatingDiamond {
             0% { transform: translateY(0px) scale(1); filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4)); }
             50% { transform: translateY(-8px) scale(1.03); filter: drop-shadow(0 12px 20px rgba(0,240,255,0.6)); }
             100% { transform: translateY(0px) scale(1); filter: drop-shadow(0 6px 12px rgba(0,240,255,0.4)); }
         }
-        .animated-diamond-img {
-            animation: floatingDiamond 3.5s ease-in-out infinite;
-        }
+        .animated-diamond-img { animation: floatingDiamond 3.5s ease-in-out infinite; }
 
         .security-menu-box { 
             background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; 
@@ -455,6 +424,17 @@
         .nav-item svg { width: 19px; height: 19px; fill: var(--text-muted); transition: fill 0.2s; }
         .nav-item.active, .nav-item:hover { color: var(--accent-glow); }
         .nav-item.active svg, .nav-item:hover svg { fill: var(--accent-glow); }
+
+        /* Estilos para etiquetas dinámicas flotantes customizadas */
+        .floating-custom-tag {
+            position: absolute; cursor: move; z-index: 999; user-select: none;
+            padding: 4px 10px; border-radius: 6px; font-weight: 900; font-size: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 6px;
+        }
+        .floating-custom-tag.verde { background: #10b981; color: #fff; border: 1px solid #059669; }
+        .floating-custom-tag.rojo { background: #ff3b30; color: #fff; border: 1px solid #dc2626; }
+        .floating-custom-tag.amarillo { background: #f59e0b; color: #fff; border: 1px solid #d97706; }
+        .floating-custom-tag.azul { background: #0066ff; color: #fff; border: 1px solid #2563eb; }
     </style>
 </head>
 <body>
@@ -500,6 +480,12 @@
     </div>
 
     <input type="file" id="file-input-hidden" accept="image/*" style="display: none;" onchange="procesarFotoGaleria(event)">
+    <input type="file" id="ceo-image-uploader-hidden" accept="image/*" style="display: none;" onchange="procesarImagenFlotanteCEO(event)">
+
+    <!-- Contenedor global para etiquetas flotantes customizadas en tiempo real -->
+    <div id="contenedor-etiquetas-flotantes"></div>
+    <!-- Contenedor global para imágenes flotantes añadidas por CEO -->
+    <div id="contenedor-imagenes-flotantes"></div>
 
     <!-- 1. AUTENTICACIÓN -->
     <div id="auth-screen" class="auth-container">
@@ -590,9 +576,10 @@
                 <div class="nav-brand-title"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
             </div>
             <div class="nav-top-icons">
+                <!-- Disposición limpia: USDT en Azul, Saldo Móvil en Blanco -->
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet">
-                    <svg viewBox="0 0 2000 2000" width="12" height="12"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
-                    <span id="header-wallet-balance" style="color: var(--accent-glow);">0.00 USDT</span>
+                    <svg viewBox="0 0 2000 2000" width="12" height="12"><path fill="#0066ff" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
+                    <span id="header-wallet-balance" style="color: #0066ff;">0.00 USDT</span>
                 </div>
                 <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Móvil">
                     <svg viewBox="0 0 24 24" width="12" height="12" fill="#ffffff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
@@ -720,8 +707,8 @@
                 <div class="section-title">SELECCIONA EL MÉTODO DE PAGO</div>
                 <div class="payment-method-selector-grid">
                     <div id="btn-pay-usdt" class="pay-method-pill-btn active" onclick="seleccionarMetodoPago('usdt')">
-                        <div style="width: 22px; height: 22px; background: #26a69a; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg viewBox="0 0 2000 2000" width="14" height="14"><path fill="#26a69a" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
+                        <div style="width: 22px; height: 22px; background: #0066ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg viewBox="0 0 2000 2000" width="14" height="14"><path fill="#0066ff" d="M1000 0c552.28 0 1000 447.72 1000 1000s-447.72 1000-1000 1000S0 1552.28 0 1000 447.72 0 1000 0z"/><path fill="#FFF" d="M1171.4 1157.1V1032h161.4v-138h-161.4V781.4h198.6V642.9H847.1v138.5h198.6v112.6H884.3v138h161.4v125.1c-223.1-6.1-404.3-71.1-404.3-150.3 0-79.3 181.2-144.3 404.3-150.3v-142c-293.9 6.2-527.1 94.4-527.1 202.3 0 107.9 233.2 196.1 527.1 202.2v188.7h122.8v-188.7c293.9-6.1 527.1-94.3 527.1-202.2 0-107.9-233.2-196.1-527.1-202.3z"/></svg>
                         </div>
                         <span>USDT</span>
                     </div>
@@ -795,7 +782,7 @@
                     <!-- IMAGEN CON ANIMACIÓN FLUIDA Y LENTA -->
                     <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
-                        <img id="comp-img-diamantes" src="IMG_20261105_143324_728.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='1098794_3.jpg';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
+                        <img id="comp-img-diamantes" src="IMG_20261105_143324_728.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
                         <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                         </div>
@@ -981,18 +968,6 @@
             <!-- SECCIÓN PERFIL -->
             <div id="seccion-perfil" class="vista-sec" style="display: none;">
                 <div class="profile-header-card">
-                    <div class="profile-wallet-pill-corner" style="display: flex; gap: 8px; align-items: center;">
-                        <div style="display: flex; align-items: center; gap: 4px;">
-                            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                            <span id="profile-wallet-balance" style="color: var(--accent-glow);">0.00 USDT</span>
-                        </div>
-                        <span style="color: var(--border-color);">|</span>
-                        <div style="display: flex; align-items: center; gap: 4px;">
-                            <svg viewBox="0 0 24 24" width="13" height="13" fill="#ffffff"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                            <span id="profile-saldo-movil-top" style="color: #ffffff; font-size: 0.73rem; font-weight: 900;">0 saldo</span>
-                        </div>
-                    </div>
-
                     <div class="profile-avatar-wrapper">
                         <div class="profile-avatar-circle" id="perfil-inicial" onclick="abrirSelectorGaleria()">L</div>
                         <div class="avatar-edit-badge" onclick="abrirSelectorGaleria()">
@@ -1004,7 +979,6 @@
                     <p id="perfil-correo" style="color: var(--text-muted); font-size: 0.78rem; margin-top: 0.2rem;">correo@gmail.com</p>
                     <p id="perfil-rango-label" style="color: var(--accent-glow); font-size: 0.72rem; font-weight: bold; margin-top: 0.3rem;">CLIENTE PRO</p>
 
-                    <!-- ESTADÍSTICAS EN EL PERFIL: Saldo Móvil en la posición correcta -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.9rem;">
                         <div style="background: #07090e; border: 1px solid var(--border-color); border-radius: 10px; padding: 0.6rem; text-align: center;">
                             <h4 id="stat-saldo-movil-perfil" style="font-size: 0.88rem; font-weight: 900; color: #ffffff;">0 saldo</h4>
@@ -1027,7 +1001,6 @@
                     </div>
                 </div>
 
-                <!-- Botón de seguridad original azul y negro -->
                 <button class="btn-main" style="background: #07090e; border: 1px solid var(--primary-blue); color: var(--accent-glow); margin-bottom: 1rem;" onclick="toggleSeguridadPanel()">
                     SEGURIDAD Y CONFIGURACIÓN
                 </button>
@@ -1261,6 +1234,7 @@
         let solicitudesGlobales = JSON.parse(localStorage.getItem('lester_solicitudes')) || { recargas: [], depositos: [] };
         let listaUsuariosGlobales = JSON.parse(localStorage.getItem('lester_lista_usuarios')) || [];
         
+        // Paquetes actualizados con las imágenes hermosas solicitadas
         let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { 
             etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", 
             colorFF: "rojo",
@@ -1276,14 +1250,15 @@
             direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
             ocultarTopRecargasHoy: false,
             paquetesDiamantes: [
-                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
                 { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
                 { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
                 { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
                 { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
                 { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
             ],
-            etiquetasCustomCEO: []
+            etiquetasCustomCEO: [],
+            imagenesCustomCEO: []
         };
 
         const BIN_ID = '6aeaa0e1ffd5d16053a44254';
@@ -1324,6 +1299,7 @@
             sincronizarConCloudAuto();
             aplicarConfiguracionVisual();
             renderizarPaquetesTienda();
+            renderizarElementosFlotantesCEO();
 
             setInterval(() => {
                 sincronizarConCloudAutoSilencioso();
@@ -1356,7 +1332,7 @@
                         tiendaConfig = resultado.record.config;
                         if(!tiendaConfig.paquetesDiamantes || tiendaConfig.paquetesDiamantes.length === 0) {
                             tiendaConfig.paquetesDiamantes = [
-                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
                                 { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
                                 { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
                                 { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
@@ -1365,6 +1341,7 @@
                             ];
                         }
                         if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
+                        if(!tiendaConfig.imagenesCustomCEO) tiendaConfig.imagenesCustomCEO = [];
                         localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                     }
                 }
@@ -1381,6 +1358,7 @@
                 actualizarEstadisticasInicio();
                 aplicarConfiguracionVisual();
                 renderizarPaquetesTienda();
+                renderizarElementosFlotantesCEO();
             } catch (error) {
                 console.error('Error al sincronizar con JSONBin:', error);
             } finally {
@@ -1409,6 +1387,7 @@
                         localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                         aplicarConfiguracionVisual();
                         renderizarPaquetesTienda();
+                        renderizarElementosFlotantesCEO();
                     }
                 }
                 if (usuarioActual) {
@@ -1449,7 +1428,7 @@
                 case 'verde': return '#10b981';
                 case 'rojo': return '#ff3b30';
                 case 'amarillo': return '#f59e0b';
-                case 'azul': return '#00f0ff';
+                case 'azul': return '#0066ff';
                 default: return '#10b981';
             }
         }
@@ -1477,51 +1456,6 @@
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
-            const wUsdt = document.getElementById('wallet-badge-usdt');
-            if(wUsdt) {
-                let t = tiendaConfig.etiquetaWalletUSDT || "";
-                if(t) {
-                    let c = getColorHex(tiendaConfig.colorWUSDT || 'verde');
-                    wUsdt.innerText = t;
-                    wUsdt.style.background = `rgba(16,185,129,0.2)`;
-                    wUsdt.style.color = c;
-                    wUsdt.style.border = `1px solid ${c}`;
-                    wUsdt.style.display = 'block';
-                } else {
-                    wUsdt.style.display = 'none';
-                }
-            }
-
-            const wSaldo = document.getElementById('wallet-badge-saldo');
-            if(wSaldo) {
-                let t = tiendaConfig.etiquetaWalletSaldo || "";
-                if(t) {
-                    let c = getColorHex(tiendaConfig.colorWSaldo || 'verde');
-                    wSaldo.innerText = t;
-                    wSaldo.style.background = `rgba(16,185,129,0.2)`;
-                    wSaldo.style.color = c;
-                    wSaldo.style.border = `1px solid ${c}`;
-                    wSaldo.style.display = 'block';
-                } else {
-                    wSaldo.style.display = 'none';
-                }
-            }
-
-            const wTarjeta = document.getElementById('wallet-badge-tarjeta');
-            if(wTarjeta) {
-                let t = tiendaConfig.etiquetaWalletTarjeta || "";
-                if(t) {
-                    let c = getColorHex(tiendaConfig.colorWTarjeta || 'rojo');
-                    wTarjeta.innerText = t;
-                    wTarjeta.style.background = `rgba(255,59,48,0.2)`;
-                    wTarjeta.style.color = c;
-                    wTarjeta.style.border = `1px solid ${c}`;
-                    wTarjeta.style.display = 'block';
-                } else {
-                    wTarjeta.style.display = 'none';
-                }
-            }
-
             const numDisp = document.getElementById('wallet-numero-saldo-display');
             if(numDisp && tiendaConfig.numeroSaldoOficial) numDisp.innerText = tiendaConfig.numeroSaldoOficial;
 
@@ -1535,7 +1469,7 @@
             let paquetes = tiendaConfig.paquetesDiamantes || [];
             if(paquetes.length === 0) {
                 paquetes = [
-                    { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.2, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
+                    { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
                     { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
                     { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
                     { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
@@ -1556,6 +1490,146 @@
                 `;
             });
             container.innerHTML = html;
+        }
+
+        // Renderizar etiquetas e imágenes flotantes personalizadas en tiempo real con capacidad de arrastre
+        function renderizarElementosFlotantesCEO() {
+            const contEtiquetas = document.getElementById('contenedor-etiquetas-flotantes');
+            const contImagenes = document.getElementById('contenedor-imagenes-flotantes');
+            if(!contEtiquetas || !contImagenes) return;
+
+            let htmlEtq = "";
+            (tiendaConfig.etiquetasCustomCEO || []).forEach((etq, idx) => {
+                htmlEtq += `
+                    <div class="floating-custom-tag ${etq.color || 'verde'}" id="custom-tag-${idx}" style="top: ${etq.y || 100}px; left: ${etq.x || 20}px;" onpointerdown="iniciarArrastreElemento(event, 'etiqueta', ${idx})">
+                        <span>${etq.texto}</span>
+                        ${ (usuarioActual && usuarioActual.rango >= 1) ? `<span onclick="event.stopPropagation(); eliminarEtiquetaCEO(${idx})" style="cursor:pointer; font-size:0.6rem; background:rgba(0,0,0,0.3); padding:2px 5px; border-radius:4px;">✕</span>` : '' }
+                    </div>
+                `;
+            });
+            contEtiquetas.innerHTML = htmlEtq;
+
+            let htmlImg = "";
+            (tiendaConfig.imagenesCustomCEO || []).forEach((imgObj, idx) => {
+                htmlImg += `
+                    <div style="position: absolute; top: ${imgObj.y || 200}px; left: ${imgObj.x || 50}px; width: ${imgObj.width || 80}px; height: ${imgObj.height || 80}px; z-index: 998; cursor: move;" id="custom-img-${idx}" onpointerdown="iniciarArrastreElemento(event, 'imagen', ${idx})">
+                        <img src="${imgObj.src}" style="width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); border-radius: 8px;">
+                        ${ (usuarioActual && usuarioActual.rango >= 1) ? `<button onclick="event.stopPropagation(); redimensionarImagenCEO(${idx})" style="position:absolute; top:-8px; right:-8px; background:#0066ff; color:#fff; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; cursor:pointer;" title="Cambiar tamaño">↗</button><button onclick="event.stopPropagation(); eliminarImagenCEO(${idx})" style="position:absolute; top:-8px; left:-8px; background:#ff3b30; color:#fff; border:none; border-radius:50%; width:20px; height:20px; font-size:10px; cursor:pointer;">✕</button>` : '' }
+                    </div>
+                `;
+            });
+            contImagenes.innerHTML = htmlImg;
+        }
+
+        let elementoArrastrando = null;
+        let tipoArrastre = null;
+        let indexArrastre = null;
+        let offsetX = 0, offsetY = 0;
+
+        function iniciarArrastreElemento(e, tipo, idx) {
+            if(!(usuarioActual && usuarioActual.rango >= 1)) return;
+            tipoArrastre = tipo;
+            indexArrastre = idx;
+            elementoArrastrando = document.getElementById(tipo === 'etiqueta' ? `custom-tag-${idx}` : `custom-img-${idx}`);
+            if(!elementoArrastrando) return;
+
+            const rect = elementoArrastrando.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+
+            window.addEventListener('pointermove', moverElementoFlotante);
+            window.addEventListener('pointerup', soltarElementoFlotante);
+            e.preventDefault();
+        }
+
+        function moverElementoFlotante(e) {
+            if(!elementoArrastrando) return;
+            let nuevoX = e.clientX - offsetX;
+            let nuevoY = e.clientY - offsetY;
+
+            elementoArrastrando.style.left = nuevoX + 'px';
+            elementoArrastrando.style.top = nuevoY + 'px';
+        }
+
+        async function soltarElementoFlotante() {
+            if(!elementoArrastrando) return;
+            const rect = elementoArrastrando.getBoundingClientRect();
+            let finalX = rect.left;
+            let finalY = rect.top;
+
+            if(tipoArrastre === 'etiqueta') {
+                if(tiendaConfig.etiquetasCustomCEO[indexArrastre]) {
+                    tiendaConfig.etiquetasCustomCEO[indexArrastre].x = finalX;
+                    tiendaConfig.etiquetasCustomCEO[indexArrastre].y = finalY;
+                }
+            } else if(tipoArrastre === 'imagen') {
+                if(tiendaConfig.imagenesCustomCEO[indexArrastre]) {
+                    tiendaConfig.imagenesCustomCEO[indexArrastre].x = finalX;
+                    tiendaConfig.imagenesCustomCEO[indexArrastre].y = finalY;
+                }
+            }
+
+            window.removeEventListener('pointermove', moverElementoFlotante);
+            window.removeEventListener('pointerup', soltarElementoFlotante);
+            elementoArrastrando = null;
+
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            await guardarEnCloud();
+        }
+
+        function eliminarEtiquetaCEO(idx) {
+            tiendaConfig.etiquetasCustomCEO.splice(idx, 1);
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            guardarEnCloud();
+            renderizarElementosFlotantesCEO();
+            mostrarNotificacion("Etiqueta eliminada");
+        }
+
+        function eliminarImagenCEO(idx) {
+            tiendaConfig.imagenesCustomCEO.splice(idx, 1);
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            guardarEnCloud();
+            renderizarElementosFlotantesCEO();
+            mostrarNotificacion("Imagen eliminada");
+        }
+
+        function redimensionarImagenCEO(idx) {
+            let imgObj = tiendaConfig.imagenesCustomCEO[idx];
+            let actualW = imgObj.width || 80;
+            let nuevoW = prompt("Introduce el nuevo tamaño en píxeles (ej. 60, 100, 150):", actualW);
+            if(nuevoW && !isNaN(nuevoW)) {
+                imgObj.width = parseInt(nuevoW);
+                imgObj.height = parseInt(nuevoW);
+                localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                guardarEnCloud();
+                renderizarElementosFlotantesCEO();
+                mostrarNotificacion("Tamaño de imagen actualizado");
+            }
+        }
+
+        function abrirSelectorImagenCEO() {
+            document.getElementById('ceo-image-uploader-hidden').click();
+        }
+
+        function procesarImagenFlotanteCEO(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                if(!tiendaConfig.imagenesCustomCEO) tiendaConfig.imagenesCustomCEO = [];
+                tiendaConfig.imagenesCustomCEO.push({
+                    src: e.target.result,
+                    x: 100,
+                    y: 200,
+                    width: 80,
+                    height: 80
+                });
+                localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+                await guardarEnCloud();
+                renderizarElementosFlotantesCEO();
+                mostrarNotificacion("Imagen agregada flotando en pantalla");
+            };
+            reader.readAsDataURL(file);
         }
 
         function mostrarCarga(texto = "Procesando...") { 
@@ -2165,7 +2239,7 @@
                         ultimaHora: (r.id || r.fecha)
                     };
                 }
-                acumuladoUsuarios[correoKey].totalGasto += (r.precio || 1.20);
+                acumuladoUsuarios[correoKey].totalGasto += (r.precio || 1.10);
                 if((r.id || r.fecha) > acumuladoUsuarios[correoKey].ultimaHora) {
                     acumuladoUsuarios[correoKey].ultimaHora = (r.id || r.fecha);
                 }
@@ -2426,8 +2500,6 @@
             const saldoMovilTexto = `${(usuarioActual.balanceCUP || 0)} saldo`;
             document.getElementById('header-wallet-balance').innerText = saldoUsdtTexto;
             document.getElementById('header-saldo-balance').innerText = saldoMovilTexto;
-            document.getElementById('profile-wallet-balance').innerText = saldoUsdtTexto;
-            document.getElementById('profile-saldo-movil-top').innerText = saldoMovilTexto;
             document.getElementById('stat-saldo-movil-perfil').innerText = saldoMovilTexto;
 
             document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
@@ -2593,12 +2665,12 @@
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_recarga')">Recargas (${solicitudesGlobales.recargas.length})</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_deposito')">Depósitos (${solicitudesGlobales.depositos.length})</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('cambiar_rango')">Gestionar Rangos</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('eliminar_usuario_nombre')">Quitar Usuario por Nombre</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('control_total_historial')">Control Total Historial</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_game')">Etiqueta Free Fire</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_blood')">Etiqueta Blood Strike</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('config_wallets')">Configurar Wallets & Red</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('catalogo_precios')">Catálogo de Precios</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('agregar_etiqueta_custom')">Agregar Etiqueta Custom</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('agregar_etiqueta_custom')">Agregar Etiqueta Flotante</button>
+                        <button class="ceo-btn" onclick="abrirSelectorImagenCEO()">Agregar Imagen Flotante</button>
                     `;
                 }
 
@@ -2673,24 +2745,39 @@
                         <b>Wallet USDT:</b> <span style="color:var(--accent-glow); font-weight:bold;">${u.balanceUSDT.toFixed(2)}</span><br>
                         <b>Saldo Móvil:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP} saldo</span><br>
                         <b>Rango:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
-                        <div style="margin-top:6px;">
+                        <div style="margin-top:6px; display:flex; gap:6px;">
                             <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoQuitarUsuarioPorNombre('${u.nombre}')">Quitar Usuario</button>
+                            <button style="background:#0066ff; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-size:0.68rem; font-weight:bold;" onclick="ceoEditarUsuarioModal('${u.correo}')">Editar Datos</button>
                         </div>
                     </div>`;
                 });
                 res.innerHTML = html;
-            } else if(accion === 'eliminar_usuario_nombre' && esCEO) {
-                res.innerHTML = `
-                    <div class="ceo-action-form" style="border-color:#ff3b30;">
-                        <h4 style="color:#ff3b30;">Quitar Usuario del Top / Sistema por Nombre</h4>
-                        <input type="text" id="ceo-eliminar-nombre-input" placeholder="Nombre exacto de usuario">
-                        <button class="btn-main" style="margin-top:0; background:#ff3b30;" onclick="ejecutarQuitarUsuarioPorNombreCEO()">Quitar Usuario Definitivamente</button>
-                    </div>
-                `;
+            } else if(accion === 'control_total_historial' && esCEO) {
+                let html = "<h4 style='color:#ff3b30; margin-bottom:0.4rem; font-size:0.82rem;'>Control Absoluto del Historial de Recargas (Todos los Usuarios):</h4>";
+                if(solicitudesGlobales.recargas.length === 0) html += "<p style='color:#8a99ad; font-size:0.78rem;'>No hay recargas en el historial.</p>";
+
+                solicitudesGlobales.recargas.slice().reverse().forEach((r, idxRev) => {
+                    let realIdx = solicitudesGlobales.recargas.length - 1 - idxRev;
+                    html += `<div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid #ff3b30; font-size:0.75rem;">
+                        <b>Usuario:</b> ${r.usuario} (${r.correo})<br>
+                        <b>ID Jugador:</b> <input type="text" id="edit-id-j-${realIdx}" value="${r.idJugador}" style="background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:2px 6px; border-radius:4px; width:120px; font-size:0.75rem;"><br>
+                        <b>Paquete:</b> ${r.detalle} | <b>Estado:</b> 
+                        <select id="edit-status-${realIdx}" style="background:#0d1322; border:1px solid var(--border-color); color:#fff; padding:2px; border-radius:4px; font-size:0.75rem;">
+                            <option value="Pendiente" ${r.estado==='Pendiente'?'selected':''}>Pendiente</option>
+                            <option value="Completado" ${r.estado==='Completado'||r.estado==='Aprobada'?'selected':''}>Completado</option>
+                            <option value="Cancelado" ${r.estado==='Cancelado'?'selected':''}>Cancelado</option>
+                        </select>
+                        <div style="margin-top:6px; display:flex; gap:6px;">
+                            <button style="background:#10b981; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:bold; font-size:0.68rem;" onclick="guardarCambiosRecargaAdmin(${realIdx})">Guardar Cambios</button>
+                            <button style="background:#ff3b30; color:#fff; border:none; padding:3px 8px; border-radius:4px; cursor:pointer; font-weight:bold; font-size:0.68rem;" onclick="eliminarRecargaAdmin(${realIdx})">Eliminar Registro</button>
+                        </div>
+                    </div>`;
+                });
+                res.innerHTML = html;
             } else if(accion === 'agregar_etiqueta_custom' && esCEO) {
                 res.innerHTML = `
                     <div class="ceo-action-form" style="border-color:#00f0ff;">
-                        <h4 style="color:#00f0ff;">Agregar Etiqueta Personalizada</h4>
+                        <h4 style="color:#00f0ff;">Agregar Etiqueta Flotante en Pantalla</h4>
                         <input type="text" id="ceo-custom-tag-text" placeholder="Texto de la etiqueta">
                         <select id="ceo-custom-tag-color">
                             <option value="verde">Verde</option>
@@ -2698,7 +2785,7 @@
                             <option value="amarillo">Amarillo</option>
                             <option value="azul">Azul</option>
                         </select>
-                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarAgregarEtiquetaCustomCEO()">Guardar Etiqueta</button>
+                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarAgregarEtiquetaCustomCEO()">Agregar Etiqueta Flotante</button>
                     </div>
                 `;
             } else if(accion === 'catalogo_precios' && esCEO) {
@@ -2785,43 +2872,34 @@
                         <button class="btn-main" style="margin-top:0; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
                     </div>
                 `;
-            } else if(accion === 'config_wallets' && esCEO) {
-                res.innerHTML = `
-                    <div class="ceo-action-form" style="border-color:#26a69a;">
-                        <h4 style="color:#26a69a;">Configurar Redes, Wallets y Tarjeta</h4>
-                        <label style="font-size:0.72rem; color:var(--text-muted);">Número Saldo Móvil:</label>
-                        <input type="text" id="ceo-num-saldo" value="${tiendaConfig.numeroSaldoOficial || '59578110'}">
-                        
-                        <label style="font-size:0.72rem; color:var(--text-muted);">Dirección USDT BEP 20:</label>
-                        <input type="text" id="ceo-dir-usdt" value="${tiendaConfig.direccionUSDTOficial || '0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2'}">
+            }
+        }
 
-                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Wallet USDT:</label>
-                        <input type="text" id="ceo-wusdt-text" placeholder="Ej. Activo" value="${tiendaConfig.etiquetaWalletUSDT || ''}">
-                        <select id="ceo-wusdt-color">
-                            <option value="verde" ${tiendaConfig.colorWUSDT==='verde'?'selected':''}>Verde</option>
-                            <option value="rojo" ${tiendaConfig.colorWUSDT==='rojo'?'selected':''}>Rojo</option>
-                            <option value="amarillo" ${tiendaConfig.colorWUSDT==='amarillo'?'selected':''}>Amarillo</option>
-                        </select>
+        async function guardarCambiosRecargaAdmin(idx) {
+            let nuevoIdJ = document.getElementById(`edit-id-j-${idx}`).value.trim();
+            let nuevoStatus = document.getElementById(`edit-status-${idx}`).value;
 
-                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Saldo Móvil:</label>
-                        <input type="text" id="ceo-wsaldo-text" placeholder="Ej. Rápido" value="${tiendaConfig.etiquetaWalletSaldo || ''}">
-                        <select id="ceo-wsaldo-color">
-                            <option value="verde" ${tiendaConfig.colorWSaldo==='verde'?'selected':''}>Verde</option>
-                            <option value="rojo" ${tiendaConfig.colorWSaldo==='rojo'?'selected':''}>Rojo</option>
-                            <option value="amarillo" ${tiendaConfig.colorWSaldo==='amarillo'?'selected':''}>Amarillo</option>
-                        </select>
+            if(solicitudesGlobales.recargas[idx]) {
+                solicitudesGlobales.recargas[idx].idJugador = nuevoIdJ;
+                solicitudesGlobales.recargas[idx].estado = nuevoStatus;
 
-                        <label style="font-size:0.72rem; color:var(--text-muted);">Etiqueta Pago Tarjeta:</label>
-                        <input type="text" id="ceo-wtarjeta-text" placeholder="Ej. Próximamente" value="${tiendaConfig.etiquetaWalletTarjeta || ''}">
-                        <select id="ceo-wtarjeta-color">
-                            <option value="rojo" ${tiendaConfig.colorWTarjeta==='rojo'?'selected':''}>Rojo</option>
-                            <option value="verde" ${tiendaConfig.colorWTarjeta==='verde'?'selected':''}>Verde</option>
-                            <option value="amarillo" ${tiendaConfig.colorWTarjeta==='amarillo'?'selected':''}>Amarillo</option>
-                        </select>
+                localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                await guardarEnCloud();
+                renderizarOrdenes();
+                actualizarEstadisticasInicio();
+                mostrarNotificacion("Registro de recarga actualizado correctamente");
+            }
+        }
 
-                        <button class="btn-main" style="margin-top:0; background:#26a69a;" onclick="ejecutarGuardarConfigWalletsCEO()">Guardar Cambios de Wallets</button>
-                    </div>
-                `;
+        async function eliminarRecargaAdmin(idx) {
+            if(confirm("¿Seguro que deseas eliminar este registro del historial?")) {
+                solicitudesGlobales.recargas.splice(idx, 1);
+                localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                await guardarEnCloud();
+                renderizarOrdenes();
+                actualizarEstadisticasInicio();
+                cargarAccionCEO('control_total_historial');
+                mostrarNotificacion("Registro eliminado del historial");
             }
         }
 
@@ -2839,10 +2917,7 @@
             mostrarNotificacion("Precio actualizado en tiempo real");
         }
 
-        async function ejecutarQuitarUsuarioPorNombreCEO() {
-            const nombreUser = document.getElementById('ceo-eliminar-nombre-input').value.trim();
-            if(!nombreUser) { mostrarNotificacion("Introduce el nombre de usuario"); return; }
-
+        async function ceoQuitarUsuarioPorNombre(nombreUser) {
             let index = listaUsuariosGlobales.findIndex(u => u.nombre.toLowerCase() === nombreUser.toLowerCase());
             if(index === -1) { mostrarNotificacion("No se encontró ningún usuario con ese nombre"); return; }
 
@@ -2860,8 +2935,22 @@
             actualizarEstadisticasInicio();
         }
 
-        function ceoQuitarUsuarioTopOLista(nombre) {
-            ejecutarQuitarUsuarioPorNombreCEO();
+        async function ceoEditarUsuarioModal(correo) {
+            let u = listaUsuariosGlobales.find(item => item.correo.toLowerCase() === correo.toLowerCase());
+            if(!u) return;
+
+            let nuevoNombre = prompt("Nuevo nombre de usuario:", u.nombre);
+            let nuevoUSDT = prompt("Nuevo balance USDT:", u.balanceUSDT || 0);
+            let nuevoSaldo = prompt("Nuevo saldo móvil:", u.balanceCUP || 0);
+
+            if(nuevoNombre !== null) u.nombre = nuevoNombre.trim();
+            if(nuevoUSDT !== null && !isNaN(nuevoUSDT)) u.balanceUSDT = parseFloat(nuevoUSDT);
+            if(nuevoSaldo !== null && !isNaN(nuevoSaldo)) u.balanceCUP = parseInt(nuevoSaldo);
+
+            localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+            await guardarEnCloud();
+            cargarAccionCEO('usuarios');
+            mostrarNotificacion("Datos de usuario actualizados");
         }
 
         async function ejecutarAgregarEtiquetaCustomCEO() {
@@ -2870,28 +2959,12 @@
             if(!texto) { mostrarNotificacion("Escribe el texto de la etiqueta"); return; }
 
             if(!tiendaConfig.etiquetasCustomCEO) tiendaConfig.etiquetasCustomCEO = [];
-            tiendaConfig.etiquetasCustomCEO.push({ texto, color });
+            tiendaConfig.etiquetasCustomCEO.push({ texto, color, x: 100, y: 150 });
 
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
-            aplicarConfiguracionVisual();
-            mostrarNotificacion("Etiqueta personalizada agregada con éxito");
-        }
-
-        async function ejecutarGuardarConfigWalletsCEO() {
-            tiendaConfig.numeroSaldoOficial = document.getElementById('ceo-num-saldo').value.trim();
-            tiendaConfig.direccionUSDTOficial = document.getElementById('ceo-dir-usdt').value.trim();
-            tiendaConfig.etiquetaWalletUSDT = document.getElementById('ceo-wusdt-text').value.trim();
-            tiendaConfig.colorWUSDT = document.getElementById('ceo-wusdt-color').value;
-            tiendaConfig.etiquetaWalletSaldo = document.getElementById('ceo-wsaldo-text').value.trim();
-            tiendaConfig.colorWSaldo = document.getElementById('ceo-wsaldo-color').value;
-            tiendaConfig.etiquetaWalletTarjeta = document.getElementById('ceo-wtarjeta-text').value.trim();
-            tiendaConfig.colorWTarjeta = document.getElementById('ceo-wtarjeta-color').value;
-
-            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
-            await guardarEnCloud();
-            aplicarConfiguracionVisual();
-            mostrarNotificacion("Configuración de Wallets guardada con éxito");
+            renderizarElementosFlotantesCEO();
+            mostrarNotificacion("Etiqueta flotante añadida. Puedes moverla con el dedo o ratón.");
         }
 
         async function ejecutarAcreditarCEO() {
