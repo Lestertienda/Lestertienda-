@@ -67,19 +67,19 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(0,240,255,0.04) 0%, transparent 60%);
+            background: radial-gradient(circle, rgba(0,240,255,0.06) 0%, transparent 60%);
             z-index: 0;
             pointer-events: none;
-            animation: backgroundShimmer 10s ease-in-out infinite alternate;
+            animation: backgroundShimmer 12s ease-in-out infinite alternate;
         }
 
         @keyframes backgroundShimmer {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(5%, 5%) scale(1.1); }
+            100% { transform: translate(4%, 4%) scale(1.08); }
         }
 
         @keyframes fadeInPage {
-            0% { opacity: 0; transform: translateY(6px); }
+            0% { opacity: 0; transform: translateY(4px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
@@ -231,7 +231,7 @@
             z-index: 1;
         }
 
-        /* ETIQUETAS EDITABLES PROFESIONALES (SIN BORDES FEOS, FONDO AZUL FUERTE TRANSLÚCIDO + AZUL CLARO) */
+        /* ETIQUETAS EDITABLES PROFESIONALES (Fondo azul fuerte translúcido + texto azul claro, sin bordes feos) */
         .neon-badge-top-right {
             position: absolute; top: 14px; right: 14px;
             padding: 6px 12px; border-radius: 10px; font-size: 0.7rem; font-weight: 900;
@@ -475,7 +475,7 @@
         .nav-item.active, .nav-item:hover { color: var(--accent-glow); }
         .nav-item.active svg, .nav-item:hover svg { fill: var(--accent-glow); }
 
-        /* Estilos para el Elemento Inyectado Dinámicamente por el CEO */
+        /* Estilos para el Elemento Inyectado Dinámicamente por el CEO en cualquier lugar */
         .custom-injected-element {
             position: relative;
             margin: 10px 0;
@@ -550,7 +550,7 @@
                 <label>Nombre de usuario</label>
                 <div class="input-icon-wrapper">
                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                    <input type="text" id="reg-user" class="form-control" placeholder="Ej. lester_gamer" oninput="validarCampoUser(this)">
+                    <input type="text" id="reg-user" class="form-control" placeholder="lester_gamer" oninput="validarCampoUser(this)">
                 </div>
                 <div id="err-reg-user" class="error-feedback-text">Mínimo 4 caracteres y sin espacios.</div>
             </div>
@@ -804,7 +804,7 @@
                 </div>
             </div>
 
-            <!-- SUB-VISTA COMPROBANTE DE RECARGA -->
+            <!-- SUB-VISTA COMPROBANTE DE RECARGA CON LOGOTIPO REAL DE FREE FIRE -->
             <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
                 <div style="margin-bottom: 1rem;">
                     <button class="nav-top-icon-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))" style="border-radius: 8px; width: auto; padding: 0.4rem 0.8rem; color: var(--accent-glow); display: flex; align-items: center; gap: 4px;">
@@ -819,7 +819,7 @@
                         COMPLETADO
                     </div>
 
-                    <!-- FOTO LOGOTIPO REAL DE DIAMANTES DE FREE FIRE EN LUGAR DE ANIMACIÓN GENERADA -->
+                    <!-- FOTO LOGOTIPO REAL DE DIAMANTES DE FREE FIRE (EL REAL) -->
                     <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(0,240,255,0.15); border-radius: 50%; filter: blur(12px);"></div>
                         <img id="comp-img-diamantes" src="https://images.seeklogo.com/logo-png/51/1/free-fire-diamonds-logo-png_seeklogo-513651.png" alt="Diamantes Free Fire" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
@@ -1001,8 +1001,7 @@
 
                     <div class="form-group" style="margin-top: 1rem;">
                         <label>Tu número con el que transfirió el saldo</label>
-                        <!-- QUITADA LA OPCIÓN DE PONER EL +53 (SOLO NÚMEROS LOCALES) -->
-                        <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="Ej. 53xxxxxx o 59578110" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="59578110" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                     </div>
 
                     <button class="btn-main" onclick="confirmarendioDeposito()">CONFIRMAR DEPÓSITO</button>
@@ -1050,25 +1049,25 @@
                     <h3 style="font-size: 0.92rem; font-weight: 900; margin-bottom: 0.6rem; color: var(--accent-glow);">Datos Personales</h3>
                     <div class="form-group" style="margin-bottom: 0.8rem;">
                         <label>Nombre completo</label>
-                        <input type="text" id="perfil-input-nombre" class="form-control no-left-icon" placeholder="Ej. Daniel González Pérez">
+                        <input type="text" id="perfil-input-nombre" class="form-control no-left-icon" placeholder="Daniel González Pérez">
                     </div>
                     <div class="form-group" style="margin-bottom: 0.8rem;">
                         <label>Nombre de usuario</label>
                         <input type="text" id="perfil-input-username" class="form-control no-left-icon" placeholder="@Lestertienda">
                     </div>
                     <div class="form-group" style="margin-bottom: 0.8rem;">
-                        <label>Número de móvil (Sin prefijo +53)</label>
+                        <label>Número de móvil</label>
                         <input type="text" id="perfil-input-telefono" class="form-control no-left-icon" placeholder="59578110">
                     </div>
                     <button class="btn-main" style="margin-top: 0.4rem;" onclick="guardarDatosPersonalesPerfil()">Guardar cambios</button>
                 </div>
 
-                <!-- BOTÓN DE APARIENCIA (TEMA OSCURO / CLARO) -->
+                <!-- SECCIÓN APARIENCIA (TEMA OSCURO / CLARO CON SOL Y LUNA) -->
                 <div class="security-menu-box" style="margin-bottom: 1.1rem;">
                     <button class="security-btn" onclick="toggleSubPanel('panel-apariencia-opciones')" style="justify-content: space-between;">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg>
-                            <span>Apariencia (Tema oscuro / claro)</span>
+                            <span>Apariencia</span>
                         </div>
                         <span style="color: var(--accent-glow); font-size: 0.8rem;">&gt;</span>
                     </button>
@@ -1086,7 +1085,7 @@
                     </div>
                 </div>
 
-                <!-- MENÚ DE SEGURIDAD INTEGRADO (SIN CAMBIAR NOMBRE, CON TRANSFERENCIA Y ELIMINAR CUENTA) -->
+                <!-- MENÚ DE SEGURIDAD Y CUENTA -->
                 <div class="security-menu-box">
                     <h3 style="font-size: 0.92rem; font-weight: 900; margin-bottom: 0.6rem; color: var(--accent-glow);">Seguridad y Cuenta</h3>
                     
@@ -1097,7 +1096,7 @@
                     <div id="panel-transferir-usdt" style="display:none; padding:10px 0; border-top:1px solid var(--border-color); margin-top:4px;">
                         <div class="form-group">
                             <label>Destinatario (Nombre de usuario o Correo)</label>
-                            <input type="text" id="trans-destino" class="form-control no-left-icon" placeholder="Ej. usuario o correo@gmail.com">
+                            <input type="text" id="trans-destino" class="form-control no-left-icon" placeholder="usuario o correo@gmail.com">
                         </div>
                         <div class="form-group">
                             <label>Monto a transferir</label>
@@ -1306,7 +1305,7 @@
             numeroSaldoOficial: "59578110",
             direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
             ocultarTopRecargasHoy: false,
-            injectedElements: [], // [{ id, type: 'image'|'text', content, position }]
+            injectedElements: [], 
             paquetesDiamantes: [
                 { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: '' },
                 { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '' },
@@ -1368,7 +1367,6 @@
             mostrarNotificacion(`Tema cambiado a ${modo === 'dark' ? 'Oscuro' : 'Claro'}`);
         }
 
-        // Cargar tema guardado
         const savedTheme = localStorage.getItem('lester_theme') || 'dark';
         document.body.setAttribute('data-theme', savedTheme);
 
@@ -1487,7 +1485,6 @@
         }
 
         function aplicarConfiguracionVisual() {
-            // ETIQUETA FREE FIRE (Estilo profesional: Fondo azul fuerte translúcido, texto azul claro, sin bordes feos)
             const badgeFF = document.getElementById('freefire-custom-badge');
             let textoFF = tiendaConfig.etiquetaFreeFire || "";
             if(badgeFF) {
@@ -1526,7 +1523,6 @@
             const dirDisp = document.getElementById('wallet-direccion-usdt-display');
             if(dirDisp && tiendaConfig.direccionUSDTOficial) dirDisp.innerText = tiendaConfig.direccionUSDTOficial;
 
-            // Renderizar elementos inyectados dinámicamente por el CEO en la página
             renderizarElementosInyectados();
         }
 
@@ -1563,9 +1559,6 @@
             container.innerHTML = html;
         }
 
-        // ==========================================
-        // MANEJADORES DE IMÁGENES COMPRIMIDAS A 1KB / MÁXIMA CALIDAD VISUAL
-        // ==========================================
         function abrirSelectorImagenBanner(tipoJuego) {
             window.tipoBannerSeleccionado = tipoJuego;
             document.getElementById('ceo-banner-image-uploader').value = '';
@@ -1585,7 +1578,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 200; // Reducido para asegurar tamaño ultra ligero (~1KB)
+                    const maxDim = 200;
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1594,7 +1587,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.25); // Compresión alta para peso mínimo
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.25);
 
                     if(window.tipoBannerSeleccionado === 'freefire') {
                         tiendaConfig.bannerFreeFireImg = compressedBase64;
@@ -2896,7 +2889,7 @@
                 let html = `
                     <div class="ceo-action-form">
                         <h4>Inyectar Fotos o Elementos en la Página</h4>
-                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Sube fotos donde quieras o añade texto personalizado sin límites.</p>
+                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Sube fotos ilimitadas donde quieras o añade texto personalizado.</p>
                         <button class="btn-main" style="margin-bottom:8px;" onclick="abrirInyectorImagenCEO()">Subir Foto Ilimitada</button>
                         <textarea id="ceo-inject-text" placeholder="O escribe texto o HTML personalizado..."></textarea>
                         <button class="btn-main" style="margin-top:0;" onclick="inyectarTextoCEO()">Publicar Texto</button>
