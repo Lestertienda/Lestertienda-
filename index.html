@@ -195,9 +195,11 @@
 
         .neon-badge-top-right {
             position: absolute; top: 12px; right: 12px;
-            padding: 4px 10px; border-radius: 8px; font-size: 0.65rem; font-weight: 900;
+            padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 900;
             text-transform: uppercase; z-index: 3;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5);
+            background: rgba(7, 9, 14, 0.95) !important;
+            border: 2px solid currentColor;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.7);
         }
 
         .game-card-footer { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.88rem; background: #07090e; border-top: 1px solid var(--border-color); position: relative; z-index: 2; }
@@ -654,7 +656,7 @@
                 <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
                     <div id="banner-bg-blood" class="game-card-banner-img">
                         <div class="neon-overlay-gradient"></div>
-                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.3); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">PRÓXIMAMENTE</div>
+                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="color: #f59e0b;">PRÓXIMAMENTE</div>
                         
                         <div style="z-index: 2; position: relative;">
                             <span style="background: rgba(245, 158, 11, 0.4); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:#f59e0b; font-weight: bold; display: inline-block; margin-bottom: 4px; backdrop-filter: blur(4px);">Shooter Pro</span>
@@ -1408,14 +1410,8 @@
             if(badgeFF) {
                 badgeFF.innerText = textoFF;
                 let colHex = getColorHex(tiendaConfig.colorFF || 'rojo');
-                badgeFF.style.background = `rgba(${colHex === '#ff3b30' ? '255, 59, 48' : (colHex === '#10b981' ? '16, 185, 129' : '245, 158, 11')}, 0.3)`;
                 badgeFF.style.borderColor = colHex;
                 badgeFF.style.color = colHex;
-                if(tiendaConfig.sombraEtiquetaFF !== false) {
-                    badgeFF.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5)';
-                } else {
-                    badgeFF.style.boxShadow = 'none';
-                }
                 badgeFF.style.display = textoFF.trim() === "" ? "none" : "block";
             }
 
@@ -1424,14 +1420,8 @@
             if(badgeBS) {
                 badgeBS.innerText = textoBS;
                 let colHexBS = getColorHex(tiendaConfig.colorBS || 'amarillo');
-                badgeBS.style.background = `rgba(245, 158, 11, 0.3)`;
                 badgeBS.style.borderColor = colHexBS;
                 badgeBS.style.color = colHexBS;
-                if(tiendaConfig.sombraEtiquetaBS !== false) {
-                    badgeBS.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5)';
-                } else {
-                    badgeBS.style.boxShadow = 'none';
-                }
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
@@ -1480,7 +1470,7 @@
         }
 
         // ==========================================
-        // MANEJADORES DE IMÁGENES AISLADOS Y ULTRA-COMPRIMIDOS
+        // MANEJADORES DE IMÁGENES ULTRA-COMPRIMIDOS
         // ==========================================
         function abrirSelectorImagenBanner(tipoJuego) {
             window.tipoBannerSeleccionado = tipoJuego;
@@ -1501,7 +1491,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 350; 
+                    const maxDim = 260; // Reducido para garantizar que JSONBin nunca rechace la subida
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1510,7 +1500,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.50);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.40);
 
                     if(window.tipoBannerSeleccionado === 'freefire') {
                         tiendaConfig.bannerFreeFireImg = compressedBase64;
@@ -1546,7 +1536,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 120; 
+                    const maxDim = 90; // Reducido para evitar límite de tamaño en la nube
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1555,7 +1545,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.45);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.35);
 
                     let idx = window.indicePaqueteSeleccionado;
                     if(tiendaConfig.paquetesDiamantes[idx]) {
@@ -2783,7 +2773,6 @@
                     </div>
                 `;
             } else if(accion === 'etiqueta_game' && esCEO) {
-                let sombraChecked = tiendaConfig.sombraEtiquetaFF !== false ? 'checked' : '';
                 res.innerHTML = `
                     <div class="ceo-action-form">
                         <h4>Etiqueta Free Fire</h4>
@@ -2794,15 +2783,10 @@
                             <option value="amarillo" ${tiendaConfig.colorFF==='amarillo'?'selected':''}>Amarillo</option>
                             <option value="azul" ${tiendaConfig.colorFF==='azul'?'selected':''}>Azul</option>
                         </select>
-                        <div style="display:flex; align-items:center; gap:8px; margin: 8px 0; font-size:0.78rem;">
-                            <input type="checkbox" id="ceo-sombra-ff" ${sombraChecked} style="width:16px; height:16px; accent-color:var(--accent-glow);">
-                            <label for="ceo-sombra-ff" style="color:#fff; margin-bottom:0; cursor:pointer;">Activar sombrita negra</label>
-                        </div>
-                        <button class="btn-main" style="margin-top:0;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta Free Fire</button>
+                        <button class="btn-main" style="margin-top:8px;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta Free Fire</button>
                     </div>
                 `;
             } else if(accion === 'etiqueta_blood' && esCEO) {
-                let sombraCheckedBS = tiendaConfig.sombraEtiquetaBS !== false ? 'checked' : '';
                 res.innerHTML = `
                     <div class="ceo-action-form" style="border-color:#f59e0b;">
                         <h4 style="color:#f59e0b;">Etiqueta Blood Strike</h4>
@@ -2813,11 +2797,7 @@
                             <option value="verde" ${tiendaConfig.colorBS==='verde'?'selected':''}>Verde</option>
                             <option value="azul" ${tiendaConfig.colorBS==='azul'?'selected':''}>Azul</option>
                         </select>
-                        <div style="display:flex; align-items:center; gap:8px; margin: 8px 0; font-size:0.78rem;">
-                            <input type="checkbox" id="ceo-sombra-bs" ${sombraCheckedBS} style="width:16px; height:16px; accent-color:#f59e0b;">
-                            <label for="ceo-sombra-bs" style="color:#fff; margin-bottom:0; cursor:pointer;">Activar sombrita negra</label>
-                        </div>
-                        <button class="btn-main" style="margin-top:0; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
+                        <button class="btn-main" style="margin-top:8px; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
                     </div>
                 `;
             }
@@ -3008,7 +2988,6 @@
         async function ejecutarGuardarEtiquetaCEO() {
             tiendaConfig.etiquetaFreeFire = document.getElementById('ceo-etiqueta-texto').value;
             tiendaConfig.colorFF = document.getElementById('ceo-color-ff').value;
-            tiendaConfig.sombraEtiquetaFF = document.getElementById('ceo-sombra-ff').checked;
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
@@ -3018,7 +2997,6 @@
         async function ejecutarGuardarEtiquetaBloodCEO() {
             tiendaConfig.etiquetaBloodStrike = document.getElementById('ceo-etiqueta-blood-texto').value;
             tiendaConfig.colorBS = document.getElementById('ceo-color-bs').value;
-            tiendaConfig.sombraEtiquetaBS = document.getElementById('ceo-sombra-bs').checked;
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
