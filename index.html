@@ -633,7 +633,7 @@
 
                 <!-- Tarjeta Free Fire -->
                 <div class="game-card-character" onclick="abrirFreeFire()">
-                    <div id="banner-bg-freefire" class="game-card-banner-img" style="background-image: url('IMG_20261105_143324_728.jpg');">
+                    <div id="banner-bg-freefire" class="game-card-banner-img">
                         <div class="neon-overlay-gradient"></div>
                         <div id="freefire-custom-badge" class="neon-badge-top-right">SOLO DISPONIBLE PARA EEUU, SUR Y NORTE</div>
                         
@@ -650,7 +650,7 @@
 
                 <!-- Tarjeta Blood Strike -->
                 <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
-                    <div id="banner-bg-blood" class="game-card-banner-img" style="background-image: url('IMG_20261105_143001_158.jpg');">
+                    <div id="banner-bg-blood" class="game-card-banner-img">
                         <div class="neon-overlay-gradient"></div>
                         <div id="bloodstrike-custom-badge" class="neon-badge-top-right" style="background: rgba(245, 158, 11, 0.3); border-color: rgba(245, 158, 11, 0.6); color: #f59e0b;">PRÓXIMAMENTE</div>
                         
@@ -754,7 +754,7 @@
 
                     <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
                         <div style="position: absolute; width: 90px; height: 90px; background: rgba(16,185,129,0.15); border-radius: 50%; filter: blur(10px);"></div>
-                        <img id="comp-img-diamantes" src="IMG_20261105_143324_728.jpg" alt="Diamantes" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
+                        <img id="comp-img-diamantes" src="IMG_20261105_143324_728.jpg" alt="Diamantes" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
                         <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #07090e; z-index: 3;">
                             <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
                         </div>
@@ -1212,20 +1212,22 @@
         let tiendaConfig = JSON.parse(localStorage.getItem('lester_config')) || { 
             etiquetaFreeFire: "SOLO DISPONIBLE PARA EEUU, SUR Y NORTE", 
             colorFF: "rojo",
+            sombraEtiquetaFF: true,
             etiquetaBloodStrike: "PRÓXIMAMENTE",
             colorBS: "amarillo",
-            bannerFreeFireImg: "IMG_20261105_143324_728.jpg",
-            bannerBloodImg: "IMG_20261105_143001_158.jpg",
+            sombraEtiquetaBS: true,
+            bannerFreeFireImg: "",
+            bannerBloodImg: "",
             numeroSaldoOficial: "59578110",
             direccionUSDTOficial: "0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2",
             ocultarTopRecargasHoy: false,
             paquetesDiamantes: [
-                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
-                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
-                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
-                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
-                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
-                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
+                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: '' },
+                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '' },
+                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '' },
+                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '' },
+                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '' },
+                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '' }
             ]
         };
 
@@ -1297,18 +1299,18 @@
                     }
                     if (resultado.record.config) {
                         tiendaConfig = resultado.record.config;
+                        if(tiendaConfig.sombraEtiquetaFF === undefined) tiendaConfig.sombraEtiquetaFF = true;
+                        if(tiendaConfig.sombraEtiquetaBS === undefined) tiendaConfig.sombraEtiquetaBS = true;
                         if(!tiendaConfig.paquetesDiamantes || tiendaConfig.paquetesDiamantes.length === 0) {
                             tiendaConfig.paquetesDiamantes = [
-                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: 'IMG_20261105_142931_714.jpg' },
-                                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: 'IMG_20261105_142943_954.jpg' },
-                                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: 'IMG_20261105_143001_158.jpg' },
-                                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: 'IMG_20261105_143012_435.jpg' },
-                                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: 'IMG_20261105_143024_630.jpg' },
-                                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: 'IMG_20261105_143324_728.jpg' }
+                                { id: 1, nombre: '100+10 Diamantes', diamantesNum: 110, precioUsdt: 1.1, precioSaldo: 300, textoDetalle: '100+10', imagen: '' },
+                                { id: 2, nombre: '310+51 Diamantes', diamantesNum: 361, precioUsdt: 3.5, precioSaldo: 850, textoDetalle: '310+51', imagen: '' },
+                                { id: 3, nombre: '520+52 Diamantes', diamantesNum: 572, precioUsdt: 5.0, precioSaldo: 2100, textoDetalle: '520+52', imagen: '' },
+                                { id: 4, nombre: '1050+105 Diamantes', diamantesNum: 1166, precioUsdt: 8.5, precioSaldo: 3300, textoDetalle: '1050+105', imagen: '' },
+                                { id: 5, nombre: '2160+216 Diamantes', diamantesNum: 2398, precioUsdt: 17.4, precioSaldo: 5300, textoDetalle: '2160+216', imagen: '' },
+                                { id: 6, nombre: '5580+558 Diamantes', diamantesNum: 6160, precioUsdt: 40.0, precioSaldo: 12300, textoDetalle: '5580+558', imagen: '' }
                             ];
                         }
-                        if(!tiendaConfig.bannerFreeFireImg) tiendaConfig.bannerFreeFireImg = 'IMG_20261105_143324_728.jpg';
-                        if(!tiendaConfig.bannerBloodImg) tiendaConfig.bannerBloodImg = 'IMG_20261105_143001_158.jpg';
                         localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
                     }
                 }
@@ -1407,6 +1409,11 @@
                 badgeFF.style.background = `rgba(${colHex === '#ff3b30' ? '255, 59, 48' : (colHex === '#10b981' ? '16, 185, 129' : '245, 158, 11')}, 0.3)`;
                 badgeFF.style.borderColor = colHex;
                 badgeFF.style.color = colHex;
+                if(tiendaConfig.sombraEtiquetaFF) {
+                    badgeFF.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5)';
+                } else {
+                    badgeFF.style.boxShadow = 'none';
+                }
                 badgeFF.style.display = textoFF.trim() === "" ? "none" : "block";
             }
 
@@ -1418,17 +1425,30 @@
                 badgeBS.style.background = `rgba(245, 158, 11, 0.3)`;
                 badgeBS.style.borderColor = colHexBS;
                 badgeBS.style.color = colHexBS;
+                if(tiendaConfig.sombraEtiquetaBS) {
+                    badgeBS.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5)';
+                } else {
+                    badgeBS.style.boxShadow = 'none';
+                }
                 badgeBS.style.display = textoBS.trim() === "" ? "none" : "block";
             }
 
             const bannerFFBg = document.getElementById('banner-bg-freefire');
-            if(bannerFFBg && tiendaConfig.bannerFreeFireImg) {
-                bannerFFBg.style.backgroundImage = `url('${tiendaConfig.bannerFreeFireImg}')`;
+            if(bannerFFBg) {
+                if(tiendaConfig.bannerFreeFireImg && tiendaConfig.bannerFreeFireImg.trim() !== "") {
+                    bannerFFBg.style.backgroundImage = `url('${tiendaConfig.bannerFreeFireImg}')`;
+                } else {
+                    bannerFFBg.style.backgroundImage = `url('IMG_20261105_143324_728.jpg')`;
+                }
             }
 
             const bannerBloodBg = document.getElementById('banner-bg-blood');
-            if(bannerBloodBg && tiendaConfig.bannerBloodImg) {
-                bannerBloodBg.style.backgroundImage = `url('${tiendaConfig.bannerBloodImg}')`;
+            if(bannerBloodBg) {
+                if(tiendaConfig.bannerBloodImg && tiendaConfig.bannerBloodImg.trim() !== "") {
+                    bannerBloodBg.style.backgroundImage = `url('${tiendaConfig.bannerBloodImg}')`;
+                } else {
+                    bannerBloodBg.style.backgroundImage = `url('IMG_20261105_143001_158.jpg')`;
+                }
             }
 
             const numDisp = document.getElementById('wallet-numero-saldo-display');
@@ -1445,7 +1465,7 @@
             let html = "";
             paquetes.forEach(p => {
                 let precioMostrado = metodoPagoActual === 'usdt' ? `${p.precioUsdt.toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
-                let imgSource = p.imagen || 'IMG_20261105_143324_728.jpg';
+                let imgSource = (p.imagen && p.imagen.trim() !== "") ? p.imagen : 'IMG_20261105_143324_728.jpg';
                 html += `
                     <div class="diamond-card" onclick="seleccionarOferta(${p.diamantesNum}, ${p.precioUsdt}, ${p.precioSaldo}, '${p.textoDetalle}', '${imgSource}')">
                         <div class="diamond-img-render"><img src="${imgSource}" alt="${p.nombre}" onerror="this.onerror=null; this.src='IMG_20261105_143324_728.jpg';"></div>
@@ -1458,7 +1478,7 @@
         }
 
         // ==========================================
-        // MANEJADORES DE IMÁGENES AISLADOS Y SEGUROS PARA CADA SECCIÓN
+        // MANEJADORES DE IMÁGENES AISLADOS Y ULTRA-COMPRIMIDOS PARA EVITAR LÍMITES JSONBIN
         // ==========================================
         function abrirSelectorImagenBanner(tipoJuego) {
             window.tipoBannerSeleccionado = tipoJuego;
@@ -1469,7 +1489,7 @@
         function procesarImagenBannerCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
-            mostrarCarga("Optimizando y subiendo banner...");
+            mostrarCarga("Comprimiendo y guardando banner...");
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -1479,7 +1499,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 500; // Resolución compacta ideal para banners móviles
+                    const maxDim = 450; // Resolución compacta ideal para web móvil
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1488,7 +1508,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.60);
 
                     if(window.tipoBannerSeleccionado === 'freefire') {
                         tiendaConfig.bannerFreeFireImg = compressedBase64;
@@ -1514,7 +1534,7 @@
         function procesarImagenCatalogoCEO(event) {
             const file = event.target.files[0];
             if(!file) return;
-            mostrarCarga("Optimizando foto del paquete...");
+            mostrarCarga("Comprimiendo imagen del paquete...");
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
@@ -1524,7 +1544,7 @@
                     const ctx = canvas.getContext('2d');
                     let width = img.width;
                     let height = img.height;
-                    const maxDim = 200; // Resolución compacta ideal para iconos de diamantes
+                    const maxDim = 180; // Resolución compacta ideal para iconos de diamantes
                     if (width > height) {
                         if (width > maxDim) { height *= maxDim / width; width = maxDim; }
                     } else {
@@ -1533,7 +1553,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.70);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.60);
 
                     let idx = window.indicePaqueteSeleccionado;
                     if(tiendaConfig.paquetesDiamantes[idx]) {
@@ -2079,7 +2099,7 @@
             document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
             document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? 'saldo' : 'USDT'}`;
             
-            let imgSrc = orden.imagen || 'IMG_20261105_143324_728.jpg';
+            let imgSrc = (orden.imagen && orden.imagen.trim() !== "") ? orden.imagen : 'IMG_20261105_143324_728.jpg';
             document.getElementById('comp-img-diamantes').src = imgSrc;
 
             const boxMain = document.getElementById('comp-box-main');
@@ -2217,7 +2237,7 @@
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.70);
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
 
                     usuarioActual.avatar = compressedBase64;
                     let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
@@ -2695,7 +2715,7 @@
             } else if(accion === 'catalogo_precios' && esCEO) {
                 let html = "<h4 style='color:var(--accent-glow); margin-bottom:0.4rem; font-size:0.82rem;'>Catálogo de Precios e Imágenes de Paquetes:</h4>";
                 (tiendaConfig.paquetesDiamantes || []).forEach((p, pIdx) => {
-                    let imgThumb = p.imagen || 'IMG_20261105_143324_728.jpg';
+                    let imgThumb = (p.imagen && p.imagen.trim() !== "") ? p.imagen : 'IMG_20261105_143324_728.jpg';
                     html += `
                         <div style="background:#07090e; padding:0.8rem; margin-top:0.5rem; border-radius:10px; border:1px solid var(--border-color); font-size:0.75rem;">
                             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
@@ -2756,6 +2776,7 @@
                     </div>
                 `;
             } else if(accion === 'etiqueta_game' && esCEO) {
+                let sombraChecked = tiendaConfig.sombraEtiquetaFF !== false ? 'checked' : '';
                 res.innerHTML = `
                     <div class="ceo-action-form">
                         <h4>Etiqueta Free Fire</h4>
@@ -2766,10 +2787,15 @@
                             <option value="amarillo" ${tiendaConfig.colorFF==='amarillo'?'selected':''}>Amarillo</option>
                             <option value="azul" ${tiendaConfig.colorFF==='azul'?'selected':''}>Azul</option>
                         </select>
+                        <div style="display:flex; align-items:center; gap:8px; margin: 8px 0; font-size:0.78rem;">
+                            <input type="checkbox" id="ceo-sombra-ff" ${sombraChecked} style="width:16px; height:16px; accent-color:var(--accent-glow);">
+                            <label for="ceo-sombra-ff" style="color:#fff; margin-bottom:0; cursor:pointer;">Activar sombrita negra</label>
+                        </div>
                         <button class="btn-main" style="margin-top:0;" onclick="ejecutarGuardarEtiquetaCEO()">Guardar Etiqueta Free Fire</button>
                     </div>
                 `;
             } else if(accion === 'etiqueta_blood' && esCEO) {
+                let sombraCheckedBS = tiendaConfig.sombraEtiquetaBS !== false ? 'checked' : '';
                 res.innerHTML = `
                     <div class="ceo-action-form" style="border-color:#f59e0b;">
                         <h4 style="color:#f59e0b;">Etiqueta Blood Strike</h4>
@@ -2780,6 +2806,10 @@
                             <option value="verde" ${tiendaConfig.colorBS==='verde'?'selected':''}>Verde</option>
                             <option value="azul" ${tiendaConfig.colorBS==='azul'?'selected':''}>Azul</option>
                         </select>
+                        <div style="display:flex; align-items:center; gap:8px; margin: 8px 0; font-size:0.78rem;">
+                            <input type="checkbox" id="ceo-sombra-bs" ${sombraCheckedBS} style="width:16px; height:16px; accent-color:#f59e0b;">
+                            <label for="ceo-sombra-bs" style="color:#fff; margin-bottom:0; cursor:pointer;">Activar sombrita negra</label>
+                        </div>
                         <button class="btn-main" style="margin-top:0; background:#f59e0b;" onclick="ejecutarGuardarEtiquetaBloodCEO()">Guardar Etiqueta Blood Strike</button>
                     </div>
                 `;
@@ -2960,19 +2990,21 @@
         async function ejecutarGuardarEtiquetaCEO() {
             tiendaConfig.etiquetaFreeFire = document.getElementById('ceo-etiqueta-texto').value;
             tiendaConfig.colorFF = document.getElementById('ceo-color-ff').value;
+            tiendaConfig.sombraEtiquetaFF = document.getElementById('ceo-sombra-ff').checked;
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
-            mostrarNotificacion("Etiqueta Free Fire actualizada");
+            mostrarNotificacion("Etiqueta Free Fire actualizada con éxito");
         }
 
         async function ejecutarGuardarEtiquetaBloodCEO() {
             tiendaConfig.etiquetaBloodStrike = document.getElementById('ceo-etiqueta-blood-texto').value;
             tiendaConfig.colorBS = document.getElementById('ceo-color-bs').value;
+            tiendaConfig.sombraEtiquetaBS = document.getElementById('ceo-sombra-bs').checked;
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
             await guardarEnCloud();
             aplicarConfiguracionVisual();
-            mostrarNotificacion("Etiqueta Blood Strike actualizada");
+            mostrarNotificacion("Etiqueta Blood Strike actualizada con éxito");
         }
 
         async function aprobarDeposito(index) {
