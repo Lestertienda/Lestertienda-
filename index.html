@@ -532,9 +532,61 @@
         .input-icon-wrapper input[readonly] { opacity: 0.85; }
         .op-star { font-size: 1.6rem; cursor: pointer; color: var(--border-color); line-height: 1; }
         .op-pendiente { color: #f59e0b; font-weight: 800; font-size: 0.66rem; }
+        /* Splash de entrada */
+        #splash { position: fixed; inset: 0; z-index: 99999999; background: radial-gradient(circle at 50% 35%, #0b1b3a 0%, #07090e 70%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; transition: opacity .5s ease, visibility .5s; }
+        #splash.hide { opacity: 0; visibility: hidden; }
+        .splash-logo { width: 96px; height: 96px; border-radius: 24px; overflow: hidden; border: 2px solid var(--accent-glow); position: relative; animation: splashIn .9s cubic-bezier(.16,1,.3,1) both, splashGlow 2.2s ease-in-out .9s infinite alternate; }
+        .splash-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .splash-logo::after { content: ''; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(105deg, transparent, rgba(255,255,255,.55), transparent); animation: splashShine 1.4s ease .6s both; }
+        .splash-title { font-size: 1.25rem; font-weight: 900; letter-spacing: .5px; color: #fff; animation: fadeUp .7s ease .35s both; }
+        .splash-title span { color: var(--accent-glow); }
+        .splash-bar { width: 120px; height: 3px; background: rgba(255,255,255,.12); border-radius: 3px; overflow: hidden; animation: fadeUp .6s ease .5s both; }
+        .splash-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--primary-blue), var(--accent-glow)); animation: splashLoad 1.5s ease .4s forwards; }
+        @keyframes splashIn { 0% { transform: scale(.4) rotate(-12deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+        @keyframes splashGlow { 0% { box-shadow: 0 0 25px rgba(0,240,255,.3); } 100% { box-shadow: 0 0 55px rgba(0,240,255,.7); } }
+        @keyframes splashShine { 0% { left: -60%; } 100% { left: 130%; } }
+        @keyframes splashLoad { 0% { width: 0; } 100% { width: 100%; } }
+        @keyframes fadeUp { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { .splash-logo, .splash-logo::after, .splash-title, .splash-bar, .splash-bar i { animation: none !important; } }
+
+        /* Tarjeta con brillo que cruza la esquina */
+        .shine-card { position: relative; overflow: hidden; }
+        .shine-card::before { content: ''; position: absolute; top: -50%; left: -60%; width: 40%; height: 200%; background: linear-gradient(105deg, transparent 30%, rgba(0,240,255,.18) 50%, transparent 70%); transform: rotate(15deg); animation: cardShine 3.6s ease-in-out infinite; pointer-events: none; }
+        @keyframes cardShine { 0%, 100% { left: -60%; } 50% { left: 130%; } }
+
+        /* Círculo de estado con palomita */
+        .estado-circle { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .estado-circle svg { width: 30px; height: 30px; fill: #fff; }
+        .estado-verde { background: #10b981; box-shadow: 0 0 22px rgba(16,185,129,.55); animation: pop .6s cubic-bezier(.16,1,.3,1) both; }
+        .estado-amarillo { background: #f59e0b; box-shadow: 0 0 22px rgba(245,158,11,.5); }
+        .estado-rojo { background: #ef4444; box-shadow: 0 0 22px rgba(239,68,68,.5); }
+        @keyframes pop { 0% { transform: scale(.3); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* Opiniones (inicio) */
+        .op-feed-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: .9rem 1rem; margin-bottom: .7rem; }
+        .op-feed-head { display: flex; align-items: center; gap: 10px; margin-bottom: .45rem; }
+        .op-feed-av { width: 34px; height: 34px; border-radius: 50%; background: rgba(0,240,255,.1); border: 1px solid var(--accent-glow); color: var(--accent-glow); font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+        .op-feed-av img { width: 100%; height: 100%; object-fit: cover; }
+        .op-feed-name { font-size: .82rem; font-weight: 800; color: var(--text-main); }
+        .op-feed-date { font-size: .64rem; color: var(--text-muted); }
+        .op-feed-txt { font-size: .8rem; color: var(--text-main); line-height: 1.5; }
+        .op-feed-photo { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin-top: .6rem; }
+        .stars-row { color: #f59e0b; font-size: .85rem; letter-spacing: 2px; }
+        .op-cta { width: 100%; background: var(--bg-card); border: 1.5px dashed var(--accent-glow); color: var(--accent-glow); padding: .8rem; border-radius: 14px; font-weight: 800; font-size: .82rem; cursor: pointer; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .estrellas-pick { display: flex; justify-content: center; gap: 10px; margin: .8rem 0 1rem; }
+        .estrellas-pick span { font-size: 2.2rem; cursor: pointer; color: var(--border-color); transition: transform .15s; }
+        .estrellas-pick span.on { color: #f59e0b; text-shadow: 0 0 14px rgba(245,158,11,.5); }
+        .estrellas-pick span:active { transform: scale(.85); }
+
+        /* Botones del comprobante */
+        .btn-doble { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: .8rem; }
+        .btn-icon { display: flex; align-items: center; justify-content: center; gap: 7px; padding: .75rem; border-radius: 12px; font-weight: 800; font-size: .8rem; cursor: pointer; border: none; color: #fff; background: var(--primary-blue); }
+        .btn-icon.sec { background: var(--bg-main); color: var(--accent-glow); border: 1.5px solid var(--accent-glow); }
+        .btn-icon svg { width: 16px; height: 16px; fill: currentColor; }
     </style>
 </head>
 <body>
+    <div id="splash"><div class="splash-logo"><img src="icon-192.png" alt="Lester Tienda"></div><div class="splash-title">Lester <span>Tienda</span></div><div class="splash-bar"><i></i></div></div>
 
     <div id="loading-overlay">
         <div class="spinner"></div>
@@ -764,6 +816,10 @@
                     <div id="lista-historial-vivo"></div>
                 </div>
 
+                <div class="section-title">OPINIONES DE NUESTROS CLIENTES</div>
+                <button class="op-cta" onclick="abrirNuevaOpinion()">★ Deja tu opinión</button>
+                <div id="lista-opiniones-inicio"></div>
+
                 <div class="inject-slot" data-slot="inicio-bottom"></div>
             </div>
 
@@ -879,32 +935,71 @@
 
             <!-- COMPROBANTE DE RECARGA -->
             <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
-                <div class="back-row">
-                    <button class="back-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Órdenes</button>
+                <div class="back-row"><button class="back-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Órdenes</button></div>
+                <div class="shine-card" id="comp-card" style="background: linear-gradient(160deg, #0d1a33 0%, #07090e 80%); border: 1.5px solid #10b981; border-radius: 20px; padding: 1.3rem; box-shadow: 0 0 30px rgba(16,185,129,.18);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: .9rem;"><img src="icon-192.png" alt="" style="width: 30px; height: 30px; border-radius: 8px;"><span><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></span></div>
+                        <span id="comp-badge-status" class="badge-status status-completado">COMPLETADO</span>
+                    </div>
+                    <div style="text-align: center; margin: 1.2rem 0 .6rem;">
+                        <div class="estado-circle estado-verde" id="comp-circulo" style="margin: 0 auto; width: 72px; height: 72px;"><svg viewBox="0 0 24 24" id="comp-icono"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg></div>
+                    </div>
+                    <div style="font-size: .7rem; color: var(--text-muted); letter-spacing: 1px; text-align: center;">RECARGA FREE FIRE</div>
+                    <h2 id="comp-titulo-diamantes" style="text-align: center; font-size: 1.35rem; font-weight: 900; margin: .2rem 0;"></h2>
+                    <p id="comp-subtext-status" style="text-align: center; font-weight: 800; font-size: .85rem;"></p>
+                    <div style="text-align: center; margin: 1rem 0 .3rem; font-size: .7rem; color: var(--text-muted); letter-spacing: 1px;">TOTAL PAGADO</div>
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+                        <img id="comp-moneda-img" width="26" height="26" alt="">
+                        <span id="comp-precio" style="font-size: 1.6rem; font-weight: 900; color: var(--accent-glow);"></span>
+                    </div>
+                    <div style="border-top: 1px dashed var(--border-color); margin: 1.1rem 0 .3rem;"></div>
+                    <div id="comp-filas"></div>
                 </div>
+                <div id="comp-acciones" class="btn-doble" style="display: none;">
+                    <button class="btn-icon" onclick="guardarComprobante()"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Guardar comprobante</button>
+                    <button class="btn-icon sec" onclick="compartirComprobante()"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg> Compartir</button>
+                </div>
+            </div>
 
-                <div id="comp-box-main" style="background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-main) 100%); border: 2px solid #10b981; border-radius: 20px; padding: 1.6rem 1.2rem; text-align: center; position: relative; box-shadow: 0 0 30px rgba(16,185,129,0.25);">
-                    <div style="position: absolute; top: 14px; left: 14px; font-weight: 900; font-size: 0.85rem;"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
-
-                    <div id="comp-badge-status" style="position: absolute; top: 12px; right: 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; padding: 4px 10px; border-radius: 8px; font-size: 0.68rem; font-weight: 900; text-transform: uppercase;">COMPLETADO</div>
-
-                    <div style="width: 120px; height: 110px; margin: 2.2rem auto 1rem auto; display: flex; align-items: center; justify-content: center; position: relative;">
-                        <div style="position: absolute; width: 90px; height: 90px; background: rgba(0,240,255,0.15); border-radius: 50%; filter: blur(12px);"></div>
-                        <img id="comp-img-diamantes" alt="Diamantes" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 2;" class="animated-diamond-img">
-                        <div id="comp-icon-status" style="position: absolute; bottom: -4px; right: 2px; width: 26px; height: 26px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-main); z-index: 3;">
-                            <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-                        </div>
+            <!-- DETALLE DE DEPÓSITO -->
+            <div id="seccion-deposito-detalle" class="vista-sec" style="display: none;">
+                <div class="back-row"><button class="back-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Órdenes</button></div>
+                <div class="shine-card sub-card" id="dep-card" style="padding: 1.3rem; border-width: 1.5px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <div class="estado-circle" id="dep-circulo"><svg viewBox="0 0 24 24" id="dep-icono"></svg></div>
+                        <div><div id="dep-estado" style="font-weight: 900; font-size: .95rem;"></div><div style="font-size: .7rem; color: var(--text-muted);">Estado del depósito</div></div>
                     </div>
-
-                    <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; margin-bottom: 2px;">FREE-FIRE</div>
-                    <h2 id="comp-titulo-diamantes" style="font-size: 1.5rem; font-weight: 900; color: var(--text-main); margin-bottom: 0.4rem;">100+10 Diamantes</h2>
-                    <p id="comp-subtext-status" style="color: #10b981; font-size: 0.85rem; font-weight: 800; margin-bottom: 1.2rem;">Entregado correctamente</p>
-
-                    <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem; text-align: left; font-size: 0.78rem; display: flex; flex-direction: column; gap: 8px;">
-                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">ID de Jugador:</span> <span id="comp-id-jugador" style="color:var(--text-main); font-weight:bold;">123456789</span></div>
-                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Fecha:</span> <span id="comp-fecha" style="color:var(--text-main); font-weight:bold;">05/11/2026</span></div>
-                        <div style="display: flex; justify-content: space-between;"><span style="color:var(--text-muted);">Precio Pagado:</span> <span id="comp-precio" style="color:var(--accent-glow); font-weight:bold;">1.20 USDT</span></div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 1.1rem;">
+                        <img id="dep-moneda-img" width="34" height="34" alt="">
+                        <div><div id="dep-titulo" style="font-size: 1.2rem; font-weight: 900;"></div><div id="dep-fecha" style="font-size: .7rem; color: var(--text-muted);"></div></div>
                     </div>
+                    <div id="dep-filas" style="margin-top: 1rem;"></div>
+                </div>
+            </div>
+
+            <!-- DEJAR OPINIÓN -->
+            <div id="seccion-opinion-nueva" class="vista-sec" style="display: none;">
+                <div class="back-row"><button class="back-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver</button></div>
+                <h2 class="page-title">Deja tu opinión</h2>
+                <p style="color: var(--text-muted); font-size: .78rem; margin-bottom: 1rem;">Cuéntanos cómo te fue. La foto es opcional.</p>
+                <div class="sub-card">
+                    <p style="color: var(--text-muted); font-size: .8rem;">Como <b id="op-como" style="color: var(--text-main);"></b></p>
+                    <p style="font-weight: 800; font-size: .9rem; margin-top: .8rem;">¿Cuántas estrellas nos das?</p>
+                    <div class="estrellas-pick" id="op-estrellas-pick">
+                        <span onclick="setOpEstrellas(1)">★</span><span onclick="setOpEstrellas(2)">★</span><span onclick="setOpEstrellas(3)">★</span><span onclick="setOpEstrellas(4)">★</span><span onclick="setOpEstrellas(5)">★</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Tu opinión</label>
+                        <textarea id="op-cliente-texto" class="form-control no-left-icon" style="min-height: 120px; resize: vertical;" placeholder="Escribe tu experiencia"></textarea>
+                    </div>
+                    <div id="op-foto-prev"></div>
+                    <button class="btn-icon sec" style="width: 100%; margin-top: .4rem;" onclick="document.getElementById('op-foto-input').click()">
+                        <svg viewBox="0 0 24 24"><path d="M9 3L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2h-3.17L15 3H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                        Añadir foto
+                    </button>
+                    <input type="file" id="op-foto-input" accept="image/*" style="display: none;" onchange="procesarFotoOpinion(event)">
+                    <button class="btn-main" onclick="enviarOpinionCliente()">Enviar opinión</button>
+                    <p style="font-size: .66rem; color: var(--text-muted); text-align: center; margin-top: .7rem;">Al enviarla aceptas que la publiquemos con tu nombre de usuario. Se muestra cuando la aprobamos.</p>
                 </div>
             </div>
 
@@ -1851,6 +1946,7 @@
 
             renderizarWalletCards();
             renderizarElementosInyectados();
+            renderOpinionesInicio();
         }
 
         function renderizarWalletCards() {
@@ -2225,38 +2321,76 @@
                 }
                 cont.innerHTML = html;
             }
-            if (clave === 'opiniones') {
-                cont.innerHTML += `
-                    <div class="sub-card" style="margin-top: 0.8rem;">
-                        <h4 style="font-size: 0.9rem; font-weight: 900; margin-bottom: 0.6rem;">Escribe tu opinión</h4>
-                        <div style="display: flex; gap: 6px; margin-bottom: 0.6rem;">
-                            ${[1,2,3,4,5].map(n => `<span class="op-star" onclick="setOpEstrellas(${n})" style="color:${n <= opEstrellas ? '#f59e0b' : 'var(--border-color)'}">★</span>`).join('')}
-                        </div>
-                        <textarea id="op-cliente-texto" class="form-control no-left-icon" style="min-height: 90px; resize: vertical;" placeholder="Cuéntanos tu experiencia"></textarea>
-                        <button class="btn-main" onclick="enviarOpinionCliente()">Enviar opinión</button>
-                        <p style="font-size: 0.66rem; color: var(--text-muted); margin-top: 0.5rem;">Tu opinión se publica cuando la aprobamos.</p>
-                    </div>`;
-            }
             mostrarVista('sub-legal-detalle');
         }
 
         let opEstrellas = 5;
+        let opFotoPendiente = '';
+        function pintarEstrellasOp() {
+            document.querySelectorAll('#op-estrellas-pick span').forEach((sp, i) => sp.classList.toggle('on', i < opEstrellas));
+        }
         function setOpEstrellas(n) {
             opEstrellas = n;
-            abrirLegal('opiniones');
+            pintarEstrellasOp();
+        }
+        function abrirNuevaOpinion() {
+            if (!usuarioActual) return;
+            opEstrellas = 5;
+            opFotoPendiente = '';
+            document.getElementById('op-como').innerText = usuarioActual.nombre;
+            document.getElementById('op-cliente-texto').value = '';
+            document.getElementById('op-foto-prev').innerHTML = '';
+            pintarEstrellasOp();
+            mostrarVista('seccion-opinion-nueva');
+        }
+        async function procesarFotoOpinion(event) {
+            const f = event.target.files[0];
+            if (!f) return;
+            mostrarCarga("Subiendo foto...");
+            try {
+                opFotoPendiente = await comprimirImagen(f, 900);
+                document.getElementById('op-foto-prev').innerHTML = '<img class="op-feed-photo" src="' + opFotoPendiente + '" alt="">';
+            } catch (e) {
+                mostrarNotificacion("No se pudo subir la foto");
+            }
+            ocultarCarga();
+            event.target.value = '';
         }
         async function enviarOpinionCliente() {
             const texto = document.getElementById('op-cliente-texto').value.trim();
             if (texto.length < 5) { mostrarNotificacion("Escribe tu opinión (mínimo 5 letras)"); return; }
             const ok = await guardarConfig(() => {
                 if (!Array.isArray(tiendaConfig.opiniones)) tiendaConfig.opiniones = [];
-                tiendaConfig.opiniones.push({ id: Date.now(), nombre: usuarioActual.nombre, estrellas: opEstrellas, texto: texto, aprobada: false });
+                tiendaConfig.opiniones.push({
+                    id: Date.now(), nombre: usuarioActual.nombre, avatar: usuarioActual.avatar || '',
+                    estrellas: opEstrellas, texto: texto, foto: opFotoPendiente,
+                    fecha: new Date().toISOString(), aprobada: false
+                });
             }, null);
             if (ok) {
-                opEstrellas = 5;
                 mostrarNotificacion("¡Gracias! Tu opinión se publicará al ser aprobada");
-                abrirLegal('opiniones');
+                cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'));
             }
+        }
+        function renderOpinionesInicio() {
+            const el = document.getElementById('lista-opiniones-inicio');
+            if (!el) return;
+            const ops = (tiendaConfig.opiniones || []).filter(o => o.aprobada !== false).slice().reverse().slice(0, 30);
+            if (ops.length === 0) {
+                el.innerHTML = '<p style="color:var(--text-muted); font-size:.78rem; text-align:center; padding:.6rem;">Sé el primero en dejar tu opinión.</p>';
+                return;
+            }
+            el.innerHTML = ops.map(o => {
+                const n = Math.max(1, Math.min(5, o.estrellas || 5));
+                const av = o.avatar ? '<img src="' + o.avatar + '" alt="">' : esc((o.nombre || '?').charAt(0).toUpperCase());
+                const fecha = o.fecha ? new Date(o.fecha).toLocaleDateString() : '';
+                const foto = o.foto ? '<img class="op-feed-photo" src="' + o.foto + '" alt="">' : '';
+                return '<div class="op-feed-card">' +
+                    '<div class="op-feed-head"><div class="op-feed-av">' + av + '</div>' +
+                    '<div style="flex:1; min-width:0;"><div class="op-feed-name">' + esc(o.nombre) + '</div><div class="op-feed-date">' + fecha + '</div></div>' +
+                    '<div class="stars-row">' + '★'.repeat(n) + '☆'.repeat(5 - n) + '</div></div>' +
+                    '<div class="op-feed-txt">' + esc(o.texto) + '</div>' + foto + '</div>';
+            }).join('');
         }
 
         /* ================= DEPÓSITOS ================= */
@@ -2461,63 +2595,236 @@
                 htmlDepositos = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:1.5rem;'>No tienes solicitudes de depósito registradas.</p>";
             } else {
                 misDepositos.slice().reverse().forEach(d => {
-                    let claseEstado = "status-pendiente";
-                    if (d.estado === 'Aprobado') claseEstado = "status-completado";
-                    if (d.estado === 'Cancelado') claseEstado = "status-cancelado";
+                    const idx = solicitudesGlobales.depositos.indexOf(d);
+                    const claseEstado = d.estado === 'Aprobado' ? 'status-completado' : (d.estado === 'Cancelado' ? 'status-cancelado' : 'status-pendiente');
+                    const mon = d.moneda === 'usdt' ? 'USDT' : 'saldo';
                     htmlDepositos += `
-                        <div class="order-card-pro" style="cursor: default;">
+                        <div class="order-card-pro shine-card" onclick="verDetalleDeposito(${idx})">
                             <div class="order-info">
-                                <h4>Depósito - ${d.monto} ${d.moneda === 'usdt' ? 'USDT' : 'saldo'}</h4>
+                                <h4>Depósito de ${d.monto} ${mon}</h4>
                                 <p>${esc(d.telefonoTransfirio || 'N/A')}</p>
                             </div>
-                            <span class="badge-status ${claseEstado}">${esc(d.estado)}</span>
+                            <div class="order-right-action">
+                                <span class="badge-status ${claseEstado}">${esc(d.estado)}</span>
+                                <div class="order-arrow-icon"><svg viewBox="0 0 24 24"><path d="${ICON.arrow}"/></svg></div>
+                            </div>
                         </div>`;
                 });
             }
             containerDepositos.innerHTML = htmlDepositos;
         }
 
+        const ICON_CLOCK = 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z';
+        const ICON_X = 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z';
+        const ICON_CHECK = 'M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z';
+        const IMG_SALDO = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#00f0ff" d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>');
+        let compActual = null;
+
+        function estadoInfo(estado) {
+            if (estado === 'Completado' || estado === 'Aprobado' || estado === 'Aprobada') return { clase: 'estado-verde', color: '#10b981', txt: 'Completado', icon: ICON_CHECK };
+            if (estado === 'Cancelado') return { clase: 'estado-rojo', color: '#ef4444', txt: 'Cancelado', icon: ICON_X };
+            return { clase: 'estado-amarillo', color: '#f59e0b', txt: 'Pendiente', icon: ICON_CLOCK };
+        }
+        function setEstadoCirculo(circId, iconId, info) {
+            document.getElementById(circId).className = 'estado-circle ' + info.clase;
+            document.getElementById(iconId).innerHTML = '<path d="' + info.icon + '"/>';
+        }
+        function monedaSrc(m) { return m === 'usdt' ? IMG_USDT : IMG_SALDO; }
+        function numOrden(o) { return 'LT-' + String(o.id || 0).slice(-8); }
+        function fechaAhoraTxt() {
+            return new Date().toLocaleString('es', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        function updateClock() {
+            document.querySelectorAll('.clock-live').forEach(e => e.innerText = fechaAhoraTxt());
+        }
+
         function verComprobanteRecarga(index) {
             const orden = solicitudesGlobales.recargas[index];
             if (!orden) return;
-
-            document.getElementById('comp-titulo-diamantes').innerText = `${orden.detalle} Diamantes`;
-            document.getElementById('comp-id-jugador').innerText = orden.idJugador;
-            document.getElementById('comp-fecha').innerText = new Date(orden.id || orden.fecha).toLocaleDateString();
-            document.getElementById('comp-precio').innerText = `${orden.precio} ${orden.moneda === 'saldo' ? 'saldo' : 'USDT'}`;
-
-            // Imagen: la del paquete si el CEO subió una; si no, el diamante incrustado (siempre se ve)
-            let paq = (tiendaConfig.paquetesDiamantes || []).find(p => p.id === orden.paqueteId) || (tiendaConfig.paquetesDiamantes || []).find(p => p.textoDetalle === orden.detalle);
-            let imgSrc = (paq && paq.imagen && paq.imagen.trim() !== "") ? paq.imagen : IMG_DIAMANTE;
-            const imgEl = document.getElementById('comp-img-diamantes');
-            imgEl.onerror = function () { this.onerror = null; this.src = IMG_DIAMANTE; };
-            imgEl.src = imgSrc;
-
-            const boxMain = document.getElementById('comp-box-main');
-            const badgeStatus = document.getElementById('comp-badge-status');
-            const subtextStatus = document.getElementById('comp-subtext-status');
-            const iconStatus = document.getElementById('comp-icon-status');
-
-            function pintar(color, rgb, badge, sub, svg) {
-                boxMain.style.borderColor = color;
-                badgeStatus.innerText = badge;
-                badgeStatus.style.background = `rgba(${rgb}, 0.2)`;
-                badgeStatus.style.borderColor = color;
-                badgeStatus.style.color = color;
-                subtextStatus.innerText = sub;
-                subtextStatus.style.color = color;
-                iconStatus.style.background = color;
-                iconStatus.innerHTML = `<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="${svg}"/></svg>`;
-            }
-            if (orden.estado === 'Completado' || orden.estado === 'Aprobada') {
-                pintar('#10b981', '16, 185, 129', 'COMPLETADO', 'Entregado correctamente', 'M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z');
-            } else if (orden.estado === 'Pendiente') {
-                pintar('#f59e0b', '245, 158, 11', 'PENDIENTE', 'Pendiente de revisión', 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z');
-            } else {
-                pintar('#ef4444', '239, 68, 68', 'CANCELADO', 'Orden cancelada', 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z');
-            }
+            compActual = orden;
+            const info = estadoInfo(orden.estado);
+            const esSaldo = orden.moneda === 'saldo';
+            setEstadoCirculo('comp-circulo', 'comp-icono', info);
+            document.getElementById('comp-card').style.borderColor = info.color;
+            const badge = document.getElementById('comp-badge-status');
+            badge.innerText = info.txt.toUpperCase();
+            badge.style.color = info.color;
+            badge.style.borderColor = info.color;
+            document.getElementById('comp-titulo-diamantes').innerText = orden.detalle + ' Diamantes';
+            const sub = document.getElementById('comp-subtext-status');
+            sub.innerText = info.txt === 'Completado' ? 'Entregado correctamente' : (info.txt === 'Pendiente' ? 'Pendiente de revisión' : 'Orden cancelada');
+            sub.style.color = info.color;
+            document.getElementById('comp-moneda-img').src = monedaSrc(orden.moneda);
+            document.getElementById('comp-precio').innerText = orden.precio + (esSaldo ? ' saldo' : ' USDT');
+            const filas = [
+                ['ID de jugador', esc(orden.idJugador)],
+                ['Paquete', esc(orden.detalle) + ' diamantes'],
+                ['Método', esSaldo ? 'Saldo Móvil' : 'USDT'],
+                ['Fecha de compra', esc(new Date(orden.id || orden.fecha).toLocaleString())],
+                ['Generado', '<span class="clock-live"></span>'],
+                ['Nº de orden', numOrden(orden)]
+            ];
+            document.getElementById('comp-filas').innerHTML = filas.map(f =>
+                '<div style="display:flex; justify-content:space-between; gap:10px; padding:.5rem 0; border-bottom:1px solid var(--border-color); font-size:.78rem;">' +
+                '<span style="color:var(--text-muted);">' + f[0] + '</span><b style="text-align:right;">' + f[1] + '</b></div>'
+            ).join('');
+            document.getElementById('comp-acciones').style.display = info.txt === 'Completado' ? 'grid' : 'none';
+            updateClock();
             mostrarVista('seccion-comprobante-recarga');
             marcarNav('nav-btn-ordenes');
+        }
+
+        function verDetalleDeposito(idx) {
+            const d = solicitudesGlobales.depositos[idx];
+            if (!d) return;
+            const info = estadoInfo(d.estado);
+            const mon = d.moneda === 'usdt' ? 'USDT' : 'saldo';
+            setEstadoCirculo('dep-circulo', 'dep-icono', info);
+            const est = document.getElementById('dep-estado');
+            est.innerText = info.txt;
+            est.style.color = info.color;
+            document.getElementById('dep-card').style.borderColor = info.color;
+            document.getElementById('dep-moneda-img').src = monedaSrc(d.moneda);
+            document.getElementById('dep-titulo').innerText = 'Depósito de ' + d.monto + ' ' + mon;
+            document.getElementById('dep-fecha').innerText = d.id ? new Date(d.id).toLocaleString() : '';
+            const filas = [
+                ['Monto', esc(d.monto) + ' ' + mon],
+                ['Moneda', d.moneda === 'usdt' ? 'USDT' : 'Saldo Móvil'],
+                [d.moneda === 'usdt' ? 'Transferencia' : 'Número con que transfirió', esc(d.telefonoTransfirio || 'N/A')],
+                ['Usuario', esc(d.usuario || '')]
+            ];
+            document.getElementById('dep-filas').innerHTML = filas.map(f =>
+                '<div style="display:flex; justify-content:space-between; gap:10px; padding:.5rem 0; border-bottom:1px solid var(--border-color); font-size:.78rem;">' +
+                '<span style="color:var(--text-muted);">' + f[0] + '</span><b style="text-align:right; word-break:break-all;">' + f[1] + '</b></div>'
+            ).join('');
+            mostrarVista('seccion-deposito-detalle');
+            marcarNav('nav-btn-ordenes');
+        }
+
+        /* ----- Comprobante como imagen (para guardar y compartir) ----- */
+        function cargarImg(src) {
+            return new Promise((res, rej) => {
+                const i = new Image();
+                i.onload = () => res(i);
+                i.onerror = rej;
+                i.src = src;
+            });
+        }
+        function rrect(g, x, y, w, h, r) {
+            g.beginPath();
+            g.moveTo(x + r, y);
+            g.arcTo(x + w, y, x + w, y + h, r);
+            g.arcTo(x + w, y + h, x, y + h, r);
+            g.arcTo(x, y + h, x, y, r);
+            g.arcTo(x, y, x + w, y, r);
+            g.closePath();
+        }
+        async function dibujarComprobante(o) {
+            const W = 900, H = 1300;
+            const c = document.createElement('canvas');
+            c.width = W; c.height = H;
+            const g = c.getContext('2d');
+            const bg = g.createLinearGradient(0, 0, 0, H);
+            bg.addColorStop(0, '#0d1a33'); bg.addColorStop(1, '#07090e');
+            g.fillStyle = bg; g.fillRect(0, 0, W, H);
+            const info = estadoInfo(o.estado);
+            const esSaldo = o.moneda === 'saldo';
+
+            try {
+                const logo = await cargarImg('icon-192.png');
+                g.save(); rrect(g, 60, 60, 110, 110, 24); g.clip(); g.drawImage(logo, 60, 60, 110, 110); g.restore();
+            } catch (e) {}
+            g.textAlign = 'left';
+            g.font = 'bold 48px system-ui, Arial';
+            g.fillStyle = '#ffffff'; g.fillText('Lester', 196, 120);
+            const wL = g.measureText('Lester ').width;
+            g.fillStyle = '#00f0ff'; g.fillText('Tienda', 196 + wL, 120);
+
+            g.fillStyle = info.color; rrect(g, W - 330, 85, 270, 62, 31); g.fill();
+            g.fillStyle = '#ffffff'; g.font = 'bold 30px system-ui, Arial'; g.textAlign = 'center';
+            g.fillText(info.txt.toUpperCase(), W - 195, 127);
+
+            g.fillStyle = info.color; g.beginPath(); g.arc(W / 2, 320, 84, 0, Math.PI * 2); g.fill();
+            g.save(); g.translate(W / 2 - 42, 278); g.scale(84 / 24, 84 / 24);
+            g.fillStyle = '#ffffff'; g.fill(new Path2D(info.icon)); g.restore();
+
+            g.textAlign = 'center';
+            g.fillStyle = '#8a99ad'; g.font = '600 28px system-ui, Arial'; g.fillText('RECARGA FREE FIRE', W / 2, 480);
+            g.fillStyle = '#ffffff'; g.font = 'bold 62px system-ui, Arial'; g.fillText(o.detalle + ' Diamantes', W / 2, 560);
+            g.fillStyle = '#8a99ad'; g.font = '600 26px system-ui, Arial'; g.fillText('TOTAL PAGADO', W / 2, 630);
+
+            const precioTxt = o.precio + (esSaldo ? ' saldo' : ' USDT');
+            g.font = 'bold 74px system-ui, Arial';
+            const tw = g.measureText(precioTxt).width;
+            try {
+                const mon = await cargarImg(monedaSrc(o.moneda));
+                g.drawImage(mon, W / 2 - tw / 2 - 90, 655, 66, 66);
+            } catch (e) {}
+            g.fillStyle = '#00f0ff'; g.fillText(precioTxt, W / 2, 716);
+
+            const filas = [
+                ['ID de jugador', String(o.idJugador)],
+                ['Paquete', o.detalle + ' diamantes'],
+                ['Método', esSaldo ? 'Saldo Móvil' : 'USDT'],
+                ['Fecha de compra', new Date(o.id || o.fecha).toLocaleString()],
+                ['Generado', new Date().toLocaleString()],
+                ['Nº de orden', numOrden(o)]
+            ];
+            let y = 800;
+            g.textAlign = 'left';
+            filas.forEach(f => {
+                g.fillStyle = '#8a99ad'; g.font = '600 28px system-ui, Arial'; g.fillText(f[0], 90, y);
+                g.fillStyle = '#ffffff'; g.font = 'bold 30px system-ui, Arial'; g.textAlign = 'right'; g.fillText(f[1], W - 90, y);
+                g.textAlign = 'left';
+                g.fillStyle = '#1a233a'; g.fillRect(90, y + 28, W - 180, 2);
+                y += 88;
+            });
+            g.textAlign = 'center';
+            g.fillStyle = '#8a99ad'; g.font = '24px system-ui, Arial';
+            g.fillText('Comprobante generado por Lester Tienda', W / 2, H - 80);
+            return c;
+        }
+        function blobDeCanvas(c) { return new Promise(r => c.toBlob(r, 'image/png')); }
+
+        async function guardarComprobante() {
+            if (!compActual) return;
+            try {
+                mostrarCarga("Preparando comprobante...");
+                const c = await dibujarComprobante(compActual);
+                const blob = await blobDeCanvas(c);
+                ocultarCarga();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'comprobante-' + numOrden(compActual) + '.png';
+                document.body.appendChild(a); a.click(); a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 4000);
+                mostrarNotificacion("Comprobante guardado en tu galería o descargas");
+            } catch (e) {
+                ocultarCarga();
+                mostrarNotificacion("No se pudo generar el comprobante");
+            }
+        }
+
+        async function compartirComprobante() {
+            if (!compActual) return;
+            try {
+                mostrarCarga("Preparando comprobante...");
+                const c = await dibujarComprobante(compActual);
+                const blob = await blobDeCanvas(c);
+                ocultarCarga();
+                const nombre = 'comprobante-' + numOrden(compActual) + '.png';
+                const file = new File([blob], nombre, { type: 'image/png' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({ files: [file], title: 'Comprobante Lester Tienda', text: 'Comprobante de recarga Free Fire · ' + numOrden(compActual) });
+                } else {
+                    mostrarNotificacion("Tu navegador no comparte imágenes; lo guardamos");
+                    guardarComprobante();
+                }
+            } catch (e) {
+                ocultarCarga();
+                if (e && e.name !== 'AbortError') mostrarNotificacion("No se pudo compartir");
+            }
         }
 
         function actualizarEstadisticasInicio() {
@@ -3537,6 +3844,16 @@
             actualizarEstadisticasInicio();
         }
 
+        (function () {
+            const reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            setTimeout(() => {
+                const sp = document.getElementById('splash');
+                if (!sp) return;
+                sp.classList.add('hide');
+                setTimeout(() => sp.remove(), 600);
+            }, reducir ? 300 : 2300);
+        })();
+        setInterval(updateClock, 1000);
         init();
     </script>
 </body>
