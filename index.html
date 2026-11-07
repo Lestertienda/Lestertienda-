@@ -13,7 +13,6 @@
     <meta name="apple-mobile-web-app-title" content="Lester Tienda">
     <link rel="apple-touch-icon" href="icon-192.png">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
 
     <script>
         /* Aplicar el tema ANTES de pintar (evita parpadeo y fondo incorrecto) */
@@ -51,7 +50,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -525,6 +524,14 @@
         .wallet-card-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .wallet-card h3 { font-size: 0.95rem; font-weight: 900; color: var(--text-main); }
         .wallet-card small { display: block; font-size: 0.68rem; color: var(--text-muted); font-weight: 700; }
+        .dp-avatar { width: 88px; height: 88px; margin: 0 auto 0.5rem auto; border-radius: 50%; border: 2px solid var(--accent-glow); background: var(--bg-main); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 900; color: var(--accent-glow); overflow: hidden; cursor: pointer; box-shadow: 0 0 15px rgba(0,240,255,0.2); }
+        .dp-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .dp-nombre { font-size: 1rem; font-weight: 900; color: var(--text-main); }
+        .dp-correo { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+        .input-icon-wrapper svg.ok { left: auto; right: 12px; fill: #10b981; }
+        .input-icon-wrapper input[readonly] { opacity: 0.85; }
+        .op-star { font-size: 1.6rem; cursor: pointer; color: var(--border-color); line-height: 1; }
+        .op-pendiente { color: #f59e0b; font-weight: 800; font-size: 0.66rem; }
     </style>
 </head>
 <body>
@@ -573,6 +580,23 @@
             <p style="color: var(--text-muted); font-size: 0.75rem;">Tu navegador necesita que la instales manualmente:</p>
             <div id="install-steps-box" class="install-steps"></div>
             <button class="btn-main" style="margin-top:0;" onclick="cerrarModalInstalar()">Entendido</button>
+        </div>
+    </div>
+
+    <div id="modal-salir" class="modal-overlay" onclick="cerrarModalSalir(event)">
+        <div class="soporte-modal-box" onclick="event.stopPropagation()">
+            <h3 style="color: var(--text-main); font-size: 1.05rem; font-weight: 900; margin-bottom: 0.4rem;">¿Seguro que quieres salir?</h3>
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.1rem;">Tendrás que volver a iniciar sesión.</p>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-main" style="margin-top: 0; background: #ff3b30; display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="cerrarSesion()">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                    Salir
+                </button>
+                <button class="btn-main" style="margin-top: 0; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; gap: 6px;" onclick="cerrarModalSalir()">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="var(--text-main)"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    Cancelar
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1046,6 +1070,11 @@
                         <span class="mr-text">Datos Personales<span class="mr-sub">Nombre, usuario y móvil</span></span>
                         <span class="mr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
                     </button>
+                    <button class="menu-row" onclick="activarAvisos()">
+                        <span class="mr-icon"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></span>
+                        <span class="mr-text">Activar avisos<span class="mr-sub">Recibir avisos de la tienda</span></span>
+                        <span class="mr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
+                    </button>
                     <button class="menu-row" onclick="abrirSub('sub-apariencia')">
                         <span class="mr-icon"><svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/></svg></span>
                         <span class="mr-text">Apariencia<span class="mr-sub">Modo claro u oscuro</span></span>
@@ -1075,7 +1104,7 @@
                         <span class="mr-text">Eliminar Cuenta</span>
                         <span class="mr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>
                     </button>
-                    <button class="menu-row" onclick="cerrarSesion()">
+                    <button class="menu-row" onclick="confirmarCerrarSesion()">
                         <span class="mr-icon"><svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg></span>
                         <span class="mr-text">Cerrar Sesión</span>
                     </button>
@@ -1089,18 +1118,44 @@
             <div id="sub-datos" class="vista-sec" style="display: none;">
                 <div class="back-row"><button class="back-btn" onclick="volverAPerfil()"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver</button></div>
                 <h2 class="page-title">Datos Personales</h2>
+                <div class="sub-card" style="text-align: center;">
+                    <div class="dp-avatar" id="dp-avatar" onclick="abrirSelectorGaleria()"></div>
+                    <div class="dp-nombre" id="dp-nombre-grande">Usuario</div>
+                    <div class="dp-correo" id="dp-correo-grande"></div>
+                    <p style="font-size: 0.66rem; color: var(--text-muted); margin-top: 0.4rem;">Toca tu foto para cambiarla</p>
+                </div>
                 <div class="sub-card">
                     <div class="form-group">
                         <label>Nombre completo</label>
-                        <input type="text" id="perfil-input-nombre" class="form-control no-left-icon" placeholder="Daniel González Pérez">
+                        <div class="input-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            <input type="text" id="perfil-input-nombre" class="form-control" placeholder="Tu nombre completo">
+                            <svg class="ok" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Nombre de usuario</label>
-                        <input type="text" id="perfil-input-username" class="form-control no-left-icon" placeholder="@Lestertienda">
+                        <div class="input-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            <input type="text" id="perfil-input-username" class="form-control" placeholder="lester_gamer">
+                            <svg class="ok" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Número de móvil</label>
-                        <input type="text" id="perfil-input-telefono" class="form-control no-left-icon" placeholder="59578110" inputmode="numeric">
+                        <div class="input-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                            <input type="text" id="perfil-input-telefono" class="form-control" placeholder="59578110" inputmode="numeric">
+                            <svg class="ok" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo con el que te registraste</label>
+                        <div class="input-icon-wrapper">
+                            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            <input type="text" id="perfil-input-email" class="form-control" readonly>
+                            <svg class="ok" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                        </div>
                     </div>
                     <button class="btn-main" onclick="guardarDatosPersonalesPerfil()">Guardar cambios</button>
                 </div>
@@ -1133,7 +1188,11 @@
                         <input type="text" id="trans-destino" class="form-control no-left-icon" placeholder="usuario o correo@gmail.com">
                     </div>
                     <div class="form-group">
-                        <label>Monto a transferir (USDT)</label>
+                        <label>Moneda a enviar</label>
+                        <select id="trans-moneda" class="form-control no-left-icon"><option value="usdt">USDT</option><option value="saldo">Saldo Móvil</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto a transferir</label>
                         <input type="number" id="trans-monto" class="form-control no-left-icon" placeholder="0.00">
                     </div>
                     <div class="form-group">
@@ -1405,6 +1464,7 @@
                 ocultarTopRecargasHoy: false,
                 injectedElements: [],
                 opiniones: [],
+                notificaciones: [],
                 legal: Object.assign({}, TEXTOS_LEGALES),
                 wallet: {
                     usdt: { red: 'BEP 20', redDesc: 'Red Binance Smart Chain (BSC)', direccion: '0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2', etiqueta: { texto: 'Tether USD (Red Binance Smart Chain)', color: 'verde' } },
@@ -1441,6 +1501,7 @@
             if (!Array.isArray(c.paquetesDiamantes) || c.paquetesDiamantes.length === 0) c.paquetesDiamantes = d.paquetesDiamantes;
             if (!Array.isArray(c.injectedElements)) c.injectedElements = [];
             if (!Array.isArray(c.opiniones)) c.opiniones = [];
+            if (!Array.isArray(c.notificaciones)) c.notificaciones = [];
             c.legal = Object.assign({}, TEXTOS_LEGALES, c.legal || {});
             const w = c.wallet || {};
             c.wallet = {
@@ -1603,6 +1664,7 @@
                         }
                     }
                     refrescarUsuarioActual();
+                    revisarAvisos();
                     if (usuarioActual) {
                         actualizarPerfilUI();
                         if (cambioSolic) renderizarOrdenes();
@@ -1621,7 +1683,22 @@
         }
 
         /* ================= COMPRESIÓN DE IMÁGENES (con límite de peso) ================= */
-        function comprimirImagen(file, maxDim, maxChars) {
+        /* Pega aquí tu cuenta de Cloudinary (gratis). Sin esto, las fotos se guardan dentro de la nube
+           de JSONBin (límite 100 KB) y se ven borrosas o no suben. */
+        const CLOUDINARY_CLOUD = '';   // nombre de tu cloud, ej. 'lestertienda'
+        const CLOUDINARY_PRESET = '';  // upload preset sin firma, ej. 'lester_unsigned'
+
+        async function comprimirImagen(file, maxDim) {
+            if (CLOUDINARY_CLOUD && CLOUDINARY_PRESET) {
+                const fd = new FormData();
+                fd.append('file', file);
+                fd.append('upload_preset', CLOUDINARY_PRESET);
+                const r = await fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD + '/image/upload', { method: 'POST', body: fd });
+                const j = await r.json();
+                if (!r.ok || !j.secure_url) throw new Error('Cloudinary');
+                return j.secure_url;
+            }
+            // Respaldo local: calidad alta; si no cabe en la nube, baja un poco
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onerror = () => reject(new Error('No se pudo leer el archivo'));
@@ -1629,33 +1706,65 @@
                     const img = new Image();
                     img.onerror = () => reject(new Error('Imagen no válida'));
                     img.onload = () => {
-                        let dim = maxDim, calidad = 0.75, mejor = '';
-                        for (let intento = 0; intento < 14; intento++) {
-                            const esc = Math.min(1, dim / Math.max(img.width, img.height));
-                            const w = Math.max(1, Math.round(img.width * esc));
-                            const h = Math.max(1, Math.round(img.height * esc));
+                        let dim = Math.max(maxDim || 0, 1000), calidad = 0.92, mejor = '';
+                        for (let intento = 0; intento < 12; intento++) {
+                            const esc2 = Math.min(1, dim / Math.max(img.width, img.height));
+                            const w = Math.max(1, Math.round(img.width * esc2));
+                            const h = Math.max(1, Math.round(img.height * esc2));
                             const canvas = document.createElement('canvas');
                             canvas.width = w; canvas.height = h;
                             const ctx = canvas.getContext('2d');
-                            let data = canvas.toDataURL('image/webp', calidad);
-                            if (data.indexOf('data:image/webp') !== 0) {
-                                ctx.fillStyle = '#ffffff';
-                                ctx.fillRect(0, 0, w, h);
-                                ctx.drawImage(img, 0, 0, w, h);
-                                data = canvas.toDataURL('image/jpeg', calidad);
-                            } else {
-                                ctx.drawImage(img, 0, 0, w, h);
-                                data = canvas.toDataURL('image/webp', calidad);
-                            }
-                            mejor = data;
-                            if (data.length <= maxChars) break;
-                            if (calidad > 0.4) calidad -= 0.12; else { dim = Math.round(dim * 0.8); calidad = 0.6; }
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillRect(0, 0, w, h);
+                            ctx.drawImage(img, 0, 0, w, h);
+                            mejor = canvas.toDataURL('image/jpeg', calidad);
+                            if (mejor.length <= 90000) break;
+                            if (calidad > 0.7) calidad -= 0.08; else { dim = Math.round(dim * 0.85); }
                         }
                         resolve(mejor);
                     };
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
+            });
+        }
+
+        /* ================= AVISOS (mientras la app está abierta) ================= */
+        function revisarAvisos() {
+            if (!usuarioActual) return;
+            const lista = tiendaConfig.notificaciones || [];
+            const vistas = leerJSON('lester_avisos_vistos', null);
+            if (vistas === null) {
+                localStorage.setItem('lester_avisos_vistos', JSON.stringify(lista.map(n => n.id)));
+                return;
+            }
+            const set = new Set(vistas);
+            const miNombre = (usuarioActual.nombre || '').toLowerCase();
+            lista.forEach(n => {
+                if (set.has(n.id)) return;
+                set.add(n.id);
+                const para = String(n.para || 'todos').toLowerCase();
+                if (para !== 'todos' && para !== miNombre) return;
+                mostrarNotificacion(n.mensaje);
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    const opts = { body: n.mensaje, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'lester-' + n.id };
+                    if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                        navigator.serviceWorker.ready
+                            .then(reg => reg.showNotification('Lester Tienda', opts))
+                            .catch(() => { try { new Notification('Lester Tienda', opts); } catch (e) {} });
+                    } else {
+                        try { new Notification('Lester Tienda', opts); } catch (e) {}
+                    }
+                }
+            });
+            localStorage.setItem('lester_avisos_vistos', JSON.stringify([...set].slice(-200)));
+        }
+
+        function activarAvisos() {
+            if (!('Notification' in window)) { mostrarNotificacion("Tu navegador no admite avisos"); return; }
+            Notification.requestPermission().then(p => {
+                if (p === 'granted') mostrarNotificacion("Avisos activados");
+                else mostrarNotificacion("Avisos no activados (bloqueados en el navegador)");
             });
         }
 
@@ -2095,7 +2204,7 @@
             const cont = document.getElementById('legal-detalle-contenido');
 
             if (clave === 'opiniones') {
-                const ops = tiendaConfig.opiniones || [];
+                const ops = (tiendaConfig.opiniones || []).filter(o => o.aprobada !== false);
                 if (ops.length === 0) {
                     cont.innerHTML = `<p style="color:var(--text-muted); font-size:0.8rem; text-align:center;">Aún no hay opiniones publicadas.</p>`;
                 } else {
@@ -2116,7 +2225,38 @@
                 }
                 cont.innerHTML = html;
             }
+            if (clave === 'opiniones') {
+                cont.innerHTML += `
+                    <div class="sub-card" style="margin-top: 0.8rem;">
+                        <h4 style="font-size: 0.9rem; font-weight: 900; margin-bottom: 0.6rem;">Escribe tu opinión</h4>
+                        <div style="display: flex; gap: 6px; margin-bottom: 0.6rem;">
+                            ${[1,2,3,4,5].map(n => `<span class="op-star" onclick="setOpEstrellas(${n})" style="color:${n <= opEstrellas ? '#f59e0b' : 'var(--border-color)'}">★</span>`).join('')}
+                        </div>
+                        <textarea id="op-cliente-texto" class="form-control no-left-icon" style="min-height: 90px; resize: vertical;" placeholder="Cuéntanos tu experiencia"></textarea>
+                        <button class="btn-main" onclick="enviarOpinionCliente()">Enviar opinión</button>
+                        <p style="font-size: 0.66rem; color: var(--text-muted); margin-top: 0.5rem;">Tu opinión se publica cuando la aprobamos.</p>
+                    </div>`;
+            }
             mostrarVista('sub-legal-detalle');
+        }
+
+        let opEstrellas = 5;
+        function setOpEstrellas(n) {
+            opEstrellas = n;
+            abrirLegal('opiniones');
+        }
+        async function enviarOpinionCliente() {
+            const texto = document.getElementById('op-cliente-texto').value.trim();
+            if (texto.length < 5) { mostrarNotificacion("Escribe tu opinión (mínimo 5 letras)"); return; }
+            const ok = await guardarConfig(() => {
+                if (!Array.isArray(tiendaConfig.opiniones)) tiendaConfig.opiniones = [];
+                tiendaConfig.opiniones.push({ id: Date.now(), nombre: usuarioActual.nombre, estrellas: opEstrellas, texto: texto, aprobada: false });
+            }, null);
+            if (ok) {
+                opEstrellas = 5;
+                mostrarNotificacion("¡Gracias! Tu opinión se publicará al ser aprobada");
+                abrirLegal('opiniones');
+            }
         }
 
         /* ================= DEPÓSITOS ================= */
@@ -2146,7 +2286,7 @@
             setTimeout(async () => {
                 solicitudesGlobales.depositos.push({
                     id: Date.now(), correo: usuarioActual.correo.toLowerCase(), usuario: usuarioActual.nombre,
-                    monto: monto, telefonoTransfirio: `TxID: ${txId}`, estado: 'Pendiente'
+                    monto: monto, moneda: 'usdt', telefonoTransfirio: `TxID: ${txId}`, estado: 'Pendiente'
                 });
                 localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
                 await guardarEnCloud();
@@ -2171,7 +2311,7 @@
             setTimeout(async () => {
                 solicitudesGlobales.depositos.push({
                     id: Date.now(), correo: usuarioActual.correo.toLowerCase(), usuario: usuarioActual.nombre,
-                    monto: monto, telefonoTransfirio: telefonoTransfirio, estado: 'Pendiente'
+                    monto: monto, moneda: 'saldo', telefonoTransfirio: telefonoTransfirio, estado: 'Pendiente'
                 });
                 localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
                 await guardarEnCloud();
@@ -2327,7 +2467,7 @@
                     htmlDepositos += `
                         <div class="order-card-pro" style="cursor: default;">
                             <div class="order-info">
-                                <h4>Depósito - ${d.monto}</h4>
+                                <h4>Depósito - ${d.monto} ${d.moneda === 'usdt' ? 'USDT' : 'saldo'}</h4>
                                 <p>${esc(d.telefonoTransfirio || 'N/A')}</p>
                             </div>
                             <span class="badge-status ${claseEstado}">${esc(d.estado)}</span>
@@ -2451,8 +2591,14 @@
         function cargarDatosPerfilEnInputs() {
             if (!usuarioActual) return;
             document.getElementById('perfil-input-nombre').value = usuarioActual.nombreCompleto || '';
-            document.getElementById('perfil-input-username').value = '@' + usuarioActual.nombre;
+            document.getElementById('perfil-input-username').value = usuarioActual.nombre;
             document.getElementById('perfil-input-telefono').value = usuarioActual.telefono || '';
+            document.getElementById('perfil-input-email').value = usuarioActual.correo || '';
+            document.getElementById('dp-nombre-grande').innerText = usuarioActual.nombreCompleto || usuarioActual.nombre;
+            document.getElementById('dp-correo-grande').innerText = usuarioActual.correo || '';
+            document.getElementById('dp-avatar').innerHTML = usuarioActual.avatar
+                ? '<img src="' + usuarioActual.avatar + '" alt="">'
+                : esc((usuarioActual.nombre || '?').charAt(0).toUpperCase());
         }
 
         function guardarDatosPersonalesPerfil() {
@@ -2486,10 +2632,13 @@
             const destinoInput = document.getElementById('trans-destino').value.trim();
             const monto = parseFloat(document.getElementById('trans-monto').value);
             const password = document.getElementById('trans-pass').value;
+            const mon = document.getElementById('trans-moneda').value;
+            const campo = mon === 'usdt' ? 'balanceUSDT' : 'balanceCUP';
+            const etiqueta = mon === 'usdt' ? 'USDT' : 'saldo móvil';
 
             if (!destinoInput || isNaN(monto) || monto <= 0 || !password) { mostrarNotificacion("Completa todos los campos correctamente"); return; }
             if (password !== usuarioActual.pass) { mostrarNotificacion("Contraseña incorrecta"); return; }
-            if (usuarioActual.balanceUSDT < monto) { mostrarNotificacion("Saldo USDT insuficiente en tu balance"); return; }
+            if ((parseFloat(usuarioActual[campo]) || 0) < monto) { mostrarNotificacion("Saldo " + etiqueta + " insuficiente"); return; }
 
             let destinatarioObj = listaUsuariosGlobales.find(u => u.nombre.toLowerCase() === destinoInput.toLowerCase() || u.correo.toLowerCase() === destinoInput.toLowerCase());
             if (!destinatarioObj) { mostrarNotificacion("El usuario destinatario no existe"); return; }
@@ -2497,14 +2646,13 @@
 
             mostrarCarga("Procesando transferencia...");
             setTimeout(async () => {
-                usuarioActual.balanceUSDT = parseFloat((usuarioActual.balanceUSDT - monto).toFixed(2));
-                usuarioActual.balance = usuarioActual.balanceUSDT;
-                if (destinatarioObj.balanceUSDT === undefined) destinatarioObj.balanceUSDT = destinatarioObj.balance || 0;
-                destinatarioObj.balanceUSDT = parseFloat(((parseFloat(destinatarioObj.balanceUSDT) || 0) + monto).toFixed(2));
-                destinatarioObj.balance = destinatarioObj.balanceUSDT;
+                const redondea = v => mon === 'usdt' ? parseFloat(v.toFixed(2)) : Math.round(v);
+                usuarioActual[campo] = redondea((parseFloat(usuarioActual[campo]) || 0) - monto);
+                destinatarioObj[campo] = redondea((parseFloat(destinatarioObj[campo]) || 0) + monto);
+                if (mon === 'usdt') { usuarioActual.balance = usuarioActual.balanceUSDT; destinatarioObj.balance = destinatarioObj.balanceUSDT; }
 
                 let uLocal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
-                if (uLocal) { uLocal.balanceUSDT = usuarioActual.balanceUSDT; uLocal.balance = usuarioActual.balanceUSDT; }
+                if (uLocal) { uLocal[campo] = usuarioActual[campo]; if (mon === 'usdt') uLocal.balance = usuarioActual.balanceUSDT; }
 
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -2515,7 +2663,7 @@
                 document.getElementById('trans-monto').value = '';
                 document.getElementById('trans-pass').value = '';
                 actualizarPerfilUI();
-                mostrarNotificacion(`Transferencia de ${monto.toFixed(2)} USDT exitosa`);
+                mostrarNotificacion(`Transferencia de ${monto} ${etiqueta} exitosa`);
                 volverAPerfil();
             }, 500);
         }
@@ -2549,7 +2697,7 @@
             document.getElementById('header-wallet-balance').innerText = `${(usuarioActual.balanceUSDT || 0).toFixed(2)} USDT`;
             document.getElementById('header-saldo-balance').innerText = saldoMovilTexto;
             document.getElementById('stat-saldo-movil-perfil').innerText = saldoMovilTexto;
-            document.getElementById('perfil-usuario').innerText = '@' + usuarioActual.nombre;
+            document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
             document.getElementById('perfil-correo').innerText = usuarioActual.correo;
 
             let rangoTexto = "CLIENTE PRO";
@@ -2582,7 +2730,7 @@
                 referidosList.forEach(ref => {
                     let badge = esValido(ref) ? "<span style='color:#10b981; font-weight:bold;'>Válido</span>" : "<span style='color:#f59e0b;'>No activo</span>";
                     listaHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color);">
-                        <div><span style="color: var(--text-main); font-weight: 700; display:block;">@${esc(ref.nombre)}</span><span style="color: var(--text-muted); font-size:0.65rem;">${esc(ref.correo)}</span></div>
+                        <div><span style="color: var(--text-main); font-weight: 700; display:block;">${esc(ref.nombre)}</span><span style="color: var(--text-muted); font-size:0.65rem;">${esc(ref.correo)}</span></div>
                         <div>${badge}</div></div>`;
                 });
             }
@@ -2631,6 +2779,13 @@
             }, 500);
         }
 
+        function confirmarCerrarSesion() {
+            document.getElementById('modal-salir').style.display = 'flex';
+        }
+        function cerrarModalSalir(e) {
+            if (!e || e.target.id === 'modal-salir') document.getElementById('modal-salir').style.display = 'none';
+        }
+
         function cerrarSesion() {
             localStorage.removeItem('lester_usuario');
             location.reload();
@@ -2656,6 +2811,7 @@
                     htmlBotones += `
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_recarga')">Recargas (${solicitudesGlobales.recargas.length})</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_deposito')">Depósitos (${solicitudesGlobales.depositos.length})</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('historial_depositos')">Historial Depósitos</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('cambiar_rango')">Gestionar Rangos</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('control_total_historial')">Control Total Historial</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('wallet_logica')">Control Wallet Lógica</button>
@@ -2681,7 +2837,7 @@
         }
 
         const TITULOS_CEO = {
-            usuarios: 'Usuarios Registrados', acreditar: 'Acreditar Saldo', desacreditar: 'Desacreditar Saldo',
+            historial_depositos: 'Historial de Depósitos', usuarios: 'Usuarios Registrados', acreditar: 'Acreditar Saldo', desacreditar: 'Desacreditar Saldo',
             solicitudes_recarga: 'Gestionar Recargas', solicitudes_deposito: 'Solicitudes de Depósito',
             cambiar_rango: 'Gestionar Rangos', control_total_historial: 'Control Total Historial',
             wallet_logica: 'Control Wallet Lógica', etiqueta_game: 'Etiqueta Free Fire', etiqueta_blood: 'Etiqueta Blood Strike',
@@ -2689,7 +2845,7 @@
             legal_admin: 'Legal y Opiniones', notificaciones_push: 'Notificaciones Globales'
         };
 
-        const CEO_SOLO = ['solicitudes_recarga', 'solicitudes_deposito', 'cambiar_rango', 'control_total_historial', 'wallet_logica', 'etiqueta_game', 'etiqueta_blood', 'catalogo_precios', 'inyectar_contenido', 'legal_admin', 'notificaciones_push'];
+        const CEO_SOLO = ['historial_depositos', 'solicitudes_recarga', 'solicitudes_deposito', 'cambiar_rango', 'control_total_historial', 'wallet_logica', 'etiqueta_game', 'etiqueta_blood', 'catalogo_precios', 'inyectar_contenido', 'legal_admin', 'notificaciones_push'];
 
         function cargarAccionCEO(accion) {
             const esCEO = esCEOUsuario();
@@ -2727,7 +2883,7 @@
                     if (d.estado === 'Pendiente') {
                         hay = true;
                         html += `<div style="background:var(--bg-card); padding:0.8rem; margin-bottom:0.6rem; border-radius:12px; border:1px solid var(--border-color); font-size:0.78rem;">
-                            <b>User:</b> ${esc(d.usuario)} (${esc(d.correo)}) | <b>Monto:</b> ${d.monto}<br>
+                            <b>User:</b> ${esc(d.usuario)} (${esc(d.correo)}) | <b>Monto:</b> ${d.monto} ${d.moneda === 'usdt' ? 'USDT' : 'saldo'}<br>
                             <b>Número / TxID:</b> <span style="color:#f59e0b; font-weight:bold; word-break:break-all;">${esc(d.telefonoTransfirio || 'N/A')}</span>
                             <div style="margin-top:8px; display:flex; gap:6px;">
                                 <button style="background:#10b981; color:#fff; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; font-weight:bold;" onclick="aprobarDeposito(${idx})">Aprobar</button>
@@ -2738,6 +2894,24 @@
                 if (!hay) html = "<p style='color:var(--text-muted); font-size:0.8rem;'>No hay depósitos pendientes.</p>";
                 res.innerHTML = html;
 
+            } else if (accion === 'historial_depositos') {
+                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Todos los depósitos (USDT y saldo). Aprobar acredita en la moneda correcta.</p>`;
+                if (solicitudesGlobales.depositos.length === 0) html += "<p style='color:var(--text-muted); font-size:0.8rem;'>No hay depósitos.</p>";
+                solicitudesGlobales.depositos.slice().reverse().forEach(d => {
+                    const idx = solicitudesGlobales.depositos.indexOf(d);
+                    const opts = ['Pendiente', 'Aprobado', 'Cancelado'].map(x => `<option value="${x}" ${d.estado === x ? 'selected' : ''}>${x}</option>`).join('');
+                    html += `<div style="background:var(--bg-card); padding:0.9rem; margin-bottom:0.6rem; border-radius:12px; border:1px solid var(--border-color); font-size:0.78rem; line-height:1.7;">
+                        <b>Usuario:</b> ${esc(d.usuario)} (${esc(d.correo)})<br>
+                        <b>Monto:</b> ${d.monto} ${d.moneda === 'usdt' ? 'USDT' : 'saldo'}<br>
+                        <b>Dato:</b> <span style="word-break:break-all;">${esc(d.telefonoTransfirio || 'N/A')}</span><br>
+                        <b>Estado:</b> <select id="dep-st-${idx}" style="background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:3px; border-radius:6px;">${opts}</select>
+                        <div style="margin-top:6px; display:flex; gap:6px;">
+                            <button style="background:#10b981; color:#fff; border:none; padding:5px 10px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:0.72rem;" onclick="guardarEstadoDepositoAdmin(${idx})">Guardar</button>
+                            <button style="background:#ff3b30; color:#fff; border:none; padding:5px 10px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:0.72rem;" onclick="eliminarDepositoAdmin(${idx})">Eliminar</button>
+                        </div></div>`;
+                });
+                res.innerHTML = html;
+
             } else if (accion === 'usuarios') {
                 let html = "";
                 if (listaUsuariosGlobales.length === 0) html = "<p style='color:var(--text-muted); font-size:0.8rem;'>No hay usuarios.</p>";
@@ -2746,7 +2920,7 @@
                     if (u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
                     if (u.balanceCUP === undefined) u.balanceCUP = 0;
                     html += `<div style="background:var(--bg-card); padding:0.9rem; margin-bottom:0.6rem; border-radius:12px; border:1px solid var(--border-color); font-size:0.78rem; line-height:1.5;">
-                        <b>Nombre de usuario:</b> @${esc(u.nombre)}<br>
+                        <b>Nombre de usuario:</b> ${esc(u.nombre)}<br>
                         <b>Correo:</b> <span style="color:var(--text-muted);">${esc(u.correo)}</span><br>
                         <b>Wallet USDT:</b> <span style="color:var(--accent-glow); font-weight:bold;">${Number(u.balanceUSDT).toFixed(2)}</span><br>
                         <b>Saldo Móvil:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP} saldo</span><br>
@@ -2864,7 +3038,7 @@
                     html += `<div style="background:var(--bg-card); padding:0.7rem; border-radius:12px; border:1px solid var(--border-color); margin-bottom:8px; display:flex; gap:10px; align-items:center;">
                         ${prev}
                         <div style="flex:1; min-width:0;">
-                            <div style="font-size:0.72rem; font-weight:800; margin-bottom:4px;">#${eIdx + 1} (${el.type === 'image' ? 'Foto' : 'Texto'})</div>
+                            <div style="font-size:0.72rem; font-weight:800; margin-bottom:4px;">Elemento ${eIdx + 1} (${el.type === 'image' ? 'Foto' : 'Texto'})</div>
                             <select onchange="moverElementoInyectado(${eIdx}, this.value)" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:5px; border-radius:8px; font-size:0.72rem;">${opts}</select>
                         </div>
                         <button style="background:#ff3b30; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="eliminarElementoInyectado(${eIdx})">Quitar</button>
@@ -2899,7 +3073,7 @@
                 (tiendaConfig.opiniones || []).forEach((o, i) => {
                     html += `<div style="background:var(--bg-card); padding:0.7rem; border-radius:12px; border:1px solid var(--border-color); margin-bottom:8px; display:flex; justify-content:space-between; gap:8px; align-items:center;">
                         <div style="min-width:0;"><b style="font-size:0.78rem;">${esc(o.nombre)}</b> <span class="stars">${'★'.repeat(o.estrellas || 5)}</span><div style="font-size:0.72rem; color:var(--text-muted);">${esc(o.texto)}</div></div>
-                        <button style="background:#ff3b30; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="eliminarOpinion(${i})">Quitar</button>
+                        <button style="background:#ff3b30; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="eliminarOpinion(${i})">Quitar</button>${o.aprobada === false ? `<button style="background:#10b981; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="aprobarOpinion(${i})">Aprobar</button>` : ''}
                     </div>`;
                 });
                 res.innerHTML = html;
@@ -2910,7 +3084,7 @@
                     <div class="ceo-action-form">
                         <h4>Enviar Notificaciones a Usuarios</h4>
                         <select id="ceo-notif-tipo" style="margin-bottom:8px;">
-                            <option value="todos">@TODOS (A todos los usuarios)</option>
+                            <option value="todos">Todos los usuarios</option>
                             <option value="usuario">A un usuario específico (por @usuario)</option>
                         </select>
                         <input type="text" id="ceo-notif-destinatario" placeholder="Nombre de usuario (solo si eliges usuario)" style="display:none;">
@@ -3117,6 +3291,10 @@
             const ok = await guardarConfig(() => { tiendaConfig.opiniones.push({ id: Date.now(), nombre: nombre, texto: texto, estrellas: est }); }, "Opinión publicada");
             if (ok) cargarAccionCEO('legal_admin');
         }
+        async function aprobarOpinion(i) {
+            const ok = await guardarConfig(() => { if (tiendaConfig.opiniones[i]) tiendaConfig.opiniones[i].aprobada = true; }, "Opinión aprobada y publicada");
+            if (ok) cargarAccionCEO('legal_admin');
+        }
         async function eliminarOpinion(i) {
             const ok = await guardarConfig(() => { tiendaConfig.opiniones.splice(i, 1); }, "Opinión eliminada");
             if (ok) cargarAccionCEO('legal_admin');
@@ -3126,14 +3304,22 @@
             const tipo = document.getElementById('ceo-notif-tipo').value;
             const dest = document.getElementById('ceo-notif-destinatario').value.trim().replace('@', '');
             const msg = document.getElementById('ceo-notif-mensaje').value.trim();
-            if (!msg) { mostrarNotificacion("Escribe el mensaje de la notificación"); return; }
-            if (tipo === 'todos') {
-                mostrarNotificacion("¡Notificación enviada a @TODOS con éxito!");
-            } else {
-                if (!dest) { mostrarNotificacion("Introduce el nombre de usuario destinatario"); return; }
-                mostrarNotificacion(`Notificación enviada a @${dest} con éxito`);
+            if (!msg) { mostrarNotificacion("Escribe el mensaje del aviso"); return; }
+            if (tipo === 'usuario' && !dest) { mostrarNotificacion("Escribe el nombre de usuario destinatario"); return; }
+            const para = tipo === 'todos' ? 'todos' : dest;
+            const id = Date.now();
+            const ok = await guardarConfig(() => {
+                if (!Array.isArray(tiendaConfig.notificaciones)) tiendaConfig.notificaciones = [];
+                tiendaConfig.notificaciones.push({ id: id, para: para, mensaje: msg, fecha: new Date().toISOString() });
+                tiendaConfig.notificaciones = tiendaConfig.notificaciones.slice(-30);
+            }, null);
+            if (ok) {
+                const v = leerJSON('lester_avisos_vistos', []);
+                v.push(id);
+                localStorage.setItem('lester_avisos_vistos', JSON.stringify(v.slice(-200)));
+                mostrarNotificacion(tipo === 'todos' ? "Aviso enviado a todos los usuarios" : "Aviso enviado a " + dest);
+                document.getElementById('ceo-notif-mensaje').value = '';
             }
-            document.getElementById('ceo-notif-mensaje').value = '';
         }
 
         /* ----- CEO: historial, usuarios, saldos ----- */
@@ -3240,6 +3426,33 @@
             cargarAccionCEO('usuarios');
         }
 
+        async function guardarEstadoDepositoAdmin(idx) {
+            const dep = solicitudesGlobales.depositos[idx];
+            if (!dep) return;
+            const nuevo = document.getElementById('dep-st-' + idx).value;
+            if (nuevo === 'Aprobado' && dep.estado !== 'Aprobado') { return aprobarDeposito(idx); }
+            if (dep.estado === 'Aprobado' && nuevo !== 'Aprobado') {
+                mostrarNotificacion("Un depósito aprobado no se desaprueba aquí. Ajusta el saldo en Acreditar / Desacreditar.");
+                return;
+            }
+            dep.estado = nuevo;
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            renderizarOrdenes();
+            mostrarNotificacion("Estado del depósito actualizado");
+            cargarAccionCEO('historial_depositos');
+        }
+
+        async function eliminarDepositoAdmin(idx) {
+            if (!confirm("¿Eliminar este depósito del historial? No cambia ningún saldo.")) return;
+            solicitudesGlobales.depositos.splice(idx, 1);
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            await guardarEnCloud();
+            renderizarOrdenes();
+            mostrarNotificacion("Depósito eliminado del historial");
+            cargarAccionCEO('historial_depositos');
+        }
+
         async function aprobarDeposito(index) {
             let dep = solicitudesGlobales.depositos[index];
             if (!dep) return;
@@ -3250,7 +3463,13 @@
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase().trim() === dep.correo.toLowerCase().trim());
             if (userTarget) {
                 if (userTarget.balanceCUP === undefined) userTarget.balanceCUP = 0;
-                userTarget.balanceCUP = Math.round(userTarget.balanceCUP + monto);
+                if (dep.moneda === 'usdt') {
+                    if (userTarget.balanceUSDT === undefined) userTarget.balanceUSDT = userTarget.balance || 0;
+                    userTarget.balanceUSDT = parseFloat((userTarget.balanceUSDT + monto).toFixed(2));
+                    userTarget.balance = userTarget.balanceUSDT;
+                } else {
+                    userTarget.balanceCUP = Math.round(userTarget.balanceCUP + monto);
+                }
                 if (userTarget.referidoPor) {
                     let patrocinador = listaUsuariosGlobales.find(u => u.nombre.trim().toLowerCase() === userTarget.referidoPor.trim().toLowerCase());
                     if (patrocinador) patrocinador.descuentosDisponibles = (patrocinador.descuentosDisponibles || 0) + 1;
