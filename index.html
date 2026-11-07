@@ -556,8 +556,14 @@
 
         /* Tarjeta con brillo que cruza la esquina */
         .shine-card { position: relative; overflow: hidden; }
-        .shine-card::before { content: ''; position: absolute; top: -50%; left: -60%; width: 40%; height: 200%; background: linear-gradient(105deg, transparent 30%, rgba(0,240,255,.18) 50%, transparent 70%); transform: rotate(15deg); animation: cardShine 3.6s ease-in-out infinite; pointer-events: none; }
-        @keyframes cardShine { 0%, 100% { left: -60%; } 50% { left: 130%; } }
+        .sub-card, .order-card-pro, .wallet-card, .diamond-card, .live-history-card, .invite-banner, .game-hero-compact, .game-card-character, .menu-list, .menu-row, .profile-header-card, .op-card-h, .op-add-h, .invite-banner, .wallet-card, .shine-card, .comp-shine { position: relative; overflow: hidden; }
+        .sub-card::before, .order-card-pro::before, .wallet-card::before, .diamond-card::before, .live-history-card::before, .invite-banner::before, .game-hero-compact::before, .game-card-character::before, .menu-list::before, .menu-row::before, .profile-header-card::before, .op-card-h::before, .op-add-h::before, .shine-card::before, .comp-shine::before {
+            content: ''; position: absolute; inset: 0; border-radius: inherit;
+            background: linear-gradient(115deg, transparent 38%, rgba(0,240,255,.22) 50%, transparent 62%);
+            background-size: 300% 300%; background-position: 100% 100%;
+            animation: cornerShine 3.6s ease-in-out infinite; pointer-events: none; z-index: 0;
+        }
+        @keyframes cornerShine { 0%, 100% { background-position: 100% 100%; } 50% { background-position: 0% 0%; } }
 
         /* Círculo de estado con palomita */
         .estado-circle { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -576,11 +582,20 @@
         .op-feed-date { font-size: .64rem; color: var(--text-muted); }
         .op-feed-txt { font-size: .8rem; color: var(--text-main); line-height: 1.5; }
         .op-feed-photo { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin-top: .6rem; }
-        .stars-row { color: #f59e0b; font-size: .85rem; letter-spacing: 2px; }
+        .stars-row { color: #facc15; font-size: .85rem; letter-spacing: 2px; text-shadow: 0 0 8px rgba(250,204,21,.6); }
         .op-cta { width: 100%; background: var(--bg-card); border: 1.5px dashed var(--accent-glow); color: var(--accent-glow); padding: .8rem; border-radius: 14px; font-weight: 800; font-size: .82rem; cursor: pointer; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .op-marquee { overflow: hidden; width: 100%; margin: 0 -1.1rem 1rem; padding: .3rem 0 .4rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+        .op-track { display: flex; gap: 12px; width: max-content; padding: 0 1.1rem; animation: marqueeX 40s linear infinite; }
+        .op-marquee:hover .op-track { animation-play-state: paused; }
+        @keyframes marqueeX { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .op-card-h { width: 250px; flex-shrink: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: .8rem .9rem; min-height: 150px; display: flex; flex-direction: column; gap: 6px; }
+        .op-card-h .op-feed-photo { max-height: 90px; margin-top: 4px; }
+        .op-card-h .op-feed-txt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .op-add-h { width: 170px; flex-shrink: 0; min-height: 150px; border: 1.5px dashed var(--accent-glow); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--accent-glow); font-weight: 900; font-size: .85rem; cursor: pointer; background: rgba(0,240,255,.05); text-align: center; }
+        .op-add-h svg { width: 30px; height: 30px; fill: var(--accent-glow); }
         .estrellas-pick { display: flex; justify-content: center; gap: 10px; margin: .8rem 0 1rem; }
         .estrellas-pick span { font-size: 2.2rem; cursor: pointer; color: var(--border-color); transition: transform .15s; }
-        .estrellas-pick span.on { color: #f59e0b; text-shadow: 0 0 14px rgba(245,158,11,.5); }
+        .estrellas-pick span.on { color: #facc15; text-shadow: 0 0 18px rgba(250,204,21,.8); }
         .estrellas-pick span:active { transform: scale(.85); }
 
         /* Botones del comprobante */
@@ -822,8 +837,7 @@
                 </div>
 
                 <div class="section-title">OPINIONES DE NUESTROS CLIENTES</div>
-                <button class="op-cta" onclick="abrirNuevaOpinion()">★ Deja tu opinión</button>
-                <div id="lista-opiniones-inicio"></div>
+                <div class="op-marquee"><div class="op-track" id="lista-opiniones-inicio"></div></div>
 
                 <div class="inject-slot" data-slot="inicio-bottom"></div>
             </div>
@@ -906,6 +920,11 @@
                 <h2 class="page-title">Tus Órdenes y Transacciones</h2>
                 <p style="color:var(--text-muted); font-size:0.72rem; margin-bottom: 1rem;">Historial privado de tus solicitudes y depósitos en la plataforma.</p>
 
+                <div style="display: flex; gap: 8px; margin-bottom: 1rem; background: var(--bg-card); padding: 4px; border-radius: 12px; border: 1px solid var(--border-color);">
+                    <button id="tab-btn-compras" style="flex: 1; padding: 0.6rem; border-radius: 10px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: var(--primary-blue); color: #fff; transition: all 0.3s;" onclick="cambiarTabOrdenes('compras')">Compras (Recargas)</button>
+                    <button id="tab-btn-depositos" style="flex: 1; padding: 0.6rem; border-radius: 10px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.3s;" onclick="cambiarTabOrdenes('depositos')">Depósitos</button>
+                </div>
+
                 <div id="panel-ordenes-compras">
                     <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem 1.2rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                         <div>
@@ -917,6 +936,16 @@
                         </div>
                     </div>
                     <div id="lista-compras-container"></div>
+                </div>
+
+                <div id="panel-ordenes-depositos" style="display: none;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 1rem 1.2rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                        <div>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: bold;">TOTAL DEPOSITADO EN SALDO MÓVIL</span>
+                            <h3 id="stat-total-depositado-saldo" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0</h3>
+                        </div>
+                    </div>
+                    <div id="lista-depositos-container"></div>
                 </div>
 
             </div>
@@ -1038,8 +1067,7 @@
                 <h2 class="page-title">MÉTODOS DE BILLETERA</h2>
                 <p style="color: var(--text-muted); font-size: 0.75rem; margin-bottom: 1.2rem;">Selecciona tu método de recarga o gestión de fondos.</p>
                 <div id="wallet-cards-container" style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.2rem;"></div>
-                <div class="section-title">HISTORIAL DE DEPÓSITOS</div>
-                <div id="lista-depositos-container"></div>
+
             </div>
 
             <!-- DETALLE WALLET USDT -->
@@ -1919,7 +1947,7 @@
             aplicarConfiguracionVisual();
             renderizarPaquetesTienda();
             marcarTemaActivo();
-            sincronizar(false);
+            sincronizar(true);
             setInterval(() => sincronizar(true), 6000);
         }
 
@@ -2007,15 +2035,55 @@
         }
 
         /* Inyecciones: cada elemento tiene su "lugar" y se pinta en el hueco correspondiente de la página */
+        function ajustesDe(el) {
+            return Object.assign({ ancho: 100, alin: 'centro', arriba: 0, abajo: 12 }, el.ajustes || {});
+        }
+        async function ajustarInyectado(i, clave, valor) {
+            await guardarConfig(() => {
+                const el = tiendaConfig.injectedElements[i];
+                if (!el) return;
+                el.ajustes = ajustesDe(el);
+                el.ajustes[clave] = clave === 'alin' ? valor : parseInt(valor, 10);
+            }, null);
+        }
+        async function moverOrdenInyectado(i, dir) {
+            await guardarConfig(() => {
+                const arr = tiendaConfig.injectedElements;
+                const j = i + dir;
+                if (j < 0 || j >= arr.length) return;
+                const t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+            }, null);
+            cargarAccionCEO('inyectar_contenido');
+        }
+        function controlesInyectado(el, i) {
+            const aj = ajustesDe(el);
+            const rango = (clave, min, max, etiqueta) => `<label style="display:flex; justify-content:space-between; font-size:0.7rem; margin-top:6px;"><span>${etiqueta}: <b>${aj[clave]}${clave === 'ancho' ? '%' : 'px'}</b></span></label><input type="range" min="${min}" max="${max}" value="${aj[clave]}" style="width:100%;" oninput="this.previousElementSibling.querySelector('b').innerText=this.value+'${clave === 'ancho' ? '%' : 'px'}'" onchange="ajustarInyectado(${i}, '${clave}', this.value)">`;
+            const sel = ['izq', 'centro', 'der'].map(v => `<option value="${v}" ${aj.alin === v ? 'selected' : ''}>${v === 'izq' ? 'Izquierda' : (v === 'der' ? 'Derecha' : 'Centro')}</option>`).join('');
+            return `<div style="background:var(--bg-main); border:1px solid var(--border-color); border-radius:10px; padding:0.6rem; margin-top:6px;">
+                <div style="display:flex; gap:6px; margin-bottom:4px;">
+                    <button class="ceo-btn" style="padding:4px 8px; font-size:0.7rem;" onclick="moverOrdenInyectado(${i}, -1)">Subir en la lista</button>
+                    <button class="ceo-btn" style="padding:4px 8px; font-size:0.7rem;" onclick="moverOrdenInyectado(${i}, 1)">Bajar en la lista</button>
+                </div>
+                ${rango('ancho', 20, 100, 'Tamaño')}
+                ${rango('arriba', 0, 150, 'Espacio arriba')}
+                ${rango('abajo', 0, 150, 'Espacio abajo')}
+                <label style="font-size:0.7rem; display:block; margin-top:6px;">Alineación
+                    <select style="width:100%; background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-main); padding:5px; border-radius:8px;" onchange="ajustarInyectado(${i}, 'alin', this.value)">${sel}</select>
+                </label>
+            </div>`;
+        }
+
         function renderizarElementosInyectados() {
             const porLugar = {};
             (tiendaConfig.injectedElements || []).forEach(el => {
                 const l = el.lugar || 'inicio-top';
                 if (!porLugar[l]) porLugar[l] = '';
+                const aj = ajustesDe(el);
+                const estilo = `width:${aj.ancho}%; margin-top:${aj.arriba}px; margin-bottom:${aj.abajo}px; margin-left:${aj.alin === 'izq' ? 0 : 'auto'}; margin-right:${aj.alin === 'der' ? 0 : 'auto'};`;
                 if (el.type === 'image') {
-                    porLugar[l] += `<div class="custom-injected-element"><img src="${el.content}" alt="Imagen"></div>`;
+                    porLugar[l] += `<div class="custom-injected-element" style="${estilo}"><img src="${el.content}" alt="Imagen"></div>`;
                 } else if (el.type === 'text') {
-                    porLugar[l] += `<div class="custom-injected-element" style="background:var(--bg-card); padding:1rem; border:1px solid var(--border-color); font-size:0.85rem; color:var(--text-main);">${el.content}</div>`;
+                    porLugar[l] += `<div class="custom-injected-element" style="${estilo} background:var(--bg-card); padding:1rem; border:1px solid var(--border-color); font-size:0.85rem; color:var(--text-main);">${el.content}</div>`;
                 }
             });
             document.querySelectorAll('.inject-slot').forEach(slot => {
@@ -2402,21 +2470,19 @@
             const el = document.getElementById('lista-opiniones-inicio');
             if (!el) return;
             const ops = (tiendaConfig.opiniones || []).filter(o => o.aprobada !== false).slice().reverse().slice(0, 30);
-            if (ops.length === 0) {
-                el.innerHTML = '<p style="color:var(--text-muted); font-size:.78rem; text-align:center; padding:.6rem;">Sé el primero en dejar tu opinión.</p>';
-                return;
-            }
-            el.innerHTML = ops.map(o => {
+            const addTile = '<div class="op-add-h" onclick="abrirNuevaOpinion()"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>Deja tu opinión</div>';
+            const tiles = ops.map(o => {
                 const n = Math.max(1, Math.min(5, o.estrellas || 5));
                 const av = o.avatar ? '<img src="' + o.avatar + '" alt="">' : esc((o.nombre || '?').charAt(0).toUpperCase());
-                const fecha = o.fecha ? new Date(o.fecha).toLocaleDateString() : '';
                 const foto = o.foto ? '<img class="op-feed-photo" src="' + o.foto + '" alt="">' : '';
-                return '<div class="op-feed-card">' +
-                    '<div class="op-feed-head"><div class="op-feed-av">' + av + '</div>' +
-                    '<div style="flex:1; min-width:0;"><div class="op-feed-name">' + esc(o.nombre) + '</div><div class="op-feed-date">' + fecha + '</div></div>' +
-                    '<div class="stars-row">' + '★'.repeat(n) + '☆'.repeat(5 - n) + '</div></div>' +
+                return '<div class="op-card-h">' +
+                    '<div class="op-feed-head" style="margin-bottom:0;"><div class="op-feed-av">' + av + '</div>' +
+                    '<div style="flex:1; min-width:0;"><div class="op-feed-name">' + esc(o.nombre) + '</div>' +
+                    '<div class="stars-row">' + '★'.repeat(n) + '☆'.repeat(5 - n) + '</div></div></div>' +
                     '<div class="op-feed-txt">' + esc(o.texto) + '</div>' + foto + '</div>';
-            }).join('');
+            }).join('') + addTile;
+            // Se duplica para que el desplazamiento sea continuo
+            el.innerHTML = tiles + tiles;
         }
 
         /* ================= DEPÓSITOS ================= */
@@ -2567,7 +2633,17 @@
             }, 500);
         }
 
-        function cambiarTabOrdenes() {}
+        function cambiarTabOrdenes(tipo) {
+            const btnCompras = document.getElementById('tab-btn-compras');
+            const btnDepositos = document.getElementById('tab-btn-depositos');
+            const esCompras = tipo === 'compras';
+            btnCompras.style.background = esCompras ? 'var(--primary-blue)' : 'transparent';
+            btnCompras.style.color = esCompras ? '#fff' : 'var(--text-muted)';
+            btnDepositos.style.background = esCompras ? 'transparent' : 'var(--primary-blue)';
+            btnDepositos.style.color = esCompras ? 'var(--text-muted)' : '#fff';
+            document.getElementById('panel-ordenes-compras').style.display = esCompras ? 'block' : 'none';
+            document.getElementById('panel-ordenes-depositos').style.display = esCompras ? 'none' : 'block';
+        }
 
         function renderizarOrdenes() {
             if (!usuarioActual) return;
@@ -2581,6 +2657,9 @@
 
             document.getElementById('stat-total-recargas-realizadas').innerText = misRecargas.length;
 
+
+            const sd = document.getElementById('stat-total-depositado-saldo');
+            if (sd) sd.innerText = misDepositos.filter(d => d.estado === 'Aprobado' && d.moneda !== 'usdt').reduce((acc, curr) => acc + (parseFloat(curr.monto) || 0), 0);
 
             let htmlCompras = "";
             if (misRecargas.length === 0) {
@@ -3385,7 +3464,7 @@
                             <select onchange="moverElementoInyectado(${eIdx}, this.value)" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:5px; border-radius:8px; font-size:0.72rem;">${opts}</select>
                         </div>
                         <button style="background:#ff3b30; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="eliminarElementoInyectado(${eIdx})">Quitar</button>
-                    </div>`;
+                    </div>${controlesInyectado(el, eIdx)}`;
                 });
                 res.innerHTML = html;
 
