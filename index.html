@@ -1720,6 +1720,10 @@
 
         const BIN_ID = '6aeaa0e1ffd5d16053a44254';
         const MASTER_KEY = '$2a$10$dqDVWzuNFp7Z1WisPtOQvONbAs8.kfUlwQcISv0oufBZIWV21gjDy';
+        /* Base de datos nueva (Cloudflare Worker + D1). Pega aquí la URL de tu Worker, ej. 'https://lester-api.TUUSUARIO.workers.dev'.
+           Mientras esté vacío, la app sigue usando JSONBin. */
+        const WORKER_URL = '';
+        const CLAVE_ESCRITURA = ''; // la misma que pusiste en el Worker (si no la pusiste, déjalo vacío)
 
         /* ================= ETIQUETAS DE COLOR ================= */
         const ETQ = {
@@ -1757,9 +1761,11 @@
         async function guardarEnCloud() {
             guardandoCloud = true;
             try {
-                const respuesta = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                const respuesta = await fetch(WORKER_URL ? `${WORKER_URL}/api/state` : `https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+                    headers: WORKER_URL
+                        ? Object.assign({ 'Content-Type': 'application/json' }, CLAVE_ESCRITURA ? { 'X-Clave': CLAVE_ESCRITURA } : {})
+                        : { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
                     body: JSON.stringify({ usuarios: listaUsuariosGlobales, solicitudes: solicitudesGlobales, config: tiendaConfig })
                 });
                 ultimaEscritura = Date.now();
@@ -1811,7 +1817,7 @@
             if (guardandoCloud || (Date.now() - ultimaEscritura) < 10000) return;
             if (!silencioso) mostrarCarga("Sincronizando datos...");
             try {
-                const respuesta = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } });
+                const respuesta = await fetch(WORKER_URL ? `${WORKER_URL}/api/state` : `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: WORKER_URL ? {} : { 'X-Master-Key': MASTER_KEY } });
                 const resultado = await respuesta.json();
                 if (guardandoCloud) return;
                 const rec = resultado && resultado.record;
@@ -2070,8 +2076,26 @@
         }
 
         /* ================= INICIO ================= */
+        /* Migración única: si el Worker está vacío, copia los datos actuales de JSONBin */
+        async function migrarJsonbinAWorker() {
+            if (!WORKER_URL) return;
+            try {
+                const actual = await (await fetch(`${WORKER_URL}/api/state`)).json();
+                if (actual.record && Array.isArray(actual.record.usuarios) && actual.record.usuarios.length) return;
+                const j = await (await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': MASTER_KEY } })).json();
+                const r = j && j.record;
+                if (!r || !Array.isArray(r.usuarios)) return;
+                await fetch(`${WORKER_URL}/api/state`, {
+                    method: 'PUT',
+                    headers: Object.assign({ 'Content-Type': 'application/json' }, CLAVE_ESCRITURA ? { 'X-Clave': CLAVE_ESCRITURA } : {}),
+                    body: JSON.stringify(r)
+                });
+            } catch (e) { console.error('Migración a Worker fallida:', e); }
+        }
+
         function init() {
             if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+            migrarJsonbinAWorker();
             if (usuarioActual) guardarCookieSesion(usuarioActual);
             if (!usuarioActual && !sesionPendiente) mostrarAuth();
             if (!usuarioActual && sesionPendiente) setTimeout(() => { if (!usuarioActual) { sesionPendiente = null; mostrarAuth(); } }, 5000);
@@ -2105,7 +2129,8 @@
             renderizarPaquetesTienda();
             marcarTemaActivo();
             sincronizar(true);
-            setInterval(() => sincronizar(true), 6000);
+            // Con la base nueva se consulta cada 20 s para no gastar el límite gratis de peticiones
+            setInterval(() => sincronizar(true), WORKER_URL ? 20000 : 6000);
         }
 
         /* ================= TEMA ================= */
@@ -2793,15 +2818,24 @@
                     comprobante: comprobanteDepositoData
                 });
                 localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-                const ok = await guardarEnCloud();
+                let ok = await guardarEnCloud();
+                let sinFoto = false;
+                if (!ok) {
+                    // La nube no aceptó la foto: se reenvía el depósito sin foto para que el CEO reciba monto y número
+                    const dep = solicitudesGlobales.depositos.find(d => d.id === idDep);
+                    if (dep) { delete dep.comprobante; dep.sinComprobante = true; }
+                    localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                    ok = await guardarEnCloud();
+                    sinFoto = ok;
+                }
                 ocultarCarga();
                 if (!ok) {
                     solicitudesGlobales.depositos = solicitudesGlobales.depositos.filter(d => d.id !== idDep);
                     localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-                    mostrarNotificacion("No se pudo enviar: la nube está llena o sin internet. Intenta de nuevo.");
+                    mostrarNotificacion("No se pudo enviar: la nube está llena o sin internet. Pídele al CEO que libere espacio.");
                     return;
                 }
-                mostrarNotificacion("Depósito de saldo móvil enviado a revisión");
+                mostrarNotificacion(sinFoto ? "Enviado sin foto porque la nube está llena. Avisa al CEO." : "Depósito de saldo móvil enviado a revisión");
                 document.getElementById('monto-deposito').value = '';
                 document.getElementById('telefono-transfirio').value = '';
                 comprobanteDepositoData = '';
@@ -3746,6 +3780,7 @@
 
             } else if (accion === 'catalogo_precios') {
                 let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB de 100 KB.</p>
+                    <button class="btn-main" style="margin-top:0; margin-bottom:10px; background:#22c55e;" onclick="liberarEspacioCEO()">Liberar espacio en la nube</button>
                     <div class="ceo-action-form">
                         <h4>Cambiar todos los precios a la vez</h4>
                         <label style="font-size:0.7rem;">Porcentaje (ej. 10 para subir 10%, -5 para bajar 5%)</label>
@@ -3943,6 +3978,30 @@
         async function eliminarImagenPaqueteCEO(pIdx) {
             const ok = await guardarConfig(() => { if (tiendaConfig.paquetesDiamantes[pIdx]) tiendaConfig.paquetesDiamantes[pIdx].imagen = ""; }, "Imagen del paquete eliminada");
             if (ok) cargarAccionCEO('catalogo_precios');
+        }
+
+        async function liberarEspacioCEO() {
+            if (!confirm("Se borrará el historial viejo de recargas y depósitos (se conservan los 30 más recientes y todo lo pendiente) y los avisos viejos. ¿Continuar?")) return;
+            const antes = kbNube();
+            const recortar = (arr) => {
+                const pend = arr.filter(s => s.estado === 'Pendiente');
+                const otros = arr.filter(s => s.estado !== 'Pendiente').slice(-30);
+                return arr.filter(s => pend.indexOf(s) !== -1 || otros.indexOf(s) !== -1);
+            };
+            solicitudesGlobales.recargas = recortar(solicitudesGlobales.recargas || []);
+            solicitudesGlobales.depositos = recortar(solicitudesGlobales.depositos || []);
+            solicitudesGlobales.depositos.forEach(d => { if (d.estado !== 'Pendiente') delete d.comprobante; });
+            tiendaConfig.notificaciones = (tiendaConfig.notificaciones || []).slice(-10);
+            localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+            localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
+            mostrarCarga("Liberando espacio...");
+            const ok = await guardarEnCloud();
+            ocultarCarga();
+            if (!ok) { mostrarNotificacion("Aún no hay espacio suficiente. Borra también fotos de Inyectar Contenido u Opiniones."); return; }
+            firmaSolicitudes = JSON.stringify(solicitudesGlobales);
+            firmaConfig = JSON.stringify(tiendaConfig);
+            mostrarNotificacion(`Espacio liberado: ${antes} KB → ${kbNube()} KB`);
+            cargarAccionCEO('catalogo_precios');
         }
 
         async function cambiarTodosLosPrecios() {
