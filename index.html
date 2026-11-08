@@ -70,6 +70,7 @@
             display: flex;
             flex-direction: column;
             padding-bottom: 95px;
+            padding-top: calc(66px + env(safe-area-inset-top, 0px));
             overflow-x: hidden;
             position: relative;
             /* IMPORTANTE: solo opacity. Un "transform" en el body rompía los elementos fixed
@@ -178,7 +179,7 @@
         .navbar {
             display: flex; justify-content: space-between; align-items: center;
             padding: 0.85rem 1.1rem; background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid var(--border-color); position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 100;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2); backdrop-filter: blur(10px);
         }
         .nav-brand-area { display: flex; align-items: center; gap: 10px; }
@@ -227,13 +228,11 @@
         .vista-sec { animation: fadeInPage 0.35s ease forwards; flex: 1; display: flex; flex-direction: column; }
 
         .inject-slot:empty { display: none; }
-        .custom-injected-element { position: relative; margin: 0 0 12px 0; border-radius: 14px; }
+        .custom-injected-element { position: relative; margin: 0 !important; padding: 0 !important; border: none !important; background: transparent !important; border-radius: 0 !important; box-shadow: none !important; line-height: 0; }
         .custom-injected-element img {
-            display: block; width: 100%; height: auto; max-height: none; object-fit: contain;
-            background: transparent; border-radius: 0;
+            display: block; width: 100%; height: auto; max-height: none; object-fit: contain; margin: 0; padding: 0;
+            background: transparent; border-radius: 0; border: none;
             mix-blend-mode: lighten;
-            -webkit-mask-image: radial-gradient(ellipse at center, #000 70%, transparent 100%);
-            mask-image: radial-gradient(ellipse at center, #000 70%, transparent 100%);
         }
 
         .game-hero-compact {
@@ -416,7 +415,7 @@
         .pf-cam svg { width: 14px; height: 14px; fill: #fff; }
         .pf-id { min-width: 0; flex: 1; }
         .pf-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-glow); }
-        .pf-name { font-size: 1.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-main); line-height: 1.05; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pf-name { font-size: 1.05rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.3px; color: var(--text-main); line-height: 1.15; overflow-wrap: anywhere; }
         .pf-mail { font-size: 0.85rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .pf-verif { display: inline-flex; align-items: center; gap: 4px; margin-top: 0.4rem; padding: 2px 9px 2px 6px; border-radius: 999px; background: rgba(16,185,129,0.14); color: #10b981; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.3px; }
         .pf-verif svg { width: 13px; height: 13px; fill: #10b981; }
@@ -1838,21 +1837,43 @@
             } catch (e) { return 0; }
         }
 
+        /* Une dos listas por id: conserva lo local y agrega lo que ya está en la nube y aquí no existe */
+        function unirPorId(listaNube, listaLocal) {
+            const ids = new Set((listaLocal || []).map(x => String(x.id)));
+            const extra = (listaNube || []).filter(x => !ids.has(String(x.id)));
+            return (listaLocal || []).concat(extra);
+        }
+
         async function guardarEnCloud() {
             guardandoCloud = true;
             try {
-                const respuesta = await fetch(WORKER_URL ? `${WORKER_URL}/api/state` : `https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-                    method: 'PUT',
-                    headers: WORKER_URL
-                        ? Object.assign({ 'Content-Type': 'application/json' }, CLAVE_ESCRITURA ? { 'X-Clave': CLAVE_ESCRITURA } : {})
-                        : { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
-                    body: JSON.stringify({ usuarios: listaUsuariosGlobales, solicitudes: solicitudesGlobales, config: tiendaConfig })
-                });
-                ultimaEscritura = Date.now();
-                if (!respuesta.ok) { console.error('JSONBin rechazó el guardado', respuesta.status); return false; }
-                return true;
-            } catch (error) {
-                console.error('Error al guardar en la nube:', error);
+                for (let intento = 1; intento <= 3; intento++) {
+                    try {
+                        if (WORKER_URL) {
+                            // Antes de escribir, traer lo que otros dispositivos ya guardaron (solicitudes nuevas)
+                            const previa = await fetch(`${WORKER_URL}/api/state`, { cache: 'no-store' });
+                            const pj = await previa.json();
+                            const rec = pj && pj.record;
+                            if (rec && rec.solicitudes) {
+                                solicitudesGlobales.recargas = unirPorId(rec.solicitudes.recargas, solicitudesGlobales.recargas);
+                                solicitudesGlobales.depositos = unirPorId(rec.solicitudes.depositos, solicitudesGlobales.depositos);
+                            }
+                        }
+                        const respuesta = await fetch(WORKER_URL ? `${WORKER_URL}/api/state` : `https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                            method: 'PUT',
+                            headers: WORKER_URL
+                                ? Object.assign({ 'Content-Type': 'application/json' }, CLAVE_ESCRITURA ? { 'X-Clave': CLAVE_ESCRITURA } : {})
+                                : { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
+                            body: JSON.stringify({ usuarios: listaUsuariosGlobales, solicitudes: solicitudesGlobales, config: tiendaConfig })
+                        });
+                        ultimaEscritura = Date.now();
+                        if (respuesta.ok) return true;
+                        console.error('La nube rechazó el guardado', respuesta.status);
+                    } catch (error) {
+                        console.error('Error al guardar en la nube:', error);
+                    }
+                    await new Promise(r => setTimeout(r, 800 * intento));
+                }
                 return false;
             } finally {
                 guardandoCloud = false;
@@ -3079,8 +3100,14 @@
                     estado: 'Pendiente'
                 });
                 localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-                await guardarEnCloud();
+                const miId = solicitudesGlobales.recargas[solicitudesGlobales.recargas.length - 1].id;
+                const guardado = await guardarEnCloud();
                 ocultarCarga();
+                if (!guardado) {
+                    solicitudesGlobales.recargas = solicitudesGlobales.recargas.filter(x => x.id !== miId);
+                    mostrarNotificacion("No se pudo enviar la recarga. Revisa tu internet e intenta de nuevo.");
+                    return;
+                }
 
                 ofertaSeleccionada = null;
                 playerIdInput.value = '';
