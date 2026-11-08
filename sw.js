@@ -13,11 +13,21 @@ self.addEventListener('activate', (e) => {
   self.clients.claim();
 });
 
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((lista) => {
+      if (lista.length) return lista[0].focus();
+      return self.clients.openWindow('./index.html');
+    })
+  );
+});
+
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== location.origin) return;
+  if (url.origin !== location.origin) return; // nube y APIs: siempre a la red
   e.respondWith(
     fetch(req)
       .then((res) => {
