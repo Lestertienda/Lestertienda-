@@ -6,7 +6,7 @@
     <title>Lester Tienda - Pro Gaming Store</title>
 
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0c0614">
+    <meta name="theme-color" content="#07090e">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -25,27 +25,27 @@
 
     <style>
         :root {
-            --bg-main: #0b1f16;
-            --bg-card: #132b1f;
-            --text-main: #fff8ec;
-            --text-muted: #b9d4c2;
-            --primary-blue: #d62839;
-            --accent-glow: #f5c542;
-            --border-color: #24513a;
-            --error-color: #ff6b6b;
-            --shine: rgba(245,197,66,.25);
+            --bg-main: #0c0614;
+            --bg-card: #1a0e2a;
+            --text-main: #fff3e0;
+            --text-muted: #c9a7e0;
+            --primary-blue: #ff7a00;
+            --accent-glow: #ff9d1c;
+            --border-color: #3d1f5c;
+            --error-color: #ff4d4d;
+            --shine: rgba(255,157,28,.25);
         }
 
         :root[data-theme="light"] {
-            --bg-main: #0b1f16;
-            --bg-card: #132b1f;
-            --text-main: #fff8ec;
-            --text-muted: #b9d4c2;
-            --primary-blue: #d62839;
-            --accent-glow: #f5c542;
-            --border-color: #24513a;
-            --error-color: #ff6b6b;
-            --shine: rgba(245,197,66,.25);
+            --bg-main: #0c0614;
+            --bg-card: #1a0e2a;
+            --text-main: #fff3e0;
+            --text-muted: #c9a7e0;
+            --primary-blue: #ff7a00;
+            --accent-glow: #ff9d1c;
+            --border-color: #3d1f5c;
+            --error-color: #ff4d4d;
+            --shine: rgba(255,157,28,.25);
         }
 
         * {
@@ -642,6 +642,8 @@
         body { background: radial-gradient(ellipse at top, #3a1152 0%, #160a22 55%, #05030a 100%) fixed !important; }
         .btn-main, .btn-invite { background: linear-gradient(135deg, #ff7a00 0%, #6b1fa8 100%) !important; box-shadow: 0 0 16px rgba(255,122,0,.4); }
         .page-title, .brand-logo-text, .nav-brand-title { text-shadow: 0 0 14px rgba(255,157,28,.55); }
+        .brand-logo-text::before, .nav-brand-title::before { content: "🎃 "; }
+        .brand-logo-text::after, .nav-brand-title::after { content: " 🦇"; }
         .diamond-card:hover, .game-card-character:hover { border-color: #ff9d1c !important; box-shadow: 0 6px 25px rgba(255,122,0,.35) !important; }
 
         #hw-fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 40; }
@@ -4541,20 +4543,11 @@
     </script>
 <script>
     (function () {
-        const HW = {
-            calabaza: '<svg viewBox="0 0 64 64"><rect x="29" y="4" width="6" height="12" rx="2" fill="#4d7c0f"/><ellipse cx="20" cy="36" rx="14" ry="20" fill="#ff8a1c"/><ellipse cx="44" cy="36" rx="14" ry="20" fill="#ff8a1c"/><ellipse cx="32" cy="36" rx="16" ry="22" fill="#ff9d1c"/><path d="M16 28 L26 28 L21 38 Z" fill="#2a0a00"/><path d="M38 28 L48 28 L43 38 Z" fill="#2a0a00"/><path d="M18 44 Q32 56 46 44 L40 50 L32 46 L24 50 Z" fill="#2a0a00"/></svg>',
-            murcielago: '<svg viewBox="0 0 64 64"><path d="M32 22 C26 14 18 12 4 16 C10 20 12 26 8 32 C16 30 20 34 22 40 C26 36 29 36 32 40 C35 36 38 36 42 40 C44 34 48 30 56 32 C52 26 54 20 60 16 C46 12 38 14 32 22 Z" fill="#1a0e2a" stroke="#ff9d1c" stroke-width="2"/><circle cx="29" cy="27" r="1.6" fill="#ff9d1c"/><circle cx="35" cy="27" r="1.6" fill="#ff9d1c"/></svg>',
-            fantasma: '<svg viewBox="0 0 64 64"><path d="M12 58 V28 C12 14 21 6 32 6 C43 6 52 14 52 28 V58 L46 53 L40 58 L32 53 L24 58 L18 53 L12 58 Z" fill="#f5f0ff"/><ellipse cx="24" cy="28" rx="4" ry="5" fill="#1a0e2a"/><ellipse cx="40" cy="28" rx="4" ry="5" fill="#1a0e2a"/><ellipse cx="32" cy="42" rx="5" ry="6" fill="#1a0e2a"/></svg>',
-            arana: '<svg viewBox="0 0 64 64"><g stroke="#ff9d1c" stroke-width="2.5" stroke-linecap="round" fill="none"><path d="M26 28 L10 20"/><path d="M26 34 L8 34"/><path d="M26 40 L10 48"/><path d="M26 46 L18 56"/><path d="M38 28 L54 20"/><path d="M38 34 L56 34"/><path d="M38 40 L54 48"/><path d="M38 46 L46 56"/></g><ellipse cx="32" cy="40" rx="11" ry="13" fill="#2b1640" stroke="#ff9d1c" stroke-width="1.5"/><circle cx="32" cy="22" r="8" fill="#2b1640" stroke="#ff9d1c" stroke-width="1.5"/><circle cx="29" cy="21" r="1.6" fill="#ff9d1c"/><circle cx="35" cy="21" r="1.6" fill="#ff9d1c"/></svg>',
-            calavera: '<svg viewBox="0 0 64 64"><path d="M32 6 C18 6 10 16 10 28 C10 36 14 40 18 42 V52 H46 V42 C50 40 54 36 54 28 C54 16 46 6 32 6 Z" fill="#f5f0ff"/><ellipse cx="23" cy="30" rx="6" ry="7" fill="#1a0e2a"/><ellipse cx="41" cy="30" rx="6" ry="7" fill="#1a0e2a"/><path d="M30 40 L32 37 L34 40 Z" fill="#1a0e2a"/><path d="M26 46 V52 M32 46 V52 M38 46 V52" stroke="#1a0e2a" stroke-width="2"/></svg>',
-            chispa: '<svg viewBox="0 0 64 64"><path d="M32 4 L38 26 L60 32 L38 38 L32 60 L26 38 L4 32 L26 26 Z" fill="#ffd166"/></svg>'
-        };
-        const hwIcono = (nombre) => '<span class="hw-ico">' + HW[nombre] + '</span>';
         const reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const capa = document.createElement('div');
         capa.id = 'hw-fx';
         document.body.appendChild(capa);
-        ['<div class="hw-fog"></div>', '<div class="hw-web hw-web-l"></div>', '<div class="hw-web hw-web-r"></div>', '<div class="hw-spider"></div>', '<div id="hw-flash"></div>']
+        ['<div class="hw-fog"></div>', '<div class="hw-web hw-web-l"></div>', '<div class="hw-web hw-web-r"></div>', '<div class="hw-spider">🕷️</div>', '<div id="hw-flash"></div>']
             .forEach(h => document.body.insertAdjacentHTML('beforeend', h));
 
         const ICONOS = ['murcielago', 'fantasma', 'calabaza', 'arana', 'calavera', 'murcielago', 'fantasma', 'murcielago'];
