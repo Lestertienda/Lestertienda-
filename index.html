@@ -1812,6 +1812,36 @@
             }
         }
 
+        /* Trae los datos más recientes de la nube antes de cambiar algo (evita pisar cambios de otros dispositivos). */
+        async function traerEstadoFresco() {
+            try {
+                const r = await fetch(WORKER_URL ? `${WORKER_URL}/api/state` : `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: WORKER_URL ? {} : { 'X-Master-Key': MASTER_KEY }, cache: 'no-store' });
+                const j = await r.json();
+                const rec = j && j.record;
+                if (!rec) return false;
+                if (Array.isArray(rec.usuarios)) {
+                    listaUsuariosGlobales = rec.usuarios.map(u => {
+                        if (u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
+                        if (u.balanceCUP === undefined) u.balanceCUP = 0;
+                        return u;
+                    });
+                    localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                }
+                if (rec.solicitudes) {
+                    solicitudesGlobales = rec.solicitudes;
+                    if (!solicitudesGlobales.recargas) solicitudesGlobales.recargas = [];
+                    if (!solicitudesGlobales.depositos) solicitudesGlobales.depositos = [];
+                    firmaSolicitudes = JSON.stringify(solicitudesGlobales);
+                    localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                }
+                refrescarUsuarioActual();
+                return true;
+            } catch (error) {
+                console.error('No se pudo traer el estado fresco:', error);
+                return false;
+            }
+        }
+
         async function sincronizar(silencioso) {
             // No leer de la nube mientras se guarda o justo después de guardar (evita pisar cambios locales)
             if (guardandoCloud || (Date.now() - ultimaEscritura) < 10000) return;
@@ -1897,7 +1927,7 @@
                     img.onerror = () => reject(new Error('Imagen no válida'));
                     img.onload = () => {
                         let dim = maxDim || 1600, calidad = 0.92, mejor = '';
-                        const tope = maxChars || 300000;
+                        const tope = maxChars || 150000;
                         // PNG/WebP/GIF pueden tener fondo transparente: se guardan como PNG y sin fondo blanco
                         const esTransparente = /png|webp|gif/i.test(file.type || '');
                         for (let intento = 0; intento < 12; intento++) {
@@ -2653,7 +2683,7 @@
             if (!f) return;
             mostrarCarga("Subiendo foto...");
             try {
-                opFotoPendiente = await comprimirImagen(f, 1600, 300000);
+                opFotoPendiente = await comprimirImagen(f, 1600, 150000);
                 document.getElementById('op-foto-prev').innerHTML = '<img class="op-feed-photo" src="' + opFotoPendiente + '" alt="">';
             } catch (e) {
                 mostrarNotificacion("No se pudo subir la foto");
@@ -2817,6 +2847,7 @@
 
             mostrarCarga("Enviando depósito...");
             setTimeout(async () => {
+                await traerEstadoFresco();
                 const idDep = Date.now();
                 solicitudesGlobales.depositos.push({
                     id: idDep, correo: usuarioActual.correo.toLowerCase(), usuario: usuarioActual.nombre,
@@ -2859,7 +2890,7 @@
             if (!file) return;
             mostrarCarga("Preparando comprobante...");
             try {
-                comprobanteDepositoData = await comprimirImagen(file, 1600, 300000);
+                comprobanteDepositoData = await comprimirImagen(file, 1600, 150000);
                 const prev = document.getElementById('comprobante-deposito-prev');
                 prev.innerHTML = '<img src="' + comprobanteDepositoData + '" alt="Comprobante" style="width:100%; max-height:200px; object-fit:contain; border-radius:12px; border:1px solid var(--border-color); background:var(--bg-main);">';
                 prev.style.display = 'block';
@@ -3951,7 +3982,7 @@
             if (!file) return;
             mostrarCarga("Optimizando imagen...");
             try {
-                const data = await comprimirImagen(file, 1200, 300000);
+                const data = await comprimirImagen(file, 1200, 150000);
                 ocultarCarga();
                 const tipo = window.tipoBannerSeleccionado;
                 await guardarConfig(() => {
@@ -4161,7 +4192,7 @@
             if (!file) return;
             mostrarCarga("Optimizando imagen...");
             try {
-                const data = await comprimirImagen(file, 1600, 300000);
+                const data = await comprimirImagen(file, 1600, 150000);
                 ocultarCarga();
                 const lugar = window.lugarInyeccion || 'inicio-top';
                 const nombre = window.nombreInyeccion || ('Foto ' + ((tiendaConfig.injectedElements || []).length + 1));
@@ -4405,14 +4436,21 @@
         }
 
         async function aprobarDeposito(index) {
-            let dep = solicitudesGlobales.depositos[index];
-            if (!dep) return;
+            const idDep = (solicitudesGlobales.depositos[index] || {}).id;
+            if (idDep === undefined) return;
+            mostrarCarga("Aprobando depósito...");
+            await traerEstadoFresco();
+            ocultarCarga();
+            const idx = solicitudesGlobales.depositos.findIndex(d => d.id === idDep);
+            if (idx < 0) { mostrarNotificacion("Esa solicitud ya no existe."); return; }
+            let dep = solicitudesGlobales.depositos[idx];
             if (dep.estado === 'Aprobado') { mostrarNotificacion("Este depósito ya fue aprobado."); return; }
-            dep.estado = 'Aprobado';
-            delete dep.comprobante; // libera espacio en la nube (límite 100 KB)
             let monto = parseFloat(dep.monto) || 0;
 
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase().trim() === dep.correo.toLowerCase().trim());
+            if (!userTarget) { mostrarNotificacion("No encontré al usuario de este depósito. No se acreditó nada."); return; }
+            dep.estado = 'Aprobado';
+            delete dep.comprobante; // libera espacio en la nube
             if (userTarget) {
                 if (userTarget.balanceCUP === undefined) userTarget.balanceCUP = 0;
                 if (dep.moneda === 'usdt') {
