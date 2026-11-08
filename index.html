@@ -229,6 +229,20 @@
 
         .inject-slot:empty { display: none; }
 
+
+        /* ===== Pedidos ===== */
+        .pd-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 1rem; }
+        .pd-sub { font-size: 0.72rem; color: var(--text-muted); }
+        .pd-switch { display: inline-flex; gap: 3px; padding: 3px; border-radius: 999px; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: 0 4px 14px rgba(0,0,0,0.12); flex-shrink: 0; }
+        .pd-seg { display: inline-flex; align-items: center; gap: 5px; border: none; background: transparent; color: var(--text-muted); padding: 7px 12px; border-radius: 999px; font-weight: 800; font-size: 0.74rem; cursor: pointer; transition: background .3s, color .3s, box-shadow .3s; }
+        .pd-seg svg { width: 14px; height: 14px; fill: currentColor; }
+        .pd-seg.activo { background: linear-gradient(135deg, #0066ff, #00c2ff); color: #fff; box-shadow: 0 4px 12px rgba(0,102,255,0.35); }
+        .pd-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 0.9rem; }
+        .pd-chip { border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-muted); padding: 6px 12px; border-radius: 999px; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; transition: all .25s; }
+        .pd-chip.activo { background: var(--accent-glow); border-color: var(--accent-glow); color: #04121a; box-shadow: 0 4px 12px rgba(0,240,255,0.25); }
+        .pd-vacio { color: var(--text-muted); font-size: 0.8rem; text-align: center; margin-top: 1.5rem; }
+        .pd-seg.adm-pop, .pd-chip.adm-pop { animation: admPop .45s ease; }
+        .pd-seg:active, .pd-chip:active { transform: scale(.92); }
         .adm-btn { transition: transform .15s ease, box-shadow .2s ease, filter .2s ease; }
         .adm-btn:hover { filter: brightness(1.12); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.25); }
         .adm-btn:active { transform: scale(.88); }
@@ -1020,12 +1034,15 @@
             <!-- SECCIÓN ÓRDENES -->
             <div id="seccion-ordenes" class="vista-sec" style="display: none;">
                 <div class="inject-slot" data-slot="ordenes"></div>
-                <h2 class="page-title">Tus Órdenes y Transacciones</h2>
-                <p style="color:var(--text-muted); font-size:0.72rem; margin-bottom: 1rem;">Historial privado de tus solicitudes y depósitos en la plataforma.</p>
-
-                <div style="display: flex; gap: 8px; margin-bottom: 1rem; background: var(--bg-card); padding: 4px; border-radius: 12px; border: 1px solid var(--border-color);">
-                    <button id="tab-btn-compras" style="flex: 1; padding: 0.6rem; border-radius: 10px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: var(--primary-blue); color: #fff; transition: all 0.3s;" onclick="cambiarTabOrdenes('compras')">Compras (Recargas)</button>
-                    <button id="tab-btn-depositos" style="flex: 1; padding: 0.6rem; border-radius: 10px; border: none; font-weight: 900; font-size: 0.8rem; cursor: pointer; background: transparent; color: var(--text-muted); transition: all 0.3s;" onclick="cambiarTabOrdenes('depositos')">Depósitos</button>
+                <div class="pd-head">
+                    <div>
+                        <h2 class="page-title" style="margin-bottom:0.15rem;">Tus Pedidos</h2>
+                        <p class="pd-sub">Historial privado de tus solicitudes.</p>
+                    </div>
+                    <div class="pd-switch">
+                        <button id="tab-btn-compras" class="pd-seg adm-btn activo" onclick="cambiarTabOrdenes('compras')"><svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>Recargas</button>
+                        <button id="tab-btn-depositos" class="pd-seg adm-btn" onclick="cambiarTabOrdenes('depositos')"><svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Depósito</button>
+                    </div>
                 </div>
 
                 <div id="panel-ordenes-compras">
@@ -1038,6 +1055,7 @@
                             <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                         </div>
                     </div>
+                    <div class="pd-chips" id="chips-compras"></div>
                     <div id="lista-compras-container"></div>
                 </div>
 
@@ -1048,14 +1066,15 @@
                             <h3 id="stat-total-depositado-saldo" style="font-size: 1.2rem; font-weight: 900; color: #10b981;">0</h3>
                         </div>
                     </div>
-                    <div id="lista-depositos-container"></div>
+                    <div class="pd-chips" id="chips-depositos"></div>
+                <div id="lista-depositos-container"></div>
                 </div>
 
             </div>
 
             <!-- COMPROBANTE DE RECARGA -->
             <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
-                <div class="back-row"><button class="back-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Órdenes</button></div>
+                <div class="back-row"><button class="back-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Pedidos</button></div>
                 <div class="shine-card" id="comp-card" style="background: var(--bg-card); border: 1.5px solid #10b981; border-radius: 20px; padding: 1.3rem; box-shadow: 0 0 30px rgba(16,185,129,.18);">
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
                         <div style="display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: .9rem;"><img src="icon-192.png" alt="" style="width: 30px; height: 30px; border-radius: 8px;"><span><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></span></div>
@@ -1548,7 +1567,7 @@
             </a>
             <a class="nav-item" id="nav-btn-ordenes" onclick="cambiarSeccion('ordenes', this)">
                 <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-                <span>Órdenes</span>
+                <span>Pedidos</span>
             </a>
             <a class="nav-item" id="nav-btn-referidos" onclick="cambiarSeccion('referidos', this)">
                 <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
@@ -1714,7 +1733,7 @@
             ['inicio-bottom', 'Inicio (abajo)'],
             ['juegos', 'Selector de juegos'],
             ['freefire', 'Recarga Free Fire'],
-            ['ordenes', 'Órdenes'],
+            ['ordenes', 'Pedidos'],
             ['referidos', 'Referidos'],
             ['wallet', 'Wallet'],
             ['perfil', 'Perfil']
@@ -3201,14 +3220,29 @@
             }, 500);
         }
 
+        let filtroCompras = 'todos', filtroDepositos = 'todos';
+        const FILTROS_PEDIDOS = [['todos', 'Todos'], ['completado', 'Completado'], ['pendiente', 'Pendiente'], ['fallido', 'Fallidos']];
+        function grupoEstado(e) {
+            if (e === 'Completado' || e === 'Aprobado' || e === 'Aprobada') return 'completado';
+            if (e === 'Cancelado') return 'fallido';
+            return 'pendiente';
+        }
+        function filtrarOrdenes(tipo, k) {
+            if (tipo === 'compras') filtroCompras = k; else filtroDepositos = k;
+            renderizarOrdenes();
+        }
+        function pintarChips(tipo, activo) {
+            const cont = document.getElementById('chips-' + tipo);
+            if (!cont) return;
+            cont.innerHTML = FILTROS_PEDIDOS.map(([k, t]) => `<button class="pd-chip adm-btn ${activo === k ? 'activo' : ''}" onclick="filtrarOrdenes('${tipo}','${k}')">${t}</button>`).join('');
+        }
+
         function cambiarTabOrdenes(tipo) {
             const btnCompras = document.getElementById('tab-btn-compras');
             const btnDepositos = document.getElementById('tab-btn-depositos');
             const esCompras = tipo === 'compras';
-            btnCompras.style.background = esCompras ? 'var(--primary-blue)' : 'transparent';
-            btnCompras.style.color = esCompras ? '#fff' : 'var(--text-muted)';
-            btnDepositos.style.background = esCompras ? 'transparent' : 'var(--primary-blue)';
-            btnDepositos.style.color = esCompras ? 'var(--text-muted)' : '#fff';
+            btnCompras.classList.toggle('activo', esCompras);
+            btnDepositos.classList.toggle('activo', !esCompras);
             document.getElementById('panel-ordenes-compras').style.display = esCompras ? 'block' : 'none';
             document.getElementById('panel-ordenes-depositos').style.display = esCompras ? 'none' : 'block';
         }
@@ -3224,16 +3258,20 @@
             let misDepositos = solicitudesGlobales.depositos.filter(d => (d.correo || '').toLowerCase() === correo);
 
             document.getElementById('stat-total-recargas-realizadas').innerText = misRecargas.length;
+            pintarChips('compras', filtroCompras);
+            pintarChips('depositos', filtroDepositos);
+            const recargasVista = filtroCompras === 'todos' ? misRecargas : misRecargas.filter(x => grupoEstado(x.r.estado) === filtroCompras);
+            const depositosVista = filtroDepositos === 'todos' ? misDepositos : misDepositos.filter(x => grupoEstado(x.estado) === filtroDepositos);
 
 
             const sd = document.getElementById('stat-total-depositado-saldo');
             if (sd) sd.innerText = misDepositos.filter(d => d.estado === 'Aprobado' && d.moneda !== 'usdt').reduce((acc, curr) => acc + (parseFloat(curr.monto) || 0), 0);
 
             let htmlCompras = "";
-            if (misRecargas.length === 0) {
-                htmlCompras = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:1.5rem;'>No tienes compras de recargas registradas.</p>";
+            if (recargasVista.length === 0) {
+                htmlCompras = misRecargas.length === 0 ? "<p class='pd-vacio'>No tienes recargas registradas.</p>" : "<p class='pd-vacio'>No hay recargas en este filtro.</p>";
             } else {
-                misRecargas.slice().reverse().forEach(({ r: o, i: realIndex }) => {
+                recargasVista.slice().reverse().forEach(({ r: o, i: realIndex }) => {
                     let claseEstado = "status-pendiente";
                     if (o.estado === 'Completado' || o.estado === 'Aprobada') claseEstado = "status-completado";
                     if (o.estado === 'Cancelado') claseEstado = "status-cancelado";
@@ -3254,10 +3292,10 @@
             containerCompras.innerHTML = htmlCompras;
 
             let htmlDepositos = "";
-            if (misDepositos.length === 0) {
-                htmlDepositos = "<p style='color:var(--text-muted); font-size:0.8rem; text-align:center; margin-top:1.5rem;'>No tienes solicitudes de depósito registradas.</p>";
+            if (depositosVista.length === 0) {
+                htmlDepositos = misDepositos.length === 0 ? "<p class='pd-vacio'>No tienes depósitos registrados.</p>" : "<p class='pd-vacio'>No hay depósitos en este filtro.</p>";
             } else {
-                misDepositos.slice().reverse().forEach(d => {
+                depositosVista.slice().reverse().forEach(d => {
                     const idx = solicitudesGlobales.depositos.indexOf(d);
                     const claseEstado = d.estado === 'Aprobado' ? 'status-completado' : (d.estado === 'Cancelado' ? 'status-cancelado' : 'status-pendiente');
                     const mon = d.moneda === 'usdt' ? 'USDT' : 'saldo';
