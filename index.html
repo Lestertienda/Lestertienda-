@@ -3779,7 +3779,7 @@
                     <button class="btn-main" onclick="guardarWalletLogica()">Guardar Control Wallet</button>`;
 
             } else if (accion === 'catalogo_precios') {
-                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB de 100 KB.</p>
+                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB (base nueva, sin límite de 100 KB).</p>
                     <button class="btn-main" style="margin-top:0; margin-bottom:10px; background:#22c55e;" onclick="liberarEspacioCEO()">Liberar espacio en la nube</button>
                     <div class="ceo-action-form">
                         <h4>Cambiar todos los precios a la vez</h4>
@@ -3817,8 +3817,8 @@
                 let html = `
                     <div class="ceo-action-form">
                         <h4>Poner foto o texto donde tú quieras</h4>
-                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB de 100 KB.</p>
-                        <label>Nombre de la foto (para reconocerla en la lista)</label>
+                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB (base nueva, sin límite de 100 KB).</p>
+<label>Nombre de la foto (para reconocerla en la lista)</label>
                         <input type="text" id="ceo-inject-nombre" maxlength="60" placeholder="Ej. Promo navidad">
                         <label>¿En qué página / lugar?</label>
                         <select id="ceo-inject-lugar">${optsLugar}</select>
