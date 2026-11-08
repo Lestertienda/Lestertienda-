@@ -1,6 +1,437 @@
 <!DOCTYPE html>
 <html lang="es">
+<head<!DOCTYPE html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DIAMONDS LEGION</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0c10">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Diamonds Legion">
+
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fuentes Orbitron e Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-main: #0b0c10;
+            --bg-card: #1f2833;
+            --text-main: #c5c6c7;
+            --text-muted: #8892b0;
+            --primary-blue: #45a29e;
+            --accent-glow: #66fcf1;
+            --border-color: #354656;
+            --error-color: #ff5555;
+            --success-color: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        html, body {
+            min-height: 100vh;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            animation: fadeInPage 0.4s ease forwards;
+        }
+
+        @keyframes fadeInPage {
+            0% { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* OVERLAY CARGANDO */
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 12, 16, 0.92); backdrop-filter: blur(5px);
+            display: none; justify-content: center; align-items: center; z-index: 99999;
+            flex-direction: column; gap: 12px;
+        }
+        .spinner {
+            width: 44px; height: 44px; border: 3px solid rgba(102, 252, 241, 0.2);
+            border-top: 3px solid var(--accent-glow); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .loading-text { font-size: 0.85rem; font-weight: 700; color: var(--accent-glow); letter-spacing: 0.5px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* NOTIFICACIÓN TOAST */
+        #notification-toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200px);
+            background: var(--bg-card); color: var(--accent-glow); border: 1px solid var(--border-color);
+            padding: 0.85rem 1.4rem; border-radius: 8px; font-weight: 700; font-size: 0.82rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999999; width: 90%; max-width: 380px; text-align: center;
+        }
+        #notification-toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* SECCIÓN AUTENTICACIÓN */
+        .auth-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .auth-container {
+            max-width: 420px; width: 100%; background: var(--bg-card);
+            border: 1px solid var(--border-color); border-radius: 10px; padding: 2.2rem 1.6rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .brand-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 12px rgba(102, 252, 241, 0.35);
+        }
+        .brand-header h1 span {
+            color: var(--accent-glow);
+        }
+
+        .auth-tabs {
+            display: flex; gap: 10px; margin-bottom: 22px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 8px;
+        }
+        .auth-tab {
+            flex: 1; text-align: center; padding: 10px; font-weight: 700;
+            font-size: 0.82rem; cursor: pointer; border-radius: 4px; color: var(--text-muted); 
+            background: transparent; border: 1px solid transparent; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;
+        }
+        .auth-tab.active { color: var(--accent-glow); background: rgba(102, 252, 241, 0.05); border-color: var(--accent-glow); }
+        
+        .form-group { margin-bottom: 1.1rem; position: relative; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .input-icon-wrapper { position: relative; display: flex; align-items: center; }
+        .input-icon-wrapper i.icon-left { position: absolute; left: 14px; color: var(--primary-blue); font-size: 14px; pointer-events: none; }
+        
+        .form-control {
+            width: 100%; background: #0b0c10; border: 1px solid var(--border-color);
+            padding: 0.75rem 2.6rem 0.75rem 2.6rem; border-radius: 4px; color: #ffffff;
+            font-size: 0.88rem; outline: none; transition: border-color 0.2s;
+        }
+        .form-control.no-left-icon { padding-left: 1rem; }
+        .form-control:focus { border-color: var(--accent-glow); }
+        .form-control.input-error { border-color: var(--error-color) !important; background: rgba(255, 85, 85, 0.03); }
+        .error-feedback-text { color: var(--error-color); font-size: 0.7rem; font-weight: 700; margin-top: 5px; display: none; }
+
+        .toggle-password {
+            position: absolute; right: 12px; background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; height: 100%; width: 30px;
+        }
+        .toggle-password i { color: var(--text-muted); font-size: 14px; }
+        .toggle-password:hover i { color: var(--accent-glow); }
+
+        .btn-main {
+            width: 100%; background: var(--primary-blue); color: #0b0c10; border: none;
+            padding: 0.85rem; border-radius: 4px; font-weight: 800; font-size: 0.88rem;
+            text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: all 0.2s; margin-top: 0.8rem;
+        }
+        .btn-main:hover { background: var(--accent-glow); box-shadow: 0 0 15px rgba(102, 252, 241, 0.4); }
+
+        /* NAVEGACIÓN SUPERIOR (PANEL INTERNO) */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 1.2rem; background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
+        }
+        .nav-brand-title { 
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem; font-weight: 900; color: var(--accent-glow); letter-spacing: 1.5px; 
+        }
+        .nav-top-icon-btn {
+            background: #0b0c10; border: 1px solid var(--border-color); width: 36px; height: 36px;
+            border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+            color: var(--error-color); transition: 0.3s;
+        }
+        .nav-top-icon-btn:hover { background: var(--error-color); color: #fff; }
+
+        /* CONTENEDOR DE VISTAS */
+        .container { max-width: 500px; width: 100%; margin: 0 auto; padding: 1.2rem; flex: 1; display: flex; flex-direction: column; padding-bottom: 85px; }
+        .vista-sec { animation: fadeInPage 0.4s ease forwards; flex: 1; display: flex; flex-direction: column; }
+
+        /* PANELS DE CONTENIDO */
+        .card-panel {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 1.4rem; margin-bottom: 1rem;
+        }
+        .card-panel h3 { font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+        .card-panel p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* BARRA DE NAVEGACIÓN INFERIOR */
+        .app-bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card);
+            border-top: 1px solid var(--border-color); display: flex; justify-content: space-around;
+            padding: 12px 0; z-index: 1000;
+        }
+        .nav-item-btn {
+            background: transparent; border: none; color: var(--text-muted);
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+            cursor: pointer; transition: color 0.3s ease; flex: 1;
+        }
+        .nav-item-btn i { font-size: 18px; }
+        .nav-item-btn.active, .nav-item-btn:hover { color: var(--accent-glow); }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- OVERLAY DE CARGA -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loading-text-msg">Procesando...</div>
+    </div>
+
+    <!-- NOTIFICACIONES TOAST -->
+    <div id="notification-toast">Mensaje del Sistema</div>
+
+    <!-- PANTALLA DE AUTENTICACIÓN (REGISTRO & LOGIN) -->
+    <div class="auth-wrapper" id="auth-screen">
+        <div class="auth-container">
+            <div class="brand-header">
+                <h1>DIAMONDS <span>LEGION</span></h1>
+            </div>
+
+            <!-- Botones Pestaña -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-btn-register" onclick="switchAuthTab('register')">Registrarse</button>
+                <button class="auth-tab" id="tab-btn-login" onclick="switchAuthTab('login')">Iniciar Sesión</button>
+            </div>
+
+            <!-- FORMULARIO DE REGISTRO -->
+            <form id="register-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Nombre de Usuario</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-user icon-left"></i>
+                        <input type="text" id="reg-username" class="form-control" placeholder="Introduce tu usuario" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-envelope icon-left"></i>
+                        <input type="text" id="reg-email" class="form-control" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="error-feedback-text" id="error-email">Introduce un correo válido (ej: usuario@mail.com).</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock icon-left"></i>
+                        <input type="password" id="reg-pass" class="form-control" placeholder="Letra, número y símbolo" required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-pass', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-feedback-text" id="error-pass">La clave requiere al menos 1 letra, 1 número y 1 símbolo.</div>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock icon-left"></i>
+                        <input type="password" id="reg-pass-confirm" class="form-control" placeholder="Repite tu contraseña" required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-pass-confirm', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-feedback-text" id="error-confirm">Las contraseñas no coinciden.</div>
+                </div>
+
+                <button type="submit" class="btn-main">Registrarse e Iniciar</button>
+            </form>
+
+            <!-- FORMULARIO DE INICIO DE SESIÓN -->
+            <form id="login-form" class="hidden" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Usuario o Correo Electrónico</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-user icon-left"></i>
+                        <input type="text" id="login-user" class="form-control" placeholder="Introduce tu usuario o correo" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock icon-left"></i>
+                        <input type="password" id="login-pass" class="form-control" placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-pass', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-main">Iniciar Sesión</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PANEL PRINCIPAL (DASHBOARD COMPLETO) -->
+    <div id="main-app-screen" class="hidden" style="flex:1; display:flex; flex-direction:column;">
+        <nav class="navbar">
+            <div class="nav-brand-title">DIAMONDS LEGION</div>
+            <button class="nav-top-icon-btn" onclick="logoutSession()" title="Cerrar Sesión">
+                <i class="fa-solid fa-power-off"></i>
+            </button>
+        </nav>
+
+        <div class="container">
+            <!-- VISTA DE INICIO -->
+            <div id="section-home" class="vista-sec">
+                <div class="card-panel">
+                    <h3 id="welcome-title">¡Bienvenido!</h3>
+                    <p>Has iniciado sesión con éxito en la plataforma de Diamonds Legion. El sistema se encuentra totalmente operativo.</p>
+                </div>
+                
+                <div class="card-panel">
+                    <h3>Estado de Conexión</h3>
+                    <p style="color: var(--accent-glow); font-weight: bold;">● Servidor Local Activo (Termux)</p>
+                </div>
+            </div>
+
+            <!-- VISTA DE HISTORIAL -->
+            <div id="section-history" class="vista-sec hidden">
+                <div class="card-panel">
+                    <h3>Historial de Actividad</h3>
+                    <p>Muestra el registro de accesos y operaciones realizadas en la cuenta.</p>
+                </div>
+                <div class="card-panel">
+                    <p style="text-align:center; color: var(--text-muted); font-style: italic; padding: 1rem 0;">No se registran transacciones recientes.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA INFERIOR (FOOTER CON ICONOS) -->
+        <nav class="app-bottom-nav">
+            <button class="nav-item-btn active" id="btn-nav-home" onclick="switchAppTab('home')">
+                <i class="fa-solid fa-house"></i>
+                <span>Inicio</span>
+            </button>
+            <button class="nav-item-btn" id="btn-nav-history" onclick="switchAppTab('history')">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>Historial</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- PROGRAMACIÓN Y LÓGICA DE LA PÁGINA -->
+    <script>
+        // Funciones de Notificación Toast y Animación de Carga
+        function showToast(msg) {
+            const toast = document.getElementById('notification-toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        function showLoading(msg = "Cargando...") {
+            document.getElementById('loading-text-msg').innerText = msg;
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        // Alternar entre Registrarse e Iniciar Sesión
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const regForm = document.getElementById('register-form');
+            const btnLogin = document.getElementById('tab-btn-login');
+            const btnReg = document.getElementById('tab-btn-register');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                btnLogin.classList.add('active');
+                btnReg.classList.remove('active');
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                btnReg.classList.add('active');
+                btnLogin.classList.remove('active');
+            }
+        }
+
+        // Mostrar / Ocultar Contraseña con Ojito
+        function togglePasswordVisibility(inputId, btnElement) {
+            const input = document.getElementById(inputId);
+            const icon = btnElement.querySelector('i');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        // Lógica de Registro con Validaciones
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('reg-username').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const confirmPass = document.getElementById('reg-pass-confirm').value;
+
+            let isValid = true;
+
+            // 1. Validar correo (si ponen solo "l" o formato sin arroba ni dominio da error)
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const emailInput = document.getElementById('reg-email');
+            const errorEmail = document.getElementById('error-email');
+            
+            if (!emailRegex.test(email)) {
+                emailInput.classList.add('input-error');
+                errorEmail.style.display = 'block';
+                isValid = false;
+            } else {
+                emailInput.classList.remove('input-error');
+                errorEmail.style.display = 'none';
+            }
+
+            // 2. Validar contraseña (letra, número y símbolo)
+            const passInput = document.getElementById('reg-pass');
+            const errorPass = document.getElementById('error-pass');
+            const hasLetter = /[a-zA-Z]/.test(pass);
+            const hasNumber = /[0-9]/.test(pass);
+            const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pass);
+
+            if (!hasLet
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lester Tienda - Pro Gaming Store</title>
@@ -33,6 +464,7 @@
             --accent-glow: #00f0ff;
             --border-color: #1a233a;
             --error-color: #ff3b30;
+            --shine: rgba(0,240,255,.22);
         }
 
         :root[data-theme="light"] {
@@ -40,10 +472,11 @@
             --bg-card: #ffffff;
             --text-main: #0d1322;
             --text-muted: #556987;
-            --primary-blue: #0066ff;
-            --accent-glow: #0066ff;
+            --primary-blue: #4da3ff;
+            --accent-glow: #0ea5e9;
             --border-color: #cbd5e1;
             --error-color: #dc2626;
+            --shine: rgba(77,163,255,.16);
         }
 
         * {
@@ -559,7 +992,7 @@
         .sub-card, .order-card-pro, .wallet-card, .diamond-card, .live-history-card, .invite-banner, .game-hero-compact, .game-card-character, .menu-list, .menu-row, .profile-header-card, .op-card-h, .op-add-h, .invite-banner, .wallet-card, .shine-card, .comp-shine { position: relative; overflow: hidden; }
         .sub-card::before, .order-card-pro::before, .wallet-card::before, .diamond-card::before, .live-history-card::before, .invite-banner::before, .game-hero-compact::before, .game-card-character::before, .menu-list::before, .menu-row::before, .profile-header-card::before, .op-card-h::before, .op-add-h::before, .shine-card::before, .comp-shine::before {
             content: ''; position: absolute; inset: 0; border-radius: inherit;
-            background: linear-gradient(115deg, transparent 38%, rgba(0,240,255,.22) 50%, transparent 62%);
+            background: linear-gradient(115deg, transparent 38%, var(--shine) 50%, transparent 62%);
             background-size: 300% 300%; background-position: 100% 100%;
             animation: cornerShine 3.6s ease-in-out infinite; pointer-events: none; z-index: 0;
         }
@@ -584,10 +1017,14 @@
         .op-feed-photo { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin-top: .6rem; }
         .stars-row { color: #facc15; font-size: .85rem; letter-spacing: 2px; text-shadow: 0 0 8px rgba(250,204,21,.6); }
         .op-cta { width: 100%; background: var(--bg-card); border: 1.5px dashed var(--accent-glow); color: var(--accent-glow); padding: .8rem; border-radius: 14px; font-weight: 800; font-size: .82rem; cursor: pointer; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .op-marquee { overflow: hidden; width: 100%; margin: 0 -1.1rem 1rem; padding: .3rem 0 .4rem; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-        .op-track { display: flex; gap: 12px; width: max-content; padding: 0 1.1rem; animation: marqueeX 40s linear infinite; }
-        .op-marquee:hover .op-track { animation-play-state: paused; }
-        @keyframes marqueeX { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .op-marquee { overflow-x: auto; width: 100%; margin: 0 -1.1rem 1rem; padding: .3rem 0 .4rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x; }
+        .op-marquee::-webkit-scrollbar { display: none; }
+        .ver-mas { background: rgba(0,240,255,.08); border: 1px solid var(--accent-glow); color: var(--accent-glow); padding: .35rem .85rem; border-radius: 20px; font-weight: 800; font-size: .72rem; cursor: pointer; }
+        .ver-mas:active { transform: scale(.96); }
+        .op-box-opinar { background: var(--bg-card); border: 1.5px dashed var(--accent-glow); border-radius: 16px; padding: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 1rem; }
+        .op-box-opinar b { font-size: .88rem; color: var(--text-main); }
+        .op-box-opinar p { font-size: .7rem; color: var(--text-muted); margin-top: 2px; }
+        .op-track { display: flex; gap: 12px; width: max-content; padding: 0 1.1rem; }
         .op-card-h { width: 250px; flex-shrink: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: .8rem .9rem; min-height: 150px; display: flex; flex-direction: column; gap: 6px; }
         .op-card-h .op-feed-photo { max-height: 90px; margin-top: 4px; }
         .op-card-h .op-feed-txt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -836,8 +1273,11 @@
                     <div id="lista-historial-vivo"></div>
                 </div>
 
-                <div class="section-title">OPINIONES DE NUESTROS CLIENTES</div>
-                <div class="op-marquee"><div class="op-track" id="lista-opiniones-inicio"></div></div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: 1.1rem 0 .4rem;">
+                    <div class="section-title" style="margin: 0;">OPINIONES DE NUESTROS CLIENTES</div>
+                    <button class="ver-mas" onclick="abrirTodasOpiniones()">Ver más</button>
+                </div>
+                <div class="op-marquee" id="op-marquee"><div class="op-track" id="lista-opiniones-inicio"></div></div>
 
                 <div class="inject-slot" data-slot="inicio-bottom"></div>
             </div>
@@ -953,7 +1393,7 @@
             <!-- COMPROBANTE DE RECARGA -->
             <div id="seccion-comprobante-recarga" class="vista-sec" style="display: none;">
                 <div class="back-row"><button class="back-btn" onclick="cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Órdenes</button></div>
-                <div class="shine-card" id="comp-card" style="background: linear-gradient(160deg, #0d1a33 0%, #07090e 80%); border: 1.5px solid #10b981; border-radius: 20px; padding: 1.3rem; box-shadow: 0 0 30px rgba(16,185,129,.18);">
+                <div class="shine-card" id="comp-card" style="background: var(--bg-card); border: 1.5px solid #10b981; border-radius: 20px; padding: 1.3rem; box-shadow: 0 0 30px rgba(16,185,129,.18);">
                     <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
                         <div style="display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: .9rem;"><img src="icon-192.png" alt="" style="width: 30px; height: 30px; border-radius: 8px;"><span><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></span></div>
                         <span id="comp-badge-status" class="badge-status status-completado">COMPLETADO</span>
@@ -996,6 +1436,23 @@
                     </div>
                     <div id="dep-filas" style="margin-top: 1rem;"></div>
                 </div>
+            </div>
+
+            <!-- TODAS LAS OPINIONES -->
+            <div id="seccion-opiniones" class="vista-sec" style="display: none;">
+                <div class="back-row"><button class="back-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver</button></div>
+                <h2 class="page-title">Opiniones de clientes</h2>
+                <div class="op-box-opinar">
+                    <div>
+                        <b>¿Ya compraste con nosotros?</b>
+                        <p>Cuéntanos tu experiencia y cuántas estrellas nos das.</p>
+                    </div>
+                    <button class="btn-icon" style="width: auto; padding: .6rem 1rem;" onclick="abrirNuevaOpinion()">
+                        <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        Opinar
+                    </button>
+                </div>
+                <div id="lista-opiniones-todas"></div>
             </div>
 
             <!-- DEJAR OPINIÓN -->
@@ -2470,7 +2927,7 @@
             const el = document.getElementById('lista-opiniones-inicio');
             if (!el) return;
             const ops = (tiendaConfig.opiniones || []).filter(o => o.aprobada !== false).slice().reverse().slice(0, 30);
-            const addTile = '<div class="op-add-h" onclick="abrirNuevaOpinion()"><svg viewBox="0 0 24 24"><path d="M12 2l2.9 6.9L22 10l-5.5 4.8L18.2 22 12 18.3 5.8 22l1.7-7.2L2 10l7.1-1.1z"/></svg>Deja tu opinión</div>';
+            const addTile = '';
             const tiles = ops.map(o => {
                 const n = Math.max(1, Math.min(5, o.estrellas || 5));
                 const av = o.avatar ? '<img src="' + o.avatar + '" alt="">' : esc((o.nombre || '?').charAt(0).toUpperCase());
@@ -2483,6 +2940,54 @@
             }).join('') + addTile;
             // Se duplica para que el desplazamiento sea continuo
             el.innerHTML = tiles + tiles;
+            iniciarCarruselOpiniones();
+        }
+
+        let opPausa = 0;
+        function iniciarCarruselOpiniones() {
+            const box = document.getElementById('op-marquee');
+            if (!box || box.dataset.iniciado) return;
+            box.dataset.iniciado = '1';
+            let pos = 0;
+            const paso = () => {
+                if (box.offsetParent !== null) {
+                    if (Date.now() < opPausa) {
+                        pos = box.scrollLeft;
+                    } else {
+                        const tr = box.firstElementChild;
+                        const mitad = tr ? tr.scrollWidth / 2 : 0;
+                        if (mitad > 0) {
+                            pos += 0.5;
+                            if (pos >= mitad) pos -= mitad;
+                            box.scrollLeft = pos;
+                        }
+                    }
+                }
+                requestAnimationFrame(paso);
+            };
+            ['touchstart', 'pointerdown', 'wheel'].forEach(ev => box.addEventListener(ev, () => { opPausa = Date.now() + 2500; }, { passive: true }));
+            requestAnimationFrame(paso);
+        }
+
+        function abrirTodasOpiniones() {
+            const el = document.getElementById('lista-opiniones-todas');
+            const ops = (tiendaConfig.opiniones || []).filter(o => o.aprobada !== false).slice().reverse();
+            if (ops.length === 0) {
+                el.innerHTML = '<p style="color:var(--text-muted); font-size:.78rem; text-align:center; padding:.6rem;">Todavía no hay opiniones publicadas.</p>';
+            } else {
+                el.innerHTML = ops.map(o => {
+                    const n = Math.max(1, Math.min(5, o.estrellas || 5));
+                    const av = o.avatar ? '<img src="' + o.avatar + '" alt="">' : esc((o.nombre || '?').charAt(0).toUpperCase());
+                    const fecha = o.fecha ? new Date(o.fecha).toLocaleDateString() : '';
+                    const foto = o.foto ? '<img class="op-feed-photo" src="' + o.foto + '" alt="">' : '';
+                    return '<div class="op-feed-card">' +
+                        '<div class="op-feed-head"><div class="op-feed-av">' + av + '</div>' +
+                        '<div style="flex:1; min-width:0;"><div class="op-feed-name">' + esc(o.nombre) + '</div><div class="op-feed-date">' + fecha + '</div></div>' +
+                        '<div class="stars-row">' + '★'.repeat(n) + '☆'.repeat(5 - n) + '</div></div>' +
+                        '<div class="op-feed-txt">' + esc(o.texto) + '</div>' + foto + '</div>';
+                }).join('');
+            }
+            mostrarVista('seccion-opiniones');
         }
 
         /* ================= DEPÓSITOS ================= */
@@ -3151,7 +3656,7 @@
                 referidosList.forEach(ref => {
                     let badge = esValido(ref) ? "<span style='color:#10b981; font-weight:bold;'>Válido</span>" : "<span style='color:#f59e0b;'>No activo</span>";
                     listaHTML += `<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color);">
-                        <div><span style="color: var(--text-main); font-weight: 700; display:block;">${esc(ref.nombre)}</span><span style="color: var(--text-muted); font-size:0.65rem;">${esc(ref.correo)}</span></div>
+                        <div style="display:flex; align-items:center; gap:8px;"><div class="op-feed-av" style="width:30px; height:30px;">${ref.avatar ? '<img src="' + ref.avatar + '" alt="">' : esc((ref.nombre || '?').charAt(0).toUpperCase())}</div><span style="color: var(--text-main); font-weight: 700;">${esc(ref.nombre)}</span></div>
                         <div>${badge}</div></div>`;
                 });
             }
@@ -3234,6 +3739,7 @@
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_recarga')">Recargas (${solicitudesGlobales.recargas.length})</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_deposito')">Depósitos (${solicitudesGlobales.depositos.length})</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('historial_depositos')">Historial Depósitos</button>
+                        <button class="ceo-btn" onclick="cargarAccionCEO('socios_vip')">Socios para VIP</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('cambiar_rango')">Gestionar Rangos</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('control_total_historial')">Control Total Historial</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('wallet_logica')">Control Wallet Lógica</button>
@@ -3258,8 +3764,53 @@
             }
         }
 
+        function resumenUsuario(u) {
+            const correo = (u.correo || '').toLowerCase();
+            const refs = listaUsuariosGlobales.filter(r => r.referidoPor && r.referidoPor.toLowerCase().trim() === (u.nombre || '').toLowerCase().trim());
+            const esValidoRef = r => solicitudesGlobales.depositos.some(d => (d.correo || '').toLowerCase() === r.correo.toLowerCase() && d.estado === 'Aprobado')
+                || solicitudesGlobales.recargas.some(x => (x.correo || '').toLowerCase() === r.correo.toLowerCase() && (x.estado === 'Completado' || x.estado === 'Aprobada'))
+                || (r.recargasCount || 0) > 0;
+            const validos = refs.filter(esValidoRef).length;
+            const recargas = solicitudesGlobales.recargas.filter(x => (x.correo || '').toLowerCase() === correo && (x.estado === 'Completado' || x.estado === 'Aprobada')).length;
+            return { validos: validos, noValidos: refs.length - validos, recargas: recargas };
+        }
+        function icoCEO(d) { return '<svg viewBox="0 0 24 24" width="14" height="14" fill="var(--accent-glow)"><path d="' + d + '"/></svg>'; }
+        function icoImgCEO(src) { return '<img src="' + src + '" width="14" height="14" alt="">'; }
+        function filaCEO(ico, etiqueta, valor) {
+            return '<div style="display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid var(--border-color);">' +
+                '<span style="width:26px; height:26px; border-radius:8px; background:rgba(0,240,255,.08); display:flex; align-items:center; justify-content:center; flex-shrink:0;">' + ico + '</span>' +
+                '<span style="flex:1; font-size:.72rem; color:var(--text-muted);">' + etiqueta + '</span>' +
+                '<b style="font-size:.78rem; color:var(--text-main); word-break:break-all; text-align:right;">' + valor + '</b></div>';
+        }
+        const PATH_USER = 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z';
+        const PATH_MAIL = 'M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z';
+        const PATH_LOCK = 'M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z';
+        const PATH_CART = 'M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z';
+        const PATH_OK = 'M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z';
+        const PATH_X = 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z';
+        const PATH_HOME = 'M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z';
+        function fichaCEO(u, botones) {
+            const r = resumenUsuario(u);
+            const usdt = Number(u.balanceUSDT !== undefined ? u.balanceUSDT : (u.balance || 0)).toFixed(2);
+            return `<div style="background:var(--bg-card); padding:0.9rem; margin-bottom:0.7rem; border-radius:14px; border:1px solid var(--border-color);">
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+                    <div class="op-feed-av" style="width:38px; height:38px;">${u.avatar ? '<img src="' + u.avatar + '" alt="">' : esc((u.nombre || '?').charAt(0).toUpperCase())}</div>
+                    <b style="font-size:.9rem;">${esc(u.nombre)}</b>
+                </div>
+                ${filaCEO(icoCEO(PATH_USER), 'Nombre de usuario', esc(u.nombre))}
+                ${filaCEO(icoCEO(PATH_MAIL), 'Correo', esc(u.correo))}
+                ${filaCEO(icoCEO(PATH_LOCK), 'Contraseña', esc(u.pass))}
+                ${filaCEO(icoImgCEO(IMG_USDT), 'USDT', usdt)}
+                ${filaCEO(icoImgCEO(IMG_SALDO), 'Saldo móvil', esc(u.balanceCUP || 0))}
+                ${filaCEO(icoCEO(PATH_CART), 'Recargas', r.recargas)}
+                ${filaCEO(icoCEO(PATH_OK), 'Referidos válidos', r.validos)}
+                ${filaCEO(icoCEO(PATH_X), 'Referidos no válidos', r.noValidos)}
+                ${botones || ''}
+            </div>`;
+        }
+
         const TITULOS_CEO = {
-            historial_depositos: 'Historial de Depósitos', usuarios: 'Usuarios Registrados', acreditar: 'Acreditar Saldo', desacreditar: 'Desacreditar Saldo',
+            socios_vip: 'Socios para VIP', historial_depositos: 'Historial de Depósitos', usuarios: 'Usuarios Registrados', acreditar: 'Acreditar Saldo', desacreditar: 'Desacreditar Saldo',
             solicitudes_recarga: 'Gestionar Recargas', solicitudes_deposito: 'Solicitudes de Depósito',
             cambiar_rango: 'Gestionar Rangos', control_total_historial: 'Control Total Historial',
             wallet_logica: 'Control Wallet Lógica', etiqueta_game: 'Etiqueta Free Fire', etiqueta_blood: 'Etiqueta Blood Strike',
@@ -3267,7 +3818,7 @@
             legal_admin: 'Legal y Opiniones', notificaciones_push: 'Notificaciones Globales'
         };
 
-        const CEO_SOLO = ['historial_depositos', 'solicitudes_recarga', 'solicitudes_deposito', 'cambiar_rango', 'control_total_historial', 'wallet_logica', 'etiqueta_game', 'etiqueta_blood', 'catalogo_precios', 'inyectar_contenido', 'legal_admin', 'notificaciones_push'];
+        const CEO_SOLO = ['socios_vip', 'historial_depositos', 'solicitudes_recarga', 'solicitudes_deposito', 'cambiar_rango', 'control_total_historial', 'wallet_logica', 'etiqueta_game', 'etiqueta_blood', 'catalogo_precios', 'inyectar_contenido', 'legal_admin', 'notificaciones_push'];
 
         function cargarAccionCEO(accion) {
             const esCEO = esCEOUsuario();
@@ -3338,20 +3889,19 @@
                 let html = "";
                 if (listaUsuariosGlobales.length === 0) html = "<p style='color:var(--text-muted); font-size:0.8rem;'>No hay usuarios.</p>";
                 listaUsuariosGlobales.forEach(u => {
-                    let rText = u.rango === 2 ? "CEO / Supremo" : (u.rango === 1 ? "Admin (Rango 1)" : "Cliente (Rango 0)");
-                    if (u.balanceUSDT === undefined) u.balanceUSDT = u.balance || 0;
-                    if (u.balanceCUP === undefined) u.balanceCUP = 0;
-                    html += `<div style="background:var(--bg-card); padding:0.9rem; margin-bottom:0.6rem; border-radius:12px; border:1px solid var(--border-color); font-size:0.78rem; line-height:1.5;">
-                        <b>Nombre de usuario:</b> ${esc(u.nombre)}<br>
-                        <b>Correo:</b> <span style="color:var(--text-muted);">${esc(u.correo)}</span><br>
-                        <b>Wallet USDT:</b> <span style="color:var(--accent-glow); font-weight:bold;">${Number(u.balanceUSDT).toFixed(2)}</span><br>
-                        <b>Saldo Móvil:</b> <span style="color:#10b981; font-weight:bold;">${u.balanceCUP} saldo</span><br>
-                        <b>Rango:</b> <span style="color:#f59e0b; font-weight:bold;">${rText}</span>
-                        <div style="margin-top:8px; display:flex; gap:6px;">
-                            <button style="background:#ff3b30; color:#fff; border:none; padding:5px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="ceoQuitarUsuarioPorCorreo('${esc(u.correo)}')">Quitar Usuario</button>
-                            <button style="background:var(--primary-blue); color:#fff; border:none; padding:5px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="ceoEditarUsuarioModal('${esc(u.correo)}')">Editar Datos</button>
-                        </div></div>`;
+                    const botones = `<div style="margin-top:8px; display:flex; gap:6px;">
+                        <button style="background:#ff3b30; color:#fff; border:none; padding:5px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="ceoQuitarUsuarioPorCorreo('${esc(u.correo)}')">Quitar Usuario</button>
+                        <button style="background:var(--primary-blue); color:#fff; border:none; padding:5px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="ceoEditarUsuarioModal('${esc(u.correo)}')">Editar Datos</button>
+                    </div>`;
+                    html += fichaCEO(u, botones);
                 });
+                res.innerHTML = html;
+
+            } else if (accion === 'socios_vip') {
+                const vip = listaUsuariosGlobales.filter(u => resumenUsuario(u).validos >= 10);
+                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Socios con 10 o más referidos válidos: ${vip.length}</p>`;
+                if (vip.length === 0) html += "<p style='color:var(--text-muted); font-size:0.8rem;'>Todavía no hay socios con 10 referidos válidos.</p>";
+                vip.forEach(u => { html += fichaCEO(u, ''); });
                 res.innerHTML = html;
 
             } else if (accion === 'control_total_historial') {
