@@ -243,6 +243,63 @@
         .pd-vacio { color: var(--text-muted); font-size: 0.8rem; text-align: center; margin-top: 1.5rem; }
         .pd-seg.adm-pop, .pd-chip.adm-pop { animation: admPop .45s ease; }
         .pd-seg:active, .pd-chip:active { transform: scale(.92); }
+
+        /* ===== Inicio: pestañas Juegos / Gift Cards ===== */
+        .inicio-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 14px 0; }
+        .itab { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 16px; padding: 14px 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-main); font-weight: 900; font-size: 1rem; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.18); font-family: inherit; }
+        .itab svg { width: 22px; height: 22px; fill: currentColor; }
+        .itab-juegos { background: linear-gradient(135deg, #0066ff, #00a2ff); color: #fff; border-color: rgba(0,162,255,.6); box-shadow: 0 8px 22px rgba(0,102,255,.35); }
+        .itab::after { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform: skewX(-20deg); pointer-events: none; }
+        .itab.anim::after { animation: itabBrillo .6s ease; }
+        .itab.anim { animation: admPop .45s ease; }
+        @keyframes itabBrillo { from { left: -60%; } to { left: 130%; } }
+
+        /* ===== Selector de juegos ===== */
+        .gx-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin: 0.4rem 0 1rem 0; }
+        .gx-titulo { display: flex; align-items: center; gap: 8px; }
+        .gx-barra { width: 4px; height: 26px; border-radius: 3px; background: linear-gradient(#00c2ff, #0044ff); box-shadow: 0 0 10px #00a2ff; }
+        .gx-titulo h2 { font-size: 1.6rem; font-weight: 900; color: var(--text-main); letter-spacing: .3px; }
+        .gx-count { min-width: 34px; text-align: center; padding: 4px 9px; border-radius: 10px; background: rgba(0,102,255,.18); color: #60a5fa; font-weight: 900; font-size: .9rem; transition: transform .3s; }
+        .gx-count.bump { animation: gxBump .4s ease; }
+        @keyframes gxBump { 40% { transform: scale(1.3); } }
+        .gx-filtros { position: relative; display: inline-flex; padding: 4px; border-radius: 999px; background: var(--bg-card); border: 1px solid var(--border-color); box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+        .gx-slider { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 999px; background: linear-gradient(135deg, #0066ff, #00a2ff); box-shadow: 0 4px 14px rgba(0,102,255,.45); transition: transform .35s cubic-bezier(.7,0,.2,1); }
+        .gx-filtros.fav .gx-slider { transform: translateX(100%); }
+        .gx-pill { position: relative; z-index: 1; border: none; background: transparent; color: var(--text-muted); padding: 8px 18px; border-radius: 999px; font-weight: 800; font-size: .85rem; cursor: pointer; font-family: inherit; transition: color .3s; display: inline-flex; align-items: center; gap: 6px; }
+        .gx-pill.activo { color: #fff; }
+        .gx-pill svg { width: 14px; height: 14px; fill: currentColor; }
+        .gx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 14px; }
+        .gx-card { --c: #00a2ff; position: relative; cursor: pointer; transition: transform .25s ease, filter .25s ease; animation: gxEntra .5s ease both; }
+        .gx-card:nth-child(2) { animation-delay: .06s; } .gx-card:nth-child(3) { animation-delay: .12s; } .gx-card:nth-child(4) { animation-delay: .18s; } .gx-card:nth-child(5) { animation-delay: .24s; }
+        @keyframes gxEntra { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+        .gx-card:hover { transform: translateY(-3px); filter: drop-shadow(0 8px 16px color-mix(in srgb, var(--c) 45%, transparent)); }
+        .gx-card:active { transform: scale(.95); }
+        .gx-card.anim { animation: admPop .45s ease; }
+        .gx-frame { padding: 2px; background: linear-gradient(135deg, #00d0ff, #0050ff 55%, #00a2ff); clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%, 0 16px); }
+        .gx-img { position: relative; height: 118px; overflow: hidden; clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%, 0 14px); background: radial-gradient(circle at 70% 25%, var(--c1) 0%, var(--c2) 55%, var(--c3) 100%); }
+        .gx-img::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 1px, transparent 1px 7px); mix-blend-mode: overlay; z-index: 1; }
+        .gx-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.55) 100%), radial-gradient(circle at 50% 120%, rgba(255,255,255,.18), transparent 60%); z-index: 3; pointer-events: none; }
+        .gx-img img { position: absolute; z-index: 2; left: 50%; bottom: -2px; height: 112%; width: 112%; object-fit: contain; object-position: center bottom; transform: translateX(-50%); filter: drop-shadow(0 6px 10px rgba(0,0,0,.55)); transition: transform .45s ease; }
+        .gx-card:hover .gx-img img { transform: translateX(-50%) scale(1.06); }
+        .gx-inicial { position: absolute; inset: 0; z-index: 1; display: none; align-items: center; justify-content: center; font-size: 3rem; font-weight: 900; color: rgba(255,255,255,.8); }
+        .gx-img.sin-img .gx-inicial { display: flex; }
+        .gx-badge { position: absolute; top: 8px; left: 8px; z-index: 4; max-width: calc(100% - 62px); font-size: .58rem !important; line-height: 1.2 !important; padding: 3px 7px !important; border-radius: 7px !important; }
+        .gx-star { position: absolute; top: 8px; right: 10px; z-index: 5; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,.18); background: rgba(10,16,32,.6); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform .2s, background .3s; }
+        .gx-star svg { width: 18px; height: 18px; fill: #fff; transition: fill .25s; position: relative; z-index: 2; }
+        .gx-star::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid #facc15; opacity: 0; }
+        .gx-star:active { transform: scale(.8); }
+        .gx-card.fav .gx-star { background: rgba(250,204,21,.22); border-color: #facc15; }
+        .gx-card.fav .gx-star svg { fill: #facc15; filter: drop-shadow(0 0 6px #facc15); }
+        .gx-star.pop { animation: starPop .55s cubic-bezier(.3,1.6,.5,1); }
+        .gx-star.pop::after { animation: starRing .6s ease-out; }
+        @keyframes starPop { 0% { transform: scale(.6) rotate(-30deg); } 60% { transform: scale(1.35) rotate(12deg); } 100% { transform: scale(1) rotate(0); } }
+        @keyframes starRing { 0% { transform: scale(.8); opacity: .9; } 100% { transform: scale(2.2); opacity: 0; } }
+        .gx-foot { display: flex; align-items: center; gap: 8px; padding: 11px 12px; margin-top: -1px; border-radius: 0 0 16px 16px; background: linear-gradient(180deg, rgba(8,12,24,.96), color-mix(in srgb, var(--c) 18%, #070b16)); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent); border-top: none; box-shadow: 0 10px 24px color-mix(in srgb, var(--c) 18%, transparent); }
+        .gx-logo { width: 20px; height: 20px; fill: #3b82f6; flex-shrink: 0; }
+        .gx-name { flex: 1; font-size: 1rem; font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .gx-chev { width: 20px; height: 20px; fill: rgba(255,255,255,.65); flex-shrink: 0; transition: transform .25s; }
+        .gx-card:hover .gx-chev { transform: translateX(3px); }
+        .gx-vacio { grid-column: 1 / -1; text-align: center; color: var(--text-muted); font-size: .85rem; padding: 2rem 1rem; border: 1px dashed var(--border-color); border-radius: 16px; animation: gxEntra .4s ease both; }
         .adm-btn { transition: transform .15s ease, box-shadow .2s ease, filter .2s ease; }
         .adm-btn:hover { filter: brightness(1.12); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,.25); }
         .adm-btn:active { transform: scale(.88); }
@@ -906,6 +963,11 @@
             <div id="seccion-inicio" class="vista-sec">
                 <div class="inject-slot" data-slot="inicio-top"></div>
 
+                <div class="inicio-tabs">
+                    <button class="itab itab-juegos adm-btn" onclick="irASelectorJuegos()"><svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg><span>Juegos</span></button>
+                    <button class="itab itab-gift adm-btn" onclick="proximamente('Gift Cards')"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-2 .9-2 2v4c0 .55.45 1 1 1h1v7c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-7h1c.55 0 1-.45 1-1V8c0-1.1-.9-2-2-2z"/></svg><span>Gift Cards</span></button>
+                </div>
+
                 <div class="game-hero-compact" onclick="irASelectorJuegos()">
                     <div class="game-hero-left">
                         <div class="game-hero-icon-small">
@@ -966,36 +1028,81 @@
                 </div>
                 <div class="inject-slot" data-slot="juegos"></div>
 
-                <h2 class="page-title">SELECCIONA EL JUEGO</h2>
-
-                <div class="game-card-character" onclick="abrirFreeFire()">
-                    <div id="banner-bg-freefire" class="game-card-banner-img">
-                        <div class="neon-overlay-gradient"></div>
-                        <div id="freefire-custom-badge" class="neon-badge-top-right"></div>
-                        <div style="z-index: 2; position: relative;">
-                            <span style="background: rgba(0, 102, 255, 0.4); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:var(--accent-glow); font-weight: bold; display: inline-block; margin-bottom: 4px; backdrop-filter: blur(4px);">Recarga por ID</span>
-                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Free Fire</h3>
-                        </div>
-                    </div>
-                    <div class="game-card-footer">
-                        <span style="color: var(--text-main);">Diamantes Instantáneos</span>
-                        <span style="color: var(--accent-glow);">Ver Ofertas &gt;</span>
+                <div class="gx-head">
+                    <div class="gx-titulo"><span class="gx-barra"></span><h2>Juegos</h2><span class="gx-count" id="gx-count">5</span></div>
+                    <div class="gx-filtros" id="gx-filtros">
+                        <span class="gx-slider"></span>
+                        <button class="gx-pill activo" id="gx-pill-todos" onclick="filtrarJuegos('todos')">Todos</button>
+                        <button class="gx-pill" id="gx-pill-favoritos" onclick="filtrarJuegos('favoritos')"><svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg>Favoritos</button>
                     </div>
                 </div>
-
-                <div class="game-card-character" onclick="mostrarNotificacion('Próximamente disponible Blood Strike')">
-                    <div id="banner-bg-blood" class="game-card-banner-img">
-                        <div class="neon-overlay-gradient"></div>
-                        <div id="bloodstrike-custom-badge" class="neon-badge-top-right"></div>
-                        <div style="z-index: 2; position: relative;">
-                            <span style="background: rgba(245, 158, 11, 0.4); padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; color:#f59e0b; font-weight: bold; display: inline-block; margin-bottom: 4px; backdrop-filter: blur(4px);">Shooter Pro</span>
-                            <h3 style="font-size: 1.3rem; font-weight: 900; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Blood Strike</h3>
+                <div class="gx-grid" id="gx-grid">
+                    <div class="gx-card" data-juego="freefire" style="--c:#f59e0b" onclick="tocarJuego('freefire')">
+                        <button class="gx-star" onclick="event.stopPropagation(); alternarFavorito('freefire', this)" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg></button>
+                        <div class="gx-frame"><div class="gx-img" style="--c1:#ff9a3c;--c2:#b53a0a;--c3:#2a0d04;">
+                            <div id="freefire-custom-badge" class="gx-badge"></div>
+                            <span class="gx-inicial">F</span>
+                            <img src="BackgroundEraser_20261108_161414087.png" alt="Free Fire" data-base="BackgroundEraser_20261108_161414087" loading="lazy" onerror="imgAlternativa(this)">
+                        </div></div>
+                        <div class="gx-foot">
+                            <svg viewBox="0 0 24 24" class="gx-logo"><path d="M4 20V4l4 0 8 10V4h4v16l-4 0L8 10v10z"/></svg>
+                            <span class="gx-name">Free Fire</span>
+                            <svg viewBox="0 0 24 24" class="gx-chev"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
                         </div>
                     </div>
-                    <div class="game-card-footer">
-                        <span style="color: var(--text-main);">Oro y Pases de Batalla</span>
-                        <span style="color: #f59e0b;">Ver Oferta &gt;</span>
+                    <div class="gx-card" data-juego="blood" style="--c:#ef4444" onclick="tocarJuego('blood')">
+                        <button class="gx-star" onclick="event.stopPropagation(); alternarFavorito('blood', this)" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg></button>
+                        <div class="gx-frame"><div class="gx-img" style="--c1:#ff4d4d;--c2:#7a0f16;--c3:#1a0509;">
+                            <div id="bloodstrike-custom-badge" class="gx-badge"></div>
+                            <span class="gx-inicial">B</span>
+                            <img src="BackgroundEraser_20261108_161436363.png" alt="Blood Strike" data-base="BackgroundEraser_20261108_161436363" loading="lazy" onerror="imgAlternativa(this)">
+                        </div></div>
+                        <div class="gx-foot">
+                            <svg viewBox="0 0 24 24" class="gx-logo"><path d="M4 20V4l4 0 8 10V4h4v16l-4 0L8 10v10z"/></svg>
+                            <span class="gx-name">Blood Strike</span>
+                            <svg viewBox="0 0 24 24" class="gx-chev"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                        </div>
                     </div>
+                    <div class="gx-card" data-juego="mobilelegends" style="--c:#a855f7" onclick="tocarJuego('mobilelegends')">
+                        <button class="gx-star" onclick="event.stopPropagation(); alternarFavorito('mobilelegends', this)" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg></button>
+                        <div class="gx-frame"><div class="gx-img" style="--c1:#c084fc;--c2:#6d28d9;--c3:#1e0a3c;">
+                            
+                            <span class="gx-inicial">M</span>
+                            <img src="IMG_20261108_161615_074.png" alt="Mobile Legends" data-base="IMG_20261108_161615_074" loading="lazy" onerror="imgAlternativa(this)">
+                        </div></div>
+                        <div class="gx-foot">
+                            <svg viewBox="0 0 24 24" class="gx-logo"><path d="M4 20V4l4 0 8 10V4h4v16l-4 0L8 10v10z"/></svg>
+                            <span class="gx-name">Mobile Legends</span>
+                            <svg viewBox="0 0 24 24" class="gx-chev"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                        </div>
+                    </div>
+                    <div class="gx-card" data-juego="arenabreakout" style="--c:#d6a05b" onclick="tocarJuego('arenabreakout')">
+                        <button class="gx-star" onclick="event.stopPropagation(); alternarFavorito('arenabreakout', this)" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg></button>
+                        <div class="gx-frame"><div class="gx-img" style="--c1:#e8b878;--c2:#8a5a2b;--c3:#25180c;">
+                            
+                            <span class="gx-inicial">A</span>
+                            <img src="BackgroundEraser_20261108_161550692.png" alt="Arena Breakout" data-base="BackgroundEraser_20261108_161550692" loading="lazy" onerror="imgAlternativa(this)">
+                        </div></div>
+                        <div class="gx-foot">
+                            <svg viewBox="0 0 24 24" class="gx-logo"><path d="M4 20V4l4 0 8 10V4h4v16l-4 0L8 10v10z"/></svg>
+                            <span class="gx-name">Arena Breakout</span>
+                            <svg viewBox="0 0 24 24" class="gx-chev"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                        </div>
+                    </div>
+                    <div class="gx-card" data-juego="roblox" style="--c:#38bdf8" onclick="tocarJuego('roblox')">
+                        <button class="gx-star" onclick="event.stopPropagation(); alternarFavorito('roblox', this)" aria-label="Favorito"><svg viewBox="0 0 24 24"><path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/></svg></button>
+                        <div class="gx-frame"><div class="gx-img" style="--c1:#6ad2ff;--c2:#1d6fd6;--c3:#0b1d4d;">
+                            
+                            <span class="gx-inicial">R</span>
+                            <img src="BackgroundEraser_20261108_162123668.png" alt="Roblox" data-base="BackgroundEraser_20261108_162123668" loading="lazy" onerror="imgAlternativa(this)">
+                        </div></div>
+                        <div class="gx-foot">
+                            <svg viewBox="0 0 24 24" class="gx-logo"><path d="M4 20V4l4 0 8 10V4h4v16l-4 0L8 10v10z"/></svg>
+                            <span class="gx-name">Roblox</span>
+                            <svg viewBox="0 0 24 24" class="gx-chev"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
+                        </div>
+                    </div>
+                    <div class="gx-vacio" id="gx-vacio" style="display:none;">Aún no tienes favoritos. Toca la ⭐ de un juego para agregarlo aquí.</div>
                 </div>
             </div>
 
@@ -1856,6 +1963,62 @@
             if (!b) return;
             b.classList.remove('adm-pop'); void b.offsetWidth; b.classList.add('adm-pop');
         });
+
+
+        /* ===== Inicio y selector de juegos ===== */
+        const NOMBRES_JUEGOS = { freefire: 'Free Fire', blood: 'Blood Strike', mobilelegends: 'Mobile Legends', arenabreakout: 'Arena Breakout', roblox: 'Roblox' };
+        let favoritosJuegos = (function () { try { return JSON.parse(localStorage.getItem('lester_favoritos_juegos')) || []; } catch (e) { return []; } })();
+        let filtroJuegos = 'todos';
+        function proximamente(nombre) { mostrarNotificacion(nombre + ': Próximamente'); }
+        function tocarJuego(id) {
+            if (id === 'freefire') return abrirFreeFire();   // único juego con catálogo de precios
+            proximamente(NOMBRES_JUEGOS[id] || 'Este juego');
+        }
+        /* Si la imagen no carga con .png, prueba otras extensiones (por si el archivo tiene otra) */
+        function imgAlternativa(img) {
+            const exts = ['jpg', 'jpeg', 'webp', 'PNG', 'ру'];
+            const n = parseInt(img.dataset.intento || '0', 10);
+            if (n < exts.length) { img.dataset.intento = n + 1; img.src = encodeURI(img.dataset.base + '.' + exts[n]); }
+            else { img.style.display = 'none'; img.parentElement.classList.add('sin-img'); }
+        }
+        function alternarFavorito(id, btn) {
+            const era = favoritosJuegos.includes(id);
+            favoritosJuegos = era ? favoritosJuegos.filter(x => x !== id) : favoritosJuegos.concat(id);
+            try { localStorage.setItem('lester_favoritos_juegos', JSON.stringify(favoritosJuegos)); } catch (e) {}
+            actualizarJuegos();
+            if (btn && !era) { btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop'); }
+            if (!era) mostrarNotificacion((NOMBRES_JUEGOS[id] || 'Juego') + ' agregado a Favoritos');
+        }
+        function filtrarJuegos(k) { filtroJuegos = k; actualizarJuegos(true); }
+        function actualizarJuegos(animar) {
+            let visibles = 0;
+            document.querySelectorAll('.gx-card').forEach(c => {
+                const esFav = favoritosJuegos.includes(c.dataset.juego);
+                c.classList.toggle('fav', esFav);
+                const mostrar = filtroJuegos === 'todos' || esFav;
+                const estaba = c.style.display !== 'none';
+                c.style.display = mostrar ? '' : 'none';
+                if (mostrar) {
+                    if (animar && !estaba || animar) { c.style.animation = 'none'; void c.offsetWidth; c.style.animation = ''; c.style.animationDelay = (visibles * 0.06) + 's'; }
+                    visibles++;
+                }
+            });
+            const f = document.getElementById('gx-filtros');
+            if (f) f.classList.toggle('fav', filtroJuegos === 'favoritos');
+            document.getElementById('gx-pill-todos').classList.toggle('activo', filtroJuegos === 'todos');
+            document.getElementById('gx-pill-favoritos').classList.toggle('activo', filtroJuegos === 'favoritos');
+            const cont = document.getElementById('gx-count');
+            if (cont) { cont.innerText = visibles; cont.classList.remove('bump'); void cont.offsetWidth; cont.classList.add('bump'); }
+            const vacio = document.getElementById('gx-vacio');
+            if (vacio) vacio.style.display = (filtroJuegos === 'favoritos' && visibles === 0) ? 'block' : 'none';
+        }
+        document.addEventListener('click', (e) => {
+            const t = e.target.closest && e.target.closest('.itab');
+            if (t) { t.classList.remove('anim'); void t.offsetWidth; t.classList.add('anim'); }
+            const c = e.target.closest && e.target.closest('.gx-card');
+            if (c && !e.target.closest('.gx-star')) { c.classList.remove('anim'); void c.offsetWidth; c.classList.add('anim'); }
+        });
+        actualizarJuegos();
 
         /* ================= NUBE (JSONBin) ================= */
         let guardandoCloud = false;
