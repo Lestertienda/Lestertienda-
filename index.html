@@ -1850,6 +1850,17 @@
             } catch (e) { return 0; }
         }
 
+        /* Un pedido ya completado o cancelado no vuelve a pendiente, venga de donde venga */
+        const esEstadoFinal = e => e === 'Completado' || e === 'Cancelado' || e === 'Aprobado';
+        function protegerFinales(nuevas, locales) {
+            const mapaLocal = new Map((locales || []).map(x => [String(x.id), x]));
+            return (nuevas || []).map(x => {
+                const l = mapaLocal.get(String(x.id));
+                if (l && esEstadoFinal(l.estado) && !esEstadoFinal(x.estado)) return l;
+                return x;
+            });
+        }
+
         /* Copia del último estado que la nube tiene (sirve para saber qué cambió cada dispositivo) */
         let baseServidor = null;
         function copiaJSON(x) { return JSON.parse(JSON.stringify(x)); }
@@ -1884,7 +1895,9 @@
                 for (const s1 of sv) {
                     const k = String(s1.id), l = mLc.get(k), b = mBs.get(k);
                     if (!l) { if (!b) out.push(s1); continue; }          // si lo quitó este dispositivo, no lo devolvemos
-                    out.push(b && JSON.stringify(l) !== JSON.stringify(b) ? l : s1); // gana el cambio más reciente de este dispositivo
+                    let elegido = (esEstadoFinal(l.estado) || (b && JSON.stringify(l) !== JSON.stringify(b))) ? l : s1;
+                    if (esEstadoFinal(s1.estado) && !esEstadoFinal(elegido.estado)) elegido = s1;
+                    out.push(elegido);
                 }
                 for (const l of lc) { const k = String(l.id); if (!mSv.has(k) && !mBs.has(k)) out.push(l); }
                 sol[tipo] = out;
@@ -2023,6 +2036,9 @@
                     solicitudesGlobales = rec.solicitudes;
                     if (!solicitudesGlobales.recargas) solicitudesGlobales.recargas = [];
                     if (!solicitudesGlobales.depositos) solicitudesGlobales.depositos = [];
+                    const viejas = JSON.parse(localStorage.getItem('lester_solicitudes') || 'null') || {};
+                    solicitudesGlobales.recargas = protegerFinales(solicitudesGlobales.recargas, viejas.recargas);
+                    solicitudesGlobales.depositos = protegerFinales(solicitudesGlobales.depositos, viejas.depositos);
                     firmaSolicitudes = JSON.stringify(solicitudesGlobales);
                     localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
                 }
@@ -2057,9 +2073,12 @@
                     if (rec.solicitudes) {
                         const nuevaFirma = JSON.stringify(rec.solicitudes);
                         if (nuevaFirma !== firmaSolicitudes) {
+                            const viejas = solicitudesGlobales || {};
                             solicitudesGlobales = rec.solicitudes;
                             if (!solicitudesGlobales.recargas) solicitudesGlobales.recargas = [];
                             if (!solicitudesGlobales.depositos) solicitudesGlobales.depositos = [];
+                            solicitudesGlobales.recargas = protegerFinales(solicitudesGlobales.recargas, viejas.recargas);
+                            solicitudesGlobales.depositos = protegerFinales(solicitudesGlobales.depositos, viejas.depositos);
                             firmaSolicitudes = nuevaFirma;
                             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
                             cambioSolic = true;
