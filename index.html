@@ -2196,7 +2196,6 @@
             sincronizar(true);
             // Con la base nueva se consulta cada 20 s para no gastar el límite gratis de peticiones
             setInterval(() => sincronizar(true), WORKER_URL ? 20000 : 6000);
-            if (WORKER_URL) { revisarVersion(); setInterval(revisarVersion, 4000); }
         }
 
         /* ================= TEMA ================= */
@@ -2877,7 +2876,6 @@
 
             mostrarCarga("Enviando depósito...");
             setTimeout(async () => {
-                await traerEstadoFresco();
                 const idDep = Date.now();
                 solicitudesGlobales.depositos.push({
                     id: idDep, correo: usuarioActual.correo.toLowerCase(), usuario: usuarioActual.nombre,
@@ -2920,7 +2918,7 @@
             if (!file) return;
             mostrarCarga("Preparando comprobante...");
             try {
-                comprobanteDepositoData = await comprimirImagen(file, 1600, 150000);
+                comprobanteDepositoData = await comprimirImagen(file, 1000, 60000);
                 const prev = document.getElementById('comprobante-deposito-prev');
                 prev.innerHTML = '<img src="' + comprobanteDepositoData + '" alt="Comprobante" style="width:100%; max-height:200px; object-fit:contain; border-radius:12px; border:1px solid var(--border-color); background:var(--bg-main);">';
                 prev.style.display = 'block';
