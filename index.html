@@ -673,6 +673,10 @@
             .hw-item, .hw-burst { display: none; }
             .hw-sway, .hw-spider, .hw-fog, #hw-flash { animation: none !important; }
         }
+        .brand-logo-text::before, .nav-brand-title::before, .brand-logo-text::after, .nav-brand-title::after { content: none !important; }
+        .hw-ico { display: inline-block; width: 1em; height: 1em; vertical-align: -0.15em; }
+        .hw-ico svg { width: 100%; height: 100%; display: block; overflow: visible; }
+        .brand-logo-text .hw-ico, .nav-brand-title .hw-ico { font-size: 1.1em; margin: 0 .15em; }
     </style>
 </head>
 <body>
@@ -4546,12 +4550,18 @@
         ['<div class="hw-fog"></div>', '<div class="hw-web hw-web-l"></div>', '<div class="hw-web hw-web-r"></div>', '<div class="hw-spider">🕷️</div>', '<div id="hw-flash"></div>']
             .forEach(h => document.body.insertAdjacentHTML('beforeend', h));
 
-        const ICONOS = ['🦇', '👻', '🎃', '🕷️', '💀', '🕯️', '🦇', '👻', '🦇'];
+        const ICONOS = ['murcielago', 'fantasma', 'calabaza', 'arana', 'calavera', 'murcielago', 'fantasma', 'murcielago'];
+        document.querySelectorAll('.brand-logo-text, .nav-brand-title').forEach(el => {
+            el.insertAdjacentHTML('afterbegin', hwIcono('calabaza'));
+            el.insertAdjacentHTML('beforeend', hwIcono('murcielago'));
+        });
+        const arana = document.querySelector('.hw-spider');
+        if (arana) arana.innerHTML = hwIcono('arana');
         const rnd = (a, b) => a + Math.random() * (b - a);
 
         function crear(inicio) {
-            const icono = ICONOS[Math.floor(Math.random() * ICONOS.length)];
-            const subir = icono === '🎃' || icono === '🕯️';
+            const nombre = ICONOS[Math.floor(Math.random() * ICONOS.length)];
+            const subir = nombre === 'calabaza';
             const dur = subir ? rnd(14, 22) : rnd(9, 16);
             const el = document.createElement('span');
             el.className = 'hw-item' + (subir ? ' sube' : '');
@@ -4563,7 +4573,7 @@
             el.style.animationDelay = (inicio ? -rnd(0, dur) : 0) + 's';
             const s = document.createElement('span');
             s.className = 'hw-sway';
-            s.textContent = icono;
+            s.innerHTML = hwIcono(nombre);
             el.appendChild(s);
             el.addEventListener('animationend', (ev) => {
                 if (ev.target !== el) return;
@@ -4583,7 +4593,7 @@
             ultimo = ahora;
             const b = document.createElement('span');
             b.className = 'hw-burst';
-            b.textContent = ['✨', '👻', '🎃', '🦇', '💀'][Math.floor(Math.random() * 5)];
+            b.innerHTML = hwIcono(['chispa', 'fantasma', 'calabaza', 'murcielago', 'calavera'][Math.floor(Math.random() * 5)]);
             b.style.left = e.clientX + 'px';
             b.style.top = e.clientY + 'px';
             b.style.setProperty('--dx', rnd(-30, 30) + 'px');
