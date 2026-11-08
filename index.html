@@ -3517,6 +3517,7 @@
                         <button class="ceo-btn-verde" onclick="cargarAccionCEO('solicitudes_deposito')">${iconoSVG('money')}<span>Depósitos<small>Solicitudes por revisar</small></span><em>${pendDep} pendientes</em></button>
                         <button class="ceo-btn-verde" onclick="cargarAccionCEO('solicitudes_recarga')">${iconoSVG('bolt')}<span>Recargas<small>Solicitudes por completar</small></span><em>${pendRec} pendientes</em></button>
                         <button class="ceo-btn-verde" onclick="cargarAccionCEO('socios_vip')">${iconoSVG('star')}<span>Socios para VIP<small>10 o más referidos válidos</small></span></button>
+                        <button class="ceo-btn-verde" onclick="cargarAccionCEO('catalogo_precios')">${iconoSVG('image')}<span>Catálogo e Imágenes<small>Precios y fotos de los paquetes</small></span></button>
                     </div>`;
                     htmlBotones += `
                         <button class="ceo-btn" onclick="cargarAccionCEO('historial_depositos')">Historial Depósitos</button>
@@ -3527,7 +3528,6 @@
                         <button class="ceo-btn" onclick="cargarAccionCEO('etiqueta_blood')">Etiqueta Blood Strike</button>
                         <button class="ceo-btn" onclick="abrirSelectorImagenBanner('freefire')">Banner Free Fire</button>
                         <button class="ceo-btn" onclick="abrirSelectorImagenBanner('blood')">Banner Blood Strike</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('catalogo_precios')">Catálogo & Imágenes</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('inyectar_contenido')">Inyectar Contenido / Fotos</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('legal_admin')">Legal y Opiniones</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('notificaciones_push')">Notificaciones Globales</button>`;
@@ -3745,7 +3745,13 @@
                     <button class="btn-main" onclick="guardarWalletLogica()">Guardar Control Wallet</button>`;
 
             } else if (accion === 'catalogo_precios') {
-                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB de 100 KB.</p>`;
+                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB de 100 KB.</p>
+                    <div class="ceo-action-form">
+                        <h4>Cambiar todos los precios a la vez</h4>
+                        <label style="font-size:0.7rem;">Porcentaje (ej. 10 para subir 10%, -5 para bajar 5%)</label>
+                        <input type="number" id="ceo-pct-precios" value="10" step="1" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:6px; border-radius:8px; margin-bottom:8px;">
+                        <button class="btn-main" style="margin-top:0;" onclick="cambiarTodosLosPrecios()">Aplicar a todos los paquetes</button>
+                    </div>`;
                 (tiendaConfig.paquetesDiamantes || []).forEach((p, pIdx) => {
                     let src = (p.imagen && p.imagen.trim() !== "") ? p.imagen : IMG_DIAMANTE;
                     html += `
@@ -3936,6 +3942,19 @@
 
         async function eliminarImagenPaqueteCEO(pIdx) {
             const ok = await guardarConfig(() => { if (tiendaConfig.paquetesDiamantes[pIdx]) tiendaConfig.paquetesDiamantes[pIdx].imagen = ""; }, "Imagen del paquete eliminada");
+            if (ok) cargarAccionCEO('catalogo_precios');
+        }
+
+        async function cambiarTodosLosPrecios() {
+            const pct = parseFloat(document.getElementById('ceo-pct-precios').value);
+            if (isNaN(pct) || pct <= -100) { mostrarNotificacion("Escribe un porcentaje válido"); return; }
+            const factor = 1 + pct / 100;
+            const ok = await guardarConfig(() => {
+                (tiendaConfig.paquetesDiamantes || []).forEach(p => {
+                    p.precioUsdt = parseFloat((Number(p.precioUsdt) * factor).toFixed(2));
+                    p.precioSaldo = Math.round(Number(p.precioSaldo) * factor);
+                });
+            }, "Precios actualizados en todos los paquetes");
             if (ok) cargarAccionCEO('catalogo_precios');
         }
 
