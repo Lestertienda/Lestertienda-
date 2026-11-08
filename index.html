@@ -390,6 +390,60 @@
         }
         .avatar-edit-badge svg { width: 12px; height: 12px; fill: #fff; }
 
+        /* ===== Perfil nuevo ===== */
+        .pf-titulo { margin: 0.2rem 0 0.9rem 0.2rem; }
+        .pf-h1 { font-family: 'Barlow Condensed', system-ui, sans-serif; font-size: 2.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-main); line-height: 1; }
+        .pf-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.35rem; }
+        .pf-card {
+            position: relative; overflow: hidden; border-radius: 22px; padding: 1.2rem;
+            background: linear-gradient(145deg, rgba(0,240,255,0.10), rgba(0,0,0,0.0) 60%), var(--bg-card);
+            border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.18); margin-bottom: 1.1rem;
+            font-family: 'Barlow Condensed', system-ui, sans-serif;
+        }
+        .pf-card::before { content: ""; position: absolute; top: -60px; right: -60px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(0,240,255,0.22), transparent 70%); pointer-events: none; }
+        .pf-top { display: flex; align-items: center; gap: 1rem; position: relative; }
+        .pf-avatar-wrap { position: relative; width: 84px; height: 84px; flex-shrink: 0; }
+        .pf-avatar {
+            width: 84px; height: 84px; border-radius: 50%; overflow: hidden; cursor: pointer;
+            background: var(--bg-main); border: 2px solid var(--accent-glow); box-shadow: 0 0 18px rgba(0,240,255,0.25);
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 900; color: var(--accent-glow);
+        }
+        .pf-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .pf-cam {
+            position: absolute; right: -2px; bottom: -2px; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+            background: var(--primary-blue); border: 2px solid var(--bg-card); display: flex; align-items: center; justify-content: center;
+        }
+        .pf-cam svg { width: 14px; height: 14px; fill: #fff; }
+        .pf-id { min-width: 0; flex: 1; }
+        .pf-tag { font-size: 0.7rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-glow); }
+        .pf-name { font-size: 1.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.4px; color: var(--text-main); line-height: 1.05; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pf-mail { font-size: 0.85rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pf-verif { display: inline-flex; align-items: center; gap: 4px; margin-top: 0.4rem; padding: 2px 9px 2px 6px; border-radius: 999px; background: rgba(16,185,129,0.14); color: #10b981; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.3px; }
+        .pf-verif svg { width: 13px; height: 13px; fill: #10b981; }
+        .pf-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 1.1rem; position: relative; }
+        .pf-stat { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.7rem 0.4rem; text-align: center; }
+        .pf-stat svg { width: 20px; height: 20px; fill: var(--accent-glow); display: block; margin: 0 auto 4px auto; }
+        .pf-stat h4 { font-size: 1.25rem; font-weight: 900; color: var(--text-main); line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pf-stat span { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
+        .pf-noact { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.6rem; position: relative; }
+        .pf-noact b { color: #f59e0b; font-weight: 800; }
+        .pf-actions { display: flex; gap: 8px; margin-top: 0.9rem; position: relative; }
+        .pf-logros {
+            flex: 1; border: none; border-radius: 14px; padding: 0.75rem; cursor: pointer;
+            background: linear-gradient(135deg, #facc15, #f59e0b); color: #1a1200; font-weight: 900; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.6px;
+            font-family: 'Barlow Condensed', system-ui, sans-serif; box-shadow: 0 6px 16px rgba(245,158,11,0.3);
+        }
+        .pf-sec {
+            flex: 1; border-radius: 14px; padding: 0.75rem; cursor: pointer; background: var(--bg-main); color: var(--text-main);
+            border: 1px solid var(--border-color); font-weight: 800; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.6px;
+            font-family: 'Barlow Condensed', system-ui, sans-serif;
+        }
+        .pf-icon { width: 50px; border-radius: 14px; cursor: pointer; background: var(--bg-main); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; }
+        .pf-icon svg { width: 20px; height: 20px; fill: var(--accent-glow); }
+        .pf-barcode { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 1rem; padding-top: 0.9rem; border-top: 1px dashed var(--border-color); position: relative; }
+        .pf-bars { width: 70%; height: 34px; background: repeating-linear-gradient(90deg, var(--text-main) 0 2px, transparent 2px 4px, var(--text-main) 4px 5px, transparent 5px 8px, var(--text-main) 8px 11px, transparent 11px 13px); opacity: 0.55; border-radius: 3px; }
+        #perfil-codigo { font-size: 0.85rem; font-weight: 800; letter-spacing: 3px; color: var(--text-muted); }
+
         .order-card-pro {
             background: var(--bg-card); border: 1.5px solid var(--border-color); border-radius: 16px;
             padding: 1.1rem 1.2rem; margin-bottom: 0.9rem; display: flex; justify-content: space-between; align-items: center;
@@ -642,6 +696,8 @@
         .btn-icon.sec { background: var(--bg-main); color: var(--accent-glow); border: 1.5px solid var(--accent-glow); }
         .btn-icon svg { width: 16px; height: 16px; fill: currentColor; }
     </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="splash"><div class="splash-logo"><img src="icon-192.png" alt="Lester Tienda"></div><div class="splash-title">Lester <span>Tienda</span></div></div>
@@ -1213,37 +1269,58 @@
             <!-- SECCIÓN PERFIL (solo resumen + menú; cada botón abre su propia página) -->
             <div id="seccion-perfil" class="vista-sec" style="display: none;">
                 <div class="inject-slot" data-slot="perfil"></div>
-                <div class="profile-header-card">
-                    <div class="profile-avatar-wrapper">
-                        <div class="profile-avatar-circle" id="perfil-inicial" onclick="abrirSelectorGaleria()">L</div>
-                        <div class="avatar-edit-badge" onclick="abrirSelectorGaleria()">
-                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                <div class="pf-titulo">
+                    <h2 class="pf-h1">Mi perfil</h2>
+                    <p class="pf-sub">Tu cuenta, tus recargas y tus referidos en un solo lugar.</p>
+                </div>
+
+                <div class="pf-card">
+                    <div class="pf-top">
+                        <div class="pf-avatar-wrap">
+                            <div class="pf-avatar" id="perfil-inicial" onclick="abrirSelectorGaleria()">L</div>
+                            <div class="pf-cam" onclick="abrirSelectorGaleria()">
+                                <svg viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zM9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9z"/></svg>
+                            </div>
+                        </div>
+                        <div class="pf-id">
+                            <span class="pf-tag">ID de jugador</span>
+                            <h3 id="perfil-usuario" class="pf-name">Usuario</h3>
+                            <p id="perfil-correo" class="pf-mail">correo@gmail.com</p>
+                            <span class="pf-verif"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Verificado</span>
+                            <span id="perfil-rango-label" style="display:none"></span>
                         </div>
                     </div>
 
-                    <h3 id="perfil-usuario" style="font-size: 1.05rem; font-weight: 900;">Usuario</h3>
-                    <p id="perfil-correo" style="color: var(--text-muted); font-size: 0.78rem; margin-top: 0.2rem;">correo@gmail.com</p>
-                    <p id="perfil-rango-label" style="color: var(--accent-glow); font-size: 0.72rem; font-weight: bold; margin-top: 0.3rem;">CLIENTE PRO</p>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 1rem;">
-                        <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.7rem; text-align: center;">
-                            <h4 id="stat-saldo-movil-perfil" style="font-size: 0.88rem; font-weight: 900; color: var(--text-main);">0 saldo</h4>
-                            <span style="font-size: 0.65rem; color: var(--text-muted);">Saldo Móvil</span>
+                    <div class="pf-stats">
+                        <div class="pf-stat">
+                            <svg viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+                            <h4 id="stat-cantidad-recargas-perfil">0</h4>
+                            <span>Recargas</span>
                         </div>
-                        <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.7rem; text-align: center;">
-                            <h4 id="stat-ref-validos" style="font-size: 0.88rem; font-weight: 900; color: #10b981;">0</h4>
-                            <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos Válidos</span>
+                        <div class="pf-stat">
+                            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                            <h4 id="stat-saldo-movil-perfil">0 saldo</h4>
+                            <span>Saldo</span>
+                        </div>
+                        <div class="pf-stat">
+                            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                            <h4 id="stat-ref-validos">0</h4>
+                            <span>Referidos</span>
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;">
-                        <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.7rem; text-align: center;">
-                            <h4 id="stat-ref-no-activos" style="font-size: 0.88rem; font-weight: 900; color: #f59e0b;">0</h4>
-                            <span style="font-size: 0.65rem; color: var(--text-muted);">Referidos No Activos</span>
-                        </div>
-                        <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: 0.7rem; text-align: center;">
-                            <h4 id="stat-cantidad-recargas-perfil" style="font-size: 0.88rem; font-weight: 900; color: var(--accent-glow);">0</h4>
-                            <span style="font-size: 0.65rem; color: var(--text-muted);">Total Recargas</span>
-                        </div>
+                    <p class="pf-noact">Referidos no activos: <b id="stat-ref-no-activos">0</b></p>
+
+                    <div class="pf-actions">
+                        <button class="pf-logros" onclick="mostrarNotificacion('Tus logros se activarán pronto.')">Mis logros</button>
+                        <button class="pf-sec" onclick="abrirSelectorGaleria()">Mi avatar</button>
+                        <button class="pf-icon" onclick="compartirPerfil()" aria-label="Compartir">
+                            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="pf-barcode">
+                        <div class="pf-bars"></div>
+                        <span id="perfil-codigo">LT-0000</span>
                     </div>
                 </div>
 
@@ -3483,6 +3560,13 @@
         }
         function copiarNumeroWallet() { copiar(tiendaConfig.wallet.saldo.numero, "Número copiado al portapapeles"); }
         function copiarDireccionUSDTNuevo() { copiar(tiendaConfig.wallet.usdt.direccion, `Dirección ${tiendaConfig.wallet.usdt.red} copiada al portapapeles`); }
+        async function compartirPerfil() {
+            const texto = "Únete a Lester Tienda con mi enlace: " + enlaceRef();
+            try {
+                if (navigator.share) { await navigator.share({ title: 'Lester Tienda', text: texto }); return; }
+            } catch (e) { return; }
+            copiar(enlaceRef(), "Enlace copiado");
+        }
         function enlaceRef() { return "https://lestertienda.github.io/Lestertienda-/?ref=" + encodeURIComponent(usuarioActual.nombre); }
         function copiarEnlaceRef() { copiar(enlaceRef(), "Enlace de referido copiado"); }
         function compartirEnlaceRef() {
@@ -3507,6 +3591,7 @@
             if (usuarioActual.rango === 1) rangoTexto = "ADMINISTRADOR (RANGO 1)";
             if (usuarioActual.rango === 2) rangoTexto = "CEO / ADMINISTRADOR TOTAL";
             document.getElementById('perfil-rango-label').innerText = rangoTexto;
+            { const base = String(usuarioActual.id || usuarioActual.correo || '0'); let h = 0; for (const ch of base) h = (h * 31 + ch.charCodeAt(0)) >>> 0; document.getElementById('perfil-codigo').innerText = 'LT-' + h.toString(36).toUpperCase().padStart(6, '0').slice(-6); }
 
             const avatarCircle = document.getElementById('perfil-inicial');
             if (usuarioActual.avatar) avatarCircle.innerHTML = `<img src="${usuarioActual.avatar}" alt="">`;
