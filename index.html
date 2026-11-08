@@ -1812,6 +1812,35 @@
             }
         }
 
+        /* Sube la foto al Worker y devuelve su dirección (así la base de datos no se llena de fotos) */
+        async function subirImagen(dataUrl) {
+            if (!WORKER_URL || !dataUrl || dataUrl.indexOf('data:') !== 0) return dataUrl;
+            try {
+                const r = await fetch(`${WORKER_URL}/api/imagen`, {
+                    method: 'POST',
+                    headers: Object.assign({ 'Content-Type': 'application/json' }, CLAVE_ESCRITURA ? { 'X-Clave': CLAVE_ESCRITURA } : {}),
+                    body: JSON.stringify({ data: dataUrl })
+                });
+                if (!r.ok) return dataUrl;
+                const j = await r.json();
+                return j && j.url ? `${WORKER_URL}${j.url}` : dataUrl;
+            } catch (error) {
+                return dataUrl;
+            }
+        }
+
+        /* Revisa cada pocos segundos si hubo cambios en la nube y, si los hubo, se actualiza al instante */
+        let versionVista = null;
+        async function revisarVersion() {
+            if (!WORKER_URL) return;
+            try {
+                const r = await fetch(`${WORKER_URL}/api/version`, { cache: 'no-store' });
+                const j = await r.json();
+                if (versionVista !== null && j.ver !== versionVista) sincronizar(true);
+                versionVista = j.ver;
+            } catch (error) { /* sin internet: se intenta de nuevo */ }
+        }
+
         /* Trae los datos más recientes de la nube antes de cambiar algo (evita pisar cambios de otros dispositivos). */
         async function traerEstadoFresco() {
             try {
@@ -1948,7 +1977,7 @@
                             if (mejor.length <= tope) break;
                             if (!esTransparente && calidad > 0.7) calidad -= 0.08; else { dim = Math.round(dim * 0.85); }
                         }
-                        resolve(mejor);
+                        subirImagen(mejor).then(resolve);
                     };
                     img.src = e.target.result;
                 };
@@ -2167,6 +2196,7 @@
             sincronizar(true);
             // Con la base nueva se consulta cada 20 s para no gastar el límite gratis de peticiones
             setInterval(() => sincronizar(true), WORKER_URL ? 20000 : 6000);
+            if (WORKER_URL) { revisarVersion(); setInterval(revisarVersion, 4000); }
         }
 
         /* ================= TEMA ================= */
