@@ -1898,6 +1898,8 @@
                     img.onload = () => {
                         let dim = maxDim || 1200, calidad = 0.92, mejor = '';
                         const tope = maxChars || 150000;
+                        // PNG/WebP/GIF pueden tener fondo transparente: se guardan como PNG y sin fondo blanco
+                        const esTransparente = /png|webp|gif/i.test(file.type || '');
                         for (let intento = 0; intento < 12; intento++) {
                             const esc2 = Math.min(1, dim / Math.max(img.width, img.height));
                             const w = Math.max(1, Math.round(img.width * esc2));
@@ -1905,12 +1907,16 @@
                             const canvas = document.createElement('canvas');
                             canvas.width = w; canvas.height = h;
                             const ctx = canvas.getContext('2d');
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillRect(0, 0, w, h);
+                            if (!esTransparente) {
+                                ctx.fillStyle = '#ffffff';
+                                ctx.fillRect(0, 0, w, h);
+                            }
                             ctx.drawImage(img, 0, 0, w, h);
-                            mejor = canvas.toDataURL('image/jpeg', calidad);
+                            mejor = esTransparente
+                                ? canvas.toDataURL('image/png')
+                                : canvas.toDataURL('image/jpeg', calidad);
                             if (mejor.length <= tope) break;
-                            if (calidad > 0.7) calidad -= 0.08; else { dim = Math.round(dim * 0.85); }
+                            if (!esTransparente && calidad > 0.7) calidad -= 0.08; else { dim = Math.round(dim * 0.85); }
                         }
                         resolve(mejor);
                     };
@@ -3309,7 +3315,7 @@
             const file = event.target.files[0];
             if (!file) return;
             try {
-                const data = await comprimirImagen(file, 128, 4500);
+                const data = await comprimirImagen(file, 256, 40000);
                 usuarioActual.avatar = data;
                 let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if (fresh) fresh.avatar = data;
@@ -3966,7 +3972,7 @@
             if (!file) return;
             mostrarCarga("Optimizando imagen...");
             try {
-                const data = await comprimirImagen(file, 140, 5500);
+                const data = await comprimirImagen(file, 256, 40000);
                 ocultarCarga();
                 const idx = window.indicePaqueteSeleccionado;
                 const ok = await guardarConfig(() => { tiendaConfig.paquetesDiamantes[idx].imagen = data; }, "Imagen del paquete guardada con éxito");
@@ -4498,3 +4504,4 @@
     </script>
 </body>
 </html>
+
