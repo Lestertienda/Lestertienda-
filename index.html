@@ -1,437 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head<!DOCTYPE html>
-<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DIAMONDS LEGION</title>
-    
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0b0c10">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Diamonds Legion">
-
-    <!-- Iconos FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Fuentes Orbitron e Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-main: #0b0c10;
-            --bg-card: #1f2833;
-            --text-main: #c5c6c7;
-            --text-muted: #8892b0;
-            --primary-blue: #45a29e;
-            --accent-glow: #66fcf1;
-            --border-color: #354656;
-            --error-color: #ff5555;
-            --success-color: #10b981;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        html, body {
-            min-height: 100vh;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-        }
-
-        body {
-            animation: fadeInPage 0.4s ease forwards;
-        }
-
-        @keyframes fadeInPage {
-            0% { opacity: 0; transform: translateY(6px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* OVERLAY CARGANDO */
-        #loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 12, 16, 0.92); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center; z-index: 99999;
-            flex-direction: column; gap: 12px;
-        }
-        .spinner {
-            width: 44px; height: 44px; border: 3px solid rgba(102, 252, 241, 0.2);
-            border-top: 3px solid var(--accent-glow); border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        .loading-text { font-size: 0.85rem; font-weight: 700; color: var(--accent-glow); letter-spacing: 0.5px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* NOTIFICACIÓN TOAST */
-        #notification-toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200px);
-            background: var(--bg-card); color: var(--accent-glow); border: 1px solid var(--border-color);
-            padding: 0.85rem 1.4rem; border-radius: 8px; font-weight: 700; font-size: 0.82rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 9999999; width: 90%; max-width: 380px; text-align: center;
-        }
-        #notification-toast.show { transform: translateX(-50%) translateY(0); }
-
-        /* SECCIÓN AUTENTICACIÓN */
-        .auth-wrapper {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            width: 100%;
-        }
-
-        .auth-container {
-            max-width: 420px; width: 100%; background: var(--bg-card);
-            border: 1px solid var(--border-color); border-radius: 10px; padding: 2.2rem 1.6rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-        }
-
-        .brand-header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .brand-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #ffffff;
-            text-shadow: 0 0 12px rgba(102, 252, 241, 0.35);
-        }
-        .brand-header h1 span {
-            color: var(--accent-glow);
-        }
-
-        .auth-tabs {
-            display: flex; gap: 10px; margin-bottom: 22px;
-            border-bottom: 1px solid var(--border-color); padding-bottom: 8px;
-        }
-        .auth-tab {
-            flex: 1; text-align: center; padding: 10px; font-weight: 700;
-            font-size: 0.82rem; cursor: pointer; border-radius: 4px; color: var(--text-muted); 
-            background: transparent; border: 1px solid transparent; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s;
-        }
-        .auth-tab.active { color: var(--accent-glow); background: rgba(102, 252, 241, 0.05); border-color: var(--accent-glow); }
-        
-        .form-group { margin-bottom: 1.1rem; position: relative; }
-        .form-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-        .input-icon-wrapper { position: relative; display: flex; align-items: center; }
-        .input-icon-wrapper i.icon-left { position: absolute; left: 14px; color: var(--primary-blue); font-size: 14px; pointer-events: none; }
-        
-        .form-control {
-            width: 100%; background: #0b0c10; border: 1px solid var(--border-color);
-            padding: 0.75rem 2.6rem 0.75rem 2.6rem; border-radius: 4px; color: #ffffff;
-            font-size: 0.88rem; outline: none; transition: border-color 0.2s;
-        }
-        .form-control.no-left-icon { padding-left: 1rem; }
-        .form-control:focus { border-color: var(--accent-glow); }
-        .form-control.input-error { border-color: var(--error-color) !important; background: rgba(255, 85, 85, 0.03); }
-        .error-feedback-text { color: var(--error-color); font-size: 0.7rem; font-weight: 700; margin-top: 5px; display: none; }
-
-        .toggle-password {
-            position: absolute; right: 12px; background: none; border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; height: 100%; width: 30px;
-        }
-        .toggle-password i { color: var(--text-muted); font-size: 14px; }
-        .toggle-password:hover i { color: var(--accent-glow); }
-
-        .btn-main {
-            width: 100%; background: var(--primary-blue); color: #0b0c10; border: none;
-            padding: 0.85rem; border-radius: 4px; font-weight: 800; font-size: 0.88rem;
-            text-transform: uppercase; letter-spacing: 1px;
-            cursor: pointer; transition: all 0.2s; margin-top: 0.8rem;
-        }
-        .btn-main:hover { background: var(--accent-glow); box-shadow: 0 0 15px rgba(102, 252, 241, 0.4); }
-
-        /* NAVEGACIÓN SUPERIOR (PANEL INTERNO) */
-        .navbar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 1rem 1.2rem; background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100;
-        }
-        .nav-brand-title { 
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.05rem; font-weight: 900; color: var(--accent-glow); letter-spacing: 1.5px; 
-        }
-        .nav-top-icon-btn {
-            background: #0b0c10; border: 1px solid var(--border-color); width: 36px; height: 36px;
-            border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer;
-            color: var(--error-color); transition: 0.3s;
-        }
-        .nav-top-icon-btn:hover { background: var(--error-color); color: #fff; }
-
-        /* CONTENEDOR DE VISTAS */
-        .container { max-width: 500px; width: 100%; margin: 0 auto; padding: 1.2rem; flex: 1; display: flex; flex-direction: column; padding-bottom: 85px; }
-        .vista-sec { animation: fadeInPage 0.4s ease forwards; flex: 1; display: flex; flex-direction: column; }
-
-        /* PANELS DE CONTENIDO */
-        .card-panel {
-            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px;
-            padding: 1.4rem; margin-bottom: 1rem;
-        }
-        .card-panel h3 { font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
-        .card-panel p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
-
-        /* BARRA DE NAVEGACIÓN INFERIOR */
-        .app-bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card);
-            border-top: 1px solid var(--border-color); display: flex; justify-content: space-around;
-            padding: 12px 0; z-index: 1000;
-        }
-        .nav-item-btn {
-            background: transparent; border: none; color: var(--text-muted);
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
-            cursor: pointer; transition: color 0.3s ease; flex: 1;
-        }
-        .nav-item-btn i { font-size: 18px; }
-        .nav-item-btn.active, .nav-item-btn:hover { color: var(--accent-glow); }
-
-        .hidden { display: none !important; }
-    </style>
-</head>
-<body>
-
-    <!-- OVERLAY DE CARGA -->
-    <div id="loading-overlay">
-        <div class="spinner"></div>
-        <div class="loading-text" id="loading-text-msg">Procesando...</div>
-    </div>
-
-    <!-- NOTIFICACIONES TOAST -->
-    <div id="notification-toast">Mensaje del Sistema</div>
-
-    <!-- PANTALLA DE AUTENTICACIÓN (REGISTRO & LOGIN) -->
-    <div class="auth-wrapper" id="auth-screen">
-        <div class="auth-container">
-            <div class="brand-header">
-                <h1>DIAMONDS <span>LEGION</span></h1>
-            </div>
-
-            <!-- Botones Pestaña -->
-            <div class="auth-tabs">
-                <button class="auth-tab active" id="tab-btn-register" onclick="switchAuthTab('register')">Registrarse</button>
-                <button class="auth-tab" id="tab-btn-login" onclick="switchAuthTab('login')">Iniciar Sesión</button>
-            </div>
-
-            <!-- FORMULARIO DE REGISTRO -->
-            <form id="register-form" onsubmit="handleRegister(event)">
-                <div class="form-group">
-                    <label>Nombre de Usuario</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-user icon-left"></i>
-                        <input type="text" id="reg-username" class="form-control" placeholder="Introduce tu usuario" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Correo Electrónico</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-envelope icon-left"></i>
-                        <input type="text" id="reg-email" class="form-control" placeholder="ejemplo@correo.com" required>
-                    </div>
-                    <div class="error-feedback-text" id="error-email">Introduce un correo válido (ej: usuario@mail.com).</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-lock icon-left"></i>
-                        <input type="password" id="reg-pass" class="form-control" placeholder="Letra, número y símbolo" required>
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-pass', this)">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="error-feedback-text" id="error-pass">La clave requiere al menos 1 letra, 1 número y 1 símbolo.</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Confirmar Contraseña</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-lock icon-left"></i>
-                        <input type="password" id="reg-pass-confirm" class="form-control" placeholder="Repite tu contraseña" required>
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-pass-confirm', this)">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                    </div>
-                    <div class="error-feedback-text" id="error-confirm">Las contraseñas no coinciden.</div>
-                </div>
-
-                <button type="submit" class="btn-main">Registrarse e Iniciar</button>
-            </form>
-
-            <!-- FORMULARIO DE INICIO DE SESIÓN -->
-            <form id="login-form" class="hidden" onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label>Usuario o Correo Electrónico</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-user icon-left"></i>
-                        <input type="text" id="login-user" class="form-control" placeholder="Introduce tu usuario o correo" required>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <div class="input-icon-wrapper">
-                        <i class="fa-solid fa-lock icon-left"></i>
-                        <input type="password" id="login-pass" class="form-control" placeholder="••••••••" required>
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-pass', this)">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-main">Iniciar Sesión</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- PANEL PRINCIPAL (DASHBOARD COMPLETO) -->
-    <div id="main-app-screen" class="hidden" style="flex:1; display:flex; flex-direction:column;">
-        <nav class="navbar">
-            <div class="nav-brand-title">DIAMONDS LEGION</div>
-            <button class="nav-top-icon-btn" onclick="logoutSession()" title="Cerrar Sesión">
-                <i class="fa-solid fa-power-off"></i>
-            </button>
-        </nav>
-
-        <div class="container">
-            <!-- VISTA DE INICIO -->
-            <div id="section-home" class="vista-sec">
-                <div class="card-panel">
-                    <h3 id="welcome-title">¡Bienvenido!</h3>
-                    <p>Has iniciado sesión con éxito en la plataforma de Diamonds Legion. El sistema se encuentra totalmente operativo.</p>
-                </div>
-                
-                <div class="card-panel">
-                    <h3>Estado de Conexión</h3>
-                    <p style="color: var(--accent-glow); font-weight: bold;">● Servidor Local Activo (Termux)</p>
-                </div>
-            </div>
-
-            <!-- VISTA DE HISTORIAL -->
-            <div id="section-history" class="vista-sec hidden">
-                <div class="card-panel">
-                    <h3>Historial de Actividad</h3>
-                    <p>Muestra el registro de accesos y operaciones realizadas en la cuenta.</p>
-                </div>
-                <div class="card-panel">
-                    <p style="text-align:center; color: var(--text-muted); font-style: italic; padding: 1rem 0;">No se registran transacciones recientes.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- BARRA INFERIOR (FOOTER CON ICONOS) -->
-        <nav class="app-bottom-nav">
-            <button class="nav-item-btn active" id="btn-nav-home" onclick="switchAppTab('home')">
-                <i class="fa-solid fa-house"></i>
-                <span>Inicio</span>
-            </button>
-            <button class="nav-item-btn" id="btn-nav-history" onclick="switchAppTab('history')">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                <span>Historial</span>
-            </button>
-        </nav>
-    </div>
-
-    <!-- PROGRAMACIÓN Y LÓGICA DE LA PÁGINA -->
-    <script>
-        // Funciones de Notificación Toast y Animación de Carga
-        function showToast(msg) {
-            const toast = document.getElementById('notification-toast');
-            toast.innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
-        }
-
-        function showLoading(msg = "Cargando...") {
-            document.getElementById('loading-text-msg').innerText = msg;
-            document.getElementById('loading-overlay').style.display = 'flex';
-        }
-
-        function hideLoading() {
-            document.getElementById('loading-overlay').style.display = 'none';
-        }
-
-        // Alternar entre Registrarse e Iniciar Sesión
-        function switchAuthTab(tab) {
-            const loginForm = document.getElementById('login-form');
-            const regForm = document.getElementById('register-form');
-            const btnLogin = document.getElementById('tab-btn-login');
-            const btnReg = document.getElementById('tab-btn-register');
-
-            if (tab === 'login') {
-                loginForm.classList.remove('hidden');
-                regForm.classList.add('hidden');
-                btnLogin.classList.add('active');
-                btnReg.classList.remove('active');
-            } else {
-                loginForm.classList.add('hidden');
-                regForm.classList.remove('hidden');
-                btnReg.classList.add('active');
-                btnLogin.classList.remove('active');
-            }
-        }
-
-        // Mostrar / Ocultar Contraseña con Ojito
-        function togglePasswordVisibility(inputId, btnElement) {
-            const input = document.getElementById(inputId);
-            const icon = btnElement.querySelector('i');
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash");
-            } else {
-                input.type = "password";
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye");
-            }
-        }
-
-        // Lógica de Registro con Validaciones
-        function handleRegister(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('reg-username').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const pass = document.getElementById('reg-pass').value;
-            const confirmPass = document.getElementById('reg-pass-confirm').value;
-
-            let isValid = true;
-
-            // 1. Validar correo (si ponen solo "l" o formato sin arroba ni dominio da error)
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            const emailInput = document.getElementById('reg-email');
-            const errorEmail = document.getElementById('error-email');
-            
-            if (!emailRegex.test(email)) {
-                emailInput.classList.add('input-error');
-                errorEmail.style.display = 'block';
-                isValid = false;
-            } else {
-                emailInput.classList.remove('input-error');
-                errorEmail.style.display = 'none';
-            }
-
-            // 2. Validar contraseña (letra, número y símbolo)
-            const passInput = document.getElementById('reg-pass');
-            const errorPass = document.getElementById('error-pass');
-            const hasLetter = /[a-zA-Z]/.test(pass);
-            const hasNumber = /[0-9]/.test(pass);
-            const hasSymbol = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pass);
-
-            if (!hasLet
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lester Tienda - Pro Gaming Store</title>
@@ -1120,7 +689,7 @@
     <input type="file" id="ceo-injected-image-uploader" accept="image/*" style="display: none;" onchange="procesarImagenInyectadaCEO(event)">
 
     <!-- 1. AUTENTICACIÓN -->
-    <div id="auth-screen" class="auth-container">
+    <div id="auth-screen" class="auth-container" style="display: none;">
         <div class="inject-slot" data-slot="login"></div>
         <div class="auth-tabs">
             <div id="tab-reg" class="auth-tab active" onclick="cambiarTabAuth('registro')">Registrarse</div>
@@ -2325,7 +1894,7 @@
             sesionPendiente = null;
             if (!p) return;
             const f = listaUsuariosGlobales.find(u => (u.correo || '').toLowerCase() === String(p.c || '').toLowerCase() && u.pass === p.p);
-            if (!f) return;
+            if (!f) { mostrarAuth(); return; }
             usuarioActual = f;
             localStorage.setItem('lester_usuario', JSON.stringify(f));
             entrarALaApp();
@@ -2375,6 +1944,8 @@
         function init() {
             if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
             if (usuarioActual) guardarCookieSesion(usuarioActual);
+            if (!usuarioActual && !sesionPendiente) mostrarAuth();
+            if (!usuarioActual && sesionPendiente) setTimeout(() => { if (!usuarioActual) { sesionPendiente = null; mostrarAuth(); } }, 5000);
             const urlParams = new URLSearchParams(window.location.search);
             const refParam = urlParams.get('ref');
             if (refParam) {
@@ -2664,7 +2235,15 @@
             return true;
         }
 
+        function mostrarAuth() {
+            const au = document.getElementById('auth-screen');
+            const ap = document.getElementById('app-screen');
+            if (au) au.style.display = 'block';
+            if (ap) ap.style.display = 'none';
+        }
         function entrarALaApp() {
+            const au = document.getElementById('auth-screen');
+            if (au) au.style.display = 'none';
             if (usuarioActual) guardarCookieSesion(usuarioActual);
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('app-screen').style.display = 'flex';
@@ -2957,7 +2536,7 @@
                         const tr = box.firstElementChild;
                         const mitad = tr ? tr.scrollWidth / 2 : 0;
                         if (mitad > 0) {
-                            pos += 0.5;
+                            pos += 1.3;
                             if (pos >= mitad) pos -= mitad;
                             box.scrollLeft = pos;
                         }
