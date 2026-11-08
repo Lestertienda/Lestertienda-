@@ -449,6 +449,35 @@
 
         .ceo-action-form { background: var(--bg-main); border: 1px solid #ff3b30; border-radius: 14px; padding: 1.1rem; margin-bottom: 0.9rem; }
         .ceo-action-form h4 { font-size: 0.88rem; color: #ff3b30; margin-bottom: 0.7rem; font-weight: 900; }
+        .ceo-destacados { display: grid; gap: 8px; margin-top: 0.9rem; }
+        .ceo-btn-verde {
+            display: flex; align-items: center; gap: 10px; width: 100%; border: none; cursor: pointer;
+            background: linear-gradient(135deg, #22c55e 0%, #059669 100%); color: #fff;
+            padding: 0.85rem 1rem; border-radius: 14px; font-weight: 900; font-size: 0.85rem; text-align: left;
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35); transition: transform .2s, box-shadow .2s;
+        }
+        .ceo-btn-verde:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(16, 185, 129, 0.5); }
+        .ceo-btn-verde svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .ceo-btn-verde em { margin-left: auto; font-style: normal; background: rgba(255,255,255,.22); padding: 3px 10px; border-radius: 999px; font-size: .72rem; }
+        .ceo-btn-verde small { font-weight: 600; opacity: .85; font-size: .66rem; display: block; }
+        .dep-ceo-card { background: var(--bg-card); border: 1px solid #22c55e; border-radius: 16px; padding: .9rem; margin-bottom: .7rem; font-size: .78rem; }
+        .dep-ceo-head { display: flex; align-items: center; gap: 8px; font-weight: 900; color: #22c55e; margin-bottom: .6rem; font-size: .85rem; }
+        .dep-ceo-head svg, .dep-ceo-fila svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .dep-ceo-fila { display: flex; gap: 10px; align-items: flex-start; padding: .5rem 0; border-top: 1px solid var(--border-color); }
+        .dep-ceo-fila > svg { color: var(--accent-glow); margin-top: 2px; }
+        .dep-ceo-fila small { display: block; color: var(--text-muted); font-size: .66rem; }
+        .dep-ceo-fila b { display: block; word-break: break-all; }
+        .dep-ceo-sub { color: var(--text-muted); font-size: .7rem; }
+        .dep-ceo-num { color: #f59e0b; font-size: .95rem; letter-spacing: .5px; }
+        .dep-ceo-img { width: 100%; max-height: 240px; object-fit: contain; border-radius: 12px; border: 1px solid var(--border-color); margin-top: 6px; cursor: zoom-in; background: var(--bg-main); }
+        .dep-ceo-acciones { display: flex; gap: 8px; margin-top: .6rem; }
+        .dep-ceo-acciones button { flex: 1; border: none; color: #fff; padding: .6rem; border-radius: 10px; font-weight: 900; cursor: pointer; font-size: .78rem; }
+        .dep-ok { background: #22c55e; } .dep-no { background: #ef4444; }
+        .inj-prev { touch-action: none; }
+        .inj-drag { touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+        .inj-drag:active { cursor: grabbing; }
+        .img-ampliada { position: fixed; inset: 0; background: rgba(0,0,0,.9); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; }
+        .img-ampliada img { max-width: 100%; max-height: 100%; border-radius: 12px; }
         .ceo-action-form label { display: block; font-size: 0.7rem; color: var(--text-muted); font-weight: 700; margin: 0 0 3px 2px; }
         .ceo-action-form input, .ceo-action-form select, .ceo-action-form textarea {
             width: 100%; background: var(--bg-card); border: 1px solid var(--border-color);
@@ -586,14 +615,14 @@
         .op-feed-photo { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; margin-top: .6rem; }
         .stars-row { color: #facc15; font-size: .85rem; letter-spacing: 2px; text-shadow: 0 0 8px rgba(250,204,21,.6); }
         .op-cta { width: 100%; background: var(--bg-card); border: 1.5px dashed var(--accent-glow); color: var(--accent-glow); padding: .8rem; border-radius: 14px; font-weight: 800; font-size: .82rem; cursor: pointer; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .op-marquee { overflow-x: auto; width: 100%; margin: 0 -1.1rem 1rem; padding: .3rem 0 .4rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x; }
+        .op-marquee { overflow: hidden; width: 100%; margin: 0 -1.1rem 1rem; padding: .3rem 0 .4rem; touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: grab; }
         .op-marquee::-webkit-scrollbar { display: none; }
         .ver-mas { background: rgba(0,240,255,.08); border: 1px solid var(--accent-glow); color: var(--accent-glow); padding: .35rem .85rem; border-radius: 20px; font-weight: 800; font-size: .72rem; cursor: pointer; }
         .ver-mas:active { transform: scale(.96); }
         .op-box-opinar { background: var(--bg-card); border: 1.5px dashed var(--accent-glow); border-radius: 16px; padding: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 1rem; }
         .op-box-opinar b { font-size: .88rem; color: var(--text-main); }
         .op-box-opinar p { font-size: .7rem; color: var(--text-muted); margin-top: 2px; }
-        .op-track { display: flex; gap: 12px; width: max-content; padding: 0 1.1rem; }
+        .op-track { display: flex; gap: 12px; width: max-content; padding: 0 1.1rem; will-change: transform; }
         .op-card-h { width: 250px; flex-shrink: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: .8rem .9rem; min-height: 150px; display: flex; flex-direction: column; gap: 6px; }
         .op-card-h .op-feed-photo { max-height: 90px; margin-top: 4px; }
         .op-card-h .op-feed-txt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -1163,6 +1192,15 @@
                     <div class="form-group" style="margin-top: 1rem;">
                         <label>Tu número con el que transfirió el saldo</label>
                         <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="59578110" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Comprobante de la transferencia (foto de tu galería)</label>
+                        <input type="file" id="comprobante-deposito-input" accept="image/*" style="display: none;" onchange="seleccionarComprobanteDeposito(event)">
+                        <button type="button" class="btn-main" style="background: var(--bg-main); color: var(--text-main); border: 1px dashed var(--accent-glow);" onclick="document.getElementById('comprobante-deposito-input').click()">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--accent-glow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -4px; margin-right: 6px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>Elegir foto de la galería
+                        </button>
+                        <div id="comprobante-deposito-prev" style="display: none; margin-top: 8px;"></div>
                     </div>
 
                     <button class="btn-main" onclick="confirmarDepositoSaldo()">CONFIRMAR DEPÓSITO</button>
@@ -1810,6 +1848,7 @@
                     refrescarUsuarioActual();
                     if (!usuarioActual && sesionPendiente) restaurarSesionPendiente();
                     revisarAvisos();
+                    avisarNuevasSolicitudesCEO();
                     if (usuarioActual) {
                         actualizarPerfilUI();
                         if (cambioSolic) renderizarOrdenes();
@@ -1833,7 +1872,7 @@
         const CLOUDINARY_CLOUD = '';   // nombre de tu cloud, ej. 'lestertienda'
         const CLOUDINARY_PRESET = '';  // upload preset sin firma, ej. 'lester_unsigned'
 
-        async function comprimirImagen(file, maxDim) {
+        async function comprimirImagen(file, maxDim, maxChars) {
             if (CLOUDINARY_CLOUD && CLOUDINARY_PRESET) {
                 const fd = new FormData();
                 fd.append('file', file);
@@ -1851,7 +1890,8 @@
                     const img = new Image();
                     img.onerror = () => reject(new Error('Imagen no válida'));
                     img.onload = () => {
-                        let dim = Math.max(maxDim || 0, 1000), calidad = 0.92, mejor = '';
+                        let dim = maxDim || 1000, calidad = 0.92, mejor = '';
+                        const tope = maxChars || 90000;
                         for (let intento = 0; intento < 12; intento++) {
                             const esc2 = Math.min(1, dim / Math.max(img.width, img.height));
                             const w = Math.max(1, Math.round(img.width * esc2));
@@ -1863,7 +1903,7 @@
                             ctx.fillRect(0, 0, w, h);
                             ctx.drawImage(img, 0, 0, w, h);
                             mejor = canvas.toDataURL('image/jpeg', calidad);
-                            if (mejor.length <= 90000) break;
+                            if (mejor.length <= tope) break;
                             if (calidad > 0.7) calidad -= 0.08; else { dim = Math.round(dim * 0.85); }
                         }
                         resolve(mejor);
@@ -1918,18 +1958,107 @@
                 const para = String(n.para || 'todos').toLowerCase();
                 if (para !== 'todos' && para !== miNombre) return;
                 mostrarNotificacion(n.mensaje);
-                if ('Notification' in window && Notification.permission === 'granted') {
-                    const opts = { body: n.mensaje, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'lester-' + n.id };
-                    if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-                        navigator.serviceWorker.ready
-                            .then(reg => reg.showNotification('Lester Tienda', opts))
-                            .catch(() => { try { new Notification('Lester Tienda', opts); } catch (e) {} });
-                    } else {
-                        try { new Notification('Lester Tienda', opts); } catch (e) {}
-                    }
-                }
+                reproducirSonidoLester('aviso');
+                mostrarAvisoSistema('Lester Tienda', n.mensaje, 'lester-' + n.id);
             });
             localStorage.setItem('lester_avisos_vistos', JSON.stringify([...set].slice(-200)));
+        }
+
+        /* Aviso del sistema (barra de notificaciones del celular) */
+        function mostrarAvisoSistema(titulo, cuerpo, tag) {
+            if (!('Notification' in window) || Notification.permission !== 'granted') return;
+            const opts = { body: cuerpo, icon: 'icon-192.png', badge: 'icon-192.png', tag: tag, renotify: true, vibrate: [250, 120, 250], data: { url: './index.html' } };
+            if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                navigator.serviceWorker.ready
+                    .then(reg => reg.showNotification(titulo, opts))
+                    .catch(() => { try { new Notification(titulo, opts); } catch (e) {} });
+            } else {
+                try { new Notification(titulo, opts); } catch (e) {}
+            }
+        }
+
+        /* Sonidos generados aquí mismo (sin archivos): "solicitud" (melodía) y "aviso" (tono tipo SMS de iPhone) */
+        let audioLester = null;
+        function desbloquearSonidoLester() {
+            try {
+                if (!audioLester) audioLester = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioLester.state === 'suspended') audioLester.resume();
+            } catch (e) {}
+        }
+        ['pointerdown', 'touchstart', 'keydown'].forEach(ev => document.addEventListener(ev, desbloquearSonidoLester, { passive: true }));
+        function reproducirSonidoLester(tipo) {
+            try {
+                desbloquearSonidoLester();
+                if (!audioLester || audioLester.state !== 'running') return;
+                const notas = tipo === 'solicitud'
+                    ? [[1046.5, 0], [1318.5, 0.14], [1568, 0.28], [2093, 0.42], [1568, 0.62], [2093, 0.78]]
+                    : [[1318.5, 0], [1046.5, 0.17], [1318.5, 0.34]];
+                const ctx = audioLester, ahora = ctx.currentTime;
+                notas.forEach(([f, t]) => {
+                    const t0 = ahora + t;
+                    [[f, 0.22], [f * 2, 0.05]].forEach(([fr, vol]) => {
+                        const osc = ctx.createOscillator(), g = ctx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.value = fr;
+                        g.gain.setValueAtTime(0.0001, t0);
+                        g.gain.exponentialRampToValueAtTime(vol, t0 + 0.02);
+                        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.45);
+                        osc.connect(g); g.connect(ctx.destination);
+                        osc.start(t0); osc.stop(t0 + 0.5);
+                    });
+                });
+            } catch (e) {}
+        }
+
+        /* Avisa al CEO cuando llega una solicitud de recarga o depósito (dentro o fuera de la página) */
+        function avisarNuevasSolicitudesCEO() {
+            if (!usuarioActual || !esCEOUsuario()) return;
+            const todas = [
+                ...solicitudesGlobales.recargas.map(s => ({ ...s, _t: 'recarga' })),
+                ...solicitudesGlobales.depositos.map(s => ({ ...s, _t: 'deposito' }))
+            ];
+            const claves = todas.map(s => s._t + '-' + s.id);
+            const vistas = leerJSON('lester_sol_vistas', null);
+            if (vistas === null) {
+                localStorage.setItem('lester_sol_vistas', JSON.stringify(claves.slice(-500)));
+                return;
+            }
+            const set = new Set(vistas);
+            const nuevas = todas.filter(s => !set.has(s._t + '-' + s.id) && s.estado === 'Pendiente');
+            claves.forEach(c => set.add(c));
+            localStorage.setItem('lester_sol_vistas', JSON.stringify([...set].slice(-500)));
+            if (nuevas.length === 0) return;
+
+            const textoDe = s => s._t === 'deposito'
+                ? `${s.usuario}: depósito de ${s.monto} ${s.moneda === 'usdt' ? 'USDT' : 'saldo'}`
+                : `${s.usuario}: recarga de ${s.precio} ${s.moneda === 'usdt' ? 'USDT' : 'saldo'}`;
+            const titulo = nuevas.length === 1 ? 'Nueva solicitud en Lester Tienda' : nuevas.length + ' nuevas solicitudes en Lester Tienda';
+            const cuerpo = nuevas.length === 1 ? textoDe(nuevas[0]) : nuevas.map(textoDe).join(' · ');
+            mostrarNotificacion(titulo + ': ' + cuerpo);
+            reproducirSonidoLester('solicitud');
+            mostrarAvisoSistema(titulo, cuerpo, 'sol-' + Date.now());
+        }
+
+        /* Iconos de línea para el panel CEO */
+        const ICONOS_LINEA = {
+            user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+            money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/>',
+            phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+            image: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/>',
+            coin: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.5c-.4-.9-1.4-1.5-2.5-1.5-1.5 0-2.5.7-2.5 1.8s1 1.6 2.5 1.9 2.5.8 2.5 2-1 1.8-2.5 1.8c-1.2 0-2.2-.6-2.6-1.5M12 6v1.5M12 16.5V18"/>',
+            bolt: '<path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/>',
+            star: '<path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2-4.5-4.4 6.2-.9z"/>'
+        };
+        function iconoSVG(nombre) {
+            return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (ICONOS_LINEA[nombre] || '') + '</svg>';
+        }
+
+        function abrirImagenCompleta(src) {
+            const capa = document.createElement('div');
+            capa.className = 'img-ampliada';
+            capa.innerHTML = '<img src="' + src + '" alt="Comprobante">';
+            capa.onclick = () => capa.remove();
+            document.body.appendChild(capa);
         }
 
         function activarAvisos() {
@@ -2102,9 +2231,14 @@
         }
 
         function renderizarElementosInyectados() {
-            const porLugar = {};
+            const porLugar = {}, libresPorLugar = {};
             (tiendaConfig.injectedElements || []).forEach(el => {
                 const l = el.lugar || 'inicio-top';
+                if (el.pos) {
+                    // Modo arrastrar: se coloca en el punto que elegiste
+                    (libresPorLugar[l] = libresPorLugar[l] || []).push(el);
+                    return;
+                }
                 if (!porLugar[l]) porLugar[l] = '';
                 const aj = ajustesDe(el);
                 const estilo = `width:${aj.ancho}%; margin-top:${aj.arriba}px; margin-bottom:${aj.abajo}px; margin-left:${aj.alin === 'izq' ? 0 : 'auto'}; margin-right:${aj.alin === 'der' ? 0 : 'auto'};`;
@@ -2115,7 +2249,17 @@
                 }
             });
             document.querySelectorAll('.inject-slot').forEach(slot => {
-                slot.innerHTML = porLugar[slot.getAttribute('data-slot')] || '';
+                const l = slot.getAttribute('data-slot');
+                let html = porLugar[l] || '';
+                if (libresPorLugar[l] && libresPorLugar[l].length) {
+                    html += `<div style="position:relative; width:100%; height:${INJ_ALTO}px; margin-bottom:12px;">` +
+                        libresPorLugar[l].map(el => {
+                            const p = posicionDe(el);
+                            const ancho = el.ajustes && el.ajustes.ancho ? el.ajustes.ancho : 60;
+                            return `<div class="custom-injected-element" style="position:absolute; left:${p.x}%; top:${p.y}%; width:${ancho}%; transform:translate(-50%,-50%); margin:0;">${contenidoInyectado(el)}</div>`;
+                        }).join('') + `</div>`;
+                }
+                slot.innerHTML = html;
             });
         }
 
@@ -2507,7 +2651,10 @@
             if (!el) return;
             const ops = (tiendaConfig.opiniones || []).filter(o => o.aprobada !== false).slice().reverse().slice(0, 30);
             const addTile = '';
-            const tiles = ops.map(o => {
+            // Si hay pocas opiniones, se repiten para que el carrusel siempre tenga largo suficiente
+            let base = ops.slice();
+            while (base.length && base.length < 4) base = base.concat(ops);
+            const tiles = base.map(o => {
                 const n = Math.max(1, Math.min(5, o.estrellas || 5));
                 const av = o.avatar ? '<img src="' + o.avatar + '" alt="">' : esc((o.nombre || '?').charAt(0).toUpperCase());
                 const foto = o.foto ? '<img class="op-feed-photo" src="' + o.foto + '" alt="">' : '';
@@ -2522,30 +2669,49 @@
             iniciarCarruselOpiniones();
         }
 
-        let opPausa = 0;
+        /* Carrusel de opiniones: se mueve solo; con el dedo se arrastra y, al soltar, SIEMPRE vuelve a moverse */
+        let opOffset = 0, opVel = 0, opArrastrando = false;
         function iniciarCarruselOpiniones() {
             const box = document.getElementById('op-marquee');
             if (!box || box.dataset.iniciado) return;
             box.dataset.iniciado = '1';
-            let pos = 0;
-            const paso = () => {
-                if (box.offsetParent !== null) {
-                    if (Date.now() < opPausa) {
-                        pos = box.scrollLeft;
-                    } else {
-                        const tr = box.firstElementChild;
-                        const mitad = tr ? tr.scrollWidth / 2 : 0;
-                        if (mitad > 0) {
-                            pos += 1.3;
-                            if (pos >= mitad) pos -= mitad;
-                            box.scrollLeft = pos;
-                        }
+            const track = box.firstElementChild;
+            const VELOCIDAD = 1.3;
+            let startX = 0, startOff = 0;
+
+            const frame = () => {
+                if (box.offsetParent !== null && track) {
+                    if (!opArrastrando) {
+                        if (Math.abs(opVel) > VELOCIDAD) { opOffset += opVel; opVel *= 0.94; }
+                        else { opVel = 0; opOffset += VELOCIDAD; }
+                    }
+                    const mitad = track.scrollWidth / 2;
+                    if (mitad > 0) {
+                        opOffset = ((opOffset % mitad) + mitad) % mitad;
+                        track.style.transform = 'translate3d(' + (-opOffset) + 'px,0,0)';
                     }
                 }
-                requestAnimationFrame(paso);
+                requestAnimationFrame(frame);
             };
-            ['touchstart', 'pointerdown', 'wheel'].forEach(ev => box.addEventListener(ev, () => { opPausa = Date.now() + 2500; }, { passive: true }));
-            requestAnimationFrame(paso);
+
+            box.addEventListener('pointerdown', (e) => {
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                opArrastrando = true;
+                startX = e.clientX;
+                startOff = opOffset;
+                opVel = 0;
+            });
+            window.addEventListener('pointermove', (e) => {
+                if (!opArrastrando) return;
+                const prev = opOffset;
+                opOffset = startOff - (e.clientX - startX);
+                opVel = Math.max(-40, Math.min(40, opOffset - prev));
+            });
+            const soltar = () => { opArrastrando = false; };
+            window.addEventListener('pointerup', soltar);
+            window.addEventListener('pointercancel', soltar);
+            box.addEventListener('wheel', (e) => { opOffset += (e.deltaX || e.deltaY); opVel = 0; }, { passive: true });
+            requestAnimationFrame(frame);
         }
 
         function abrirTodasOpiniones() {
@@ -2616,23 +2782,53 @@
 
             if (isNaN(monto) || monto <= 0) { mostrarNotificacion("Introduce un monto válido"); return; }
             if (!telefonoTransfirio || telefonoTransfirio.length < 6) { mostrarNotificacion("Introduce el número con el que realizaste la transferencia"); return; }
+            if (!comprobanteDepositoData) { mostrarNotificacion("Sube la foto del comprobante desde tu galería"); return; }
 
             mostrarCarga("Enviando depósito...");
             setTimeout(async () => {
+                const idDep = Date.now();
                 solicitudesGlobales.depositos.push({
-                    id: Date.now(), correo: usuarioActual.correo.toLowerCase(), usuario: usuarioActual.nombre,
-                    monto: monto, moneda: 'saldo', telefonoTransfirio: telefonoTransfirio, estado: 'Pendiente'
+                    id: idDep, correo: usuarioActual.correo.toLowerCase(), usuario: usuarioActual.nombre,
+                    monto: monto, moneda: 'saldo', telefonoTransfirio: telefonoTransfirio, estado: 'Pendiente',
+                    comprobante: comprobanteDepositoData
                 });
                 localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-                await guardarEnCloud();
+                const ok = await guardarEnCloud();
                 ocultarCarga();
+                if (!ok) {
+                    solicitudesGlobales.depositos = solicitudesGlobales.depositos.filter(d => d.id !== idDep);
+                    localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                    mostrarNotificacion("No se pudo enviar: la nube está llena o sin internet. Intenta de nuevo.");
+                    return;
+                }
                 mostrarNotificacion("Depósito de saldo móvil enviado a revisión");
                 document.getElementById('monto-deposito').value = '';
                 document.getElementById('telefono-transfirio').value = '';
+                comprobanteDepositoData = '';
+                document.getElementById('comprobante-deposito-prev').style.display = 'none';
                 renderizarOrdenes();
                 cambiarTabOrdenes('depositos');
                 cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
             }, 500);
+        }
+
+        let comprobanteDepositoData = '';
+        async function seleccionarComprobanteDeposito(event) {
+            const file = event.target.files[0];
+            event.target.value = '';
+            if (!file) return;
+            mostrarCarga("Preparando comprobante...");
+            try {
+                comprobanteDepositoData = await comprimirImagen(file, 800, 30000);
+                const prev = document.getElementById('comprobante-deposito-prev');
+                prev.innerHTML = '<img src="' + comprobanteDepositoData + '" alt="Comprobante" style="width:100%; max-height:200px; object-fit:contain; border-radius:12px; border:1px solid var(--border-color); background:var(--bg-main);">';
+                prev.style.display = 'block';
+                mostrarNotificacion("Comprobante listo");
+            } catch (e) {
+                mostrarNotificacion("No se pudo leer la imagen");
+            } finally {
+                ocultarCarga();
+            }
         }
 
         /* ================= COMPRAS ================= */
@@ -3313,12 +3509,17 @@
                     <button class="ceo-btn" onclick="cargarAccionCEO('acreditar')">Acreditar</button>
                     <button class="ceo-btn" onclick="cargarAccionCEO('desacreditar')">Desacreditar</button>`;
 
+                let destacados = '';
                 if (esCEO) {
+                    const pendRec = solicitudesGlobales.recargas.filter(s => s.estado === 'Pendiente').length;
+                    const pendDep = solicitudesGlobales.depositos.filter(s => s.estado === 'Pendiente').length;
+                    destacados = `<div class="ceo-destacados">
+                        <button class="ceo-btn-verde" onclick="cargarAccionCEO('solicitudes_deposito')">${iconoSVG('money')}<span>Depósitos<small>Solicitudes por revisar</small></span><em>${pendDep} pendientes</em></button>
+                        <button class="ceo-btn-verde" onclick="cargarAccionCEO('solicitudes_recarga')">${iconoSVG('bolt')}<span>Recargas<small>Solicitudes por completar</small></span><em>${pendRec} pendientes</em></button>
+                        <button class="ceo-btn-verde" onclick="cargarAccionCEO('socios_vip')">${iconoSVG('star')}<span>Socios para VIP<small>10 o más referidos válidos</small></span></button>
+                    </div>`;
                     htmlBotones += `
-                        <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_recarga')">Recargas (${solicitudesGlobales.recargas.length})</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('solicitudes_deposito')">Depósitos (${solicitudesGlobales.depositos.length})</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('historial_depositos')">Historial Depósitos</button>
-                        <button class="ceo-btn" onclick="cargarAccionCEO('socios_vip')">Socios para VIP</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('cambiar_rango')">Gestionar Rangos</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('control_total_historial')">Control Total Historial</button>
                         <button class="ceo-btn" onclick="cargarAccionCEO('wallet_logica')">Control Wallet Lógica</button>
@@ -3336,6 +3537,7 @@
                     <div class="ceo-box">
                         <h3 style="color: #ff3b30; margin-bottom: 0.3rem; font-weight: 900; font-size:0.92rem;">PANEL DE CONTROL ${esCEO ? 'CEO SUPREMO' : 'ADMIN (RANGO 1)'}</h3>
                         <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.8rem;">${esc(usuarioActual.correo)}</p>
+                        ${destacados}
                         <div class="ceo-grid">${htmlBotones}</div>
                     </div>`;
             } else {
@@ -3434,6 +3636,7 @@
                 solicitudesGlobales.depositos.forEach((d, idx) => {
                     if (d.estado === 'Pendiente') {
                         hay = true;
+                        if (d.moneda !== 'usdt') { html += tarjetaDepositoSaldoCEO(d, idx); return; }
                         html += `<div style="background:var(--bg-card); padding:0.8rem; margin-bottom:0.6rem; border-radius:12px; border:1px solid var(--border-color); font-size:0.78rem;">
                             <b>User:</b> ${esc(d.usuario)} (${esc(d.correo)}) | <b>Monto:</b> ${d.monto} ${d.moneda === 'usdt' ? 'USDT' : 'saldo'}<br>
                             <b>Número / TxID:</b> <span style="color:#f59e0b; font-weight:bold; word-break:break-all;">${esc(d.telefonoTransfirio || 'N/A')}</span>
@@ -3574,6 +3777,8 @@
                     <div class="ceo-action-form">
                         <h4>Poner foto o texto donde tú quieras</h4>
                         <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB de 100 KB.</p>
+                        <label>Nombre de la foto (para reconocerla en la lista)</label>
+                        <input type="text" id="ceo-inject-nombre" maxlength="60" placeholder="Ej. Promo navidad">
                         <label>¿En qué página / lugar?</label>
                         <select id="ceo-inject-lugar">${optsLugar}</select>
                         <button class="btn-main" style="margin-bottom:10px; margin-top:0;" onclick="abrirInyectorImagenCEO()">Subir Foto</button>
@@ -3584,18 +3789,10 @@
                     <h5 style="color:var(--text-main); font-size:0.82rem; margin:6px 0;">Elementos publicados:</h5>`;
                 if ((tiendaConfig.injectedElements || []).length === 0) html += `<p style="color:var(--text-muted); font-size:0.78rem;">Todavía no hay elementos.</p>`;
                 (tiendaConfig.injectedElements || []).forEach((el, eIdx) => {
-                    let prev = el.type === 'image' ? `<img src="${el.content}" style="width:44px; height:44px; object-fit:cover; border-radius:8px;" alt="">` : `<div style="width:44px; height:44px; background:var(--bg-main); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.7rem;">Txt</div>`;
-                    let opts = LUGARES.map(l => `<option value="${l[0]}" ${el.lugar === l[0] ? 'selected' : ''}>${l[1]}</option>`).join('');
-                    html += `<div style="background:var(--bg-card); padding:0.7rem; border-radius:12px; border:1px solid var(--border-color); margin-bottom:8px; display:flex; gap:10px; align-items:center;">
-                        ${prev}
-                        <div style="flex:1; min-width:0;">
-                            <div style="font-size:0.72rem; font-weight:800; margin-bottom:4px;">Elemento ${eIdx + 1} (${el.type === 'image' ? 'Foto' : 'Texto'})</div>
-                            <select onchange="moverElementoInyectado(${eIdx}, this.value)" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:5px; border-radius:8px; font-size:0.72rem;">${opts}</select>
-                        </div>
-                        <button style="background:#ff3b30; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="eliminarElementoInyectado(${eIdx})">Quitar</button>
-                    </div>${controlesInyectado(el, eIdx)}`;
+                    html += tarjetaElementoInyectado(el, eIdx);
                 });
                 res.innerHTML = html;
+                iniciarArrastreInyectados();
 
             } else if (accion === 'legal_admin') {
                 const claves = ['terminos', 'privacidad', 'pagos', 'reembolsos', 'soporte'];
@@ -3752,8 +3949,125 @@
             }, "Precio actualizado en tiempo real");
         }
 
+        /* ----- Elementos inyectados: foto/texto que se arrastra en una vista previa ----- */
+        const INJ_ALTO = 240; // altura (px) del lienzo donde se colocan las fotos libres en cada página
+        function posicionDe(el) {
+            const p = el.pos || {};
+            return { x: typeof p.x === 'number' ? p.x : 50, y: typeof p.y === 'number' ? p.y : 50 };
+        }
+        function contenidoInyectado(el) {
+            if (el.type === 'image') return `<img src="${el.content}" style="display:block; width:100%; border-radius:12px; pointer-events:none;" alt="">`;
+            return `<div style="background:var(--bg-card); padding:0.8rem; border:1px solid var(--border-color); border-radius:12px; font-size:0.85rem; color:var(--text-main); pointer-events:none;">${el.content}</div>`;
+        }
+        function tarjetaDepositoSaldoCEO(d, idx) {
+            const comp = d.comprobante
+                ? `<img class="dep-ceo-img" src="${d.comprobante}" alt="Comprobante" onclick="abrirImagenCompleta(this.src)">`
+                : `<span class="dep-ceo-sub">Sin imagen</span>`;
+            return `<div class="dep-ceo-card">
+                <div class="dep-ceo-head">${iconoSVG('phone')}<span>Depósito de saldo móvil</span></div>
+                <div class="dep-ceo-fila">${iconoSVG('user')}<div><small>Usuario</small><b>${esc(d.usuario)}</b><span class="dep-ceo-sub">${esc(d.correo)}</span></div></div>
+                <div class="dep-ceo-fila">${iconoSVG('money')}<div><small>Cantidad que depositó</small><b>${d.monto} saldo</b></div></div>
+                <div class="dep-ceo-fila">${iconoSVG('phone')}<div><small>Número con el que depositó</small><b class="dep-ceo-num">${esc(d.telefonoTransfirio || 'N/A')}</b></div></div>
+                <div class="dep-ceo-fila">${iconoSVG('coin')}<div><small>Moneda que depositó</small><b>Saldo móvil</b></div></div>
+                <div class="dep-ceo-fila" style="flex-direction:column;">
+                    <small style="display:flex; align-items:center; gap:6px;">${iconoSVG('image')} Imagen del comprobante (toca para ampliar)</small>${comp}
+                </div>
+                <div class="dep-ceo-acciones">
+                    <button class="dep-ok" onclick="aprobarDeposito(${idx})">Aprobar</button>
+                    <button class="dep-no" onclick="cancelarDeposito(${idx})">Cancelar</button>
+                </div>
+            </div>`;
+        }
+        function tarjetaElementoInyectado(el, i) {
+            const nombre = el.nombre || ((el.type === 'image' ? 'Foto ' : 'Texto ') + (i + 1));
+            const prev = el.type === 'image'
+                ? `<img src="${el.content}" style="width:44px; height:44px; object-fit:cover; border-radius:8px;" alt="">`
+                : `<div style="width:44px; height:44px; background:var(--bg-main); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.7rem;">Txt</div>`;
+            const opts = LUGARES.map(l => `<option value="${l[0]}" ${el.lugar === l[0] ? 'selected' : ''}>${l[1]}</option>`).join('');
+            const lugarNombre = (LUGARES.find(l => l[0] === el.lugar) || LUGARES[1])[1];
+            const cuerpo = el.pos
+                ? bloquePreviewLibre(el, i, lugarNombre)
+                : `<button class="ceo-btn" style="margin-top:8px; padding:6px; font-size:0.72rem;" onclick="activarModoLibre(${i})">Mover con el dedo (modo arrastrar)</button>${controlesInyectado(el, i)}`;
+            return `<div style="background:var(--bg-card); padding:0.8rem; border-radius:12px; border:1px solid var(--border-color); margin-bottom:10px;">
+                <div style="display:flex; gap:10px; align-items:center;">
+                    ${prev}
+                    <div style="flex:1; min-width:0;">
+                        <input type="text" value="${esc(nombre)}" maxlength="60" onchange="renombrarElementoInyectado(${i}, this.value)" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:5px 8px; border-radius:8px; font-size:0.78rem; font-weight:800; margin-bottom:5px;">
+                        <select onchange="moverElementoInyectado(${i}, this.value)" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:5px; border-radius:8px; font-size:0.72rem;">${opts}</select>
+                    </div>
+                    <button style="background:#ff3b30; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-size:0.72rem; font-weight:bold;" onclick="eliminarElementoInyectado(${i})">Quitar</button>
+                </div>
+                ${cuerpo}
+            </div>`;
+        }
+        function bloquePreviewLibre(el, i, lugarNombre) {
+            const aj = ajustesDe(el);
+            const p = posicionDe(el);
+            const ancho = el.ajustes && el.ajustes.ancho ? el.ajustes.ancho : 60;
+            return `<div style="margin-top:10px;">
+                <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:5px;">Arrastra con el dedo para ponerla donde quieras. Vista previa de: <b>${lugarNombre}</b></div>
+                <div class="inj-prev" data-idx="${i}" style="position:relative; height:${INJ_ALTO}px; border:1px dashed var(--accent-glow); border-radius:12px; background:var(--bg-main); overflow:hidden;">
+                    <div class="inj-drag" id="inj-drag-${i}" data-idx="${i}" style="position:absolute; left:${p.x}%; top:${p.y}%; width:${ancho}%; transform:translate(-50%,-50%);">${contenidoInyectado(el)}</div>
+                </div>
+                <label style="font-size:0.7rem; display:block; margin-top:8px;">Tamaño: <b id="inj-tam-${i}">${ancho}%</b>
+                    <input type="range" min="20" max="100" value="${ancho}" style="width:100%;"
+                        oninput="document.getElementById('inj-drag-${i}').style.width=this.value+'%'; document.getElementById('inj-tam-${i}').innerText=this.value+'%'"
+                        onchange="ajustarInyectado(${i}, 'ancho', this.value)">
+                </label>
+            </div>`;
+        }
+        function iniciarArrastreInyectados() {
+            document.querySelectorAll('.inj-drag').forEach(d => {
+                d.addEventListener('pointerdown', (e) => {
+                    const idx = parseInt(d.dataset.idx, 10);
+                    const marco = d.parentElement.getBoundingClientRect();
+                    const r = d.getBoundingClientRect();
+                    const offX = e.clientX - (r.left + r.width / 2);
+                    const offY = e.clientY - (r.top + r.height / 2);
+                    const anchoPct = parseFloat(d.style.width) || 60;
+                    let nx = null, ny = null;
+                    try { d.setPointerCapture(e.pointerId); } catch (err) {}
+                    const mover = (ev) => {
+                        let x = (ev.clientX - offX - marco.left) / marco.width * 100;
+                        let y = (ev.clientY - offY - marco.top) / marco.height * 100;
+                        x = Math.min(100 - anchoPct / 2, Math.max(anchoPct / 2, x));
+                        y = Math.min(100, Math.max(0, y));
+                        nx = x; ny = y;
+                        d.style.left = x + '%';
+                        d.style.top = y + '%';
+                    };
+                    const soltar = async () => {
+                        d.removeEventListener('pointermove', mover);
+                        d.removeEventListener('pointerup', soltar);
+                        d.removeEventListener('pointercancel', soltar);
+                        if (nx === null) return;
+                        const px = +nx.toFixed(2), py = +ny.toFixed(2);
+                        await guardarConfig(() => {
+                            const el = tiendaConfig.injectedElements[idx];
+                            if (el) el.pos = { x: px, y: py };
+                        }, "Posición guardada");
+                    };
+                    d.addEventListener('pointermove', mover);
+                    d.addEventListener('pointerup', soltar);
+                    d.addEventListener('pointercancel', soltar);
+                });
+            });
+        }
+        async function activarModoLibre(i) {
+            await guardarConfig(() => {
+                const el = tiendaConfig.injectedElements[i];
+                if (el) { el.pos = { x: 50, y: 50 }; el.ajustes = Object.assign({ ancho: 60 }, el.ajustes || {}); }
+            }, "Modo arrastrar activado");
+            cargarAccionCEO('inyectar_contenido');
+        }
+        async function renombrarElementoInyectado(i, valor) {
+            const nombre = String(valor || '').trim().slice(0, 60);
+            await guardarConfig(() => { const el = tiendaConfig.injectedElements[i]; if (el) el.nombre = nombre; }, "Nombre guardado");
+        }
+
         function abrirInyectorImagenCEO() {
             window.lugarInyeccion = document.getElementById('ceo-inject-lugar').value;
+            window.nombreInyeccion = (document.getElementById('ceo-inject-nombre').value || '').trim().slice(0, 60);
             const inp = document.getElementById('ceo-injected-image-uploader');
             inp.value = '';
             inp.click();
@@ -3763,12 +4077,13 @@
             if (!file) return;
             mostrarCarga("Optimizando imagen...");
             try {
-                const data = await comprimirImagen(file, 520, 22000);
+                const data = await comprimirImagen(file, 800, 30000);
                 ocultarCarga();
                 const lugar = window.lugarInyeccion || 'inicio-top';
+                const nombre = window.nombreInyeccion || ('Foto ' + ((tiendaConfig.injectedElements || []).length + 1));
                 const ok = await guardarConfig(() => {
-                    tiendaConfig.injectedElements.push({ id: Date.now(), type: 'image', content: data, lugar: lugar });
-                }, "¡Imagen publicada con éxito!");
+                    tiendaConfig.injectedElements.push({ id: Date.now(), type: 'image', content: data, lugar: lugar, nombre: nombre, pos: { x: 50, y: 50 }, ajustes: { ancho: 60 } });
+                }, "¡Foto publicada! Arrástrala en la vista previa para ubicarla.");
                 if (ok) cargarAccionCEO('inyectar_contenido');
             } catch (e) { ocultarCarga(); mostrarNotificacion("No se pudo procesar la imagen"); }
             event.target.value = '';
@@ -3778,8 +4093,9 @@
             const txt = document.getElementById('ceo-inject-text').value.trim();
             const lugar = document.getElementById('ceo-inject-lugar').value;
             if (!txt) { mostrarNotificacion("Escribe un texto primero"); return; }
+            const nombre = (document.getElementById('ceo-inject-nombre').value || '').trim().slice(0, 60) || ('Texto ' + ((tiendaConfig.injectedElements || []).length + 1));
             const ok = await guardarConfig(() => {
-                tiendaConfig.injectedElements.push({ id: Date.now(), type: 'text', content: txt, lugar: lugar });
+                tiendaConfig.injectedElements.push({ id: Date.now(), type: 'text', content: txt, lugar: lugar, nombre: nombre, pos: { x: 50, y: 50 }, ajustes: { ancho: 90 } });
             }, "Texto publicado con éxito");
             if (ok) cargarAccionCEO('inyectar_contenido');
         }
@@ -4009,6 +4325,7 @@
             if (!dep) return;
             if (dep.estado === 'Aprobado') { mostrarNotificacion("Este depósito ya fue aprobado."); return; }
             dep.estado = 'Aprobado';
+            delete dep.comprobante; // libera espacio en la nube (límite 100 KB)
             let monto = parseFloat(dep.monto) || 0;
 
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase().trim() === dep.correo.toLowerCase().trim());
@@ -4040,6 +4357,7 @@
             let dep = solicitudesGlobales.depositos[index];
             if (!dep) return;
             dep.estado = 'Cancelado';
+            delete dep.comprobante;
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
             await guardarEnCloud();
             mostrarNotificacion("Depósito cancelado");
