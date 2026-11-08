@@ -25,27 +25,27 @@
 
     <style>
         :root {
-            --bg-main: #0c0614;
-            --bg-card: #1a0e2a;
-            --text-main: #fff3e0;
-            --text-muted: #c9a7e0;
-            --primary-blue: #ff7a00;
-            --accent-glow: #ff9d1c;
-            --border-color: #3d1f5c;
-            --error-color: #ff4d4d;
-            --shine: rgba(255,157,28,.25);
+            --bg-main: #07090e;
+            --bg-card: #0d1322;
+            --text-main: #ffffff;
+            --text-muted: #8a99ad;
+            --primary-blue: #0066ff;
+            --accent-glow: #00f0ff;
+            --border-color: #1a233a;
+            --error-color: #ff3b30;
+            --shine: rgba(0,240,255,.22);
         }
 
         :root[data-theme="light"] {
-            --bg-main: #0c0614;
-            --bg-card: #1a0e2a;
-            --text-main: #fff3e0;
-            --text-muted: #c9a7e0;
-            --primary-blue: #ff7a00;
-            --accent-glow: #ff9d1c;
-            --border-color: #3d1f5c;
-            --error-color: #ff4d4d;
-            --shine: rgba(255,157,28,.25);
+            --bg-main: #f0f4f8;
+            --bg-card: #ffffff;
+            --text-main: #0d1322;
+            --text-muted: #556987;
+            --primary-blue: #4da3ff;
+            --accent-glow: #0ea5e9;
+            --border-color: #cbd5e1;
+            --error-color: #dc2626;
+            --shine: rgba(77,163,255,.16);
         }
 
         * {
@@ -638,45 +638,6 @@
         .btn-icon { display: flex; align-items: center; justify-content: center; gap: 7px; padding: .75rem; border-radius: 12px; font-weight: 800; font-size: .8rem; cursor: pointer; border: none; color: #fff; background: var(--primary-blue); }
         .btn-icon.sec { background: var(--bg-main); color: var(--accent-glow); border: 1.5px solid var(--accent-glow); }
         .btn-icon svg { width: 16px; height: 16px; fill: currentColor; }
-    /* ===== TEMA HALLOWEEN ===== */
-        body { background: radial-gradient(ellipse at top, #3a1152 0%, #160a22 55%, #05030a 100%) fixed !important; }
-        .btn-main, .btn-invite { background: linear-gradient(135deg, #ff7a00 0%, #6b1fa8 100%) !important; box-shadow: 0 0 16px rgba(255,122,0,.4); }
-        .page-title, .brand-logo-text, .nav-brand-title { text-shadow: 0 0 14px rgba(255,157,28,.55); }
-        .brand-logo-text::before, .nav-brand-title::before { content: "🎃 "; }
-        .brand-logo-text::after, .nav-brand-title::after { content: " 🦇"; }
-        .diamond-card:hover, .game-card-character:hover { border-color: #ff9d1c !important; box-shadow: 0 6px 25px rgba(255,122,0,.35) !important; }
-
-        #hw-fx { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 40; }
-        .hw-item { position: absolute; top: -60px; opacity: .55; animation-name: hw-caer; animation-timing-function: linear; animation-iteration-count: 1; animation-fill-mode: both; will-change: transform; }
-        .hw-item.sube { top: auto; bottom: -60px; animation-name: hw-subir; }
-        .hw-sway { display: inline-block; animation: hw-vaiven 3s ease-in-out infinite; }
-        @keyframes hw-caer { from { transform: translate3d(0,0,0) rotate(0deg); } to { transform: translate3d(var(--dx,0px), 120vh, 0) rotate(var(--rot,360deg)); } }
-        @keyframes hw-subir { from { transform: translate3d(0,0,0); } to { transform: translate3d(var(--dx,0px), -130vh, 0); } }
-        @keyframes hw-vaiven { 0%,100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
-
-        .hw-fog { position: fixed; left: -20%; right: -20%; bottom: 0; height: 160px; background: radial-gradient(ellipse at 50% 100%, rgba(255,122,0,.18), transparent 70%); pointer-events: none; z-index: 39; animation: hw-niebla 16s ease-in-out infinite alternate; }
-        @keyframes hw-niebla { from { transform: translateX(-4%); } to { transform: translateX(4%); } }
-        .hw-web { position: fixed; top: 0; width: 120px; height: 120px; pointer-events: none; z-index: 41; background-repeat: no-repeat; background-size: contain; opacity: .85; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.45' stroke-width='.8'%3E%3Cpath d='M0 0L100 100M0 0L100 45M0 0L45 100M0 0L100 0M0 0L0 100'/%3E%3Ccircle r='22'/%3E%3Ccircle r='44'/%3E%3Ccircle r='66'/%3E%3Ccircle r='88'/%3E%3C/g%3E%3C/svg%3E"); }
-        .hw-web-l { left: 0; }
-        .hw-web-r { right: 0; transform: scaleX(-1); }
-        .hw-spider { position: fixed; top: -6px; right: 16px; font-size: 26px; z-index: 41; pointer-events: none; animation: hw-colgar 5s ease-in-out infinite; }
-        .hw-spider::before { content: ""; position: absolute; left: 50%; top: -220px; width: 1px; height: 220px; background: rgba(255,255,255,.5); }
-        @keyframes hw-colgar { 0%,100% { transform: translateY(0); } 50% { transform: translateY(46px); } }
-
-        #hw-flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 42; animation: hw-rayo 15s infinite; }
-        @keyframes hw-rayo { 0%,90%,100% { opacity: 0; } 91% { opacity: .16; } 92% { opacity: .02; } 93% { opacity: .12; } 94% { opacity: 0; } }
-
-        .hw-burst { position: fixed; font-size: 20px; pointer-events: none; z-index: 43; animation: hw-estallar 1s ease-out forwards; }
-        @keyframes hw-estallar { from { transform: translate(-50%,-50%) scale(.5); opacity: 1; } to { transform: translate(calc(-50% + var(--dx,0px)), calc(-50% - 90px)) scale(1.25); opacity: 0; } }
-
-        @media (prefers-reduced-motion: reduce) {
-            .hw-item, .hw-burst { display: none; }
-            .hw-sway, .hw-spider, .hw-fog, #hw-flash { animation: none !important; }
-        }
-        .brand-logo-text::before, .nav-brand-title::before, .brand-logo-text::after, .nav-brand-title::after { content: none !important; }
-        .hw-ico { display: inline-block; width: 1em; height: 1em; vertical-align: -0.15em; }
-        .hw-ico svg { width: 100%; height: 100%; display: block; overflow: visible; }
-        .brand-logo-text .hw-ico, .nav-brand-title .hw-ico { font-size: 1.1em; margin: 0 .15em; }
     </style>
 </head>
 <body>
@@ -1935,10 +1896,8 @@
                     const img = new Image();
                     img.onerror = () => reject(new Error('Imagen no válida'));
                     img.onload = () => {
-                        let dim = maxDim || 1200, calidad = 0.92, mejor = '';
-                        const tope = maxChars || 150000;
-                        // PNG/WebP/GIF pueden tener fondo transparente: se guardan como PNG y sin fondo blanco
-                        const esTransparente = /png|webp|gif/i.test(file.type || '');
+                        let dim = maxDim || 1000, calidad = 0.92, mejor = '';
+                        const tope = maxChars || 90000;
                         for (let intento = 0; intento < 12; intento++) {
                             const esc2 = Math.min(1, dim / Math.max(img.width, img.height));
                             const w = Math.max(1, Math.round(img.width * esc2));
@@ -1946,16 +1905,12 @@
                             const canvas = document.createElement('canvas');
                             canvas.width = w; canvas.height = h;
                             const ctx = canvas.getContext('2d');
-                            if (!esTransparente) {
-                                ctx.fillStyle = '#ffffff';
-                                ctx.fillRect(0, 0, w, h);
-                            }
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillRect(0, 0, w, h);
                             ctx.drawImage(img, 0, 0, w, h);
-                            mejor = esTransparente
-                                ? canvas.toDataURL('image/png')
-                                : canvas.toDataURL('image/jpeg', calidad);
+                            mejor = canvas.toDataURL('image/jpeg', calidad);
                             if (mejor.length <= tope) break;
-                            if (!esTransparente && calidad > 0.7) calidad -= 0.08; else { dim = Math.round(dim * 0.85); }
+                            if (calidad > 0.7) calidad -= 0.08; else { dim = Math.round(dim * 0.85); }
                         }
                         resolve(mejor);
                     };
@@ -2692,7 +2647,7 @@
             if (!f) return;
             mostrarCarga("Subiendo foto...");
             try {
-                opFotoPendiente = await comprimirImagen(f, 1200, 150000);
+                opFotoPendiente = await comprimirImagen(f, 900);
                 document.getElementById('op-foto-prev').innerHTML = '<img class="op-feed-photo" src="' + opFotoPendiente + '" alt="">';
             } catch (e) {
                 mostrarNotificacion("No se pudo subir la foto");
@@ -2898,7 +2853,7 @@
             if (!file) return;
             mostrarCarga("Preparando comprobante...");
             try {
-                comprobanteDepositoData = await comprimirImagen(file, 1200, 150000);
+                comprobanteDepositoData = await comprimirImagen(file, 800, 30000);
                 const prev = document.getElementById('comprobante-deposito-prev');
                 prev.innerHTML = '<img src="' + comprobanteDepositoData + '" alt="Comprobante" style="width:100%; max-height:200px; object-fit:contain; border-radius:12px; border:1px solid var(--border-color); background:var(--bg-main);">';
                 prev.style.display = 'block';
@@ -3354,7 +3309,7 @@
             const file = event.target.files[0];
             if (!file) return;
             try {
-                const data = await comprimirImagen(file, 256, 40000);
+                const data = await comprimirImagen(file, 128, 4500);
                 usuarioActual.avatar = data;
                 let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if (fresh) fresh.avatar = data;
@@ -3824,7 +3779,7 @@
                     <button class="btn-main" onclick="guardarWalletLogica()">Guardar Control Wallet</button>`;
 
             } else if (accion === 'catalogo_precios') {
-                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB (base nueva, sin límite de 100 KB).</p>
+                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB de 100 KB.</p>
                     <button class="btn-main" style="margin-top:0; margin-bottom:10px; background:#22c55e;" onclick="liberarEspacioCEO()">Liberar espacio en la nube</button>
                     <div class="ceo-action-form">
                         <h4>Cambiar todos los precios a la vez</h4>
@@ -3862,8 +3817,8 @@
                 let html = `
                     <div class="ceo-action-form">
                         <h4>Poner foto o texto donde tú quieras</h4>
-                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB (base nueva, sin límite de 100 KB).</p>
-<label>Nombre de la foto (para reconocerla en la lista)</label>
+                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB de 100 KB.</p>
+                        <label>Nombre de la foto (para reconocerla en la lista)</label>
                         <input type="text" id="ceo-inject-nombre" maxlength="60" placeholder="Ej. Promo navidad">
                         <label>¿En qué página / lugar?</label>
                         <select id="ceo-inject-lugar">${optsLugar}</select>
@@ -3990,7 +3945,7 @@
             if (!file) return;
             mostrarCarga("Optimizando imagen...");
             try {
-                const data = await comprimirImagen(file, 900, 150000);
+                const data = await comprimirImagen(file, 520, 22000);
                 ocultarCarga();
                 const tipo = window.tipoBannerSeleccionado;
                 await guardarConfig(() => {
@@ -4011,7 +3966,7 @@
             if (!file) return;
             mostrarCarga("Optimizando imagen...");
             try {
-                const data = await comprimirImagen(file, 256, 40000);
+                const data = await comprimirImagen(file, 140, 5500);
                 ocultarCarga();
                 const idx = window.indicePaqueteSeleccionado;
                 const ok = await guardarConfig(() => { tiendaConfig.paquetesDiamantes[idx].imagen = data; }, "Imagen del paquete guardada con éxito");
@@ -4200,7 +4155,7 @@
             if (!file) return;
             mostrarCarga("Optimizando imagen...");
             try {
-                const data = await comprimirImagen(file, 1200, 150000);
+                const data = await comprimirImagen(file, 800, 30000);
                 ocultarCarga();
                 const lugar = window.lugarInyeccion || 'inicio-top';
                 const nombre = window.nombreInyeccion || ('Foto ' + ((tiendaConfig.injectedElements || []).length + 1));
@@ -4540,67 +4495,6 @@
         })();
         setInterval(updateClock, 1000);
         init();
-    </script>
-<script>
-    (function () {
-        const reducir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const capa = document.createElement('div');
-        capa.id = 'hw-fx';
-        document.body.appendChild(capa);
-        ['<div class="hw-fog"></div>', '<div class="hw-web hw-web-l"></div>', '<div class="hw-web hw-web-r"></div>', '<div class="hw-spider">🕷️</div>', '<div id="hw-flash"></div>']
-            .forEach(h => document.body.insertAdjacentHTML('beforeend', h));
-
-        const ICONOS = ['murcielago', 'fantasma', 'calabaza', 'arana', 'calavera', 'murcielago', 'fantasma', 'murcielago'];
-        document.querySelectorAll('.brand-logo-text, .nav-brand-title').forEach(el => {
-            el.insertAdjacentHTML('afterbegin', hwIcono('calabaza'));
-            el.insertAdjacentHTML('beforeend', hwIcono('murcielago'));
-        });
-        const arana = document.querySelector('.hw-spider');
-        if (arana) arana.innerHTML = hwIcono('arana');
-        const rnd = (a, b) => a + Math.random() * (b - a);
-
-        function crear(inicio) {
-            const nombre = ICONOS[Math.floor(Math.random() * ICONOS.length)];
-            const subir = nombre === 'calabaza';
-            const dur = subir ? rnd(14, 22) : rnd(9, 16);
-            const el = document.createElement('span');
-            el.className = 'hw-item' + (subir ? ' sube' : '');
-            el.style.left = rnd(0, 96) + 'vw';
-            el.style.fontSize = rnd(16, 30) + 'px';
-            el.style.setProperty('--dx', rnd(-70, 70) + 'px');
-            el.style.setProperty('--rot', rnd(-540, 540) + 'deg');
-            el.style.animationDuration = dur + 's';
-            el.style.animationDelay = (inicio ? -rnd(0, dur) : 0) + 's';
-            const s = document.createElement('span');
-            s.className = 'hw-sway';
-            s.innerHTML = hwIcono(nombre);
-            el.appendChild(s);
-            el.addEventListener('animationend', (ev) => {
-                if (ev.target !== el) return;
-                el.remove();
-                crear(false);
-            });
-            capa.appendChild(el);
-        }
-        if (!reducir) for (let i = 0; i < 16; i++) crear(true);
-
-        // Al tocar la pantalla sale un pequeño efecto
-        let ultimo = 0;
-        document.addEventListener('pointerdown', (e) => {
-            if (reducir) return;
-            const ahora = Date.now();
-            if (ahora - ultimo < 150) return;
-            ultimo = ahora;
-            const b = document.createElement('span');
-            b.className = 'hw-burst';
-            b.innerHTML = hwIcono(['chispa', 'fantasma', 'calabaza', 'murcielago', 'calavera'][Math.floor(Math.random() * 5)]);
-            b.style.left = e.clientX + 'px';
-            b.style.top = e.clientY + 'px';
-            b.style.setProperty('--dx', rnd(-30, 30) + 'px');
-            document.body.appendChild(b);
-            setTimeout(() => b.remove(), 1000);
-        }, { passive: true });
-    })();
     </script>
 </body>
 </html>
