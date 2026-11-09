@@ -70,7 +70,7 @@
             display: flex;
             flex-direction: column;
             padding-bottom: 118px;
-            padding-top: calc(66px + env(safe-area-inset-top, 0px));
+            padding-top: calc(78px + env(safe-area-inset-top, 0px));
             overflow-x: hidden;
             position: relative;
             /* IMPORTANTE: solo opacity. Un "transform" en el body rompía los elementos fixed
@@ -176,38 +176,65 @@
         }
         .btn-main:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0, 102, 255, 0.4); }
 
+        /* ===== Encabezado flotante (estilo píldora, igual que la barra inferior) ===== */
         .navbar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 0.85rem 1.1rem; background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color); position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2); backdrop-filter: blur(10px);
+            position: fixed; top: calc(8px + env(safe-area-inset-top, 0px)); left: 10px; right: 10px; width: auto; max-width: 520px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center; gap: 8px;
+            padding: 7px 9px 7px 7px; z-index: 100; border-radius: 30px; box-sizing: border-box;
+            border: 1.5px solid transparent;
+            background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box, linear-gradient(120deg, #2f6bff 0%, #1aa6c8 55%, #16c784 100%) border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 22px rgba(47,107,255,.14);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
         }
-        .nav-brand-area { display: flex; align-items: center; gap: 10px; }
+        .nav-brand-area { display: flex; align-items: center; gap: 9px; min-width: 0; flex: 0 1 auto; }
         .nav-brand-logo {
-            width: 36px; height: 36px; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--border-color); flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            width: 42px; height: 42px; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            border: 2px solid transparent;
+            background: linear-gradient(#000, #000) padding-box, linear-gradient(135deg, #2f6bff 0%, #1aa6c8 55%, #16c784 100%) border-box;
+            box-shadow: 0 0 14px rgba(26,166,200,.35);
         }
-        .nav-brand-logo img { width: 100%; height: 100%; object-fit: cover; }
-        .nav-brand-title { font-size: 0.98rem; font-weight: 900; letter-spacing: 0.3px; }
+        .nav-brand-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .nav-brand-title { font-size: 1.08rem; font-weight: 900; letter-spacing: -.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+        .nav-brand-title .brand-tienda { background: linear-gradient(90deg, #4f8bff 0%, #21d19a 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
 
-        .nav-top-icons { display: flex; gap: 8px; align-items: center; }
+        .nav-top-icons { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
 
         .header-wallet-pill {
-            background: var(--bg-main); border: 1px solid var(--border-color); padding: 5px 10px;
-            border-radius: 20px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            height: 38px; padding: 0 11px 0 4px; border-radius: 999px; display: flex; align-items: center; gap: 6px; cursor: pointer;
+            border: 1.5px solid rgba(26,166,200,.45);
+            background: linear-gradient(160deg, rgba(47,107,255,.16), rgba(22,199,132,.14)), var(--bg-main);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); transition: border-color .2s, box-shadow .2s, transform .15s;
         }
-        .header-wallet-pill:hover { border-color: var(--accent-glow); box-shadow: 0 0 10px rgba(0,240,255,0.2); }
-        .header-wallet-pill img, .header-wallet-pill svg { width: 15px; height: 15px; flex-shrink: 0; object-fit: contain; }
-        .header-wallet-pill span { font-size: 0.72rem; font-weight: 900; }
+        .header-wallet-pill:hover { border-color: #21d19a; box-shadow: 0 0 14px rgba(33,209,154,.28); }
+        .header-wallet-pill:active { transform: scale(.96); }
+        .hw-ico { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            background: rgba(26,166,200,.16); border: 1px solid rgba(26,166,200,.4); }
+        .hw-ico img, .hw-ico svg { width: 16px; height: 16px; object-fit: contain; display: block; }
+        .hw-ico svg { fill: #3fd9a8; }
+        .header-wallet-pill > span:not(.hw-ico) { font-size: .76rem; font-weight: 900; letter-spacing: .1px; white-space: nowrap; }
+        .hw-usdt > span:not(.hw-ico) { color: #2fe0a0; }
+        .hw-saldo > span:not(.hw-ico) { color: #5aa2ff; }
+        .hw-unit { font-size: .6rem; font-weight: 800; opacity: .8; margin-left: 2px; display: none; }
 
         .nav-top-icon-btn {
-            background: var(--bg-main); border: 1px solid var(--border-color); width: 34px; height: 34px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+            border: 1.5px solid rgba(26,166,200,.45); background: linear-gradient(160deg, rgba(47,107,255,.16), rgba(22,199,132,.14)), var(--bg-main);
+            transition: transform .15s, border-color .2s, box-shadow .2s;
         }
-        .nav-top-icon-btn:hover { border-color: var(--accent-glow); transform: scale(1.05); }
-        .nav-top-icon-btn svg { width: 16px; height: 16px; fill: var(--accent-glow); }
+        .nav-top-icon-btn:hover { border-color: #21d19a; box-shadow: 0 0 14px rgba(33,209,154,.28); }
+        .nav-top-icon-btn:active { transform: scale(.92); }
+        .nav-top-icon-btn svg { width: 19px; height: 19px; fill: none; stroke: url(#grad-nav); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+        @media (min-width: 400px) { .hw-unit { display: inline; } }
+        @media (max-width: 360px) {
+            .navbar { left: 6px; right: 6px; gap: 5px; padding: 6px 7px 6px 6px; }
+            .nav-brand-logo { width: 36px; height: 36px; }
+            .nav-brand-title { font-size: .92rem; }
+            .header-wallet-pill { height: 34px; padding: 0 8px 0 3px; gap: 4px; }
+            .hw-ico { width: 24px; height: 24px; }
+            .header-wallet-pill > span:not(.hw-ico) { font-size: .68rem; }
+            .nav-top-icon-btn { width: 34px; height: 34px; }
+        }
 
         /* Botón Volver con flecha (todas las páginas internas) */
         .back-row { margin-bottom: 1rem; }
@@ -998,16 +1025,16 @@
                 <div class="nav-brand-title"><span class="brand-lester">Lester</span> <span class="brand-tienda">Tienda</span></div>
             </div>
             <div class="nav-top-icons">
-                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet USDT">
-                    <img class="img-usdt" alt="USDT">
-                    <span id="header-wallet-balance" style="color: var(--accent-glow);">0.00 USDT</span>
+                <div class="header-wallet-pill hw-usdt" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Wallet USDT">
+                    <span class="hw-ico"><img class="img-usdt" alt="USDT"></span>
+                    <span id="header-wallet-balance">0.00<small class="hw-unit">USDT</small></span>
                 </div>
-                <div class="header-wallet-pill" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Móvil">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-                    <span id="header-saldo-balance">0 saldo</span>
+                <div class="header-wallet-pill hw-saldo" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))" title="Ver Saldo Móvil">
+                    <span class="hw-ico"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></span>
+                    <span id="header-saldo-balance">0<small class="hw-unit">saldo</small></span>
                 </div>
                 <button class="nav-top-icon-btn" onclick="instalarApp()" title="Instalar aplicación">
-                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10.5l5 5 5-5"/><path d="M5 20h14"/></svg>
                 </button>
             </div>
         </header>
@@ -2323,11 +2350,27 @@
         async function guardarEnCloud() {
             guardandoCloud = true;
             try {
+                const copiaU = copiaJSON(listaUsuariosGlobales), copiaR = copiaJSON(solicitudesGlobales.recargas), copiaD = copiaJSON(solicitudesGlobales.depositos), copiaC = copiaJSON(tiendaConfig);
                 for (let intento = 1; intento <= 3; intento++) {
                     try {
+                        if (intento > 1) {
+                            // cada reintento parte de lo que este dispositivo cambió, no de una mezcla anterior
+                            listaUsuariosGlobales = copiaJSON(copiaU);
+                            solicitudesGlobales.recargas = copiaJSON(copiaR);
+                            solicitudesGlobales.depositos = copiaJSON(copiaD);
+                            tiendaConfig = copiaJSON(copiaC);
+                        }
                         if (WORKER_URL) {
                             const previa = await fetch(`${WORKER_URL}/api/state`, { cache: 'no-store' });
                             const pj = await previa.json();
+                            if (pj && pj.record && !baseServidor) {
+                                // Sin referencia previa: los saldos de la base son los verdaderos (nunca se pisan con datos viejos)
+                                fijarBase(pj.record);
+                                (pj.record.usuarios || []).forEach(su => {
+                                    const lu = listaUsuariosGlobales.find(u => String(u.correo || '').toLowerCase() === String(su.correo || '').toLowerCase());
+                                    if (lu) Object.keys(su).forEach(k => { if (typeof su[k] === 'number') lu[k] = su[k]; });
+                                });
+                            }
                             if (pj && pj.record && baseServidor) {
                                 const m = mezclarConNube(pj.record);
                                 listaUsuariosGlobales = m.usuarios;
@@ -2362,14 +2405,14 @@
         async function guardarConfig(mutador, msgOk) {
             const snap = JSON.stringify(tiendaConfig);
             mutador();
-            mostrarCarga("Guardando en la nube...");
+            mostrarCarga("Guardando...");
             const ok = await guardarEnCloud();
             ocultarCarga();
             if (!ok) {
                 tiendaConfig = normalizarConfig(JSON.parse(snap));
                 aplicarConfiguracionVisual();
                 renderizarPaquetesTienda();
-                mostrarNotificacion("No se pudo guardar en la nube (¿demasiado peso o sin internet?). Cambio revertido.");
+                mostrarNotificacion("Mala internet. No se pudo guardar, intenta de nuevo.");
                 return false;
             }
             localStorage.setItem('lester_config', JSON.stringify(tiendaConfig));
@@ -3537,10 +3580,10 @@
                 if (!ok) {
                     solicitudesGlobales.depositos = solicitudesGlobales.depositos.filter(d => d.id !== idDep);
                     localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-                    mostrarNotificacion("No se pudo enviar: la nube está llena o sin internet. Pídele al CEO que libere espacio.");
+                    mostrarNotificacion("Mala internet. No se pudo enviar, intenta de nuevo.");
                     return;
                 }
-                mostrarNotificacion(sinFoto ? "Enviado sin foto porque la nube está llena. Avisa al CEO." : "Depósito de saldo móvil enviado a revisión");
+                mostrarNotificacion(sinFoto ? "Enviado sin foto por mala internet. Avisa al CEO." : "Depósito de saldo móvil enviado a revisión");
                 document.getElementById('monto-deposito').value = '';
                 document.getElementById('telefono-transfirio').value = '';
                 comprobanteDepositoData = '';
@@ -3621,6 +3664,15 @@
 
             mostrarCarga("Procesando recarga...");
             setTimeout(async () => {
+                // Saldo real y actual (incluye depósitos recién aprobados) antes de descontar
+                await traerEstadoFresco();
+                refrescarUsuarioActual();
+                if ((ofertaSeleccionada.moneda === 'usdt' ? usuarioActual.balanceUSDT : usuarioActual.balanceCUP) < ofertaSeleccionada.precio) {
+                    ocultarCarga();
+                    actualizarPerfilUI();
+                    mostrarNotificacion(ofertaSeleccionada.moneda === 'usdt' ? "Saldo USDT insuficiente. Recarga en tu Wallet USDT." : "Saldo insuficiente. Recarga tu saldo móvil en Wallet.");
+                    return;
+                }
                 if (ofertaSeleccionada.moneda === 'usdt') usuarioActual.balanceUSDT = parseFloat((usuarioActual.balanceUSDT - ofertaSeleccionada.precio).toFixed(2));
                 else usuarioActual.balanceCUP = Math.round(usuarioActual.balanceCUP - ofertaSeleccionada.precio);
                 usuarioActual.balance = usuarioActual.balanceUSDT;
@@ -4069,7 +4121,7 @@
                 const ok = await guardarEnCloud();
                 actualizarPerfilUI();
                 actualizarEstadisticasInicio();
-                mostrarNotificacion(ok ? "Foto de perfil guardada" : "Foto guardada en este dispositivo (no se pudo subir a la nube)");
+                mostrarNotificacion(ok ? "Foto de perfil guardada" : "Foto guardada en este dispositivo (mala internet)");
             } catch (e) { mostrarNotificacion("No se pudo procesar la imagen"); }
             event.target.value = '';
         }
@@ -4132,6 +4184,10 @@
 
             mostrarCarga("Procesando transferencia...");
             setTimeout(async () => {
+                await traerEstadoFresco();
+                refrescarUsuarioActual();
+                destinatarioObj = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === destinatarioObj.correo.toLowerCase()) || destinatarioObj;
+                if ((parseFloat(usuarioActual[campo]) || 0) < monto) { ocultarCarga(); actualizarPerfilUI(); mostrarNotificacion("Saldo " + etiqueta + " insuficiente"); return; }
                 const redondea = v => mon === 'usdt' ? parseFloat(v.toFixed(2)) : Math.round(v);
                 usuarioActual[campo] = redondea((parseFloat(usuarioActual[campo]) || 0) - monto);
                 destinatarioObj[campo] = redondea((parseFloat(destinatarioObj[campo]) || 0) + monto);
@@ -4187,8 +4243,8 @@
             if (usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
 
             const saldoMovilTexto = `${(usuarioActual.balanceCUP || 0)} saldo`;
-            document.getElementById('header-wallet-balance').innerText = `${(usuarioActual.balanceUSDT || 0).toFixed(2)} USDT`;
-            document.getElementById('header-saldo-balance').innerText = saldoMovilTexto;
+            document.getElementById('header-wallet-balance').innerHTML = `${(usuarioActual.balanceUSDT || 0).toFixed(2)}<small class="hw-unit">USDT</small>`;
+            document.getElementById('header-saldo-balance').innerHTML = `${(usuarioActual.balanceCUP || 0)}<small class="hw-unit">saldo</small>`;
             document.getElementById('stat-saldo-movil-perfil').innerText = saldoMovilTexto;
             document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
             document.getElementById('perfil-correo').innerText = usuarioActual.correo;
@@ -4544,8 +4600,8 @@
 
             } else if (accion === 'catalogo_precios' || accion === 'catalogo_blood' || accion === 'catalogo_roblox') {
                 catalogoActual = accion === 'catalogo_roblox' ? 'paquetesRoblox' : (accion === 'catalogo_blood' ? 'paquetesBlood' : 'paquetesDiamantes');
-                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB (base nueva, sin límite de 100 KB).</p>
-                    <button class="btn-main" style="margin-top:0; margin-bottom:10px; background:#22c55e;" onclick="liberarEspacioCEO()">Liberar espacio en la nube</button>
+                let html = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos guardados: ${kbNube()} KB.</p>
+                    <button class="btn-main" style="margin-top:0; margin-bottom:10px; background:#22c55e;" onclick="liberarEspacioCEO()">Liberar espacio</button>
                     <div class="ceo-action-form">
                         <h4>Cambiar todos los precios a la vez</h4>
                         <label style="font-size:0.7rem;">Porcentaje (ej. 10 para subir 10%, -5 para bajar 5%)</label>
@@ -4582,7 +4638,7 @@
                 let html = `
                     <div class="ceo-action-form">
                         <h4>Poner foto o texto donde tú quieras</h4>
-                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos en la nube: ${kbNube()} KB (base nueva, sin límite de 100 KB).</p>
+                        <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Datos guardados: ${kbNube()} KB.</p>
 <label>Nombre de la foto (para reconocerla en la lista)</label>
                         <input type="text" id="ceo-inject-nombre" maxlength="60" placeholder="Ej. Promo navidad">
                         <label>¿En qué página / lugar?</label>
@@ -5194,6 +5250,7 @@
 
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase().trim() === dep.correo.toLowerCase().trim());
             if (!userTarget) { mostrarNotificacion("No encontré al usuario de este depósito. No se acreditó nada."); return; }
+            const copiaPrevU = JSON.stringify(listaUsuariosGlobales), copiaPrevS = JSON.stringify(solicitudesGlobales);
             dep.estado = 'Aprobado';
             delete dep.comprobante; // libera espacio en la nube
             if (userTarget) {
@@ -5212,11 +5269,26 @@
             }
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-            await guardarEnCloud();
+            mostrarCarga("Aprobando depósito...");
+            const guardadoOk = await guardarEnCloud();
+            ocultarCarga();
+            if (!guardadoOk) {
+                // No se guardó: se deshace aquí para que el saldo no aparezca y luego desaparezca
+                listaUsuariosGlobales = JSON.parse(copiaPrevU);
+                solicitudesGlobales = JSON.parse(copiaPrevS);
+                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                refrescarUsuarioActual();
+                actualizarPerfilUI();
+                renderizarOrdenes();
+                mostrarNotificacion("Mala internet. No se aprobó el depósito, intenta de nuevo.");
+                cargarAccionCEO('solicitudes_deposito');
+                return;
+            }
             refrescarUsuarioActual();
             actualizarPerfilUI();
             renderizarOrdenes();
-            mostrarNotificacion("Depósito aprobado y acreditado en saldo móvil");
+            mostrarNotificacion(dep.moneda === 'usdt' ? "Depósito aprobado y acreditado en USDT" : "Depósito aprobado y acreditado en saldo móvil");
             cargarAccionCEO('solicitudes_deposito');
         }
 
