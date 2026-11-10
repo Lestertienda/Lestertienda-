@@ -1284,6 +1284,12 @@
         .ua-ok p { font-size: .82rem; color: var(--text-muted); margin-top: 4px; }
         .ua-mini { display: flex; gap: 8px; }
         .ua-mini .btn-main { margin-top: 8px; flex: 1; }
+        .ua-cuenta { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 900; color: #4df0ae; background: rgba(0,0,0,.28); border-radius: 10px; padding: 3px 9px; font-size: .84rem; }
+        .ua-cuenta.urg { color: #ff6b6b; }
+        .ua-cancel-mini { margin-top: 8px; width: 100%; border: 1px solid rgba(239,68,68,.55); background: rgba(239,68,68,.12); color: #ff8a8a; font-weight: 800; font-size: .72rem; padding: 7px 10px; border-radius: 10px; cursor: pointer; }
+        .ua-cancel-mini b { font-variant-numeric: tabular-nums; }
+        .ua-big { font-size: 2.2rem; font-weight: 900; color: #4df0ae; font-variant-numeric: tabular-nums; margin: .4rem 0 .2rem; text-shadow: 0 0 18px rgba(38,166,154,.5); }
+        .ua-big.urg { color: #ff6b6b; text-shadow: 0 0 18px rgba(239,68,68,.5); }
         details.ua-manual { margin-top: 14px; border-top: 1px dashed var(--border-color); padding-top: 12px; }
         details.ua-manual summary { cursor: pointer; font-size: .78rem; font-weight: 800; color: var(--text-muted); list-style: none; text-align: center; }
         details.ua-manual summary::-webkit-details-marker { display: none; }
@@ -1301,6 +1307,18 @@
     </div>
 
     <div id="notification-toast">ACCIÓN COMPLETADA</div>
+
+    <!-- MODAL CANCELAR PAGO USDT -->
+    <div id="modal-cancelar-usdt" class="modal-overlay" onclick="cerrarCancelarUSDT()">
+        <div class="soporte-modal-box" onclick="event.stopPropagation()" style="border-color:#ef4444; box-shadow: 0 10px 30px rgba(0,0,0,.6), 0 0 25px rgba(239,68,68,.18);">
+            <h3 style="color: var(--text-main); font-size: 1.1rem; font-weight: 900; margin-bottom: 0.4rem;">¿Cancelar el pago?</h3>
+            <p style="color: var(--text-muted); font-size: 0.75rem;">Si ya enviaste los USDT, no canceles. Solo puedes cancelar mientras la orden siga activa.</p>
+            <div class="ua-big" id="ua-cancel-cuenta">5:00</div>
+            <p style="color: var(--text-muted); font-size: 0.68rem; margin-bottom: 1.1rem;">Tiempo restante (máx. 5 min)</p>
+            <button class="btn-main" style="--btn-c: #ef4444; margin-top: 0;" onclick="confirmarCancelarUSDT()">SÍ, CANCELAR PAGO</button>
+            <button class="btn-main" style="--btn-c: #26a69a; margin-top: .6rem;" onclick="cerrarCancelarUSDT()">SEGUIR ESPERANDO</button>
+        </div>
+    </div>
 
     <!-- MODAL SOPORTE -->
     <div id="modal-soporte-selector" class="modal-overlay" onclick="cerrarModalSoporte(event)">
@@ -1912,10 +1930,10 @@
                     <div id="ua-paso1">
                         <div class="form-group">
                             <label>¿Cuánto quieres depositar? (USDT)</label>
-                            <input type="number" id="monto-usdt-auto" class="form-control no-left-icon" placeholder="Ej. 10" inputmode="decimal" min="1" step="0.01">
+                            <input type="number" id="monto-usdt-auto" class="form-control no-left-icon" placeholder="Mínimo 1.1" inputmode="decimal" min="1.1" step="0.01">
                         </div>
                         <button class="btn-main" style="--btn-c: #26a69a; margin-top: .6rem;" onclick="crearOrdenUSDT()">GENERAR MI PAGO</button>
-                        <p style="font-size:.72rem; color:var(--text-muted); text-align:center; margin-top:.8rem;">Tu saldo se acredita solo, en unos segundos, cuando llegue el pago.</p>
+                        <p style="font-size:.72rem; color:var(--text-muted); text-align:center; margin-top:.8rem;">Tu saldo se acredita solo, en unos segundos, cuando llegue el pago. Mínimo 1.1 USDT.</p>
                     </div>
 
                     <!-- Paso 2: pagar y esperar -->
@@ -1929,15 +1947,15 @@
                                 <button class="btn-main" style="--btn-c: #26a69a;" onclick="copiarMontoUSDTAuto()">Copiar monto</button>
                                 <button class="btn-main" style="--btn-c: #2f6bff;" onclick="copiarDirUSDTAuto()">Copiar dirección</button>
                             </div>
-                            <div class="ua-aviso">Envía <b>el monto exacto</b> (con todos sus decimales). Así el sistema sabe que el pago es tuyo. Orden válida por 3 horas.</div>
+                            <div class="ua-aviso">Envía <b>el monto exacto</b> (con todos sus decimales). Así el sistema sabe que el pago es tuyo. Tienes <b>5 minutos</b> para pagar.</div>
                         </div>
-                        <div class="ua-estado" id="ua-estado"><span class="ua-spin"></span><span id="ua-estado-txt">Esperando tu pago…</span></div>
+                        <div class="ua-estado" id="ua-estado"><span class="ua-spin"></span><span id="ua-estado-txt">Esperando tu pago…</span><span class="ua-cuenta" id="ua-cuenta">5:00</span></div>
                         <div class="form-group">
                             <label>¿Ya pagaste y tarda? Pega el ID de la transferencia (opcional)</label>
                             <input type="text" id="ua-txid" class="form-control no-left-icon" placeholder="0x…" autocapitalize="none" autocomplete="off" spellcheck="false">
                         </div>
                         <button class="btn-main" style="--btn-c: #2f6bff; margin-top: .4rem;" onclick="verificarTxIdUSDTAuto()">VERIFICAR AHORA</button>
-                        <button class="btn-main" style="--btn-c: #64748b; margin-top: .6rem;" onclick="cancelarOrdenUSDTAuto()">Cambiar monto</button>
+                        <button class="btn-main" style="--btn-c: #ef4444; margin-top: .6rem;" onclick="abrirCancelarUSDT()">CANCELAR PAGO EN ESPERA</button>
                     </div>
 
                     <!-- Paso 3: listo -->
@@ -1959,17 +1977,7 @@
 
                     <div class="form-group" style="margin-top: 1rem;">
                         <label>Monto</label>
-                        <input type="number" id="monto-usdt-deposito" class="form-control no-left-icon" placeholder="Ej. 10.00">
-                    </div>
-
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label>ID de la transferencia (Hash / ID)</label>
-                        <input type="text" id="txid-usdt-input" class="form-control no-left-icon" placeholder="Ej. 0x1234abcd..." oninput="validarTxIdInput(this)">
-                        <div id="err-txid" class="error-feedback-text">Esto no es una ID de transferencia válida (evita letras inválidas o caracteres erróneos).</div>
-                    </div>
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label>Monto</label>
-                        <input type="number" id="monto-usdt-deposito" class="form-control no-left-icon" placeholder="Ej. 10.00">
+                        <input type="number" id="monto-usdt-deposito" class="form-control no-left-icon" placeholder="Mínimo 1.1" min="1.1" step="0.01" inputmode="decimal">
                     </div>
 
                     <div class="form-group" style="margin-top: 1rem;">
@@ -4039,7 +4047,7 @@
             const txInput = document.getElementById('txid-usdt-input');
             const txId = txInput.value.trim();
 
-            if (isNaN(monto) || monto <= 0) { mostrarNotificacion("Introduce un monto válido en USDT"); return; }
+            if (isNaN(monto) || monto < MIN_USDT) { mostrarNotificacion("El monto mínimo es " + MIN_USDT + " USDT"); return; }
             if (!validarTxIdInput(txInput) || txId.length < 8) { mostrarNotificacion("ID de transferencia no válida o incompleta"); return; }
 
             mostrarCarga("Enviando reporte de depósito...");
@@ -4307,7 +4315,22 @@
             containerCompras.innerHTML = htmlCompras;
 
             let htmlDepositos = "";
-            if (depositosVista.length === 0) {
+            const ordAuto = ordenUSDTGuardada();
+            if (ordAuto && (filtroDepositos === 'todos' || filtroDepositos === 'pendiente')) {
+                htmlDepositos += `
+                    <div class="order-card-pro shine-card" onclick="irPagoUSDTPendiente()" style="flex-wrap:wrap;">
+                        <div class="order-info">
+                            <h4>Depósito de ${esc(String(ordAuto.monto))} USDT</h4>
+                            <p>Esperando pago · vence en <b class="ua-ord-cuenta">${fmtCuentaUSDT(restanteUSDT(ordAuto))}</b></p>
+                        </div>
+                        <div class="order-right-action">
+                            <span class="badge-status status-pendiente">Pendiente</span>
+                            <div class="order-arrow-icon"><svg viewBox="0 0 24 24"><path d="${ICON.arrow}"/></svg></div>
+                        </div>
+                        <button class="ua-cancel-mini" onclick="event.stopPropagation(); abrirCancelarUSDT()">Cancelar pago en espera · <b class="ua-ord-cuenta">${fmtCuentaUSDT(restanteUSDT(ordAuto))}</b></button>
+                    </div>`;
+            }
+            if (depositosVista.length === 0 && !htmlDepositos) {
                 htmlDepositos = misDepositos.length === 0 ? "<p class='pd-vacio'>No tienes depósitos registrados.</p>" : "<p class='pd-vacio'>No hay depósitos en este filtro.</p>";
             } else {
                 depositosVista.slice().reverse().forEach(d => {
@@ -4810,12 +4833,16 @@
         /* ===== Depósito USDT automático (Worker + blockchain BSC) ===== */
         let ordenUSDT = null, pollUSDT = null, relojUSDT = null;
         const CLAVE_ORDEN_USDT = 'lester_usdt_orden';
+        const VENTANA_USDT = 5 * 60 * 1000; /* la orden y su validación duran máximo 5 minutos */
+        const MIN_USDT = 1.1;
+        function restanteUSDT(o) { return o ? Math.max(0, Math.min(o.expira || 0, (o.creada || 0) + VENTANA_USDT) - Date.now()) : 0; }
+        function fmtCuentaUSDT(ms) { const t = Math.ceil(ms / 1000); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); }
 
         function guardarOrdenUSDT(o) { try { o ? localStorage.setItem(CLAVE_ORDEN_USDT, JSON.stringify(o)) : localStorage.removeItem(CLAVE_ORDEN_USDT); } catch (e) {} }
         function ordenUSDTGuardada() {
             try {
                 const o = JSON.parse(localStorage.getItem(CLAVE_ORDEN_USDT) || 'null');
-                if (o && usuarioActual && o.correo === usuarioActual.correo.toLowerCase() && o.expira > Date.now()) return o;
+                if (o && usuarioActual && o.correo === usuarioActual.correo.toLowerCase() && restanteUSDT(o) > 0) return o;
             } catch (e) {}
             return null;
         }
@@ -4836,24 +4863,26 @@
             const guardada = ordenUSDTGuardada();
             if (guardada) { mostrarOrdenUSDT(guardada); }
             else { detenerSondeoUSDT(); uaPaso(1); }
+            const man = document.getElementById('ua-manual'); if (man) man.open = false;
         }
 
         async function crearOrdenUSDT() {
             const monto = parseFloat(document.getElementById('monto-usdt-auto').value);
-            if (isNaN(monto) || monto < 1) { mostrarNotificacion("El monto mínimo es 1 USDT"); return; }
+            if (isNaN(monto) || monto < MIN_USDT) { mostrarNotificacion("El monto mínimo es " + MIN_USDT + " USDT"); return; }
             mostrarCarga("Generando tu pago...");
             try {
                 await traerEstadoFresco().catch(() => {});
                 const { ok, j } = await postWorker('/api/usdt/orden', { correo: usuarioActual.correo, monto });
                 ocultarCarga();
-                if (!ok || !j.orden) { mostrarNotificacion(j.mensaje || "No pude generar el pago. Usa el reporte manual de abajo."); document.getElementById('ua-manual').open = true; return; }
-                const o = Object.assign({ correo: usuarioActual.correo.toLowerCase() }, j.orden);
+                if (!ok || !j.orden) { mostrarNotificacion(j.mensaje || "No pude generar el pago. Intenta de nuevo."); uaPaso(1); return; }
+                const ahora = Date.now();
+                const o = Object.assign({ correo: usuarioActual.correo.toLowerCase() }, j.orden, { creada: ahora, expira: ahora + VENTANA_USDT });
                 guardarOrdenUSDT(o);
                 mostrarOrdenUSDT(o);
             } catch (e) {
                 ocultarCarga();
-                mostrarNotificacion("Sin conexión con el servidor. Usa el reporte manual de abajo.");
-                document.getElementById('ua-manual').open = true;
+                mostrarNotificacion("Sin conexión con el servidor. Intenta de nuevo en unos segundos.");
+                uaPaso(1);
             }
         }
 
@@ -4863,6 +4892,8 @@
             document.getElementById('ua-dir-txt').innerText = o.direccion;
             uaPaso(2);
             uaEstado('Esperando tu pago…');
+            tickUSDT();
+            try { renderizarOrdenes(); } catch (e) {}
             iniciarSondeoUSDT();
         }
 
@@ -4876,13 +4907,13 @@
         let revisandoUSDT = false;
         async function revisarOrdenUSDT() {
             if (!ordenUSDT || revisandoUSDT || document.hidden) return;
-            if (ordenUSDT.expira && ordenUSDT.expira < Date.now()) { uaEstado('Esta orden venció. Genera una nueva.', true); detenerSondeoUSDT(); guardarOrdenUSDT(null); return; }
+            if (restanteUSDT(ordenUSDT) <= 0) { expirarOrdenUSDT(); return; }
             revisandoUSDT = true;
             try {
                 const r = await fetch(WORKER_URL + '/api/usdt/revisar?id=' + encodeURIComponent(ordenUSDT.id), { cache: 'no-store' });
                 const j = await r.json();
                 if (j.orden && j.orden.estado === 'acreditado') { await ordenUSDTAcreditada(j.orden); }
-                else if (j.orden && j.orden.estado === 'expirada') { uaEstado('Esta orden venció. Genera una nueva.', true); detenerSondeoUSDT(); guardarOrdenUSDT(null); }
+                else if (j.orden && j.orden.estado === 'expirada') { expirarOrdenUSDT(); }
                 else uaEstado('Esperando tu pago…');
             } catch (e) { uaEstado('Reconectando…', true); }
             revisandoUSDT = false;
@@ -4902,6 +4933,7 @@
 
         async function verificarTxIdUSDTAuto() {
             if (!ordenUSDT) return;
+            if (restanteUSDT(ordenUSDT) <= 0) { expirarOrdenUSDT(); return; }
             const tx = document.getElementById('ua-txid').value.trim();
             if (!/^0x[0-9a-fA-F]{64}$/.test(tx)) { mostrarNotificacion("El ID debe empezar con 0x y tener 66 caracteres"); return; }
             mostrarCarga("Verificando en la red...");
@@ -4913,7 +4945,41 @@
             } catch (e) { ocultarCarga(); mostrarNotificacion("Sin conexión. Intenta otra vez."); }
         }
 
-        function cancelarOrdenUSDTAuto() { detenerSondeoUSDT(); guardarOrdenUSDT(null); ordenUSDT = null; uaPaso(1); }
+        function cancelarOrdenUSDTAuto() { detenerSondeoUSDT(); guardarOrdenUSDT(null); ordenUSDT = null; uaPaso(1); renderizarOrdenes(); }
+        function expirarOrdenUSDT() {
+            cerrarCancelarUSDT();
+            detenerSondeoUSDT(); guardarOrdenUSDT(null); ordenUSDT = null;
+            uaPaso(1); renderizarOrdenes();
+            mostrarNotificacion("El pago venció (5 minutos). Genera uno nuevo.");
+        }
+        function abrirCancelarUSDT() {
+            const o = ordenUSDT || ordenUSDTGuardada();
+            if (!o || restanteUSDT(o) <= 0) { expirarOrdenUSDT(); return; }
+            ordenUSDT = o;
+            document.getElementById('modal-cancelar-usdt').style.display = 'flex';
+            tickUSDT();
+        }
+        function cerrarCancelarUSDT() { const m = document.getElementById('modal-cancelar-usdt'); if (m) m.style.display = 'none'; }
+        function confirmarCancelarUSDT() {
+            const o = ordenUSDT || ordenUSDTGuardada();
+            if (!o || restanteUSDT(o) <= 0) { expirarOrdenUSDT(); return; } /* pasados los 5 min ya no se confirma */
+            try { postWorker('/api/usdt/cancelar', { id: o.id }).catch(() => {}); } catch (e) {}
+            cerrarCancelarUSDT();
+            cancelarOrdenUSDTAuto();
+            mostrarNotificacion("Pago cancelado");
+        }
+        function irPagoUSDTPendiente() { mostrarVista('seccion-wallet-usdt'); abrirDepositoUSDTAuto(); }
+        /* Reloj de 1s: cuenta regresiva de la orden (máx. 5:00) */
+        function tickUSDT() {
+            const o = ordenUSDT || ordenUSDTGuardada();
+            if (!o) return;
+            const ms = restanteUSDT(o);
+            if (ms <= 0) { if (ordenUSDTGuardada() || ordenUSDT) expirarOrdenUSDT(); return; }
+            const txt = fmtCuentaUSDT(ms), urg = ms <= 60000;
+            ['ua-cuenta', 'ua-cancel-cuenta'].forEach(id => { const e = document.getElementById(id); if (e) { e.innerText = txt; e.classList.toggle('urg', urg); } });
+            document.querySelectorAll('.ua-ord-cuenta').forEach(e => { e.innerText = txt; });
+        }
+        setInterval(tickUSDT, 1000);
         function copiarMontoUSDTAuto() { if (ordenUSDT) copiar(ordenUSDT.monto, 'Monto exacto copiado'); }
         function copiarDirUSDTAuto() { if (ordenUSDT) copiar(ordenUSDT.direccion, 'Dirección BEP 20 copiada'); }
 
