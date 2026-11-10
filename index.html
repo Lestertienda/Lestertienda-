@@ -860,56 +860,43 @@
            ===================================================================== */
         @property --ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
 
-        /* ---- Forma biselada (la del botón "Crear cuenta") ---- */
-        .btn-main, .btn-invite, .ceo-btn, .ceo-btn-verde, .soporte-option-btn, .op-cta, .pf-logros, .btn-icon, .dep-ceo-acciones button, .ver-mas, .auth-tab,
-        .back-btn, .form-control, .ceo-action-form input, .ceo-action-form select, .ceo-action-form textarea,
-        .auth-container, .sub-card, .game-hero-compact, .game-card-character, .invite-banner, .live-history-card, .diamond-card, .profile-header-card, .pf-card,
-        .order-card-pro, .menu-list, .ceo-box, .ceo-action-form, .dep-ceo-card, .soporte-modal-box, .wallet-card, .opinion-card, .op-feed-card,
-        .op-box-opinar, .op-card-h, .op-add-h, .gx-vacio, .itab, .pay-method-pill-btn, .seg2, .auth-tabs, .pf-stat, .pf-sec, #notification-toast {
-            --cut: 14px;
-            border-radius: 0 !important;
-            clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
-        }
-        .btn-main, .btn-invite, .ceo-btn, .ceo-btn-verde, .soporte-option-btn, .op-cta, .pf-logros, .btn-icon, .ver-mas, .pay-method-pill-btn, .itab { --cut: 10px; }
-        .form-control, .ceo-action-form input, .ceo-action-form select, .ceo-action-form textarea, .back-btn, .auth-tab, .dep-ceo-acciones button, .pf-stat, .pf-sec, .auth-tabs, #notification-toast { --cut: 8px; }
-        .seg2 .pay-method-pill-btn, .seg2 .itab { --cut: 8px; }
-
-        /* ---- Botón principal: azul con bisel como la imagen ---- */
-        .btn-main {
-            position: relative; overflow: hidden; border: none; color: #fff; letter-spacing: .3px; text-shadow: 0 1px 2px rgba(0,20,90,.45);
-            background: linear-gradient(180deg, #5f97ff 0%, #3a74ff 22%, #2358f4 62%, #1849d4 100%);
-            box-shadow: inset 0 1.5px 0 rgba(255,255,255,.5), inset 0 -4px 0 rgba(8,28,110,.6);
+        /* ---- Botón principal: bisel + brillo por detrás (forma de "Crear cuenta") ---- */
+        .btn-main:not([style*="background"]) {
+            --cut: 12px; position: relative; isolation: isolate; overflow: visible;
+            background: none; border: 0; border-radius: 0; box-shadow: none; clip-path: none;
+            color: #fff; text-shadow: 0 1px 2px rgba(0,20,90,.5); letter-spacing: .3px;
             padding-bottom: calc(0.8rem + 2px);
+            filter: drop-shadow(0 7px 12px rgba(37,99,235,.55)) drop-shadow(0 0 16px rgba(59,130,246,.30));
             transition: filter .2s, transform .15s;
         }
-        .btn-main::after {
-            content: ""; position: absolute; top: 0; left: -70%; width: 38%; height: 100%; pointer-events: none;
-            background: linear-gradient(100deg, transparent, rgba(255,255,255,.38), transparent); transform: skewX(-22deg);
-            animation: btnShine 3.8s ease-in-out infinite;
+        .btn-main:not([style*="background"])::before {
+            content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none; border-radius: 0;
+            clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+            background: linear-gradient(180deg, #b4ceff 0%, #5a8cff 38%, #1b4fe0 100%);
         }
-        .btn-main:hover { filter: brightness(1.12); transform: none; box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), inset 0 -4px 0 rgba(8,28,110,.6); }
-        .btn-main:active { transform: translateY(2px); filter: brightness(.95); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.4), inset 0 -2px 0 rgba(8,28,110,.6); }
-        @keyframes btnShine { 0%, 55% { left: -70%; } 100% { left: 135%; } }
+        .btn-main:not([style*="background"])::after {
+            content: ""; position: absolute; left: 1.5px; right: 1.5px; top: 1.5px; bottom: 3.5px; width: auto; height: auto; z-index: -1; pointer-events: none; transform: none;
+            clip-path: polygon(calc(var(--cut) - 1px) 0, calc(100% - var(--cut) + 1px) 0, 100% calc(var(--cut) - 1px), 100% calc(100% - var(--cut) + 3px), calc(100% - var(--cut) + 3px) 100%, calc(var(--cut) - 3px) 100%, 0 calc(100% - var(--cut) + 3px), 0 calc(var(--cut) - 1px));
+            background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,.42) 50%, transparent 58%) 80% 0 / 300% 100% no-repeat, linear-gradient(180deg, #6ba0ff 0%, #3a74ff 24%, #2358f4 62%, #1849d4 100%);
+            animation: btnSweep 3.8s ease-in-out infinite;
+        }
+        @keyframes btnSweep { 0%, 45% { background-position: 80% 0, 0 0; } 100% { background-position: 20% 0, 0 0; } }
+        .btn-main:not([style*="background"]):hover { filter: drop-shadow(0 8px 15px rgba(37,99,235,.7)) drop-shadow(0 0 20px rgba(59,130,246,.45)) brightness(1.08); transform: none; }
+        .btn-main:not([style*="background"]):active { transform: translateY(2px); filter: drop-shadow(0 3px 6px rgba(37,99,235,.5)); }
 
-        .btn-invite, .ceo-btn, .ceo-btn-verde, .soporte-option-btn, .op-cta, .btn-icon {
-            box-shadow: inset 0 1.5px 0 rgba(255,255,255,.28), inset 0 -3px 0 rgba(0,0,0,.28) !important;
+        /* ---- Botones de otros colores: redondeados con relieve ---- */
+        .btn-main[style*="background"], .btn-invite, .ceo-btn, .ceo-btn-verde, .soporte-option-btn, .op-cta, .btn-icon {
+            box-shadow: inset 0 1.5px 0 rgba(255,255,255,.32), inset 0 -3px 0 rgba(0,0,0,.25), 0 8px 18px -8px rgba(0,0,0,.55) !important;
             transition: filter .2s, transform .15s;
         }
-        .btn-invite:active, .ceo-btn:active, .ceo-btn-verde:active, .soporte-option-btn:active, .op-cta:active, .btn-icon:active { transform: translateY(2px); filter: brightness(.94); }
+        .btn-main[style*="background"] { position: relative; overflow: hidden; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.3); }
+        .btn-main[style*="background"]::after { content: ""; position: absolute; top: 0; left: -70%; width: 38%; height: 100%; pointer-events: none;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); transform: skewX(-22deg); animation: btnShine 3.8s ease-in-out infinite; }
+        @keyframes btnShine { 0%, 55% { left: -70%; } 100% { left: 135%; } }
+        .btn-main[style*="background"]:active, .btn-invite:active, .ceo-btn:active, .ceo-btn-verde:active, .soporte-option-btn:active, .op-cta:active, .btn-icon:active { transform: translateY(2px); filter: brightness(.94); }
         .btn-invite:hover, .ceo-btn:hover, .ceo-btn-verde:hover, .soporte-option-btn:hover, .op-cta:hover { filter: brightness(1.1); }
 
-        /* ---- Tarjetas: brillo interior en vez de sombra exterior (la sombra se recortaría) ---- */
-        .sub-card, .game-hero-compact, .game-card-character, .invite-banner, .live-history-card, .diamond-card, .profile-header-card, .pf-card,
-        .order-card-pro, .menu-list, .ceo-box, .dep-ceo-card, .wallet-card, .opinion-card, .op-feed-card, .op-box-opinar, .op-card-h, .op-add-h {
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.06), inset 0 -3px 0 rgba(0,0,0,.18) !important;
-            transition: transform .2s ease, border-color .25s, background .25s;
-        }
-        .diamond-card.selected { background: linear-gradient(135deg, rgba(47,107,255,.24), rgba(22,199,132,.14)) !important; border-color: #3b82f6 !important;
-            box-shadow: inset 0 0 0 1.5px #3b82f6, inset 0 0 26px rgba(47,107,255,.32) !important; }
-        .game-card-character:hover, .wallet-card:hover, .sub-card:hover, .diamond-card:hover { transform: translateY(-2px); border-color: #3b82f6; }
         .wallet-card:active, .order-card-pro:active, .game-hero-compact:active, .sub-card:active, .diamond-card:active, .game-card-character:active, .invite-banner:active { transform: scale(.98); }
-        .form-control { box-shadow: inset 0 -2px 0 rgba(0,0,0,.18); }
-        .form-control:focus { box-shadow: inset 0 0 0 1.5px var(--accent-glow), inset 0 -2px 0 rgba(0,0,0,.18) !important; }
         .auth-tab.active { background: linear-gradient(180deg, #5f97ff, #2358f4 70%, #1849d4); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(8,28,110,.55); }
         .pd-chip.activo { box-shadow: none; }
 
@@ -1014,7 +1001,43 @@
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
         }
-</style>
+        /* ---- Menú de perfil: filas limpias con icono en recuadro, separadores y flecha ---- */
+        .menu-list { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.012)), var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: .25rem .4rem .35rem; gap: 0; box-shadow: 0 10px 30px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.05); }
+        .menu-list::before { display: none; }
+        .menu-list-title { display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 900; color: var(--text-main); padding: .95rem .8rem .5rem; }
+        .menu-list-title::before { content: ""; width: 4px; height: 22px; border-radius: 3px; background: linear-gradient(180deg, #60a5fa, #2563eb); box-shadow: 0 0 10px rgba(59,130,246,.75); }
+        .menu-row { width: auto; margin: 0 .2rem; background: transparent; border: 0; border-radius: 16px; padding: .8rem .6rem; gap: 14px; transform: none; }
+        .menu-row::before { display: none; }
+        .menu-row:not(:last-of-type)::after { content: ""; position: absolute; left: .9rem; right: .9rem; bottom: 0; height: 1px; background: rgba(148,163,184,.16); }
+        .menu-row:hover { background: rgba(59,130,246,.08); border: 0; transform: none; }
+        .menu-row:active { background: rgba(59,130,246,.16); }
+        .menu-row .mr-icon { width: 46px; height: 46px; border-radius: 15px; background: linear-gradient(160deg, rgba(59,130,246,.26), rgba(30,64,175,.2)); border: 1px solid rgba(96,165,250,.5); box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 0 14px rgba(59,130,246,.2); }
+        .menu-row .mr-icon svg { width: 22px; height: 22px; fill: #8ec1ff; }
+        .menu-row .mr-text { font-size: .95rem; font-weight: 800; }
+        .menu-row .mr-sub { font-size: .74rem; font-weight: 600; margin-top: 3px; }
+        .menu-row .mr-arrow svg { width: 20px; height: 20px; fill: var(--text-muted); transition: transform .2s, fill .2s; }
+        .menu-row:hover .mr-arrow svg { fill: #8ec1ff; transform: translateX(3px); }
+        .menu-row.danger { color: #ff6b6b; border: 0; }
+        .menu-row.danger:hover { background: rgba(239,68,68,.09); }
+        .menu-row.danger .mr-icon { background: linear-gradient(160deg, rgba(239,68,68,.28), rgba(127,29,29,.22)); border-color: rgba(248,113,113,.55); box-shadow: inset 0 1px 0 rgba(255,255,255,.12), 0 0 14px rgba(239,68,68,.18); }
+        .menu-row.danger .mr-icon svg, .menu-row.danger .mr-arrow svg { fill: #ff8a8a; }
+        :root[data-theme="light"] .menu-row .mr-icon { background: linear-gradient(160deg, rgba(36,87,255,.14), rgba(36,87,255,.06)); border-color: rgba(36,87,255,.38); box-shadow: inset 0 1px 0 #fff; }
+        :root[data-theme="light"] .menu-row .mr-icon svg { fill: #2457ff; }
+        :root[data-theme="light"] .menu-row:hover { background: rgba(36,87,255,.07); }
+        :root[data-theme="light"] .menu-row.danger .mr-icon svg, :root[data-theme="light"] .menu-row.danger .mr-arrow svg { fill: #dc2626; }
+        :root[data-theme="light"] .menu-row.danger { color: #dc2626; }
+
+        /* ---- Barra inferior: la opción activa es una píldora azul sólida con brillo ---- */
+        .bottom-nav::before { background: linear-gradient(180deg, #4a8dff 0%, #2563eb 55%, #1d4ed8 100%); animation: pillGlow 3s ease-in-out infinite; }
+        @keyframes pillGlow {
+            0%, 100% { box-shadow: inset 0 1.5px 0 rgba(255,255,255,.42), inset 0 -3px 0 rgba(8,28,110,.45), 0 6px 18px rgba(37,99,235,.45); }
+            50% { box-shadow: inset 0 1.5px 0 rgba(255,255,255,.5), inset 0 -3px 0 rgba(8,28,110,.45), 0 8px 26px rgba(59,130,246,.75); }
+        }
+        .bottom-nav .nav-item.active { color: #fff; }
+        .bottom-nav .nav-item.active > span:not(.nav-avatar) { background: none; -webkit-text-fill-color: #fff; color: #fff; }
+        .bottom-nav .nav-item.active svg { stroke: #fff; animation: none; filter: drop-shadow(0 2px 5px rgba(0,0,0,.3)); }
+        .bottom-nav .nav-item.active .nav-avatar { border-color: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,.28), 0 3px 10px rgba(0,0,0,.3); }
+    </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -2432,6 +2455,7 @@
 
         /* ================= NUBE (JSONBin) ================= */
         let guardandoCloud = false;
+        let escrituraGen = 0; // sube con cada guardado: una lectura que empezó antes no puede pisar lo que se acaba de guardar
         let ultimaEscritura = 0;
         let firmaSolicitudes = '';
         let firmaConfig = '';
@@ -2510,6 +2534,7 @@
 
         async function guardarEnCloud() {
             guardandoCloud = true;
+            escrituraGen++;
             try {
                 const copiaU = copiaJSON(listaUsuariosGlobales), copiaR = copiaJSON(solicitudesGlobales.recargas), copiaD = copiaJSON(solicitudesGlobales.depositos), copiaC = copiaJSON(tiendaConfig);
                 for (let intento = 1; intento <= 3; intento++) {
@@ -2558,6 +2583,7 @@
                 }
                 return false;
             } finally {
+                escrituraGen++;
                 guardandoCloud = false;
             }
         }
@@ -2662,10 +2688,11 @@
             // No leer de la nube mientras se guarda o justo después de guardar (evita pisar cambios locales)
             if (guardandoCloud || (Date.now() - ultimaEscritura) < 10000) return;
             if (!silencioso) mostrarCarga("Sincronizando datos...");
+            const gen0 = escrituraGen;
             try {
                 const respuesta = await fetch(WORKER_URL ? `${WORKER_URL}/api/state` : `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: WORKER_URL ? {} : { 'X-Master-Key': MASTER_KEY } });
                 const resultado = await respuesta.json();
-                if (guardandoCloud) return;
+                if (guardandoCloud || gen0 !== escrituraGen) return; // se guardó algo mientras se leía: esta lectura ya es vieja
                 const rec = resultado && resultado.record;
                 if (rec) {
                     fijarBase(rec);
@@ -4274,15 +4301,30 @@
             if (!file) return;
             try {
                 const data = await comprimirImagen(file, 384, 80000);
+                const previa = usuarioActual.avatar;
                 usuarioActual.avatar = data;
                 let fresh = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
                 if (fresh) fresh.avatar = data;
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
-                const ok = await guardarEnCloud();
                 actualizarPerfilUI();
-                actualizarEstadisticasInicio();
-                mostrarNotificacion(ok ? "Foto de perfil guardada" : "Foto guardada en este dispositivo (mala internet)");
+                const ok = await guardarEnCloud();
+                if (!ok) {
+                    // No se guardó: se vuelve a la foto anterior ahora, para que no cambie sola más tarde
+                    usuarioActual.avatar = previa;
+                    const f2 = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
+                    if (f2) f2.avatar = previa;
+                    localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                    localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
+                    actualizarPerfilUI();
+                    actualizarEstadisticasInicio();
+                    mostrarNotificacion("Mala internet. No se guardó la foto, intenta de nuevo.");
+                } else {
+                    refrescarUsuarioActual();
+                    actualizarPerfilUI();
+                    actualizarEstadisticasInicio();
+                    mostrarNotificacion("Foto de perfil guardada");
+                }
             } catch (e) { mostrarNotificacion("No se pudo procesar la imagen"); }
             event.target.value = '';
         }
