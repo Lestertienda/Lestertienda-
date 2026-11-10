@@ -350,7 +350,6 @@
         .rb-email-help { font-size: .74rem; color: var(--text-muted); margin: -4px 2px 14px; line-height: 1.4; }
         .form-control.rb-bad { border-color: #ef4444 !important; box-shadow: 0 0 0 3px rgba(239,68,68,.18); }
         .form-control.rb-ok { border-color: #22c55e !important; }
-        #contenedor-grid-paquetes-rb .diamond-img-render { width: 88px; height: 74px; }
 
         .gx-chev { width: 16px; height: 16px; fill: rgba(255,255,255,.65); flex-shrink: 0; transition: transform .25s; }
         .gx-card:hover .gx-chev { transform: translateX(3px); }
@@ -364,7 +363,6 @@
         .pay-method-pill-btn.adm-pop::after { animation: itabBrillo .6s ease; }
         .pay-method-pill-btn.active { background: linear-gradient(135deg, #0066ff, #00a2ff) !important; box-shadow: 0 8px 22px rgba(0,102,255,.45), 0 0 0 1px rgba(0,240,255,.5) !important; }
         .pay-method-pill-btn:not(.active):hover { border-color: var(--accent-glow); transform: translateY(-2px); }
-        #contenedor-grid-paquetes-bs .diamond-img-render { width: 88px; height: 74px; }
         .order-juego { display: block; font-size: .6rem; font-weight: 800; letter-spacing: .7px; text-transform: uppercase; color: var(--accent-glow); }
         .order-thumb { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; margin-right: 10px; filter: drop-shadow(0 3px 6px rgba(0,0,0,.45)); }
         .order-info-wrap { display: flex; align-items: center; flex: 1; min-width: 0; }
@@ -988,6 +986,51 @@
             background: linear-gradient(180deg, #ffffff, #f4f7ff) !important; border-color: #cdd8f1 !important;
             box-shadow: inset 0 1px 0 #fff, inset 0 -3px 0 rgba(36,87,255,.08) !important;
         }
+        /* ===== Tarjetas de ofertas: horizontales, esquinas biseladas como "Crear cuenta" + brillo por detrás ===== */
+        .diamonds-grid { gap: .8rem .7rem; }
+        :root:not(#x) .diamonds-grid .diamond-card {
+            --cut: 14px; position: relative; isolation: isolate; overflow: visible;
+            display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: 6px;
+            padding: 12px 8px 15px 8px; min-height: 86px; text-align: left; border-radius: 0 !important;
+            background: none !important; border: 0 !important; box-shadow: none !important;
+            filter: drop-shadow(0 7px 10px rgba(0,0,0,.38)) drop-shadow(0 0 13px rgba(47,107,255,.28));
+            transition: filter .25s, transform .15s;
+        }
+        :root:not(#x) .diamonds-grid .diamond-card::before {
+            content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none; border-radius: 0; animation: none;
+            clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+            background: linear-gradient(135deg, #3b82ff 0%, #1aa6c8 55%, #16c784 100%);
+        }
+        :root:not(#x) .diamonds-grid .diamond-card::after {
+            content: ""; position: absolute; left: 1.5px; right: 1.5px; top: 1.5px; bottom: 3.5px; z-index: -1; pointer-events: none;
+            clip-path: polygon(calc(var(--cut) - 1px) 0, calc(100% - var(--cut) + 1px) 0, 100% calc(var(--cut) - 1px), 100% calc(100% - var(--cut) + 3px), calc(100% - var(--cut) + 3px) 100%, calc(var(--cut) - 3px) 100%, 0 calc(100% - var(--cut) + 3px), 0 calc(var(--cut) - 1px));
+            background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,.0) 50%, transparent 58%) 80% 0 / 300% 100% no-repeat,
+                        radial-gradient(circle at 24% 50%, rgba(47,107,255,.34) 0%, transparent 62%),
+                        linear-gradient(180deg, var(--bg-card) 0%, var(--bg-main) 130%);
+        }
+        :root:not(#x) .diamonds-grid .diamond-card:hover { transform: none; box-shadow: none !important; }
+        :root:not(#x) .diamonds-grid .diamond-card:active { transform: scale(.96); }
+        :root:not(#x) .diamonds-grid .diamond-card.selected {
+            background: none !important; box-shadow: none !important; border: 0 !important;
+            filter: drop-shadow(0 7px 10px rgba(0,0,0,.35)) drop-shadow(0 0 16px rgba(0,240,255,.6));
+        }
+        :root:not(#x) .diamonds-grid .diamond-card.selected::before { background: linear-gradient(135deg, #00f0ff 0%, #2f8bff 50%, #16c784 100%); }
+        :root:not(#x) .diamonds-grid .diamond-card.selected::after {
+            background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,.28) 50%, transparent 58%) 80% 0 / 300% 100% no-repeat,
+                        radial-gradient(circle at 24% 50%, rgba(0,240,255,.42) 0%, transparent 62%),
+                        linear-gradient(180deg, var(--bg-card) 0%, var(--bg-main) 130%);
+            animation: dcSweep 2.8s ease-in-out infinite;
+        }
+        @keyframes dcSweep { 0%, 35% { background-position: 80% 0, 0 0, 0 0; } 100% { background-position: 20% 0, 0 0, 0 0; } }
+        :root[data-theme="light"]:not(#x) .diamonds-grid .diamond-card { filter: drop-shadow(0 6px 9px rgba(36,87,255,.22)) drop-shadow(0 0 9px rgba(36,87,255,.14)); }
+        :root[data-theme="light"]:not(#x) .diamonds-grid .diamond-card::after { background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,0) 50%, transparent 58%) 80% 0 / 300% 100% no-repeat, radial-gradient(circle at 24% 50%, rgba(36,87,255,.14) 0%, transparent 62%), linear-gradient(180deg, #ffffff, #eef3ff); }
+        :root[data-theme="light"]:not(#x) .diamonds-grid .diamond-card.selected::after { background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,.7) 50%, transparent 58%) 80% 0 / 300% 100% no-repeat, radial-gradient(circle at 24% 50%, rgba(36,87,255,.26) 0%, transparent 62%), linear-gradient(180deg, #f2f6ff, #dfe8ff); }
+        .diamonds-grid .diamond-img-render { width: 58px; height: 56px; margin: 0; flex: 0 0 58px; }
+        .diamonds-grid .diamond-img-render img { filter: drop-shadow(0 4px 8px rgba(0,102,255,.4)); }
+        .dc-info { display: flex; flex-direction: column; min-width: 0; line-height: 1.12; }
+        .dc-qty { font-size: .98rem; font-weight: 900; color: var(--text-main); white-space: nowrap; }
+        .dc-unit { font-size: .7rem; font-weight: 700; color: var(--text-muted); margin-bottom: 3px; }
+        .dc-info .diamond-price { font-size: .86rem; white-space: nowrap; letter-spacing: .1px; }
         :root[data-theme="light"] .diamond-card.selected { background: linear-gradient(135deg, rgba(36,87,255,.14), rgba(22,199,132,.10)) !important; border-color: #2457ff !important; box-shadow: inset 0 0 0 1.5px #2457ff, inset 0 0 22px rgba(36,87,255,.18) !important; }
         :root[data-theme="light"] .form-control { background: #f4f7ff; color: #0b1530; border-color: #c4d0ec; }
         :root[data-theme="light"] .pd-chip.activo { color: #fff; }
@@ -3262,8 +3305,11 @@
                     html += `
                         <div class="diamond-card${sel}" onclick="seleccionarOferta(${idx}, this)">
                             <div class="diamond-img-render"><img src="${src}" alt="${esc(p.nombre)}" onerror="this.onerror=null;this.src='${def.length < 300 ? def : IMG_DIAMANTE}'"></div>
-                            <h4>${esc(p.nombre)}</h4>
-                            <span class="diamond-price">${precioMostrado}</span>
+                            <div class="dc-info">
+                                <span class="dc-qty">${esc(p.textoDetalle || p.nombre)}</span>
+                                <span class="dc-unit">${j === 'roblox' ? 'Robux' : (j === 'blood' ? 'BC' : 'Diamantes')}</span>
+                                <span class="diamond-price">${precioMostrado}</span>
+                            </div>
                         </div>`;
                 });
                 container.innerHTML = html;
