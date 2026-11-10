@@ -37,15 +37,15 @@
         }
 
         :root[data-theme="light"] {
-            --bg-main: #f0f4f8;
+            --bg-main: #e9effb;
             --bg-card: #ffffff;
-            --text-main: #0d1322;
-            --text-muted: #556987;
-            --primary-blue: #4da3ff;
-            --accent-glow: #0ea5e9;
-            --border-color: #cbd5e1;
+            --text-main: #0b1530;
+            --text-muted: #53638a;
+            --primary-blue: #2457ff;
+            --accent-glow: #1d4ed8;
+            --border-color: #cdd8f1;
             --error-color: #dc2626;
-            --shine: rgba(77,163,255,.16);
+            --shine: rgba(36,87,255,.14);
         }
 
         * {
@@ -854,11 +854,172 @@
         .btn-icon { display: flex; align-items: center; justify-content: center; gap: 7px; padding: .75rem; border-radius: 12px; font-weight: 800; font-size: .8rem; cursor: pointer; border: none; color: #fff; background: var(--primary-blue); }
         .btn-icon.sec { background: var(--bg-main); color: var(--accent-glow); border: 1.5px solid var(--accent-glow); }
         .btn-icon svg { width: 16px; height: 16px; fill: currentColor; }
-    </style>
+        /* =====================================================================
+           ESTILO PROFESIONAL: botones y tarjetas con esquinas biseladas,
+           animaciones, fondo animado de acceso y modo claro renovado
+           ===================================================================== */
+        @property --ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+        /* ---- Forma biselada (la del botón "Crear cuenta") ---- */
+        .btn-main, .btn-invite, .ceo-btn, .ceo-btn-verde, .soporte-option-btn, .op-cta, .pf-logros, .btn-icon, .dep-ceo-acciones button, .ver-mas, .auth-tab,
+        .back-btn, .form-control, .ceo-action-form input, .ceo-action-form select, .ceo-action-form textarea,
+        .auth-container, .sub-card, .game-hero-compact, .game-card-character, .invite-banner, .live-history-card, .diamond-card, .profile-header-card, .pf-card,
+        .order-card-pro, .menu-list, .ceo-box, .ceo-action-form, .dep-ceo-card, .soporte-modal-box, .wallet-card, .opinion-card, .op-feed-card,
+        .op-box-opinar, .op-card-h, .op-add-h, .gx-vacio, .itab, .pay-method-pill-btn, .seg2, .auth-tabs, .pf-stat, .pf-sec, #notification-toast {
+            --cut: 14px;
+            border-radius: 0 !important;
+            clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 calc(100% - var(--cut)), 0 var(--cut));
+        }
+        .btn-main, .btn-invite, .ceo-btn, .ceo-btn-verde, .soporte-option-btn, .op-cta, .pf-logros, .btn-icon, .ver-mas, .pay-method-pill-btn, .itab { --cut: 10px; }
+        .form-control, .ceo-action-form input, .ceo-action-form select, .ceo-action-form textarea, .back-btn, .auth-tab, .dep-ceo-acciones button, .pf-stat, .pf-sec, .auth-tabs, #notification-toast { --cut: 8px; }
+        .seg2 .pay-method-pill-btn, .seg2 .itab { --cut: 8px; }
+
+        /* ---- Botón principal: azul con bisel como la imagen ---- */
+        .btn-main {
+            position: relative; overflow: hidden; border: none; color: #fff; letter-spacing: .3px; text-shadow: 0 1px 2px rgba(0,20,90,.45);
+            background: linear-gradient(180deg, #5f97ff 0%, #3a74ff 22%, #2358f4 62%, #1849d4 100%);
+            box-shadow: inset 0 1.5px 0 rgba(255,255,255,.5), inset 0 -4px 0 rgba(8,28,110,.6);
+            padding-bottom: calc(0.8rem + 2px);
+            transition: filter .2s, transform .15s;
+        }
+        .btn-main::after {
+            content: ""; position: absolute; top: 0; left: -70%; width: 38%; height: 100%; pointer-events: none;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,.38), transparent); transform: skewX(-22deg);
+            animation: btnShine 3.8s ease-in-out infinite;
+        }
+        .btn-main:hover { filter: brightness(1.12); transform: none; box-shadow: inset 0 1.5px 0 rgba(255,255,255,.55), inset 0 -4px 0 rgba(8,28,110,.6); }
+        .btn-main:active { transform: translateY(2px); filter: brightness(.95); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.4), inset 0 -2px 0 rgba(8,28,110,.6); }
+        @keyframes btnShine { 0%, 55% { left: -70%; } 100% { left: 135%; } }
+
+        .btn-invite, .ceo-btn, .ceo-btn-verde, .soporte-option-btn, .op-cta, .btn-icon {
+            box-shadow: inset 0 1.5px 0 rgba(255,255,255,.28), inset 0 -3px 0 rgba(0,0,0,.28) !important;
+            transition: filter .2s, transform .15s;
+        }
+        .btn-invite:active, .ceo-btn:active, .ceo-btn-verde:active, .soporte-option-btn:active, .op-cta:active, .btn-icon:active { transform: translateY(2px); filter: brightness(.94); }
+        .btn-invite:hover, .ceo-btn:hover, .ceo-btn-verde:hover, .soporte-option-btn:hover, .op-cta:hover { filter: brightness(1.1); }
+
+        /* ---- Tarjetas: brillo interior en vez de sombra exterior (la sombra se recortaría) ---- */
+        .sub-card, .game-hero-compact, .game-card-character, .invite-banner, .live-history-card, .diamond-card, .profile-header-card, .pf-card,
+        .order-card-pro, .menu-list, .ceo-box, .dep-ceo-card, .wallet-card, .opinion-card, .op-feed-card, .op-box-opinar, .op-card-h, .op-add-h {
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.06), inset 0 -3px 0 rgba(0,0,0,.18) !important;
+            transition: transform .2s ease, border-color .25s, background .25s;
+        }
+        .diamond-card.selected { background: linear-gradient(135deg, rgba(47,107,255,.24), rgba(22,199,132,.14)) !important; border-color: #3b82f6 !important;
+            box-shadow: inset 0 0 0 1.5px #3b82f6, inset 0 0 26px rgba(47,107,255,.32) !important; }
+        .game-card-character:hover, .wallet-card:hover, .sub-card:hover, .diamond-card:hover { transform: translateY(-2px); border-color: #3b82f6; }
+        .wallet-card:active, .order-card-pro:active, .game-hero-compact:active, .sub-card:active, .diamond-card:active, .game-card-character:active, .invite-banner:active { transform: scale(.98); }
+        .form-control { box-shadow: inset 0 -2px 0 rgba(0,0,0,.18); }
+        .form-control:focus { box-shadow: inset 0 0 0 1.5px var(--accent-glow), inset 0 -2px 0 rgba(0,0,0,.18) !important; }
+        .auth-tab.active { background: linear-gradient(180deg, #5f97ff, #2358f4 70%, #1849d4); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(8,28,110,.55); }
+        .pd-chip.activo { box-shadow: none; }
+
+        /* ---- Animaciones: encabezado ---- */
+        .navbar {
+            background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box, linear-gradient(120deg, #2f6bff, #1aa6c8, #16c784, #1aa6c8, #2f6bff) border-box;
+            background-size: 100% 100%, 200% 100%;
+            animation: navDown .75s cubic-bezier(.2,.9,.3,1.15) backwards, borderFlow 7s linear infinite;
+        }
+        .bottom-nav {
+            background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box, linear-gradient(120deg, #2f6bff, #1aa6c8, #16c784, #1aa6c8, #2f6bff) border-box;
+            background-size: 100% 100%, 200% 100%;
+            animation: navUp .75s cubic-bezier(.2,.9,.3,1.15) .15s backwards, borderFlow 7s linear infinite;
+        }
+        @keyframes navDown { from { opacity: 0; transform: translateY(-34px) scale(.96); } to { opacity: 1; transform: none; } }
+        @keyframes navUp { from { opacity: 0; transform: translateY(40px) scale(.96); } to { opacity: 1; transform: none; } }
+        @keyframes borderFlow { from { background-position: 0 0, 0% 0; } to { background-position: 0 0, 200% 0; } }
+
+        .nav-brand-logo {
+            background: linear-gradient(#000, #000) padding-box, conic-gradient(from var(--ang), #2f6bff, #16c784, #1aa6c8, #2f6bff) border-box;
+            animation: ringSpin 4.5s linear infinite, logoPulse 3s ease-in-out infinite, popIn .8s cubic-bezier(.2,1.4,.4,1) .25s backwards;
+        }
+        @keyframes ringSpin { to { --ang: 360deg; } }
+        @keyframes logoPulse { 0%, 100% { box-shadow: 0 0 8px rgba(26,166,200,.30); } 50% { box-shadow: 0 0 20px rgba(33,209,154,.60); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(.4) rotate(-40deg); } to { opacity: 1; transform: none; } }
+        .nav-brand-title { animation: slideInX .7s cubic-bezier(.2,.9,.3,1) .35s backwards; }
+        @keyframes slideInX { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
+        .nav-brand-title .brand-tienda { background: linear-gradient(90deg, #4f8bff, #21d19a, #4f8bff); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; animation: textFlow 4s linear infinite; }
+        @keyframes textFlow { to { background-position: 200% 0; } }
+
+        .header-wallet-pill { position: relative; overflow: hidden; }
+        .hw-usdt { animation: popIn .6s cubic-bezier(.2,1.3,.4,1) .5s backwards; }
+        .hw-saldo { animation: popIn .6s cubic-bezier(.2,1.3,.4,1) .62s backwards; }
+        .header-wallet-pill::after { content: ""; position: absolute; top: 0; left: -80%; width: 40%; height: 100%; pointer-events: none;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,.22), transparent); transform: skewX(-20deg); animation: pillShine 5s ease-in-out infinite; }
+        .hw-saldo::after { animation-delay: 1.6s; }
+        @keyframes pillShine { 0%, 60% { left: -80%; } 100% { left: 140%; } }
+        .hw-ico img { animation: floaty 3s ease-in-out infinite; }
+        @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.5px) scale(1.06); } }
+        .nav-top-icon-btn { position: relative; animation: popIn .6s cubic-bezier(.2,1.3,.4,1) .74s backwards; }
+        .nav-top-icon-btn::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 1.5px solid #21d19a; opacity: 0; pointer-events: none; animation: dlRing 2.8s ease-out infinite; }
+        @keyframes dlRing { 0% { transform: scale(.9); opacity: .7; } 70%, 100% { transform: scale(1.5); opacity: 0; } }
+        .nav-top-icon-btn svg { animation: dlBob 1.9s ease-in-out infinite; }
+        @keyframes dlBob { 0%, 100% { transform: translateY(-1px); } 50% { transform: translateY(2px); } }
+
+        /* ---- Animaciones: barra inferior ---- */
+        .nav-item { animation: itemRise .55s cubic-bezier(.2,1.2,.4,1) backwards; }
+        .nav-item:nth-child(1) { animation-delay: .30s; } .nav-item:nth-child(2) { animation-delay: .38s; } .nav-item:nth-child(3) { animation-delay: .46s; }
+        .nav-item:nth-child(4) { animation-delay: .54s; } .nav-item:nth-child(5) { animation-delay: .62s; }
+        @keyframes itemRise { from { opacity: 0; transform: translateY(18px) scale(.8); } to { opacity: 1; transform: none; } }
+        .nav-item.active svg { animation: navBreath 2.6s ease-in-out infinite; }
+        @keyframes navBreath { 0%, 100% { filter: drop-shadow(0 3px 5px rgba(26,166,200,.35)); } 50% { filter: drop-shadow(0 4px 12px rgba(33,209,154,.85)); } }
+        .bottom-nav::before { animation: pillGlow 3s ease-in-out infinite; }
+        @keyframes pillGlow { 0%, 100% { box-shadow: inset 0 0 0 1px rgba(255,255,255,.07), 0 0 12px rgba(26,166,200,.20); } 50% { box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 0 24px rgba(33,209,154,.42); } }
+
+        /* ---- Animaciones: contenido de cada sección ---- */
+        .vista-sec > * { animation: itemUp .55s cubic-bezier(.2,.9,.3,1) backwards; }
+        .vista-sec > *:nth-child(1) { animation-delay: .02s; } .vista-sec > *:nth-child(2) { animation-delay: .08s; } .vista-sec > *:nth-child(3) { animation-delay: .14s; }
+        .vista-sec > *:nth-child(4) { animation-delay: .20s; } .vista-sec > *:nth-child(5) { animation-delay: .26s; } .vista-sec > *:nth-child(6) { animation-delay: .32s; }
+        .vista-sec > *:nth-child(n+7) { animation-delay: .38s; }
+        @keyframes itemUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+        /* ---- Pantalla de registro / inicio con fondo animado ---- */
+        #auth-bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: none; pointer-events: none; background: #02050b; }
+        .auth-container {
+            --bg-card: rgba(7,13,28,.78); --bg-main: #050a16; --text-main: #ffffff; --text-muted: #8fa2c4; --accent-glow: #4ea1ff; --border-color: #22325a; --primary-blue: #2f6bff;
+            background: linear-gradient(180deg, rgba(14,24,52,.82), rgba(5,10,22,.86)) !important;
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(80,140,255,.35) !important; color: #fff;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.08) !important;
+            animation: authIn .8s cubic-bezier(.2,.9,.3,1) backwards;
+        }
+        @keyframes authIn { from { opacity: 0; transform: translateY(26px) scale(.97); } to { opacity: 1; transform: none; } }
+        .auth-container .brand-logo-text .brand-tienda { background: linear-gradient(90deg, #4f8bff, #21d19a, #4f8bff); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: textFlow 4s linear infinite; }
+        .auth-container .form-group { animation: itemUp .55s cubic-bezier(.2,.9,.3,1) backwards; }
+        .auth-container .form-group:nth-child(1) { animation-delay: .15s; } .auth-container .form-group:nth-child(2) { animation-delay: .22s; }
+        .auth-container .form-group:nth-child(3) { animation-delay: .29s; } .auth-container .form-group:nth-child(4) { animation-delay: .36s; }
+        .auth-container .form-group:nth-child(5) { animation-delay: .43s; }
+
+        /* ---- Modo claro: azul y blanco limpio, con buen contraste ---- */
+        :root[data-theme="light"] body { background: radial-gradient(900px 520px at 8% -8%, rgba(36,87,255,.13), transparent 60%), radial-gradient(760px 520px at 100% 4%, rgba(22,199,132,.12), transparent 60%), #e9effb; background-attachment: fixed; }
+        :root[data-theme="light"] .navbar, :root[data-theme="light"] .bottom-nav { box-shadow: 0 10px 28px rgba(36,87,255,.16), 0 2px 6px rgba(15,23,42,.08); }
+        :root[data-theme="light"] .sub-card, :root[data-theme="light"] .game-hero-compact, :root[data-theme="light"] .game-card-character, :root[data-theme="light"] .invite-banner,
+        :root[data-theme="light"] .live-history-card, :root[data-theme="light"] .diamond-card, :root[data-theme="light"] .profile-header-card, :root[data-theme="light"] .pf-card,
+        :root[data-theme="light"] .order-card-pro, :root[data-theme="light"] .menu-list, :root[data-theme="light"] .ceo-box, :root[data-theme="light"] .dep-ceo-card,
+        :root[data-theme="light"] .wallet-card, :root[data-theme="light"] .opinion-card, :root[data-theme="light"] .op-feed-card, :root[data-theme="light"] .op-box-opinar {
+            background: linear-gradient(180deg, #ffffff, #f4f7ff) !important; border-color: #cdd8f1 !important;
+            box-shadow: inset 0 1px 0 #fff, inset 0 -3px 0 rgba(36,87,255,.08) !important;
+        }
+        :root[data-theme="light"] .diamond-card.selected { background: linear-gradient(135deg, rgba(36,87,255,.14), rgba(22,199,132,.10)) !important; border-color: #2457ff !important; box-shadow: inset 0 0 0 1.5px #2457ff, inset 0 0 22px rgba(36,87,255,.18) !important; }
+        :root[data-theme="light"] .form-control { background: #f4f7ff; color: #0b1530; border-color: #c4d0ec; }
+        :root[data-theme="light"] .pd-chip.activo { color: #fff; }
+        :root[data-theme="light"] .header-wallet-pill, :root[data-theme="light"] .nav-top-icon-btn { background: linear-gradient(160deg, rgba(36,87,255,.10), rgba(22,199,132,.10)), #fff; border-color: rgba(36,87,255,.35); }
+        :root[data-theme="light"] .hw-usdt > span:not(.hw-ico) { color: #0a9f6e; }
+        :root[data-theme="light"] .hw-saldo > span:not(.hw-ico) { color: #2457ff; }
+        :root[data-theme="light"] .nav-item { color: #6b7a9c; }
+        :root[data-theme="light"] .nav-item.active, :root[data-theme="light"] .nav-item:hover { color: #0b1530; }
+        :root[data-theme="light"] .brand-lester { color: #0b1530; }
+        :root[data-theme="light"] .auth-container .brand-lester { color: #fff; }
+        :root[data-theme="light"] #notification-toast { box-shadow: 0 8px 24px rgba(36,87,255,.22); }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+        }
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <canvas id="auth-bg" aria-hidden="true"></canvas>
     <div id="splash"><div class="splash-logo"><img src="icon-192.png" alt="Lester Tienda"></div><div class="splash-title">Lester <span>Tienda</span></div></div>
 
     <div id="loading-overlay">
@@ -5334,10 +5495,12 @@
             if (idx < 0) { mostrarNotificacion("Esa recarga ya no existe."); return; }
             let rec = solicitudesGlobales.recargas[idx];
             if (rec.estado === 'Cancelado') { mostrarNotificacion("Esta recarga ya fue cancelada."); return; }
+            const copiaPrevU = JSON.stringify(listaUsuariosGlobales), copiaPrevS = JSON.stringify(solicitudesGlobales);
             rec.estado = 'Cancelado';
 
             let userTarget = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === (rec.correo || '').toLowerCase());
-            if (userTarget && rec.precio) {
+            if (userTarget && rec.precio && !rec.reembolsado) {
+                rec.reembolsado = true; // el saldo se devuelve una sola vez
                 let precioRecarga = parseFloat(rec.precio) || 0;
                 if (rec.moneda === 'usdt') {
                     if (userTarget.balanceUSDT === undefined) userTarget.balanceUSDT = userTarget.balance || 0;
@@ -5351,7 +5514,22 @@
             }
             localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
             localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-            await guardarEnCloud();
+            mostrarCarga("Cancelando recarga...");
+            const guardadoOk = await guardarEnCloud();
+            ocultarCarga();
+            if (!guardadoOk) {
+                // No se guardó: se deshace aquí para que el saldo no aparezca y luego desaparezca
+                listaUsuariosGlobales = JSON.parse(copiaPrevU);
+                solicitudesGlobales = JSON.parse(copiaPrevS);
+                localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
+                localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
+                refrescarUsuarioActual();
+                actualizarPerfilUI();
+                renderizarOrdenes();
+                mostrarNotificacion("Mala internet. No se canceló la recarga, intenta de nuevo.");
+                cargarAccionCEO('solicitudes_recarga');
+                return;
+            }
             refrescarUsuarioActual();
             actualizarPerfilUI();
             mostrarNotificacion("Recarga cancelada y saldo devuelto");
@@ -5371,6 +5549,84 @@
         })();
         setInterval(updateClock, 1000);
         init();
+    </script>
+
+    <script>
+    /* Fondo animado de registro / inicio: orbes azules y diamantes dibujados (sin emojis) */
+    (function () {
+        const cv = document.getElementById('auth-bg'); if (!cv) return;
+        const ctx = cv.getContext('2d');
+        const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let W = 0, H = 0, orbs = [], gems = [], sparks = [], last = 0;
+        const R = (a, b) => a + Math.random() * (b - a);
+        function resize() {
+            const d = Math.min(window.devicePixelRatio || 1, 2);
+            W = window.innerWidth; H = window.innerHeight;
+            cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0);
+            const n = Math.round(Math.max(18, Math.min(46, W * H / 17000)));
+            orbs = Array.from({ length: n }, () => ({ x: R(0, W), y: R(0, H), r: R(1.5, 9), vy: -R(6, 26), vx: R(-6, 6), a: R(.25, .8), ph: R(0, 6.28), big: Math.random() < .18 }));
+            gems = Array.from({ length: Math.round(Math.max(7, Math.min(13, W / 55))) }, () => ({ x: R(0, W), y: R(0, H), s: R(11, 30), vy: -R(8, 22), vx: R(-4, 4), a: R(.45, .95), ph: R(0, 6.28), sp: R(.5, 1.3) }));
+        }
+        function gem(g, t) {
+            const k = Math.max(.28, Math.abs(Math.cos(t * g.sp + g.ph)));
+            const s = g.s;
+            ctx.save();
+            ctx.translate(g.x, g.y); ctx.rotate(Math.sin(t * .35 + g.ph) * .3); ctx.scale(k, 1);
+            const P = { A: [-.6, -.55], B: [.6, -.55], C: [1, -.1], D: [0, 1], E: [-1, -.1], g1: [-.38, -.1], g2: [.38, -.1], t1: [-.2, -.55], t2: [.2, -.55] };
+            const pt = n => [P[n][0] * s, P[n][1] * s];
+            const path = (names) => { ctx.beginPath(); names.forEach((n, i) => { const [x, y] = pt(n); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.closePath(); };
+            const gr = ctx.createLinearGradient(0, -s * .55, 0, s);
+            gr.addColorStop(0, 'rgba(150,205,255,' + (.42 * g.a) + ')'); gr.addColorStop(1, 'rgba(25,75,235,' + (.14 * g.a) + ')');
+            ctx.shadowColor = 'rgba(59,130,246,.85)'; ctx.shadowBlur = 14;
+            path(['A', 'B', 'C', 'D', 'E']); ctx.fillStyle = gr; ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = 'rgba(120,190,255,' + g.a + ')'; ctx.lineWidth = 1.1; ctx.lineJoin = 'round';
+            path(['A', 'B', 'C', 'D', 'E']); ctx.stroke();
+            ctx.strokeStyle = 'rgba(120,190,255,' + (.6 * g.a) + ')'; ctx.lineWidth = .8;
+            [['E', 'C'], ['A', 'g1'], ['B', 'g2'], ['t1', 'g1'], ['t2', 'g2'], ['t1', 't2'], ['g1', 'D'], ['g2', 'D'], ['E', 'g1'], ['C', 'g2']].forEach(([a, b]) => {
+                ctx.beginPath(); ctx.moveTo(...pt(a)); ctx.lineTo(...pt(b)); ctx.stroke();
+            });
+            ctx.restore();
+            const tw = Math.sin(t * 2 + g.ph);
+            if (tw > .86) {
+                const q = (tw - .86) / .14, r = s * .5 * q;
+                ctx.save(); ctx.translate(g.x - s * .2, g.y - s * .3); ctx.fillStyle = 'rgba(255,255,255,' + (.9 * q) + ')';
+                ctx.beginPath(); ctx.moveTo(0, -r); ctx.lineTo(r * .14, -r * .14); ctx.lineTo(r, 0); ctx.lineTo(r * .14, r * .14); ctx.lineTo(0, r); ctx.lineTo(-r * .14, r * .14); ctx.lineTo(-r, 0); ctx.lineTo(-r * .14, -r * .14); ctx.closePath(); ctx.fill(); ctx.restore();
+            }
+        }
+        function frame(ts) {
+            requestAnimationFrame(frame);
+            const auth = document.getElementById('auth-screen');
+            const visible = auth && auth.style.display !== 'none' && !document.hidden;
+            if (!visible) { if (cv.style.display !== 'none') cv.style.display = 'none'; last = 0; return; }
+            if (cv.style.display !== 'block') { cv.style.display = 'block'; if (!W || W !== window.innerWidth) resize(); }
+            const t = ts / 1000, dt = last ? Math.min(.05, t - last) : .016; last = t;
+            ctx.clearRect(0, 0, W, H);
+            ctx.fillStyle = '#02050b'; ctx.fillRect(0, 0, W, H);
+            let g = ctx.createRadialGradient(W * .5, -H * .05, 0, W * .5, -H * .05, H * .75);
+            g.addColorStop(0, 'rgba(37,99,235,.38)'); g.addColorStop(1, 'rgba(37,99,235,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+            g = ctx.createRadialGradient(W * (.15 + .1 * Math.sin(t * .3)), H * .95, 0, W * .15, H * .95, H * .6);
+            g.addColorStop(0, 'rgba(22,199,132,.16)'); g.addColorStop(1, 'rgba(22,199,132,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+            g = ctx.createRadialGradient(W * (.9 - .08 * Math.sin(t * .25)), H * .6, 0, W * .9, H * .6, H * .5);
+            g.addColorStop(0, 'rgba(26,166,200,.14)'); g.addColorStop(1, 'rgba(26,166,200,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+            const mv = reduce ? 0 : 1;
+            for (const o of orbs) {
+                o.y += o.vy * dt * mv; o.x += (o.vx + Math.sin(t * .6 + o.ph) * 5) * dt * mv;
+                if (o.y < -20) { o.y = H + 20; o.x = R(0, W); } if (o.x < -20) o.x = W + 20; if (o.x > W + 20) o.x = -20;
+                const al = o.a * (.7 + .3 * Math.sin(t * 1.6 + o.ph)), rr = o.big ? o.r * 3.2 : o.r * 1.8;
+                const og = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, rr);
+                og.addColorStop(0, 'rgba(170,215,255,' + al + ')'); og.addColorStop(.35, 'rgba(59,130,246,' + (al * .55) + ')'); og.addColorStop(1, 'rgba(59,130,246,0)');
+                ctx.fillStyle = og; ctx.beginPath(); ctx.arc(o.x, o.y, rr, 0, 6.2832); ctx.fill();
+            }
+            for (const m of gems) {
+                m.y += m.vy * dt * mv; m.x += (m.vx + Math.sin(t * .5 + m.ph) * 4) * dt * mv;
+                if (m.y < -40) { m.y = H + 40; m.x = R(0, W); } if (m.x < -40) m.x = W + 40; if (m.x > W + 40) m.x = -40;
+                gem(m, t);
+            }
+        }
+        window.addEventListener('resize', resize);
+        resize(); requestAnimationFrame(frame);
+    })();
     </script>
 </body>
 </html>
