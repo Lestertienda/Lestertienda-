@@ -1262,6 +1262,31 @@
         :root[data-theme="light"] .lv-item { background: linear-gradient(180deg, #fff, #f1f5ff); border-color: #d5def5; }
         :root[data-theme="light"] .lv-chip { color: #25365f; background: #fff; border-color: #d5def5; }
         :root[data-theme="light"] .lv-price { color: #0e9f6e; }
+
+        /* ===== Depósito USDT automático ===== */
+        .ua-box { border: 1.5px solid #26a69a; border-radius: 18px; padding: 1.2rem; background: var(--bg-card); box-shadow: 0 0 25px rgba(38,166,154,.15); }
+        .ua-pago { position: relative; overflow: hidden; border-radius: 20px; padding: 16px; margin-bottom: 14px; text-align: center; border: 1.5px solid transparent;
+            background: radial-gradient(circle at 50% 0%, rgba(38,166,154,.28), transparent 60%), linear-gradient(165deg, #10243a, #09111f) padding-box, linear-gradient(135deg, #2f6bff, #26a69a, #16c784) border-box;
+            box-shadow: 0 14px 26px -12px rgba(0,0,0,.7), inset 0 1.5px 0 rgba(255,255,255,.12), inset 0 -4px 0 rgba(0,0,0,.3); }
+        .ua-pago small { display: block; font-size: .7rem; color: #9fb4d6; font-weight: 700; letter-spacing: .6px; text-transform: uppercase; }
+        .ua-monto { font-size: 2.1rem; font-weight: 900; color: #fff; letter-spacing: -.5px; margin: 4px 0 2px; text-shadow: 0 0 18px rgba(38,166,154,.6); }
+        .ua-monto span { font-size: 1rem; color: #4df0ae; }
+        .ua-aviso { font-size: .72rem; line-height: 1.4; color: #ffd27a; background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.35); border-radius: 12px; padding: 8px 10px; margin-top: 10px; }
+        .ua-dir { font-size: .7rem; word-break: break-all; color: #4df0ae; font-weight: 800; background: rgba(0,0,0,.25); border-radius: 12px; padding: 9px; margin-top: 6px; }
+        .ua-estado { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 14px; font-weight: 800; font-size: .86rem; color: #cfe0ff; background: rgba(47,107,255,.12); border: 1px solid rgba(47,107,255,.35); margin-bottom: 12px; }
+        .ua-spin { width: 18px; height: 18px; border-radius: 50%; border: 3px solid rgba(79,139,255,.3); border-top-color: #4f8bff; animation: uaGira .9s linear infinite; flex-shrink: 0; }
+        @keyframes uaGira { to { transform: rotate(360deg); } }
+        .ua-ok { text-align: center; padding: 10px 4px; }
+        .ua-ok .ua-check { width: 74px; height: 74px; margin: 4px auto 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(150deg, #4df0ae, #1fcf87); box-shadow: 0 0 0 8px rgba(31,207,135,.16), 0 10px 24px rgba(31,207,135,.4); animation: uaPop .6s cubic-bezier(.34,1.56,.64,1); }
+        .ua-ok .ua-check svg { width: 38px; height: 38px; fill: none; stroke: #04271d; stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; }
+        @keyframes uaPop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .ua-ok h3 { font-size: 1.15rem; font-weight: 900; color: var(--text-main); }
+        .ua-ok p { font-size: .82rem; color: var(--text-muted); margin-top: 4px; }
+        .ua-mini { display: flex; gap: 8px; }
+        .ua-mini .btn-main { margin-top: 8px; flex: 1; }
+        details.ua-manual { margin-top: 14px; border-top: 1px dashed var(--border-color); padding-top: 12px; }
+        details.ua-manual summary { cursor: pointer; font-size: .78rem; font-weight: 800; color: var(--text-muted); list-style: none; text-align: center; }
+        details.ua-manual summary::-webkit-details-marker { display: none; }
     </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -1874,7 +1899,7 @@
                     <button class="back-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Billeteras</button>
                 </div>
 
-                <div style="background: var(--bg-card); border: 1.5px solid #26a69a; border-radius: 18px; padding: 1.3rem; box-shadow: 0 0 25px rgba(38,166,154,0.15);">
+                <div class="ua-box">
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
                         <img class="img-usdt" alt="USDT" width="34" height="34">
                         <div>
@@ -1883,6 +1908,49 @@
                         </div>
                     </div>
 
+                    <!-- Paso 1: elegir monto -->
+                    <div id="ua-paso1">
+                        <div class="form-group">
+                            <label>¿Cuánto quieres depositar? (USDT)</label>
+                            <input type="number" id="monto-usdt-auto" class="form-control no-left-icon" placeholder="Ej. 10" inputmode="decimal" min="1" step="0.01">
+                        </div>
+                        <button class="btn-main" style="--btn-c: #26a69a; margin-top: .6rem;" onclick="crearOrdenUSDT()">GENERAR MI PAGO</button>
+                        <p style="font-size:.72rem; color:var(--text-muted); text-align:center; margin-top:.8rem;">Tu saldo se acredita solo, en unos segundos, cuando llegue el pago.</p>
+                    </div>
+
+                    <!-- Paso 2: pagar y esperar -->
+                    <div id="ua-paso2" style="display:none;">
+                        <div class="ua-pago">
+                            <small>Envía exactamente</small>
+                            <div class="ua-monto"><b id="ua-monto-txt">0</b> <span>USDT</span></div>
+                            <small>Red BEP 20 (BSC)</small>
+                            <div class="ua-dir" id="ua-dir-txt"></div>
+                            <div class="ua-mini">
+                                <button class="btn-main" style="--btn-c: #26a69a;" onclick="copiarMontoUSDTAuto()">Copiar monto</button>
+                                <button class="btn-main" style="--btn-c: #2f6bff;" onclick="copiarDirUSDTAuto()">Copiar dirección</button>
+                            </div>
+                            <div class="ua-aviso">Envía <b>el monto exacto</b> (con todos sus decimales). Así el sistema sabe que el pago es tuyo. Orden válida por 3 horas.</div>
+                        </div>
+                        <div class="ua-estado" id="ua-estado"><span class="ua-spin"></span><span id="ua-estado-txt">Esperando tu pago…</span></div>
+                        <div class="form-group">
+                            <label>¿Ya pagaste y tarda? Pega el ID de la transferencia (opcional)</label>
+                            <input type="text" id="ua-txid" class="form-control no-left-icon" placeholder="0x…" autocapitalize="none" autocomplete="off" spellcheck="false">
+                        </div>
+                        <button class="btn-main" style="--btn-c: #2f6bff; margin-top: .4rem;" onclick="verificarTxIdUSDTAuto()">VERIFICAR AHORA</button>
+                        <button class="btn-main" style="--btn-c: #64748b; margin-top: .6rem;" onclick="cancelarOrdenUSDTAuto()">Cambiar monto</button>
+                    </div>
+
+                    <!-- Paso 3: listo -->
+                    <div id="ua-paso3" class="ua-ok" style="display:none;">
+                        <div class="ua-check"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+                        <h3>¡Depósito acreditado!</h3>
+                        <p id="ua-ok-txt"></p>
+                        <button class="btn-main" style="--btn-c: #26a69a; margin-top: 1rem;" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))">Volver a Wallet</button>
+                    </div>
+
+                    <!-- Plan B: reporte manual (el de siempre) -->
+                    <details class="ua-manual" id="ua-manual">
+                        <summary>¿Pagaste otro monto o algo falló? Reportar para revisión manual</summary>
                     <div class="form-group">
                         <label id="wallet-usdt-dir-label">Dirección Oficial BEP 20:</label>
                         <div class="form-control no-left-icon" id="wallet-direccion-usdt-display" style="font-size: 0.72rem; background: var(--bg-main); color: #26a69a; text-align: center; word-break: break-all; padding: 0.8rem; margin-bottom: 0.6rem; font-weight: 800;"></div>
@@ -1899,8 +1967,19 @@
                         <input type="text" id="txid-usdt-input" class="form-control no-left-icon" placeholder="Ej. 0x1234abcd..." oninput="validarTxIdInput(this)">
                         <div id="err-txid" class="error-feedback-text">Esto no es una ID de transferencia válida (evita letras inválidas o caracteres erróneos).</div>
                     </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Monto</label>
+                        <input type="number" id="monto-usdt-deposito" class="form-control no-left-icon" placeholder="Ej. 10.00">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>ID de la transferencia (Hash / ID)</label>
+                        <input type="text" id="txid-usdt-input" class="form-control no-left-icon" placeholder="Ej. 0x1234abcd..." oninput="validarTxIdInput(this)">
+                        <div id="err-txid" class="error-feedback-text">Esto no es una ID de transferencia válida (evita letras inválidas o caracteres erróneos).</div>
+                    </div>
 
                     <button class="btn-main" style="--btn-c: #26a69a; margin-top: 1rem;" onclick="confirmarEnvioUSDTDep()">CONFIRMAR DEPÓSITO</button>
+                    </details>
                 </div>
             </div>
 
@@ -3687,7 +3766,7 @@
             mostrarCarga("Cargando opción...");
             setTimeout(() => {
                 ocultarCarga();
-                if (opcion === 'usdt') mostrarVista('seccion-wallet-usdt');
+                if (opcion === 'usdt') { mostrarVista('seccion-wallet-usdt'); abrirDepositoUSDTAuto(); }
                 else if (opcion === 'saldo') mostrarVista('seccion-wallet-saldo');
                 else mostrarNotificacion("Pago con Tarjeta: " + ((tiendaConfig.wallet.tarjeta.etiqueta.texto) || "Próximamente disponible"));
             }, 150);
@@ -4727,6 +4806,124 @@
             }
         }
         function copiarNumeroWallet() { copiar(tiendaConfig.wallet.saldo.numero, "Número copiado al portapapeles"); }
+
+        /* ===== Depósito USDT automático (Worker + blockchain BSC) ===== */
+        let ordenUSDT = null, pollUSDT = null, relojUSDT = null;
+        const CLAVE_ORDEN_USDT = 'lester_usdt_orden';
+
+        function guardarOrdenUSDT(o) { try { o ? localStorage.setItem(CLAVE_ORDEN_USDT, JSON.stringify(o)) : localStorage.removeItem(CLAVE_ORDEN_USDT); } catch (e) {} }
+        function ordenUSDTGuardada() {
+            try {
+                const o = JSON.parse(localStorage.getItem(CLAVE_ORDEN_USDT) || 'null');
+                if (o && usuarioActual && o.correo === usuarioActual.correo.toLowerCase() && o.expira > Date.now()) return o;
+            } catch (e) {}
+            return null;
+        }
+        function uaPaso(n) {
+            ['ua-paso1', 'ua-paso2', 'ua-paso3'].forEach((id, i) => { const el = document.getElementById(id); if (el) el.style.display = (i + 1 === n) ? 'block' : 'none'; });
+        }
+        function uaEstado(txt, error) {
+            const t = document.getElementById('ua-estado-txt'); if (t) t.innerText = txt;
+            const e = document.getElementById('ua-estado'); if (e) e.style.opacity = error ? '.85' : '1';
+        }
+        async function postWorker(ruta, cuerpo) {
+            const r = await fetch(WORKER_URL + ruta, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cuerpo) });
+            let j = {}; try { j = await r.json(); } catch (e) {}
+            return { ok: r.ok, estado: r.status, j };
+        }
+
+        function abrirDepositoUSDTAuto() {
+            const guardada = ordenUSDTGuardada();
+            if (guardada) { mostrarOrdenUSDT(guardada); }
+            else { detenerSondeoUSDT(); uaPaso(1); }
+        }
+
+        async function crearOrdenUSDT() {
+            const monto = parseFloat(document.getElementById('monto-usdt-auto').value);
+            if (isNaN(monto) || monto < 1) { mostrarNotificacion("El monto mínimo es 1 USDT"); return; }
+            mostrarCarga("Generando tu pago...");
+            try {
+                await traerEstadoFresco().catch(() => {});
+                const { ok, j } = await postWorker('/api/usdt/orden', { correo: usuarioActual.correo, monto });
+                ocultarCarga();
+                if (!ok || !j.orden) { mostrarNotificacion(j.mensaje || "No pude generar el pago. Usa el reporte manual de abajo."); document.getElementById('ua-manual').open = true; return; }
+                const o = Object.assign({ correo: usuarioActual.correo.toLowerCase() }, j.orden);
+                guardarOrdenUSDT(o);
+                mostrarOrdenUSDT(o);
+            } catch (e) {
+                ocultarCarga();
+                mostrarNotificacion("Sin conexión con el servidor. Usa el reporte manual de abajo.");
+                document.getElementById('ua-manual').open = true;
+            }
+        }
+
+        function mostrarOrdenUSDT(o) {
+            ordenUSDT = o;
+            document.getElementById('ua-monto-txt').innerText = o.monto;
+            document.getElementById('ua-dir-txt').innerText = o.direccion;
+            uaPaso(2);
+            uaEstado('Esperando tu pago…');
+            iniciarSondeoUSDT();
+        }
+
+        function iniciarSondeoUSDT() {
+            detenerSondeoUSDT();
+            revisarOrdenUSDT();
+            pollUSDT = setInterval(revisarOrdenUSDT, 5000);
+        }
+        function detenerSondeoUSDT() { if (pollUSDT) { clearInterval(pollUSDT); pollUSDT = null; } }
+
+        let revisandoUSDT = false;
+        async function revisarOrdenUSDT() {
+            if (!ordenUSDT || revisandoUSDT || document.hidden) return;
+            if (ordenUSDT.expira && ordenUSDT.expira < Date.now()) { uaEstado('Esta orden venció. Genera una nueva.', true); detenerSondeoUSDT(); guardarOrdenUSDT(null); return; }
+            revisandoUSDT = true;
+            try {
+                const r = await fetch(WORKER_URL + '/api/usdt/revisar?id=' + encodeURIComponent(ordenUSDT.id), { cache: 'no-store' });
+                const j = await r.json();
+                if (j.orden && j.orden.estado === 'acreditado') { await ordenUSDTAcreditada(j.orden); }
+                else if (j.orden && j.orden.estado === 'expirada') { uaEstado('Esta orden venció. Genera una nueva.', true); detenerSondeoUSDT(); guardarOrdenUSDT(null); }
+                else uaEstado('Esperando tu pago…');
+            } catch (e) { uaEstado('Reconectando…', true); }
+            revisandoUSDT = false;
+        }
+
+        async function ordenUSDTAcreditada(o) {
+            detenerSondeoUSDT();
+            guardarOrdenUSDT(null);
+            ordenUSDT = null;
+            try { await traerEstadoFresco(); } catch (e) {}
+            refrescarUsuarioActual(); actualizarPerfilUI(); renderizarOrdenes();
+            document.getElementById('ua-ok-txt').innerText = 'Se sumaron ' + (Math.round(parseFloat(o.monto) * 100) / 100).toFixed(2) + ' USDT a tu saldo.';
+            document.getElementById('monto-usdt-auto').value = '';
+            uaPaso(3);
+            mostrarNotificacion("¡Depósito acreditado!");
+        }
+
+        async function verificarTxIdUSDTAuto() {
+            if (!ordenUSDT) return;
+            const tx = document.getElementById('ua-txid').value.trim();
+            if (!/^0x[0-9a-fA-F]{64}$/.test(tx)) { mostrarNotificacion("El ID debe empezar con 0x y tener 66 caracteres"); return; }
+            mostrarCarga("Verificando en la red...");
+            try {
+                const { j } = await postWorker('/api/usdt/txid', { id: ordenUSDT.id, txid: tx });
+                ocultarCarga();
+                if (j.resultado === 'acreditado' && j.orden) { await ordenUSDTAcreditada(j.orden); return; }
+                mostrarNotificacion(j.mensaje || 'Aún no se pudo verificar. Intenta en unos segundos.');
+            } catch (e) { ocultarCarga(); mostrarNotificacion("Sin conexión. Intenta otra vez."); }
+        }
+
+        function cancelarOrdenUSDTAuto() { detenerSondeoUSDT(); guardarOrdenUSDT(null); ordenUSDT = null; uaPaso(1); }
+        function copiarMontoUSDTAuto() { if (ordenUSDT) copiar(ordenUSDT.monto, 'Monto exacto copiado'); }
+        function copiarDirUSDTAuto() { if (ordenUSDT) copiar(ordenUSDT.direccion, 'Dirección BEP 20 copiada'); }
+
+        /* Si hay una orden abierta, se sigue revisando aunque el cliente esté en otra pantalla */
+        setInterval(() => {
+            const o = ordenUSDTGuardada();
+            if (!o || pollUSDT) return;
+            ordenUSDT = o; revisarOrdenUSDT();
+        }, 8000);
+
         function copiarDireccionUSDTNuevo() { copiar(tiendaConfig.wallet.usdt.direccion, `Dirección ${tiendaConfig.wallet.usdt.red} copiada al portapapeles`); }
         async function compartirPerfil() {
             const texto = "Únete a Lester Tienda con mi enlace: " + enlaceRef();

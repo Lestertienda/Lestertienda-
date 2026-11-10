@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DIAMONDS LEGION</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0b0c10">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Diamonds Legion">
+
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fuentes Orbitron e Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root[data-theme="dark"] {
+            --bg-main: #0b0c10;
+            --bg-card: #151b22;
+            --bg-card-hover: #1f2836;
+            --text-main: #e6f1ff;
+            --text-muted: #8892b0;
+            --primary-blue: #00d2ff;
+            --accent-glow: #3a86ff;
+            --border-color: #213045;
+            --error-color: #ff4757;
+            --success-color: #2ed573;
+            --card-border: 2px solid #00d2ff;
+        }
+
+        :root[data-theme="light"] {
+            --bg-main: #f0f4f8;
+            --bg-card: #ffffff;
+            --bg-card-hover: #e2e8f0;
+            --text-main: #111827;
+            --text-muted: #4b5563;
+            --primary-blue: #0284c7;
+            --accent-glow: #2563eb;
+            --border-color: #cbd5e1;
+            --error-color: #dc2626;
+            --success-color: #16a34a;
+            --card-border: 2px solid #0284c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        html, body {
+            min-height: 100vh;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* FONDO ANIMADO PUNTOS AZULES */
+        .bg-particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;
+            background-image: radial-gradient(var(--accent-glow) 1px, transparent 1px);
+            background-size: 30px 30px;
+            opacity: 0.15;
+            animation: moveParticles 20s linear infinite;
+        }
+        @keyframes moveParticles {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        /* OVERLAY CARGANDO */
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 12, 16, 0.92); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 99999;
+            flex-direction: column; gap: 14px;
+        }
+        .spinner {
+            width: 50px; height: 50px; border: 4px solid rgba(0, 210, 255, 0.2);
+            border-top: 4px solid var(--primary-blue); border-radius: 50%;
+            animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+        .loading-text { font-size: 0.9rem; font-weight: 800; color: var(--primary-blue); letter-spacing: 1px; text-transform: uppercase; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* NOTIFICACIÓN TOAST */
+        #notification-toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-200px);
+            background: var(--bg-card); color: var(--primary-blue); border: 2px solid var(--primary-blue);
+            padding: 0.9rem 1.6rem; border-radius: 12px; font-weight: 800; font-size: 0.88rem;
+            box-shadow: 0 10px 30px rgba(0,210,255,0.3); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999999; width: 90%; max-width: 400px; text-align: center;
+        }
+        #notification-toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* AUTENTICACIÓN */
+        .auth-wrapper {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 20px; width: 100%; position: relative; z-index: 10;
+        }
+        .auth-container {
+            max-width: 440px; width: 100%; background: var(--bg-card);
+            border: 2px solid var(--border-color); border-radius: 16px; padding: 2.5rem 1.8rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px);
+        }
+        .brand-header { text-align: center; margin-bottom: 25px; }
+        .brand-header h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 26px; font-weight: 900;
+            letter-spacing: 2px; color: var(--text-main);
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+        .brand-header h1 span { color: var(--primary-blue); }
+
+        .auth-tabs {
+            display: flex; gap: 10px; margin-bottom: 24px;
+            border-bottom: 2px solid var(--border-color); padding-bottom: 10px;
+        }
+        .auth-tab {
+            flex: 1; text-align: center; padding: 12px; font-weight: 800;
+            font-size: 0.85rem; cursor: pointer; border-radius: 8px; color: var(--text-muted); 
+            background: transparent; border: 2px solid transparent; text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .auth-tab.active { color: #fff; background: var(--primary-blue); border-color: var(--primary-blue); box-shadow: 0 0 15px rgba(0,210,255,0.4); }
+
+        .form-group { margin-bottom: 1.2rem; position: relative; }
+        .form-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .input-icon-wrapper { position: relative; display: flex; align-items: center; }
+        .input-icon-wrapper i.icon-left { position: absolute; left: 15px; color: var(--primary-blue); font-size: 15px; pointer-events: none; }
+        
+        .form-control {
+            width: 100%; background: var(--bg-main); border: 2px solid var(--border-color);
+            padding: 0.85rem 3rem 0.85rem 2.8rem; border-radius: 8px; color: var(--text-main);
+            font-size: 0.9rem; outline: none; transition: all 0.3s;
+        }
+        .form-control:focus { border-color: var(--primary-blue); box-shadow: 0 0 10px rgba(0,210,255,0.25); }
+        .toggle-password {
+            position: absolute; right: 12px; background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; height: 100%; width: 35px;
+        }
+        .toggle-password i { color: var(--text-muted); font-size: 15px; transition: color 0.2s; }
+        .toggle-password:hover i { color: var(--primary-blue); }
+
+        .btn-main {
+            width: 100%; background: linear-gradient(135deg, var(--primary-blue), var(--accent-glow)); color: #000; border: none;
+            padding: 0.95rem; border-radius: 8px; font-weight: 900; font-size: 0.92rem;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); margin-top: 0.6rem;
+            box-shadow: 0 4px 15px rgba(0,210,255,0.3);
+        }
+        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,210,255,0.5); }
+
+        /* NAVEGACIÓN SUPERIOR / HEADER */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.9rem 1.2rem; background-color: var(--bg-card);
+            border-bottom: 2px solid var(--border-color); position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .nav-brand-container { display: flex; align-items: center; gap: 10px; }
+        .nav-brand-title { 
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.05rem; font-weight: 900; color: var(--text-main); letter-spacing: 1.5px; 
+        }
+        .nav-brand-title span { color: var(--primary-blue); }
+        
+        .nav-right-actions { display: flex; align-items: center; gap: 10px; }
+        .nav-top-icon-btn {
+            background: var(--bg-main); border: 2px solid var(--border-color); width: 38px; height: 38px;
+            border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+            color: var(--text-main); transition: all 0.3s;
+        }
+        .nav-top-icon-btn:hover { border-color: var(--primary-blue); color: var(--primary-blue); transform: scale(1.05); }
+
+        /* CONTENEDOR DE VISTAS */
+        .container { max-width: 520px; width: 100%; margin: 0 auto; padding: 1.2rem; flex: 1; display: flex; flex-direction: column; padding-bottom: 95px; z-index: 5; position: relative; }
+        .vista-sec { animation: fadeInPage 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+        @keyframes fadeInPage {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* TARJETAS Y PANELES PROFESIONALES */
+        .card-panel {
+            background: var(--bg-card); border: 2px solid var(--border-color); border-radius: 14px;
+            padding: 1.4rem; box-shadow: 0 8px 25px rgba(0,0,0,0.2); transition: all 0.3s;
+        }
+        .card-panel:hover { border-color: var(--primary-blue); }
+        .card-panel h3 { font-size: 1.05rem; font-weight: 900; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .card-panel h3 i { color: var(--primary-blue); }
+        .card-panel p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* BARRA DE NAVEGACIÓN INFERIOR */
+        .app-bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-card);
+            border-top: 2px solid var(--border-color); display: flex; justify-content: space-around;
+            padding: 10px 4px; z-index: 1000; box-shadow: 0 -5px 25px rgba(0,0,0,0.3);
+        }
+        .nav-item-btn {
+            background: transparent; border: none; color: var(--text-muted);
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 800;
+            cursor: pointer; transition: all 0.3s ease; flex: 1; padding: 6px 0; border-radius: 8px;
+        }
+        .nav-item-btn i { font-size: 19px; transition: transform 0.3s; }
+        .nav-item-btn.active, .nav-item-btn:hover { color: var(--primary-blue); background: rgba(0, 210, 255, 0.08); }
+        .nav-item-btn.active i { transform: translateY(-2px); }
+
+        /* TOP HISTORIAL DE RECARGAS */
+        .top-recargas-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .countdown-badge { background: rgba(0, 210, 255, 0.15); border: 1px solid var(--primary-blue); padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; color: var(--primary-blue); display: flex; align-items: center; gap: 5px; }
+        .recargas-list { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; padding-right: 4px; }
+        .recarga-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-main); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.85rem; font-weight: 700; }
+
+        /* SECCIÓN DE OPINIONES Y RESEÑAS ARRASTRABLES */
+        .reviews-container { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; cursor: grab; scroll-snap-type: x mandatory; }
+        .reviews-container:active { cursor: grabbing; }
+        .review-card { min-width: 260px; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; scroll-snap-align: start; flex-shrink: 0; }
+        .review-stars { color: #facc15; font-size: 0.8rem; margin-bottom: 6px; }
+        .review-img { width: 100%; height: 100px; object-fit: cover; border-radius: 6px; margin-top: 8px; border: 1px solid var(--border-color); }
+
+        /* TABS DE ÓRDENES */
+        .orders-subtabs { display: flex; gap: 10px; margin-bottom: 14px; }
+        .subtab-btn { flex: 1; background: var(--bg-main); border: 2px solid var(--border-color); padding: 10px; border-radius: 8px; font-weight: 800; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .subtab-btn.active { background: var(--primary-blue); color: #000; border-color: var(--primary-blue); box-shadow: 0 0 15px rgba(0,210,255,0.3); }
+
+        /* TARJETAS DE JUEGOS */
+        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .game-card {
+            background: var(--bg-card); border: var(--card-border); border-radius: 16px; overflow: hidden;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            display: flex; flex-direction: column; position: relative;
+        }
+        .game-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,210,255,0.4); border-color: var(--primary-blue); }
+        .game-card img { width: 100%; height: 130px; object-fit: cover; }
+        .game-card-body { padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+        .game-card-title { font-size: 0.9rem; font-weight: 900; color: var(--text-main); }
+        .game-card-subtitle { font-size: 0.75rem; font-weight: 700; color: var(--primary-blue); }
+
+        /* MODALES Y FORMULARIOS DE PASARELA */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px;
+        }
+        .modal-card {
+            background: var(--bg-card); border: 2px solid var(--primary-blue); border-radius: 16px;
+            max-width: 450px; width: 100%; padding: 22px; box-shadow: 0 15px 40px rgba(0,210,255,0.3);
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .modal-header h3 { font-size: 1.1rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .close-modal-btn { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+        .close-modal-btn:hover { color: var(--error-color); }
+
+        .copy-box { background: var(--bg-main); border: 2px dashed var(--primary-blue); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .copy-box span { font-size: 0.82rem; font-weight: 700; word-break: break-all; color: var(--primary-blue); }
+        .btn-copy { background: var(--primary-blue); color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 0.75rem; cursor: pointer; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-particles"></div>
+
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loading-text-msg">Procesando sistema...</div>
+    </div>
+
+    <div id="notification-toast">Mensaje del Sistema</div>
+
+    <!-- PANTALLA DE AUTENTICACIÓN -->
+    <div class="auth-wrapper" id="auth-screen">
+        <div class="auth-container">
+            <div class="brand-header">
+                <h1>DIAMONDS <span>LEGION</span></h1>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tab-btn-register" onclick="switchAuthTab('register')">Registrarse</button>
+                <button class="auth-tab" id="tab-btn-login" onclick="switchAuthTab('login')">Iniciar Sesión</button>
+            </div>
+
+            <form id="register-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Nombre de Usuario</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-user icon-left"></i>
+                        <input type="text" id="reg-username" class="form-control" placeholder="Tu usuario único" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-envelope icon-left"></i>
+                        <input type="text" id="reg-email" class="form-control" placeholder="ejemplo@correo.com" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock icon-left"></i>
+                        <input type="password" id="reg-pass" class="form-control" placeholder="Letra, número y símbolo" required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-pass', this)"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock icon-left"></i>
+                        <input type="password" id="reg-pass-confirm" class="form-control" placeholder="Repite tu contraseña" required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-pass-confirm', this)"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-main">Crear Cuenta PRO</button>
+            </form>
+
+            <form id="login-form" class="hidden" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Usuario o Correo</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-user icon-left"></i>
+                        <input type="text" id="login-user" class="form-control" placeholder="Usuario o email registrado" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <div class="input-icon-wrapper">
+                        <i class="fa-solid fa-lock icon-left"></i>
+                        <input type="password" id="login-pass" class="form-control" placeholder="••••••••" required>
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-pass', this)"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-main">Acceder a DIAMONDS LEGION</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PANEL PRINCIPAL -->
+    <div id="main-app-screen" class="hidden" style="flex:1; display:flex; flex-direction:column;">
+        <nav class="navbar">
+            <div class="nav-brand-container">
+                <div class="nav-brand-title">DIAMONDS <span>LEGION</span></div>
+            </div>
+            <div class="nav-right-actions">
+                <button class="nav-top-icon-btn" onclick="toggleThemeMode()" title="Cambiar Tema (Sol/Luna)">
+                    <i class="fa-solid fa-sun" id="theme-icon"></i>
+                </button>
+                <button class="nav-top-icon-btn" onclick="logoutSession()" title="Cerrar Sesión" style="color: var(--error-color);">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </nav>
+
+        <div class="container">
+            
+            <!-- VISTA 1: INICIO -->
+            <div id="section-home" class="vista-sec">
+                <div class="card-panel">
+                    <h3 id="welcome-title"><i class="fa-solid fa-bolt"></i> ¡Bienvenido, Operador!</h3>
+                    <p>Plataforma oficial de recargas y transacciones en DIAMONDS LEGION.</p>
+                </div>
+
+                <div class="card-panel">
+                    <div class="top-recargas-header">
+                        <h3><i class="fa-solid fa-trophy"></i> Top Recargas en Vivo</h3>
+                        <div class="countdown-badge">
+                            <i class="fa-solid fa-clock"></i> <span id="countdown-timer">23:59:45</span>
+                        </div>
+                    </div>
+                    <div class="recargas-list" id="live-recargas-container"></div>
+                </div>
+
+                <div class="card-panel">
+                    <h3><i class="fa-solid fa-star"></i> Opiniones de la Comunidad</h3>
+                    <p style="margin-bottom: 12px;">Arrastra para explorar testimonios o deja tu valoración.</p>
+                    
+                    <div class="reviews-container" id="reviews-slider">
+                        <div class="review-card">
+                            <div class="review-stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p style="font-size: 0.8rem; font-weight: 700;">@CarlosGamer: ¡Excelente servicio en DIAMONDS LEGION!</p>
+                        </div>
+                    </div>
+
+                    <form onsubmit="handlePostReview(event)" style="margin-top: 14px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+                        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                            <select id="review-stars-input" class="form-control" style="padding: 6px; width: 110px;">
+                                <option value="5">★★★★★ (5)</option>
+                                <option value="4">★★★★ (4)</option>
+                            </select>
+                            <input type="text" id="review-text-input" class="form-control" placeholder="Escribe tu opinión..." required>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="file" id="review-file-input" accept="image/*" style="font-size: 0.75rem; color: var(--text-muted);">
+                            <button type="submit" class="btn-main" style="margin-top: 0; padding: 8px 14px; font-size: 0.78rem; width: auto;"><i class="fa-solid fa-paper-plane"></i> Publicar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- VISTA 2: ÓRDENES -->
+            <div id="section-orders" class="vista-sec hidden">
+                <div class="card-panel">
+                    <h3><i class="fa-solid fa-list-check"></i> Historial de Solicitudes</h3>
+                    <div class="orders-subtabs">
+                        <button class="subtab-btn active" id="subtab-recargas" onclick="switchOrdersTab('recargas')">Recargas</button>
+                        <button class="subtab-btn" id="subtab-depositos" onclick="switchOrdersTab('depositos')">Depósitos</button>
+                    </div>
+                    <div id="orders-list-content" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                </div>
+            </div>
+
+            <!-- VISTA 3: RECARGAR -->
+            <div id="section-recharge" class="vista-sec hidden">
+                <div class="card-panel" style="margin-bottom: 10px;">
+                    <h3><i class="fa-solid fa-gamepad"></i> Catálogo de Juegos y Recargas</h3>
+                    <p>Selecciona tu videojuego para procesar diamantes.</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+                    <button onclick="openDepositModal('usdt')" class="card-panel" style="padding: 12px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; border-color: var(--primary-blue);">
+                        <i class="fa-solid fa-coins fa-2x" style="color: #26a17b;"></i>
+                        <div>
+                            <div style="font-size: 0.82rem; font-weight: 900;">USDT BEP-20</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">Depositar Cripto</div>
+                        </div>
+                    </button>
+                    <button onclick="openDepositModal('movil')" class="card-panel" style="padding: 12px; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; border-color: var(--primary-blue);">
+                        <i class="fa-solid fa-mobile-screen-button fa-2x" style="color: var(--primary-blue);"></i>
+                        <div>
+                            <div style="font-size: 0.82rem; font-weight: 900;">Saldo Móvil</div>
+                            <div style="font-size: 0.7rem; color: var(--text-muted);">Transferencia</div>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Tarjetas con nombres exactos de imágenes -->
+                <div class="games-grid" id="games-catalog-grid">
+                    <div class="game-card" onclick="openGameCatalog('Free Fire')">
+                        <img src="IMG_20261109_002818_225.jpg" alt="Free Fire" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500'">
+                        <div class="game-card-body">
+                            <div class="game-card-title">Free Fire</div>
+                            <div class="game-card-subtitle"><i class="fa-solid fa-fire"></i> Recarga por ID</div>
+                        </div>
+                    </div>
+                    <div class="game-card" onclick="openGameCatalog('Blood Strike')">
+                        <img src="IMG_20261109_002844_103.jpg" alt="Blood Strike" onerror="this.src='https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=500'">
+                        <div class="game-card-body">
+                            <div class="game-card-title">Blood Strike</div>
+                            <div class="game-card-subtitle"><i class="fa-solid fa-crosshairs"></i> Recarga por ID</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel CEO exclusivo para Lester -->
+                <div class="card-panel hidden" id="ceo-admin-panel" style="margin-top: 20px; border: 2px dashed #facc15;">
+                    <h3 style="color: #facc15;"><i class="fa-solid fa-user-shield"></i> Panel de Control CEO (Admin)</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Cambiar Wallet USDT BEP-20</label>
+                            <input type="text" id="admin-wallet-input" class="form-control" value="0x71C...B29aUSDT">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Cambiar Número Saldo Móvil</label>
+                            <input type="text" id="admin-phone-input" class="form-control" value="+53 59578110">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Otorgar Rango Admin (Email o Usuario)</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="admin-target-user" class="form-control" placeholder="usuario@correo.com">
+                                <button type="button" class="btn-main" onclick="grantAdminPrivilege()" style="margin-top:0; width: 120px; font-size: 0.75rem;">Dar Admin</button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-main" onclick="saveCeoSettings()" style="background: #facc15; color: #000; margin-top: 5px;">Guardar Cambios CEO</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA 4: PERFIL -->
+            <div id="section-profile" class="vista-sec hidden">
+                <div class="card-panel">
+                    <h3><i class="fa-solid fa-id-card"></i> Información de Cuenta</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px; font-size: 0.88rem;">
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+                            <span style="color: var(--text-muted);">Usuario:</span>
+                            <strong id="profile-display-user">Lester</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+                            <span style="color: var(--text-muted);">Correo:</span>
+                            <strong id="profile-display-email">Lester.Tiendadiamantes@gmail.com</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+                            <span style="color: var(--text-muted);">Recargas Totales:</span>
+                            <strong style="color: var(--primary-blue);" id="profile-stat-recargas">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 6px;">
+                            <span style="color: var(--text-muted);">Saldo USDT:</span>
+                            <strong style="color: #26a17b;"><i class="fa-solid fa-coins"></i> <span id="profile-stat-usdt">0.00</span> USDT</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding-bottom: 6px;">
+                            <span style="color: var(--text-muted);">Saldo CUP / Móvil:</span>
+                            <strong style="color: var(--primary-blue);"><i class="fa-solid fa-wallet"></i> <span id="profile-stat-saldo">0.00</span> CUP</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-panel">
+                    <h3><i class="fa-solid fa-gears"></i> Gestión y Seguridad</h3>
+                    
+                    <div style="margin-top: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">Cambiar Nombre de Usuario</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" id="new-username-input" class="form-control" placeholder="Nuevo usuario">
+                            <button onclick="handleChangeUsername()" class="btn-main" style="margin-top:0; width: 110px; font-size: 0.75rem;">Actualizar</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;">Cambiar Contraseña</label>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-lock icon-left"></i>
+                                <input type="password" id="pass-current" class="form-control" placeholder="Contraseña actual">
+                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('pass-current', this)"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-lock icon-left"></i>
+                                <input type="password" id="pass-new" class="form-control" placeholder="Contraseña nueva">
+                                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('pass-new', this)"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                            <button onclick="handleChangePassword()" class="btn-main" style="margin-top:4px; font-size: 0.8rem;"><i class="fa-solid fa-key"></i> Actualizar Contraseña</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 12px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 6px;"><i class="fa-solid fa-paper-plane"></i> Transferir Fondos</label>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <input type="text" id="transfer-target" class="form-control" placeholder="Correo o usuario destino">
+                            <div style="display: flex; gap: 8px;">
+                                <select id="transfer-currency" class="form-control" style="padding: 6px;">
+                                    <option value="USDT">USDT</option>
+                                    <option value="SALDO">Saldo CUP</option>
+                                </select>
+                                <input type="number" id="transfer-amount" class="form-control" placeholder="Monto">
+                            </div>
+                            <button onclick="handleTransferFunds()" class="btn-main" style="margin-top: 4px; font-size: 0.8rem;"><i class="fa-solid fa-share"></i> Enviar Transferencia</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA INFERIOR -->
+        <nav class="app-bottom-nav">
+            <button class="nav-item-btn active" id="btn-nav-home" onclick="switchAppTab('home')">
+                <i class="fa-solid fa-house"></i>
+                <span>Inicio</span>
+            </button>
+            <button class="nav-item-btn" id="btn-nav-orders" onclick="switchAppTab('orders')">
+                <i class="fa-solid fa-list-check"></i>
+                <span>Órdenes</span>
+            </button>
+            <button class="nav-item-btn" id="btn-nav-recharge" onclick="switchAppTab('recharge')">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Recargar</span>
+            </button>
+            <button class="nav-item-btn" id="btn-nav-deposit" onclick="switchAppTab('recharge'); openDepositModal('usdt')">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Depositar</span>
+            </button>
+            <button class="nav-item-btn" id="btn-nav-profile" onclick="switchAppTab('profile')">
+                <i class="fa-solid fa-user"></i>
+                <span>Perfil</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- MODALES -->
+    <div class="modal-overlay" id="generic-modal">
+        <div class="modal-card" id="modal-content-wrapper"></div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let dbUsers = JSON.parse(localStorage.getItem('diamonds_legion_users')) || [
+            { username: 'Lester', email: 'Lester.Tiendadiamantes@gmail.com', pass: 'lester2010jj@', isAdmin: true, usdt: 150.00, saldo: 5000, recargasCount: 12 }
+        ];
+        let liveRecargas = [
+            { user: 'Kratos99', game: 'Free Fire', amount: '520 Diamantes', time: 'Hace 2 min' },
+            { user: 'AlexPro', game: 'Blood Strike', amount: '1150 Oro', time: 'Hace 7 min' }
+        ];
+        let userOrders = [
+            { id: 'ORD-9821', type: 'Recarga', desc: 'Free Fire - 520 Diamantes', status: 'Completado', time: 'Hoy 14:20' }
+        ];
+        let gatewaySettings = {
+            usdtWallet: '0x71Cd...B29aUSDTBEP20',
+            mobilePhone: '+53 59578110'
+        };
+
+        function showToast(msg) {
+            const toast = document.getElementById('notification-toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        }
+
+        function showLoading(msg = "Procesando...") {
+            document.getElementById('loading-text-msg').innerText = msg;
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        function toggleThemeMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                icon.className = 'fa-solid fa-moon';
+                showToast("Modo Claro Activado");
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                icon.className = 'fa-solid fa-sun';
+                showToast("Modo Oscuro Activado");
+            }
+        }
+
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const regForm = document.getElementById('register-form');
+            const btnLogin = document.getElementById('tab-btn-login');
+            const btnReg = document.getElementById('tab-btn-register');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                btnLogin.classList.add('active');
+                btnReg.classList.remove('active');
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                btnReg.classList.add('active');
+                btnLogin.classList.remove('active');
+            }
+        }
+
+        function togglePasswordVisibility(inputId, btnElement) {
+            const input = document.getElementById(inputId);
+            const icon = btnElement.querySelector('i');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const confirmPass = document.getElementById('reg-pass-confirm').value;
+
+            if (pass !== confirmPass) {
+                showToast("Las contraseñas no coinciden.");
+                return;
+            }
+
+            if (dbUsers.some(u => u.email === email || u.username === username)) {
+                showToast("El usuario o correo ya está registrado.");
+                return;
+            }
+
+            const newUser = {
+                username,
+                email,
+                pass,
+                isAdmin: (email.toLowerCase() === 'lester.tiendadiamantes@gmail.com' || username.toLowerCase() === 'lester'),
+                usdt: 0.00,
+                saldo: 0,
+                recargasCount: 0
+            };
+
+            dbUsers.push(newUser);
+            localStorage.setItem('diamonds_legion_users', JSON.stringify(dbUsers));
+
+            showLoading("Registrando cuenta en DIAMONDS LEGION...");
+            setTimeout(() => {
+                hideLoading();
+                loginUserSession(newUser);
+            }, 1000);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            const found = dbUsers.find(u => (u.email === identifier || u.username === identifier) && u.pass === pass);
+            if (!found) {
+                showToast("Credenciales incorrectas.");
+                return;
+            }
+
+            showLoading("Iniciando sesión...");
+            setTimeout(() => {
+                hideLoading();
+                loginUserSession(found);
+            }, 800);
+        }
+
+        function loginUserSession(user) {
+            currentUser = user;
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('main-app-screen').classList.remove('hidden');
+            
+            document.getElementById('welcome-title').innerHTML = `<i class="fa-solid fa-bolt"></i> ¡Bienvenido, ${user.username}!`;
+            document.getElementById('profile-display-user').innerText = user.username;
+            document.getElementById('profile-display-email').innerText = user.email;
+            document.getElementById('profile-stat-recargas').innerText = user.recargasCount;
+            document.getElementById('profile-stat-usdt').innerText = user.usdt.toFixed(2);
+            document.getElementById('profile-stat-saldo').innerText = user.saldo;
+
+            if (user.isAdmin) {
+                document.getElementById('ceo-admin-panel').classList.remove('hidden');
+            } else {
+                document.getElementById('ceo-admin-panel').classList.add('hidden');
+            }
+
+            renderLiveRecargas();
+            renderUserOrders();
+            showToast(`¡Sesión iniciada en DIAMONDS LEGION!`);
+        }
+
+        function logoutSession() {
+            showLoading("Cerrando sesión...");
+            setTimeout(() => {
+                hideLoading();
+                currentUser = null;
+                document.getElementById('main-app-screen').classList.add('hidden');
+                document.getElementById('auth-screen').classList.remove('hidden');
+                showToast("Sesión cerrada.");
+            }, 600);
+        }
+
+        function switchAppTab(tabName) {
+            ['home', 'orders', 'recharge', 'profile'].forEach(t => {
+                document.getElementById(`section-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`btn-nav-${t}`);
+                if (btn) btn.classList.remove('active');
+            });
+
+            document.getElementById(`section-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`btn-nav-${tabName}`);
+            if (activeBtn) activeBtn.classList.add('active');
+        }
+
+        function renderLiveRecargas() {
+            const container = document.getElementById('live-recargas-container');
+            container.innerHTML = liveRecargas.map(r => `
+                <div class="recarga-item">
+                    <div><i class="fa-solid fa-circle-check" style="color: var(--success-color);"></i> <strong>${r.user}</strong> recargó ${r.game}</div>
+                    <div style="color: var(--primary-blue);">${r.amount}</div>
+                </div>
+            `).join('');
+        }
+
+        let totalSeconds = 86345;
+        setInterval(() => {
+            if (totalSeconds > 0) totalSeconds--;
+            else totalSeconds = 86400;
+            let h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+            let m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            let s = (totalSeconds % 60).toString().padStart(2, '0');
+            const timerEl = document.getElementById('countdown-timer');
+            if (timerEl) timerEl.innerText = `${h}:${m}:${s}`;
+        }, 1000);
+
+        function handlePostReview(e) {
+            e.preventDefault();
+            const stars = document.getElementById('review-stars-input').value;
+            const text = document.getElementById('review-text-input').value.trim();
+            const fileInput = document.getElementById('review-file-input');
+
+            let starsHtml = '';
+            for(let i=0; i<stars; i++) starsHtml += '<i class="fa-solid fa-star"></i>';
+
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    addReviewCard(starsHtml, text, e.target.result);
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                addReviewCard(starsHtml, text, null);
+            }
+            e.target.reset();
+            showToast("¡Opinión publicada!");
+        }
+
+        function addReviewCard(stars, text, imgSrc) {
+            const slider = document.getElementById('reviews-slider');
+            const card = document.createElement('div');
+            card.className = 'review-card';
+            card.innerHTML = `
+                <div class="review-stars">${stars}</div>
+                <p style="font-size: 0.8rem; font-weight: 700;">@${currentUser.username}: ${text}</p>
+                ${imgSrc ? `<img src="${imgSrc}" class="review-img">` : ''}
+            `;
+            slider.prepend(card);
+        }
+
+        const slider = document.getElementById('reviews-slider');
+        let isDown = false, startX, scrollLeft;
+        slider.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft; });
+        slider.addEventListener('mouseleave', () => { isDown = false; });
+        slider.addEventListener('mouseup', () => { isDown = false; });
+        slider.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+
+        function switchOrdersTab(type) {
+            document.getElementById('subtab-recargas').classList.remove('active');
+            document.getElementById('subtab-depositos').classList.remove('active');
+            document.getElementById(`subtab-${type}`).classList.add('active');
+
+            const container = document.getElementById('orders-list-content');
+            const filtered = userOrders.filter(o => type === 'recargas' ? o.type === 'Recarga' : o.type === 'Depósito');
+            
+            if(filtered.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color: var(--text-muted); padding: 1rem;">No hay registros de ${type}.</p>`;
+            } else {
+                container.innerHTML = filtered.map(o => `
+                    <div class="recarga-item">
+                        <div><strong>${o.id}</strong> - ${o.desc}</div>
+                        <div style="color: var(--success-color); font-size: 0.78rem;">${o.status}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function openDepositModal(type) {
+            const modal = document.getElementById('generic-modal');
+            const wrapper = document.getElementById('modal-content-wrapper');
+            modal.style.display = 'flex';
+
+            if(type === 'usdt') {
+                wrapper.innerHTML = `
+                    <div class="modal-header">
+                        <h3><i class="fa-solid fa-coins" style="color: #26a17b;"></i> Depósito USDT BEP-20</h3>
+                        <button class="close-modal-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="copy-box">
+                        <span id="wallet-text">${gatewaySettings.usdtWallet}</span>
+                        <button class="btn-copy" onclick="copyText('${gatewaySettings.usdtWallet}')">Copiar</button>
+                    </div>
+                    <form onsubmit="submitDepositOrder(event, 'USDT BEP-20')">
+                        <div class="form-group">
+                            <label>Monto en USDT</label>
+                            <input type="number" step="0.01" class="form-control" placeholder="Ej: 25.00" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ID o Hash de Transferencia (TxID)</label>
+                            <input type="text" class="form-control" placeholder="0x..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Comprobante de Pago</label>
+                            <input type="file" accept="image/*" class="form-control" style="padding: 6px;" required>
+                        </div>
+                        <button type="submit" class="btn-main">Confirmar Depósito USDT</button>
+                    </form>
+                `;
+            } else if(type === 'movil') {
+                wrapper.innerHTML = `
+                    <div class="modal-header">
+                        <h3><i class="fa-solid fa-mobile-screen-button" style="color: var(--primary-blue);"></i> Depósito Saldo Móvil</h3>
+                        <button class="close-modal-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="copy-box">
+                        <span id="phone-text">${gatewaySettings.mobilePhone}</span>
+                        <button class="btn-copy" onclick="copyText('${gatewaySettings.mobilePhone}')">Copiar</button>
+                    </div>
+                    <form onsubmit="submitDepositOrder(event, 'Saldo Móvil')">
+                        <div class="form-group">
+                            <label>Monto Transferido</label>
+                            <input type="number" class="form-control" placeholder="Ej: 500 CUP" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Número con el que realizaste la transferencia</label>
+                            <input type="text" class="form-control" placeholder="+53 ..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Comprobante</label>
+                            <input type="file" accept="image/*" class="form-control" style="padding: 6px;" required>
+                        </div>
+                        <button type="submit" class="btn-main">Confirmar Saldo Móvil</button>
+                    </form>
+                `;
+            }
+        }
+
+        function openGameCatalog(gameName) {
+            const modal = document.getElementById('generic-modal');
+            const wrapper = document.getElementById('modal-content-wrapper');
+            modal.style.display = 'flex';
+
+            wrapper.innerHTML = `
+                <div class="modal-header">
+                    <h3><i class="fa-solid fa-gamepad"></i> Catálogo: ${gameName}</h3>
+                    <button class="close-modal-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+                    <div class="recarga-item" style="cursor: pointer;" onclick="processGameOrder('${gameName}', '100 Diamantes', '$1.00 USD')">
+                        <div><strong>100 Diamantes + 10 Bonus</strong></div>
+                        <div style="color: var(--primary-blue); font-weight: 900;">$1.00 USD</div>
+                    </div>
+                    <div class="recarga-item" style="cursor: pointer;" onclick="processGameOrder('${gameName}', '520 Diamantes', '$5.00 USD')">
+                        <div><strong>520 Diamantes + 50 Bonus</strong></div>
+                        <div style="color: var(--primary-blue); font-weight: 900;">$5.00 USD</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Tu ID de Jugador</label>
+                    <input type="text" id="game-player-id" class="form-control" placeholder="Introduce tu ID numérico" required>
+                </div>
+            `;
+        }
+
+        function processGameOrder(game, pack, price) {
+            const playerId = document.getElementById('game-player-id').value.trim();
+            if(!playerId) {
+                showToast("Introduce tu ID de jugador.");
+                return;
+            }
+            closeModal();
+            showLoading(`Procesando recarga para ${game}...`);
+            setTimeout(() => {
+                hideLoading();
+                currentUser.recargasCount++;
+                document.getElementById('profile-stat-recargas').innerText = currentUser.recargasCount;
+                userOrders.unshift({ id: 'REC-' + Math.floor(Math.random()*90000+10000), type: 'Recarga', desc: `${game} - ${pack} (ID: ${playerId})`, status: 'Procesando', time: 'Justo ahora' });
+                liveRecargas.unshift({ user: currentUser.username, game: game, amount: pack, time: 'Hace un momento' });
+                showToast("¡Recarga enviada con éxito!");
+            }, 1200);
+        }
+
+        function submitDepositOrder(e, type) {
+            e.preventDefault();
+            closeModal();
+            showLoading("Registrando orden...");
+            setTimeout(() => {
+                hideLoading();
+                userOrders.unshift({ id: 'DEP-' + Math.floor(Math.random()*90000+10000), type: 'Depósito', desc: `${type} verificado`, status: 'En Revisión', time: 'Justo ahora' });
+                showToast("¡Depósito enviado al CEO!");
+            }, 1000);
+        }
+
+        function closeModal() {
+            document.getElementById('generic-modal').style.display = 'none';
+        }
+
+        function saveCeoSettings() {
+            gatewaySettings.usdtWallet = document.getElementById('admin-wallet-input').value.trim();
+            gatewaySettings.mobilePhone = document.getElementById('admin-phone-input').value.trim();
+            showToast("¡Configuraciones guardadas!");
+        }
+
+        function grantAdminPrivilege() {
+            const target = document.getElementById('admin-target-user').value.trim();
+            const found = dbUsers.find(u => u.email === target || u.username === target);
+            if(found) {
+                found.isAdmin = true;
+                localStorage.setItem('diamonds_legion_users', JSON.stringify(dbUsers));
+                showToast(`¡Rango Admin otorgado a ${found.username}!`);
+            } else {
+                showToast("Usuario no encontrado.");
+            }
+        }
+
+        function handleChangeUsername() {
+            const newName = document.getElementById('new-username-input').value.trim();
+            if(!newName) return showToast("Introduce un nuevo nombre.");
+            currentUser.username = newName;
+            document.getElementById('profile-display-user').innerText = newName;
+            document.getElementById('welcome-title').innerHTML = `<i class="fa-solid fa-bolt"></i> ¡Bienvenido, ${newName}!`;
+            localStorage.setItem('diamonds_legion_users', JSON.stringify(dbUsers));
+            showToast("¡Nombre actualizado!");
+        }
+
+        function handleChangePassword() {
+            const curr = document.getElementById('pass-current').value;
+            const nuevo = document.getElementById('pass-new').value;
+            if(curr !== currentUser.pass) return showToast("Contraseña actual incorrecta.");
+            currentUser.pass = nuevo;
+            localStorage.setItem('diamonds_legion_users', JSON.stringify(dbUsers));
+            showToast("¡Contraseña actualizada!");
+        }
+
+        function handleTransferFunds() {
+            const targetUser = document.getElementById('transfer-target').value.trim();
+            const currency = document.getElementById('transfer-currency').value;
+            const amount = parseFloat(document.getElementById('transfer-amount').value);
+
+            if(!targetUser || isNaN(amount) || amount <= 0) return showToast("Completa los datos correctamente.");
+            
+            const recipient = dbUsers.find(u => u.username === targetUser || u.email === targetUser);
+            if(!recipient) return showToast("Usuario destino no encontrado.");
+
+            if(currency === 'USDT') {
+                if(currentUser.usdt < amount) return showToast("Fondos USDT insuficientes.");
+                currentUser.usdt -= amount;
+                recipient.usdt += amount;
+                document.getElementById('profile-stat-usdt').innerText = currentUser.usdt.toFixed(2);
+            } else {
+                if(currentUser.saldo < amount) return showToast("Saldo CUP insuficiente.");
+                currentUser.saldo -= amount;
+                recipient.saldo += amount;
+                document.getElementById('profile-stat-saldo').innerText = currentUser.saldo;
+            }
+
+            localStorage.setItem('diamonds_legion_users', JSON.stringify(dbUsers));
+            showToast("¡Transferencia exitosa!");
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            showToast("¡Copiado al portapapeles!");
+        }
+    </script>
+</body>
+</html>
