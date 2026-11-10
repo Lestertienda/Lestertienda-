@@ -1293,34 +1293,41 @@
         details.ua-manual { margin-top: 14px; border-top: 1px dashed var(--border-color); padding-top: 12px; }
         details.ua-manual summary { cursor: pointer; font-size: .78rem; font-weight: 800; color: var(--text-muted); list-style: none; text-align: center; }
         details.ua-manual summary::-webkit-details-marker { display: none; }
-    /* ================= LT PRO v5: tarjetas neón, notificaciones, anuncios, IA LT, guía ================= */
-:root{--lt-edge:linear-gradient(115deg,#00c8ff,#2f6bff 28%,#16c784 50%,#2f6bff 72%,#00c8ff);--lt-sh:0 0 14px rgba(0,140,255,.38),0 0 2px rgba(0,200,255,.55),inset 0 0 22px rgba(0,110,255,.13);--st:#00c8ff}
-:root[data-theme="light"]{--lt-edge:linear-gradient(115deg,#2f6bff,#00a2ff 28%,#0fb981 50%,#00a2ff 72%,#2f6bff);--lt-sh:0 6px 18px rgba(36,87,255,.22),0 0 10px rgba(36,87,255,.16)}
-@keyframes ltBorder{to{background-position:0 0,300% 0}}
-@keyframes ltStripes{to{background-position:28.28px 0}}
-@keyframes ltStripesB{to{background-position:16.97px 0}}
+    /* ================= LT PRO v6: LED, tarjetas, anuncios ================= */
+@property --lt-a{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes ltLed{to{--lt-a:360deg}}
 @keyframes ltFlow{to{background-position:200% 0}}
 @keyframes ltSpin{to{transform:rotate(360deg)}}
 @keyframes ltSweep{0%{transform:translateX(-130%)}60%,100%{transform:translateX(330%)}}
-.sub-card,.order-card-pro,.live-history-card,.menu-list,.profile-header-card,.shine-card,.ua-box,.op-card-h,.op-add-h{
-  border:1.5px solid transparent !important;
-  background-image:linear-gradient(var(--bg-card),var(--bg-card)),var(--lt-edge) !important;
-  background-origin:border-box !important;background-clip:padding-box,border-box !important;
-  background-size:100% 100%,300% 100% !important;
-  animation:ltBorder 7s linear infinite;box-shadow:var(--lt-sh) !important}
-.wallet-card,.invite-banner,.game-card-character{border-color:rgba(0,170,255,.6) !important;box-shadow:var(--lt-sh) !important}
-.order-card-pro.st-pend,.shine-card.st-pend{--lt-edge:linear-gradient(115deg,#f59e0b,#ffd45a 30%,#f59e0b 55%,#ffb300 80%,#f59e0b);--st:#f59e0b;--lt-sh:0 0 16px rgba(245,158,11,.42),inset 0 0 22px rgba(245,158,11,.10)}
-.order-card-pro.st-ok,.shine-card.st-ok{--lt-edge:linear-gradient(115deg,#10b981,#5dffc0 30%,#10b981 55%,#16c784 80%,#10b981);--st:#10b981;--lt-sh:0 0 16px rgba(16,185,129,.42),inset 0 0 22px rgba(16,185,129,.10)}
-.order-card-pro.st-bad,.shine-card.st-bad{--lt-edge:linear-gradient(115deg,#ef4444,#ff8a8a 30%,#ef4444 55%,#ff3b30 80%,#ef4444);--st:#ef4444;--lt-sh:0 0 16px rgba(239,68,68,.42),inset 0 0 22px rgba(239,68,68,.10)}
-:root[data-theme="light"] .st-pend{--lt-sh:0 6px 18px rgba(245,158,11,.28)}
-:root[data-theme="light"] .st-ok{--lt-sh:0 6px 18px rgba(16,185,129,.26)}
-:root[data-theme="light"] .st-bad{--lt-sh:0 6px 18px rgba(239,68,68,.26)}
-.st-pend::after,.st-ok::after,.st-bad::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;
-  background:repeating-linear-gradient(135deg,var(--st) 0 10px,transparent 10px 20px);background-size:28.28px 28.28px;opacity:.14;animation:ltStripes 1.3s linear infinite}
-.st-pend>*,.st-ok>*,.st-bad>*{position:relative;z-index:1}
-.badge-status.status-pendiente{background-image:repeating-linear-gradient(135deg,rgba(245,158,11,.34) 0 6px,transparent 6px 12px);background-size:16.97px 16.97px;animation:ltStripesB 1s linear infinite;box-shadow:0 0 10px rgba(245,158,11,.35)}
-.badge-status.status-completado{background-image:repeating-linear-gradient(135deg,rgba(16,185,129,.30) 0 6px,transparent 6px 12px);background-size:16.97px 16.97px;animation:ltStripesB 1.6s linear infinite;box-shadow:0 0 10px rgba(16,185,129,.35)}
-.badge-status.status-cancelado{background-image:repeating-linear-gradient(135deg,rgba(239,68,68,.30) 0 6px,transparent 6px 12px);background-size:16.97px 16.97px;animation:ltStripesB 1.6s linear infinite;box-shadow:0 0 10px rgba(239,68,68,.35)}
+@keyframes ltBlink{50%{opacity:.25;transform:scale(.7)}}
+:root{--led:#00c8ff;--led2:#16c784;--ledb:rgba(0,170,255,.38);--glow:rgba(0,140,255,.30)}
+:root[data-theme="light"]{--led:#2f6bff;--led2:#0fb981;--ledb:rgba(36,87,255,.40);--glow:rgba(36,87,255,.20)}
+.sub-card,.order-card-pro,.live-history-card,.menu-list,.profile-header-card,.shine-card,.ua-box,.ua-pago,.wallet-card,.invite-banner,.game-card-character,.op-card-h,.op-add-h{
+  border:1.5px solid var(--ledb) !important;box-shadow:0 0 18px var(--glow),inset 0 0 20px rgba(0,110,255,.08) !important}
+:root[data-theme="light"] .sub-card,:root[data-theme="light"] .order-card-pro,:root[data-theme="light"] .live-history-card,:root[data-theme="light"] .menu-list,:root[data-theme="light"] .profile-header-card,:root[data-theme="light"] .shine-card,:root[data-theme="light"] .ua-box,:root[data-theme="light"] .ua-pago,:root[data-theme="light"] .wallet-card,:root[data-theme="light"] .invite-banner,:root[data-theme="light"] .game-card-character{box-shadow:0 6px 18px var(--glow) !important}
+/* luz LED que recorre todo el borde */
+.sub-card::after,.order-card-pro::after,.live-history-card::after,.menu-list::after,.profile-header-card::after,.shine-card::after,.ua-box::after,.ua-pago::after,.wallet-card::after,.invite-banner::after,.game-card-character::after,.navbar::after,.bottom-nav::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;padding:2.5px;pointer-events:none;z-index:3;
+  background:conic-gradient(from var(--lt-a),transparent 0,var(--led) 9%,#fff 12%,transparent 22%,transparent 50%,var(--led2) 59%,#fff 62%,transparent 72%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  animation:ltLed 6s linear infinite}
+.navbar::after,.bottom-nav::after{padding:2px;animation-duration:7s}
+.bottom-nav::after{animation-direction:reverse}
+.nav-item.active svg{filter:drop-shadow(0 0 6px rgba(150,210,255,.95))}
+.bottom-nav .nav-item.active{text-shadow:0 0 10px rgba(150,210,255,.9)}
+/* estado de pedidos: la luz LED toma el color del estado */
+.st-pend{--led:#ffb300;--led2:#ffd45a;--ledb:rgba(245,158,11,.45);--glow:rgba(245,158,11,.32)}
+.st-ok{--led:#16c784;--led2:#5dffc0;--ledb:rgba(16,185,129,.45);--glow:rgba(16,185,129,.32)}
+.st-bad{--led:#ff4d4d;--led2:#ff8a8a;--ledb:rgba(239,68,68,.45);--glow:rgba(239,68,68,.32)}
+.st-pend::after,.st-ok::after,.st-bad::after{animation-duration:3.6s}
+.st-pend{background-image:linear-gradient(135deg,rgba(245,158,11,.07),transparent 60%) !important}
+.st-ok{background-image:linear-gradient(135deg,rgba(16,185,129,.07),transparent 60%) !important}
+.st-bad{background-image:linear-gradient(135deg,rgba(239,68,68,.07),transparent 60%) !important}
+/* etiquetas de estado tipo píldora (sin rayas) */
+.badge-status{display:inline-flex !important;align-items:center;justify-content:center;gap:6px;border-radius:999px !important;padding:6px 12px !important;text-transform:none !important;font-size:.74rem !important;letter-spacing:.2px;background-image:none !important;animation:none !important;box-shadow:none !important}
+.badge-status.status-completado::before{content:'✓';font-weight:900}
+.badge-status.status-cancelado::before{content:'✕';font-weight:900}
+.badge-status.status-pendiente::before{content:'';width:8px;height:8px;border-radius:50%;background:#f59e0b;box-shadow:0 0 8px #f59e0b;animation:ltBlink 1.2s ease-in-out infinite}
 
 /* ---- Notificaciones PRO ---- */
 #notification-toast{top:calc(12px + env(safe-area-inset-top)) !important;display:flex;align-items:center;gap:12px;text-align:left !important;padding:.7rem .9rem !important;border-radius:18px !important;overflow:hidden;color:#eaf3ff !important;
@@ -1346,22 +1353,42 @@
 .inicio-tabs.seg2::before,.inicio-tabs.seg2::after{transition:transform .4s cubic-bezier(.34,1.3,.5,1),opacity .25s ease}
 .inicio-tabs.seg2[data-pos="-1"]::before,.inicio-tabs.seg2[data-pos="-1"]::after{opacity:0;transform:scale(.85)}
 
-/* ---- Anuncios (carrusel) ---- */
-.lt-ads{margin:0 0 14px}
-.lt-ads-frame{position:relative;border-radius:20px;overflow:hidden;padding:2.5px;box-shadow:0 0 22px rgba(0,150,255,.45),0 0 40px rgba(22,199,132,.18)}
-.lt-ads-frame::before{content:'';position:absolute;left:50%;top:50%;width:260%;aspect-ratio:1;margin:-130% 0 0 -130%;background:conic-gradient(#00c8ff,#16c784,#2f6bff,#00c8ff 50%,#16c784 75%,#00c8ff);animation:ltSpin 4.5s linear infinite}
-.lt-ads-in{position:relative;border-radius:18px;overflow:hidden;background:#030914}
+/* ---- Anuncios (carrusel) estilo botón con luz LED ---- */
+.lt-ads{position:relative;margin:0 0 14px}
+.lt-ads::before{content:'';position:absolute;inset:8px 6px;background:#2563eb;filter:blur(16px);opacity:.5;z-index:0}
+.lt-ads-frame{position:relative;z-index:1;padding:3.5px;overflow:hidden;
+  clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px);
+  background:linear-gradient(180deg,#b4ceff 0,#6ba0ff 6%,#3a74ff 26%,#2358f4 64%,#1849d4 100%)}
+.lt-ads-frame::before{content:'';position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;margin:-150% 0 0 -150%;
+  background:conic-gradient(transparent 0,#00e5ff 8%,#fff 11%,transparent 22%,transparent 50%,#22f0a8 58%,#fff 61%,transparent 72%);animation:ltSpin 6s linear infinite;will-change:transform}
+.lt-ads-in{position:relative;overflow:hidden;background:#030914;
+  clip-path:polygon(15px 0,calc(100% - 15px) 0,100% 15px,100% calc(100% - 15px),calc(100% - 15px) 100%,15px 100%,0 calc(100% - 15px),0 15px)}
 .lt-ads-track{display:flex;transition:transform .6s cubic-bezier(.65,0,.25,1)}
 .lt-ad{position:relative;flex:0 0 100%}
 .lt-ad img{display:block;width:100%;aspect-ratio:900/328;object-fit:cover;user-select:none;-webkit-user-drag:none}
-.lt-ad-btn{position:absolute;right:3.5%;bottom:8%;display:flex;align-items:center;gap:5px;padding:5px 10px 5px 8px;font-size:.62rem;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#fff;cursor:pointer;overflow:hidden;
-  background:linear-gradient(180deg,#4a82ff,#1849d4);border:1px solid rgba(160,210,255,.8);border-radius:9px;box-shadow:0 0 14px rgba(0,170,255,.7),inset 0 1px 0 rgba(255,255,255,.4)}
+.lt-ad-btn{position:absolute;right:4.5%;bottom:9%;display:flex;align-items:center;gap:5px;padding:5px 11px 5px 9px;font-size:.62rem;font-weight:900;letter-spacing:.6px;text-transform:uppercase;color:#fff;cursor:pointer;overflow:hidden;border:none;
+  clip-path:polygon(7px 0,calc(100% - 7px) 0,100% 7px,100% calc(100% - 7px),calc(100% - 7px) 100%,7px 100%,0 calc(100% - 7px),0 7px);
+  background:linear-gradient(180deg,#b4ceff 0,#6ba0ff 6%,#3a74ff 26%,#2358f4 64%,#1849d4 100%);box-shadow:inset 0 -3px 0 rgba(8,28,110,.5)}
 .lt-ad-btn svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .lt-ad-btn::after{content:'';position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);animation:ltSweep 3s ease-in-out infinite}
 .lt-ad-btn:active{transform:scale(.92)}
-.lt-dots{display:flex;justify-content:center;gap:7px;margin-top:9px}
+.lt-dots{display:flex;justify-content:center;gap:7px;margin-top:10px}
 .lt-dots i{width:7px;height:7px;border-radius:50%;background:var(--border-color);border:1px solid rgba(0,170,255,.5);transition:all .35s;cursor:pointer}
 .lt-dots i.on{width:22px;border-radius:6px;background:linear-gradient(90deg,#00c8ff,#16c784);border-color:transparent;box-shadow:0 0 10px rgba(0,200,255,.7)}
+
+/* ---- Ayuda de IA LT en cada pantalla ---- */
+.lt-tip{position:fixed;left:12px;right:12px;top:calc(92px + env(safe-area-inset-top));max-width:420px;margin:0 auto;z-index:99999000;padding:12px 12px 10px;border-radius:18px;background:var(--bg-card);color:var(--text-main);
+  border:1.5px solid rgba(0,200,255,.7);box-shadow:0 0 26px rgba(0,170,255,.5),0 12px 28px rgba(0,0,0,.45);animation:ltTipIn .45s cubic-bezier(.16,1,.3,1)}
+@keyframes ltTipIn{from{opacity:0;transform:translateY(-16px) scale(.96)}to{opacity:1;transform:none}}
+.lt-tip .tp-top{display:flex;align-items:center;gap:10px;margin-bottom:5px}
+.lt-tip .tp-top img{width:32px;height:32px;border-radius:50%;box-shadow:0 0 12px rgba(0,200,255,.8)}
+.lt-tip h4{font-size:.88rem;font-weight:900;flex:1}
+.lt-tip p{font-size:.78rem;line-height:1.5;color:var(--text-muted);margin-bottom:10px}
+.lt-tip .tp-btns{display:flex;gap:8px}
+.lt-tip button{flex:1;padding:8px;border-radius:11px;font-weight:900;font-size:.72rem;cursor:pointer;border:1px solid rgba(0,170,255,.6);background:transparent;color:var(--text-main)}
+.lt-tip button.pri{background:linear-gradient(180deg,#4a82ff,#1849d4);color:#fff;border-color:rgba(160,210,255,.8)}
+.lt-hl{animation:ltHl 1.3s ease-in-out infinite;border-radius:14px}
+@keyframes ltHl{50%{box-shadow:0 0 0 4px rgba(22,199,132,.28),0 0 22px #16c784}}
 
 /* ---- Soporte: opción IA LT ---- */
 .lt-ia-opt{position:relative;border-color:rgba(0,200,255,.7) !important;box-shadow:0 0 18px rgba(0,170,255,.35);overflow:hidden}
@@ -6333,12 +6360,12 @@
         let W = 0, H = 0, orbs = [], gems = [], sparks = [], last = 0;
         const R = (a, b) => a + Math.random() * (b - a);
         function resize() {
-            const d = Math.min(window.devicePixelRatio || 1, 2);
+            const d = 1;
             W = window.innerWidth; H = window.innerHeight;
             cv.width = W * d; cv.height = H * d; ctx.setTransform(d, 0, 0, d, 0, 0);
-            const n = Math.round(Math.max(18, Math.min(46, W * H / 17000)));
+            const n = Math.round(Math.max(9, Math.min(20, W * H / 32000)));
             orbs = Array.from({ length: n }, () => ({ x: R(0, W), y: R(0, H), r: R(1.5, 9), vy: -R(6, 26), vx: R(-6, 6), a: R(.25, .8), ph: R(0, 6.28), big: Math.random() < .18 }));
-            gems = Array.from({ length: Math.round(Math.max(7, Math.min(13, W / 55))) }, () => ({ x: R(0, W), y: R(0, H), s: R(11, 30), vy: -R(8, 22), vx: R(-4, 4), a: R(.45, .95), ph: R(0, 6.28), sp: R(.5, 1.3) }));
+            gems = Array.from({ length: Math.round(Math.max(4, Math.min(6, W / 80))) }, () => ({ x: R(0, W), y: R(0, H), s: R(11, 30), vy: -R(8, 22), vx: R(-4, 4), a: R(.45, .95), ph: R(0, 6.28), sp: R(.5, 1.3) }));
         }
         function gem(g, t) {
             const k = Math.max(.28, Math.abs(Math.cos(t * g.sp + g.ph)));
@@ -6350,7 +6377,7 @@
             const path = (names) => { ctx.beginPath(); names.forEach((n, i) => { const [x, y] = pt(n); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.closePath(); };
             const gr = ctx.createLinearGradient(0, -s * .55, 0, s);
             gr.addColorStop(0, 'rgba(150,205,255,' + (.42 * g.a) + ')'); gr.addColorStop(1, 'rgba(25,75,235,' + (.14 * g.a) + ')');
-            ctx.shadowColor = 'rgba(59,130,246,.85)'; ctx.shadowBlur = 14;
+            ctx.shadowBlur = 0;
             path(['A', 'B', 'C', 'D', 'E']); ctx.fillStyle = gr; ctx.fill();
             ctx.shadowBlur = 0;
             ctx.strokeStyle = 'rgba(120,190,255,' + g.a + ')'; ctx.lineWidth = 1.1; ctx.lineJoin = 'round';
@@ -6369,6 +6396,7 @@
         }
         function frame(ts) {
             requestAnimationFrame(frame);
+            if (ts - (window._ltF || 0) < 32) return; window._ltF = ts;
             const auth = document.getElementById('auth-screen');
             const visible = auth && auth.style.display !== 'none' && !document.hidden;
             if (!visible) { if (cv.style.display !== 'none') cv.style.display = 'none'; last = 0; return; }
@@ -6525,10 +6553,11 @@ async function confirmarEnvioUSDTDep(){
    {id:'tema',k:['tema','modo claro','modo oscuro','oscuro','claro','apariencia','color'],a:'Cambia entre modo claro y oscuro en <b>Perfil → Apariencia</b>.',acts:[['Ir a Perfil','go:perfil']]},
    {id:'transferir',k:['transferir','enviar saldo','mandar saldo','pasar saldo'],a:'<b>Transferir saldo</b> a otro usuario: <b>Perfil → Transferir</b>. Escribes su usuario o correo, la moneda, el monto y tu contraseña.',acts:[['Ir a Perfil','go:perfil']]},
    {id:'opinion',k:['opinion','reseña','resena','comentario','calificar'],a:'Las opiniones de clientes están en Inicio (<b>Ver más</b>). Ahí mismo puedes dejar la tuya con estrellas y, si quieres, una foto.'},
+   {id:'ayuda',k:['ayuda en cada','activar ayuda','ayuda en pantalla','guiame en cada','repetir ayuda'],a:'Puedo <b>guiarte en cada pantalla</b>: cuando entres a un botón te muestro dónde escribir el ID, el monto y qué tocar. Puedes activarlo o apagarlo cuando quieras.',acts:[['Activar ayuda','ayuda_on'],['Apagar ayuda','ayuda_off']]},
    {id:'soporte',k:['soporte','humano','whatsapp','lester','hablar','contacto','problema','ayuda urgente'],a:'Puedes hablar directamente con Lester por WhatsApp. Cuéntale tu usuario y el detalle de tu pedido.',acts:[['Abrir WhatsApp','wa']]},
    {id:'seguridad',k:['seguro','confiable','estafa','segur'],a:'Los pagos USDT se verifican <b>en la blockchain</b> y solo se acreditan si llegaron a la wallet oficial. Nunca compartas tu contraseña ni envíes dinero a otra dirección distinta a la que muestra la página.'}
   ];
-  var CHIPS=[['Guía paso a paso','guia'],['Recargar Free Fire','ff'],['Depositar USDT','usdt'],['Mis pedidos','pedidos'],['Referidos','ref'],['Hablar con Lester','soporte']];
+  var CHIPS=[['Guía paso a paso','guia'],['Recargar Free Fire','ff'],['Depositar USDT','usdt'],['Mis pedidos','pedidos'],['Ayuda en cada pantalla','ayuda'],['Referidos','ref'],['Hablar con Lester','soporte']];
   function norm(x){return String(x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
   function hora(){var d=new Date();return d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');}
   var body,chips,inp,abierto=false,saludado=false;
@@ -6562,6 +6591,8 @@ async function confirmarEnvioUSDTDep(){
   function accion(a){
     if(a==='guia'){ cerrar(); setTimeout(function(){window.iniciarGuiaLT(false);},350); }
     else if(a==='wa'){ abrirWhatsAppReal('normal'); }
+    else if(a==='ayuda_on'){ window.ltAyuda(true); cerrar(); mostrarNotificacion('Ayuda activada: IA LT te guiará en cada pantalla'); }
+    else if(a==='ayuda_off'){ window.ltAyuda(false); mostrarNotificacion('Ayuda apagada'); }
     else if(a.indexOf('go:')===0){ ir(a.slice(3)); }
   }
   function enviar(txt){ txt=(txt||'').trim(); if(!txt) return; add(esc(txt),'me'); inp.value=''; responder(txt); }
@@ -6606,7 +6637,7 @@ async function confirmarEnvioUSDTDep(){
    {t:'Soporte con IA LT',x:'Este botón abre el soporte. Elige IA LT para preguntarme lo que quieras o habla con Lester por WhatsApp.',sel:'#floating-bot-soporte'},
    {t:'¡Todo listo!',x:'Ya conoces lo principal. Si te pierdes, abre el soporte y pídeme la guía otra vez. ¡Buenas recargas!',sel:null}
   ];
-  var i=0,on=false,box,spot,tip,prog;
+  var i=0,on=false,esAuto=false,box,spot,tip,prog;
   function mk(){
     if(box) return;
     box=document.createElement('div'); box.className='lt-tour';
@@ -6641,15 +6672,75 @@ async function confirmarEnvioUSDTDep(){
     }
   }
   function fin(){
-    on=false; if(box) box.classList.remove('on');
+    on=false; if(box) box.classList.remove('on'); if(esAuto){ esAuto=false; try{window.ltAyuda(true);}catch(e){} }
     try{ localStorage.setItem('lt_guia_'+(usuarioActual?usuarioActual.correo.toLowerCase():'x'),'1'); }catch(e){}
     try{ cambiarSeccion('inicio',document.getElementById('nav-btn-inicio')); }catch(e){}
   }
   window.iniciarGuiaLT=function(auto){
-    if(on) return; mk(); on=true; box.classList.add('on'); paso(0);
+    if(on) return; esAuto=!!auto; mk(); on=true; box.classList.add('on'); paso(0);
   };
 })();
 
+
+/* ================= Más fluido: navegación sin pantalla de carga ================= */
+function cambiarSeccion(seccion, elemento){
+  mostrarVista('seccion-'+seccion);
+  seccionActual=seccion;
+  if(elemento){ document.querySelectorAll('.nav-item').forEach(function(i){i.classList.remove('active');}); elemento.classList.add('active'); }
+  if(seccion==='perfil'){ cargarDatosPerfilEnInputs(); verificarAccesoCEO(); }
+  if(seccion==='ordenes') renderizarOrdenes();
+  if(seccion==='referidos') actualizarPerfilUI();
+  if(seccion==='wallet'){ renderizarWalletCards(); renderizarOrdenes(); }
+  if(seccion==='inicio'){ actualizarEstadisticasInicio(); aplicarConfiguracionVisual(); }
+}
+function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarConfiguracionVisual(); }
+
+/* ---- Botón flotante de soporte = icono de IA LT ---- */
+(function(){ var i=document.querySelector('#floating-bot-soporte img'); if(i){ i.src=LT_IA_AV; i.alt='IA LT'; } })();
+
+/* ================= Ayuda de IA LT en cada pantalla ================= */
+(function(){
+  var TIPS={
+   'seccion-juegos-selector':{sel:'#gx-grid',t:'Elige tu juego',x:'Toca Free Fire, Blood Strike o Roblox para ver sus ofertas.'},
+   'seccion-freefire':{sel:'#player-id-input',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Free Fire (solo números). Luego elige cómo pagar (USDT o Saldo) y toca el paquete que quieres.'},
+   'seccion-bloodstrike':{sel:'#player-id-input-bs',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Blood Strike (solo números). Luego elige cómo pagar y toca el paquete.'},
+   'seccion-roblox':{sel:'#player-id-input-rb',t:'Tu correo de Roblox',x:'Escribe aquí el correo que se te pide para canjear los Robux. Luego elige cómo pagar y toca el paquete.'},
+   'seccion-ordenes':{sel:'#pd-switch',t:'Tus pedidos',x:'Cambia entre Recargas y Depósitos. Amarillo = pendiente, verde = completado, rojo = cancelado.'},
+   'seccion-referidos':{sel:'#enlace-ref',t:'Tu enlace personal',x:'Copia o comparte este enlace. Con 10 amigos válidos ganas 110 diamantes.'},
+   'seccion-wallet':{sel:'#wallet-cards-container',t:'Tu Wallet',x:'Toca USDT para depositar de forma automática, o Saldo Móvil para depositar con comprobante.'},
+   'seccion-wallet-usdt':{sel:'#monto-usdt-auto',t:'¿Cuánto vas a depositar?',x:'Escribe el monto (mínimo 1.1) y toca GENERAR MI PAGO. Te daré el monto exacto a enviar.'},
+   'seccion-wallet-saldo':{sel:'#monto-deposito',t:'Depósito de Saldo Móvil',x:'Escribe el monto, el número con el que transferiste y sube la foto del comprobante.'},
+   'seccion-perfil':{sel:'.profile-header-card',t:'Tu perfil',x:'Aquí ves tus datos y tu código. Abajo cambias tus datos, contraseña, tema y transfieres saldo.'},
+   'sub-transferir':{sel:'#trans-destino',t:'Transferir saldo',x:'Escribe el usuario o correo de quien recibe, la moneda, el monto y tu contraseña.'},
+   'sub-password':{sel:'#p-act',t:'Cambiar contraseña',x:'Escribe tu contraseña actual y luego la nueva dos veces.'},
+   'seccion-opiniones':{sel:'#lista-opiniones-todas',t:'Opiniones',x:'Aquí ves lo que dicen otros clientes. Puedes dejar la tuya con estrellas.'}
+  };
+  var tipEl=null,hlEl=null,tmr;
+  function email(){ return (typeof usuarioActual!=='undefined'&&usuarioActual&&usuarioActual.correo)?usuarioActual.correo.toLowerCase():'x'; }
+  window.ltAyudaActiva=function(){ try{return localStorage.getItem('lt_ayuda_'+email())==='1';}catch(e){return false;} };
+  window.ltAyuda=function(on){
+    try{ localStorage.setItem('lt_ayuda_'+email(),on?'1':'0'); if(on) localStorage.removeItem('lt_vistos_'+email()); }catch(e){}
+    if(!on) cerrar();
+  };
+  function vistos(){ try{return JSON.parse(localStorage.getItem('lt_vistos_'+email())||'{}');}catch(e){return {};} }
+  function marcar(k){ var v=vistos(); v[k]=1; try{localStorage.setItem('lt_vistos_'+email(),JSON.stringify(v));}catch(e){} }
+  function cerrar(){ clearTimeout(tmr); if(tipEl){tipEl.remove();tipEl=null;} if(hlEl){hlEl.classList.remove('lt-hl');hlEl=null;} }
+  function mostrar(k,d){
+    if(!window.ltAyudaActiva()||vistos()[k]) return;
+    cerrar(); marcar(k);
+    tipEl=document.createElement('div'); tipEl.className='lt-tip';
+    tipEl.innerHTML='<div class="tp-top"><img src="'+LT_IA_AV+'" alt=""><h4>'+d.t+'</h4></div><p>'+d.x+'</p><div class="tp-btns"><button type="button" data-a="off">Apagar ayuda</button><button type="button" class="pri" data-a="ok">Entendido</button></div>';
+    tipEl.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; if(b.getAttribute('data-a')==='off'){ window.ltAyuda(false); mostrarNotificacion('Ayuda apagada. Puedes activarla otra vez desde IA LT.'); } else cerrar(); });
+    document.body.appendChild(tipEl);
+    var e=d.sel?document.querySelector(d.sel):null;
+    if(e&&e.offsetParent!==null){ hlEl=e; e.classList.add('lt-hl'); }
+    tmr=setTimeout(cerrar,20000);
+  }
+  var mv=mostrarVista;
+  mostrarVista=function(id){ mv(id); cerrar(); if(TIPS[id]) setTimeout(function(){ mostrar(id,TIPS[id]); },380); };
+  var mo=mostrarOrdenUSDT;
+  mostrarOrdenUSDT=function(o){ mo(o); setTimeout(function(){ mostrar('usdt-pago',{sel:'.ua-pago',t:'Envía este monto exacto',x:'Copia el monto y la dirección con los botones y paga por red BEP 20 desde tu wallet. Se acredita solo en segundos.'}); },380); };
+})();
 </script>
 </body>
 </html>
