@@ -1,9 +1,10 @@
-// Lester Tienda: API en Cloudflare Workers + D1  (versión 4: depósitos USDT automáticos)
+// Lester Tienda: API en Cloudflare Workers + D1  (versión 5: montos únicos mínimos + verificación de wallet)
 // - /api/state              -> igual que siempre (la tienda guarda y lee todo aquí)
 // - /api/usdt/orden         -> crea una orden de depósito con un monto único (ej. 10.0137)
 // - /api/usdt/revisar       -> mira la blockchain (BSC) y acredita el saldo si ya llegó el pago
 // - /api/usdt/cancelar      -> cancela una orden en espera
 // - /api/usdt/txid          -> verifica una transferencia por su TxID (plan B, instantáneo)
+// - /api/usdt/verificar     -> reporte manual: comprueba que el TxID llegó A TU wallet antes de aceptarlo
 // - cron (cada minuto)      -> revisa los pagos aunque el cliente haya cerrado la tienda
 // Todo gratis: usa nodos públicos de BSC (sin clave) y la base D1 que ya tienes.
 
@@ -244,14 +245,14 @@ async function rutaUsdt(req, env, ruta, url) {
     }
 
     const usados = new Set(abiertas.map((o) => o.monto_unico));
+    // Solo se suma de 0.0001 a 0.0009 (ej. 7 -> 7.0003). Nunca llega a 0.0010.
+    const libres = [1, 2, 3, 4, 5, 6, 7, 8, 9].filter((k) => !usados.has(((Math.round(monto * 10000) + k) / 10000).toFixed(4)));
     let unico = null;
-    for (let i = 0; i < 60 && !unico; i++) {
-      const k = 1 + Math.floor(Math.random() * 999); // +0.0001 a +0.0999
-      const cand = (Math.round(monto * 10000) + k) / 10000;
-      const txt = cand.toFixed(4);
-      if (!usados.has(txt)) unico = txt;
+    if (libres.length) {
+      const k = libres[Math.floor(Math.random() * libres.length)];
+      unico = ((Math.round(monto * 10000) + k) / 10000).toFixed(4);
     }
-    if (!unico) return json({ mensaje: 'Intenta de nuevo en unos segundos.' }, 503);
+    if (!unico) return json({ mensaje: 'Hay muchos pagos de ese monto ahora mismo. Prueba con otro monto o espera un minuto.' }, 503);
 
     let bloque = null;
     try { bloque = parseInt(await rpc('eth_blockNumber', []), 16); } catch (e) { /* se calcula luego */ }
@@ -262,6 +263,47 @@ async function rutaUsdt(req, env, ruta, url) {
     ).bind(id, correo, usuario.nombre || correo, monto, unico, ahora, bloque).run();
     const fila = await env.DB.prepare('SELECT * FROM pagos_usdt WHERE id = ?').bind(id).first();
     return json({ orden: vistaOrden(fila, env) });
+  }
+
+  // Reporte manual: confirma en la blockchain que el TxID llegó a TU wallet, en USDT BEP20, y lo reserva (1 sola vez)
+  if (ruta === '/api/usdt/verificar' && req.method === 'POST') {
+    let cuerpo; try { cuerpo = await req.json(); } catch (e) { return json({ mensaje: 'JSON no válido' }, 400); }
+    const txid = String(cuerpo.txid || '').trim().toLowerCase();
+    const correo = String(cuerpo.correo || '').toLowerCase().trim();
+    if (!/^0x[0-9a-f]{64}$/.test(txid)) return json({ resultado: 'invalido', mensaje: 'Ese ID no es válido (debe empezar con 0x y tener 66 caracteres).' }, 400);
+    if (!correoValido(correo)) return json({ resultado: 'invalido', mensaje: 'Correo no válido' }, 400);
+
+    const usada = await env.DB.prepare('SELECT id FROM pagos_usdt WHERE txid = ?').bind(txid).first();
+    if (usada) return json({ resultado: 'repetido', mensaje: 'Ese ID de transferencia ya fue usado.' });
+    const fs = await env.DB.prepare("SELECT v FROM kv WHERE k = 'solicitudes'").first();
+    if (fs && String(fs.v).toLowerCase().includes(txid)) return json({ resultado: 'repetido', mensaje: 'Ese ID de transferencia ya fue reportado.' });
+
+    let recibo;
+    try { recibo = await rpc('eth_getTransactionReceipt', [txid]); }
+    catch (e) { return json({ resultado: 'error_red', mensaje: 'No pude consultar la red ahora. Intenta de nuevo.' }, 503); }
+    if (!recibo) return json({ resultado: 'pendiente', mensaje: 'La transferencia aún no aparece en la red. Espera un momento.' });
+    if (recibo.status !== '0x1') return json({ resultado: 'fallida', mensaje: 'Esa transferencia falló en la red.' });
+
+    const mia = relleno(direccionDe(env));
+    let cant = null;
+    for (const lg of recibo.logs || []) {
+      if (String(lg.address).toLowerCase() !== CONTRATO_USDT) continue;                 // solo USDT BEP20
+      if (!lg.topics || lg.topics[0] !== TOPIC_TRANSFER) continue;
+      if (String(lg.topics[2]).toLowerCase() !== mia) continue;                          // solo si el destino es TU wallet
+      cant = (cant || 0n) + BigInt(lg.data);
+    }
+    if (cant === null) return json({ resultado: 'otra_wallet', mensaje: 'Esa transferencia NO llegó a la wallet de Lester Tienda (o no es USDT BEP20).' });
+
+    const monto = Math.floor(Number(cant / (10n ** 14n)) / 100) / 100; // a 2 decimales hacia abajo
+    if (monto < MONTO_MIN) return json({ resultado: 'monto_bajo', mensaje: 'El monto recibido es menor al mínimo (' + MONTO_MIN + ' USDT).' });
+    const cabeza = parseInt(await rpc('eth_blockNumber', []), 16);
+    if (cabeza - parseInt(recibo.blockNumber, 16) < CONFIRMACIONES) return json({ resultado: 'pendiente', mensaje: 'Casi listo: esperando confirmaciones de la red.' });
+
+    try {
+      await env.DB.prepare("INSERT INTO pagos_usdt (id, correo, usuario, monto_base, monto_unico, estado, creado, txid, recibido) VALUES (?, ?, ?, ?, ?, 'reportado', ?, ?, ?)")
+        .bind(crypto.randomUUID().replace(/-/g, '').slice(0, 16), correo, correo, monto, monto.toFixed(4), Date.now(), txid, cant.toString()).run();
+    } catch (e) { return json({ resultado: 'repetido', mensaje: 'Ese ID de transferencia ya fue usado.' }); }
+    return json({ resultado: 'valido', monto, txid });
   }
 
   if (ruta === '/api/usdt/cancelar' && req.method === 'POST') {
