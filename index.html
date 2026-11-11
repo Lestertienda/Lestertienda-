@@ -7046,49 +7046,36 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
 </script>
 
 <script>
-/* ===== G2Bulk: tarjeta de ID 3D, botón Pegar, nombre de cuenta y envío automático ===== */
+/* ===== G2Bulk: verificación de ID / correo y envío automático ===== */
 (function () {
   var css = [
-    '.g2c{position:relative;margin:2px 0 8px;padding:14px;border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.015)),var(--bg-card);border:1px solid rgba(255,255,255,.10);box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 -3px 0 rgba(0,0,0,.35) inset,0 18px 30px -12px rgba(0,0,0,.7),0 5px 0 rgba(0,0,0,.28);}',
-    '.g2c-row{display:flex;align-items:center;gap:10px;}',
-    '.g2c-badge{width:46px;height:46px;flex:none;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#3b82ff,#00d0ff);box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 -4px 0 rgba(0,0,0,.25) inset,0 10px 18px -4px rgba(0,140,255,.6);}',
-    '.g2c-badge svg{width:23px;height:23px;fill:#fff;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3));}',
-    '.g2c-field{flex:1;min-width:0;}',
-    '.g2c-field .form-control{width:100%;height:48px;border-radius:14px;font-weight:800;font-size:1.02rem;letter-spacing:.6px;box-shadow:0 4px 10px rgba(0,0,0,.45) inset,0 1px 0 rgba(255,255,255,.09);}',
-    '.g2c-paste{flex:none;height:48px;padding:0 14px;border:0;border-radius:14px;display:flex;align-items:center;gap:6px;font-weight:900;font-size:.8rem;letter-spacing:.4px;color:#04202a;background:linear-gradient(180deg,#67f3ff,#00b9da);box-shadow:0 1px 0 rgba(255,255,255,.65) inset,0 -3px 0 rgba(0,0,0,.2) inset,0 5px 0 #007c94,0 12px 18px rgba(0,200,230,.35);cursor:pointer;transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent;}',
-    '.g2c-paste svg{width:17px;height:17px;fill:#04202a;}',
-    '.g2c-paste:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(255,255,255,.65) inset,0 -3px 0 rgba(0,0,0,.2) inset,0 1px 0 #007c94,0 4px 8px rgba(0,200,230,.3);}',
-    '.g2c-st{display:none;margin-top:12px;align-items:center;gap:12px;padding:11px 13px;border-radius:15px;animation:g2in .28s ease both;}',
+    '.g2c{margin:2px 0 8px;}',
+    '.g2c .form-control{width:100%;height:50px;border-radius:12px;font-weight:600;font-size:1rem;letter-spacing:.3px;}',
+    '.g2c-st{display:none;margin-top:10px;align-items:center;gap:11px;padding:11px 14px;border-radius:12px;border:1px solid transparent;animation:g2in .2s ease both;}',
     '.g2c-st.on{display:flex;}',
-    '@keyframes g2in{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}',
-    '.g2c-st .ico{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:1.05rem;color:#fff;}',
-    '.g2c-st .tx{min-width:0;line-height:1.25;}',
-    '.g2c-st .tx small{display:block;font-size:.66rem;font-weight:800;letter-spacing:1px;opacity:.85;}',
-    '.g2c-st .tx b{display:block;font-size:1rem;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
-    '.g2c-st.wait{background:rgba(148,163,184,.12);color:var(--text-muted);box-shadow:0 1px 0 rgba(255,255,255,.08) inset;}',
-    '.g2c-st.wait .ico{background:transparent;}',
-    '.g2c-st.wait .ico i{width:22px;height:22px;border-radius:50%;border:3px solid rgba(148,163,184,.35);border-top-color:#00d0ff;animation:g2sp .7s linear infinite;}',
+    '@keyframes g2in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}',
+    '.g2c-st .ico{width:24px;height:24px;flex:none;border-radius:50%;display:grid;place-items:center;}',
+    '.g2c-st .ico svg{width:14px;height:14px;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}',
+    '.g2c-st .tx{min-width:0;line-height:1.3;}',
+    '.g2c-st .tx small{display:block;font-size:.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;opacity:.85;}',
+    '.g2c-st .tx b{display:block;font-size:.98rem;font-weight:700;color:var(--text-main);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+    '.g2c-st.wait{background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.25);color:var(--text-muted);}',
+    '.g2c-st.wait .ico i{width:18px;height:18px;border-radius:50%;border:2px solid rgba(148,163,184,.35);border-top-color:var(--accent-glow);animation:g2sp .7s linear infinite;}',
     '@keyframes g2sp{to{transform:rotate(360deg)}}',
-    '.g2c-st.ok{background:linear-gradient(160deg,rgba(34,197,94,.20),rgba(34,197,94,.06));color:#4ade80;box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 -3px 0 rgba(0,0,0,.18) inset,0 8px 16px -8px rgba(34,197,94,.6);border:1px solid rgba(34,197,94,.45);}',
-    '.g2c-st.ok .ico{background:linear-gradient(145deg,#22c55e,#15803d);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 -3px 0 rgba(0,0,0,.22) inset,0 6px 12px -3px rgba(34,197,94,.6);}',
-    '.g2c-st.ok .tx b{color:var(--text-main);}',
-    '.g2c-st.bad{background:linear-gradient(160deg,rgba(239,68,68,.20),rgba(239,68,68,.06));color:#f87171;box-shadow:0 1px 0 rgba(255,255,255,.1) inset,0 -3px 0 rgba(0,0,0,.18) inset,0 8px 16px -8px rgba(239,68,68,.6);border:1px solid rgba(239,68,68,.45);}',
-    '.g2c-st.bad .ico{background:linear-gradient(145deg,#ef4444,#b91c1c);box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 -3px 0 rgba(0,0,0,.22) inset,0 6px 12px -3px rgba(239,68,68,.6);}',
-    '.g2c-st.bad .tx b{color:var(--text-main);font-size:.92rem;white-space:normal;}',
-    ':root[data-theme="light"] .g2c{background:linear-gradient(160deg,#ffffff,#eaf0ff);border-color:#c4d0ec;box-shadow:0 1px 0 #fff inset,0 -3px 0 rgba(30,60,140,.10) inset,0 16px 26px -14px rgba(30,60,140,.45),0 4px 0 rgba(30,60,140,.12);}',
-    ':root[data-theme="light"] .g2c-field .form-control{box-shadow:0 3px 8px rgba(30,60,140,.14) inset;}',
+    '.g2c-st.ok{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.40);color:#22c55e;}',
+    '.g2c-st.ok .ico{background:#22c55e;}',
+    '.g2c-st.bad{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.40);color:#ef4444;}',
+    '.g2c-st.bad .ico{background:#ef4444;}',
+    '.g2c-st.bad .tx b{font-size:.92rem;white-space:normal;font-weight:600;}',
     ':root[data-theme="light"] .g2c-st.ok{color:#15803d;} :root[data-theme="light"] .g2c-st.bad{color:#b91c1c;}'
   ].join('');
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
-  var ICO_ID = 'M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm5 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM5.5 16h7v-.5c0-1.4-2.3-2-3.5-2s-3.5.6-3.5 2V16zM14 9h6v1.5h-6V9zm0 3h6v1.5h-6V12z';
-  var ICO_MAIL = 'M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z';
-  var ICO_PASTE = 'M19 2h-4.18C14.4.84 13.3 0 12 0S9.6.84 9.18 2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 18H5V4h2v3h10V4h2v16z';
+  var CHECK = '<svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var CROSS = '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>';
   var CAMPOS = [['player-id-input', 'freefire', 0], ['player-id-input-bs', 'blood', 0], ['player-id-input-cd', 'codm', 0], ['player-id-input-rb', 'roblox', 1]];
 
   function url() { return (typeof WORKER_URL !== 'undefined' ? WORKER_URL : '').replace(/\/$/, ''); }
-  function aviso(m) { try { mostrarNotificacion(m, 'warn'); } catch (e) {} }
-  function svg(d) { return '<svg viewBox="0 0 24 24"><path d="' + d + '"/></svg>'; }
   window.g2IdInvalido = function (inp) { return !!inp && inp.dataset.g2 === 'invalido' && inp.dataset.g2id === inp.value.trim(); };
   window.g2Pedir = function (id, correo) {
     return fetch(url() + '/api/g2/pedir', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id, correo: correo }) })
@@ -7098,39 +7085,21 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
   function montar(idInput, juego, esCorreo) {
     var inp = document.getElementById(idInput); if (!inp || inp.dataset.g2on) return;
     inp.dataset.g2on = '1';
-    var viejo = inp.closest('.form-group') || inp.parentElement;
-    var card = document.createElement('div'); card.className = 'g2c';
-    var fila = document.createElement('div'); fila.className = 'g2c-row';
-    var badge = document.createElement('div'); badge.className = 'g2c-badge'; badge.innerHTML = svg(esCorreo ? ICO_MAIL : ICO_ID);
-    var campo = document.createElement('div'); campo.className = 'g2c-field';
-    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'g2c-paste'; btn.innerHTML = svg(ICO_PASTE) + '<span>Pegar</span>';
+    var grupo = inp.closest('.form-group') || inp.parentElement;
+    grupo.classList.add('g2c');
     var est = document.createElement('div'); est.className = 'g2c-st';
-    viejo.parentNode.insertBefore(card, viejo);
-    campo.appendChild(inp); fila.appendChild(badge); fila.appendChild(campo); fila.appendChild(btn);
-    card.appendChild(fila); card.appendChild(est);
-    viejo.style.display = 'none';
+    grupo.appendChild(est);
 
     function ocultar() { est.className = 'g2c-st'; est.innerHTML = ''; }
     function mostrar(tipo, ico, etiqueta, texto) {
       est.className = 'g2c-st on ' + tipo; est.innerHTML = '';
       var i = document.createElement('div'); i.className = 'ico';
-      if (ico === 'spin') i.appendChild(document.createElement('i')); else i.textContent = ico;
+      if (ico === 'spin') i.appendChild(document.createElement('i')); else i.innerHTML = ico;
       var t = document.createElement('div'); t.className = 'tx';
       if (etiqueta) { var s = document.createElement('small'); s.textContent = etiqueta; t.appendChild(s); }
       var b = document.createElement('b'); b.textContent = texto; t.appendChild(b);
       est.appendChild(i); est.appendChild(t);
     }
-
-    btn.addEventListener('click', function () {
-      if (!navigator.clipboard || !navigator.clipboard.readText) { aviso('Tu navegador no permite pegar con el botón. Mantén presionado el campo y elige Pegar'); inp.focus(); return; }
-      navigator.clipboard.readText().then(function (t) {
-        t = String(t || '').trim();
-        if (esCorreo) t = t.toLowerCase().replace(/\s+/g, '');
-        else { var m = t.match(/\d{5,}/); t = m ? m[0] : t.replace(/\D/g, ''); }
-        if (!t) { aviso(esCorreo ? 'No hay un correo copiado' : 'No hay un ID copiado'); return; }
-        inp.value = t; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.focus();
-      }).catch(function () { aviso('Permite el acceso al portapapeles para pegar, o mantén presionado el campo'); inp.focus(); });
-    });
 
     var timer = null;
     inp.addEventListener('input', function () {
@@ -7141,8 +7110,8 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
         timer = setTimeout(function () {
           if (inp.value.trim() !== v) return;
           var ok = typeof correoValido === 'function' ? correoValido(v) : /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-          if (ok) { inp.classList.add('rb-ok'); mostrar('ok', '✔', 'CORREO VÁLIDO', v); }
-          else if (v.indexOf('@') > 0 && v.length > 8) { inp.classList.add('rb-bad'); mostrar('bad', '✕', '', 'Escribe un correo real, por ejemplo tucorreo@gmail.com'); }
+          if (ok) { inp.classList.add('rb-ok'); mostrar('ok', CHECK, 'Correo válido', v); }
+          else if (v.indexOf('@') > 0 && v.length > 8) { inp.classList.add('rb-bad'); mostrar('bad', CROSS, '', 'Escribe un correo válido, por ejemplo tucorreo@gmail.com'); }
           else ocultar();
         }, 400);
         return;
@@ -7154,14 +7123,9 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
           .then(function (r) { return r.json(); })
           .then(function (d) {
             if (inp.value.trim() !== v) return;
-            if (d.estado === 'valido') {
-              inp.dataset.g2 = 'valido'; inp.dataset.g2id = v; inp.classList.add('rb-ok');
-              var ini = Array.from(String(d.nombre || '?').trim())[0] || '?';
-              mostrar('ok', ini.toUpperCase(), 'CUENTA VERIFICADA', d.nombre || 'Cuenta encontrada');
-            } else if (d.estado === 'invalido') {
-              inp.dataset.g2 = 'invalido'; inp.dataset.g2id = v; inp.classList.add('rb-bad');
-              mostrar('bad', '✕', '', 'Por favor introduce un ID válido');
-            } else ocultar();
+            if (d.estado === 'valido') { inp.dataset.g2 = 'valido'; inp.dataset.g2id = v; inp.classList.add('rb-ok'); mostrar('ok', CHECK, 'Cuenta verificada', d.nombre || 'Cuenta encontrada'); }
+            else if (d.estado === 'invalido') { inp.dataset.g2 = 'invalido'; inp.dataset.g2id = v; inp.classList.add('rb-bad'); mostrar('bad', CROSS, '', 'Por favor introduce un ID válido'); }
+            else ocultar();
           }).catch(function () { if (inp.value.trim() === v) ocultar(); });
       }, 500);
     });
