@@ -4522,6 +4522,7 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
                 if (!correoValido(playerId)) { pedirIdJugador(playerIdInput, "Escribe un correo real, por ejemplo tucorreo@gmail.com"); return; }
             } else if (!playerId) { pedirIdJugador(playerIdInput, "Falta tu ID de " + nombreJ + ". Escríbelo para confirmar la recarga"); return; }
             else if (playerId.length < 6) { pedirIdJugador(playerIdInput, "Tu ID de " + nombreJ + " está incompleto, revísalo"); return; }
+            if (typeof g2IdInvalido === 'function' && g2IdInvalido(playerIdInput)) { pedirIdJugador(playerIdInput, "Por favor introduce un ID válido"); return; }
             if (!ofertaSeleccionada) { mostrarNotificacion(juegoActual === 'roblox' ? "Selecciona un paquete de Robux" : (juegoActual === 'codm' ? "Selecciona un paquete de CP" : juegoActual === 'blood' ? "Selecciona un paquete de BC" : "Selecciona un paquete de diamantes")); return; }
 
             const pqSel = listaPaquetes(juegoActual).find(x => x.id === ofertaSeleccionada.paqueteId);
@@ -4587,6 +4588,7 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
                     return;
                 }
 
+                try { g2Pedir(miId, usuarioActual.correo); } catch (e) {}
                 ofertaSeleccionada = null;
                 playerIdInput.value = ''; playerIdInput.classList.remove('rb-ok', 'rb-bad');
                 mostrarNotificacion("Solicitud de recarga enviada correctamente");
@@ -7040,6 +7042,47 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
   document.addEventListener('scroll', par, { passive: true, capture: true });
   document.addEventListener('visibilitychange', function () { document.body.classList.toggle('lt-pausa', document.hidden); });
   document.addEventListener('input', function (e) { var x = e.target; if (x && x.id && x.id.indexOf('player-id-input') === 0 && x.id !== 'player-id-input-rb') x.classList.remove('rb-bad'); });
+})();
+</script>
+
+<script>
+/* ===== G2Bulk: nombre de la cuenta + envío automático ===== */
+(function () {
+  var CAMPOS = [['player-id-input', 'freefire'], ['player-id-input-bs', 'blood'], ['player-id-input-cd', 'codm']];
+  function url() { return (typeof WORKER_URL !== 'undefined' ? WORKER_URL : '').replace(/\/$/, ''); }
+  window.g2IdInvalido = function (inp) { return !!inp && inp.dataset.g2 === 'invalido' && inp.dataset.g2id === inp.value.trim(); };
+  window.g2Pedir = function (id, correo) {
+    return fetch(url() + '/api/g2/pedir', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id, correo: correo }) })
+      .then(function (r) { return r.json(); }).catch(function () {});
+  };
+  function montar(idInput, juego) {
+    var inp = document.getElementById(idInput); if (!inp || inp.dataset.g2on) return;
+    inp.dataset.g2on = '1';
+    var msg = document.createElement('div');
+    msg.style.cssText = 'font-size:13px;font-weight:600;margin:6px 2px 0;min-height:0;';
+    inp.insertAdjacentElement('afterend', msg);
+    var timer = null;
+    function poner(txt, color) { msg.textContent = txt; msg.style.color = color; }
+    inp.addEventListener('input', function () {
+      clearTimeout(timer); inp.dataset.g2 = ''; inp.classList.remove('rb-ok', 'rb-bad');
+      var v = inp.value.trim();
+      if (v.length < 6) { poner('', ''); return; }
+      poner('Verificando ID…', '#9ca3af');
+      timer = setTimeout(function () {
+        fetch(url() + '/api/g2/validar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ juego: juego, id: v }) })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (inp.value.trim() !== v) return;
+            if (d.estado === 'valido') { inp.dataset.g2 = 'valido'; inp.dataset.g2id = v; inp.classList.add('rb-ok'); poner('✔ Cuenta: ' + d.nombre, '#22c55e'); }
+            else if (d.estado === 'invalido') { inp.dataset.g2 = 'invalido'; inp.dataset.g2id = v; inp.classList.add('rb-bad'); poner('Por favor introduce un ID válido', '#ef4444'); }
+            else poner('', '');
+          }).catch(function () { if (inp.value.trim() === v) poner('', ''); });
+      }, 500);
+    });
+  }
+  function iniciar() { CAMPOS.forEach(function (c) { montar(c[0], c[1]); }); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+  setTimeout(iniciar, 1500);
 })();
 </script>
 </body>
