@@ -904,12 +904,12 @@
         .navbar {
             background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box, linear-gradient(120deg, #2f6bff, #1aa6c8, #16c784, #1aa6c8, #2f6bff) border-box;
             background-size: 100% 100%, 200% 100%;
-            animation: navDown .75s cubic-bezier(.2,.9,.3,1.15) backwards, borderFlow 7s linear infinite;
+            animation: navDown .75s cubic-bezier(.2,.9,.3,1.15) backwards, borderFlow 7s steps(70) infinite;
         }
         .bottom-nav {
             background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box, linear-gradient(120deg, #2f6bff, #1aa6c8, #16c784, #1aa6c8, #2f6bff) border-box;
             background-size: 100% 100%, 200% 100%;
-            animation: navUp .75s cubic-bezier(.2,.9,.3,1.15) .15s backwards, borderFlow 7s linear infinite;
+            animation: navUp .75s cubic-bezier(.2,.9,.3,1.15) .15s backwards, borderFlow 7s steps(70) infinite;
         }
         @keyframes navDown { from { opacity: 0; transform: translateY(-34px) scale(.96); } to { opacity: 1; transform: none; } }
         @keyframes navUp { from { opacity: 0; transform: translateY(40px) scale(.96); } to { opacity: 1; transform: none; } }
@@ -917,7 +917,7 @@
 
         .nav-brand-logo {
             background: linear-gradient(#000, #000) padding-box, conic-gradient(from var(--ang), #2f6bff, #16c784, #1aa6c8, #2f6bff) border-box;
-            animation: ringSpin 4.5s linear infinite, logoPulse 3s ease-in-out infinite, popIn .8s cubic-bezier(.2,1.4,.4,1) .25s backwards;
+            animation: ringSpin 4.5s linear infinite, popIn .8s cubic-bezier(.2,1.4,.4,1) .25s backwards;
         }
         @keyframes ringSpin { to { --ang: 360deg; } }
         @keyframes logoPulse { 0%, 100% { box-shadow: 0 0 8px rgba(26,166,200,.30); } 50% { box-shadow: 0 0 20px rgba(33,209,154,.60); } }
@@ -1535,7 +1535,79 @@ html { -webkit-tap-highlight-color: transparent; }
 button, a, .diamond-card, .gx-card, .nav-item, .pay-method-pill-btn, .menu-row, .adm-btn, .ceo-btn, .btn-main { touch-action: manipulation; }
 header.navbar, .bottom-nav { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 .order-card-pro { content-visibility: auto; contain-intrinsic-size: auto 130px; }
-body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pausa *, body.lt-pausa *::before, body.lt-pausa *::after { animation-play-state: paused !important; }
+body.lt-pausa *, body.lt-pausa *::before, body.lt-pausa *::after { animation-play-state: paused !important; }
+/* ================= v19: barra de título, AGOTADO por juego, chat IA, fluidez ================= */
+/* --- barra de título con flecha (todas las pantallas internas) --- */
+.back-row { margin-bottom: 1rem; }
+.back-btn.bk-bar { --bk: #2f8bff; --bk2: #16c784; position: relative; display: flex; align-items: center; gap: 12px; width: 100%; min-height: 62px; padding: 8px 20px 8px 9px;
+  border-radius: 999px; overflow: hidden; background: linear-gradient(180deg, #0c1018, #07090e) !important; border: 1.5px solid rgba(47,139,255,.55) !important; color: #fff; text-align: left;
+  box-shadow: 0 0 18px rgba(47,139,255,.28), inset 0 0 22px rgba(0,110,255,.08); transform: none !important; -webkit-tap-highlight-color: transparent; }
+.back-btn.bk-bar:active { transform: scale(.985) !important; }
+.back-btn.bk-bar .bk-ar { position: relative; z-index: 2; flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: linear-gradient(160deg, #171c27, #0d1119); border: 1px solid rgba(255,255,255,.14); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 3px 8px rgba(0,0,0,.45); }
+.back-btn.bk-bar .bk-ar svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.back-btn.bk-bar .bk-t { position: relative; z-index: 2; flex: 1; min-width: 0; font-family: 'Barlow Condensed', system-ui, sans-serif; font-weight: 900; font-size: 1.55rem; line-height: 1.05; letter-spacing: .3px;
+  color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.back-btn.bk-bar::before, .back-btn.bk-bar::after { content: ""; position: absolute; height: 2px; width: 28%; border-radius: 2px; pointer-events: none; z-index: 1;
+  background: linear-gradient(90deg, transparent, var(--bk), #fff 70%, transparent); box-shadow: 0 0 10px var(--bk); will-change: transform; }
+.back-btn.bk-bar::before { top: 0; left: 0; animation: bkRunA 5.5s linear infinite; }
+.back-btn.bk-bar::after { bottom: 0; left: 0; animation: bkRunB 5.5s linear infinite; }
+@keyframes bkRunA { from { transform: translateX(-100%); } to { transform: translateX(360%); } }
+@keyframes bkRunB { from { transform: translateX(360%); } to { transform: translateX(-100%); } }
+.back-btn.bk-bar.bk-red { --bk: #ff4d4d; border-color: rgba(255,77,77,.6) !important; box-shadow: 0 0 18px rgba(255,60,60,.28); }
+.bk-hid { display: none !important; }
+:root[data-theme="light"] .back-btn.bk-bar { background: linear-gradient(180deg, #ffffff, #eef3ff) !important; border-color: rgba(36,87,255,.5) !important; box-shadow: 0 6px 18px rgba(36,87,255,.18); }
+:root[data-theme="light"] .back-btn.bk-bar .bk-t { color: #0b1530; }
+:root[data-theme="light"] .back-btn.bk-bar .bk-ar { background: linear-gradient(160deg, #fff, #e6edff); border-color: rgba(36,87,255,.25); box-shadow: 0 3px 8px rgba(36,87,255,.18); }
+:root[data-theme="light"] .back-btn.bk-bar .bk-ar svg { stroke: #1d3fb8; }
+:root[data-theme="light"] .back-btn.bk-bar { --bk: #2457ff; }
+
+/* --- juego AGOTADO: oscuro + etiqueta roja de esquina a esquina del mismo lado --- */
+.gx-card.gx-ago { cursor: not-allowed; }
+.gx-card.gx-ago .gx-img > img, .gx-card.gx-ago .gx-inicial { filter: grayscale(1) brightness(.5) !important; }
+.gx-card.gx-ago .gx-img::after { content: ""; position: absolute; inset: 0; z-index: 2; background: rgba(2,4,10,.5); pointer-events: none; }
+.gx-card.gx-ago .gx-foot { opacity: .6; }
+.gx-card.gx-ago .gx-badge, .gx-card.gx-ago .gx-soon { display: none !important; }
+.gx-ago-band { position: absolute; z-index: 7; left: 0; top: 0; bottom: 0; width: 28px; display: flex; align-items: center; justify-content: center; pointer-events: none;
+  background: linear-gradient(90deg, #ff4b4b, #c4101c); box-shadow: 5px 0 16px rgba(220,30,40,.6), inset -1px 0 0 rgba(255,255,255,.35); }
+.gx-ago-band b { writing-mode: vertical-rl; transform: rotate(180deg); font-size: .66rem; font-weight: 900; letter-spacing: 2.6px; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.5); white-space: nowrap; }
+.ceo-ago-on { border-color: #ef4444 !important; color: #ef4444 !important; }
+
+/* --- Chat IA LT: más ligero y con sugerencias dentro del conversación --- */
+.lt-ia.open { animation: ltIaIn2 .2s ease-out; }
+@keyframes ltIaIn2 { from { opacity: 0; } to { opacity: 1; } }
+.lt-msg { animation: ltMsg2 .18s ease-out; box-shadow: none; }
+@keyframes ltMsg2 { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.lt-msg.bot { box-shadow: none; }
+.lt-ia-head::after { animation: none; }
+.lt-ia-body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scroll-behavior: auto; }
+.lt-ia-chips { display: none !important; }
+.lt-sug { align-self: flex-start; display: flex; flex-wrap: wrap; gap: 7px; max-width: 94%; padding-left: 2px; animation: ltMsg2 .18s ease-out; }
+.lt-sug .lt-chip { white-space: normal; text-align: left; line-height: 1.25; }
+.lt-sug-t { width: 100%; font-size: .66rem; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; color: #6fa8e6; margin: 2px 0 0 2px; }
+:root[data-theme="light"] .lt-sug-t { color: #4a69b8; }
+
+/* animaciones de brillo: de 'left' (layout cada frame) a 'transform' (GPU) */
+.btn-main[style*="background"]::after { left: 0; }
+.header-wallet-pill::after { left: 0; }
+.rv-card::after { left: 0; }
+@keyframes btnShine { 0%, 55% { transform: translateX(-184%) skewX(-22deg); } 100% { transform: translateX(355%) skewX(-22deg); } }
+@keyframes pillShine { 0%, 60% { transform: translateX(-200%) skewX(-20deg); } 100% { transform: translateX(350%) skewX(-20deg); } }
+@keyframes rvBrillo { 0%, 60% { transform: translateX(-178%) skewX(-20deg); } 100% { transform: translateX(311%) skewX(-20deg); } }
+.bottom-nav::before { animation: none !important; }
+.nav-item.active svg { animation: none !important; }
+.nav-brand-title .brand-tienda, .auth-container .brand-logo-text .brand-tienda { animation-timing-function: steps(60) !important; }
+.navbar::after, .bottom-nav::after { animation-timing-function: steps(100) !important; }
+body.lt-ia-open > *:not(#lt-ia):not(#notification-toast):not(script):not(style) { visibility: hidden !important; }
+
+/* --- fluidez: el borde LED solo corre en las tarjetas que se ven y a pasos --- */
+.sub-card::after, .order-card-pro::after, .live-history-card::after, .menu-list::after, .profile-header-card::after, .shine-card::after, .ua-box::after, .ua-pago::after, .wallet-card::after, .invite-banner::after, .game-card-character::after { animation: none !important; }
+.sub-card.lt-vis::after, .order-card-pro.lt-vis::after, .live-history-card.lt-vis::after, .menu-list.lt-vis::after, .profile-header-card.lt-vis::after, .shine-card.lt-vis::after, .ua-box.lt-vis::after, .ua-pago.lt-vis::after, .wallet-card.lt-vis::after, .invite-banner.lt-vis::after, .game-card-character.lt-vis::after { animation: ltLed 7s steps(84) infinite !important; }
+:root:not(#x) .diamonds-grid .diamond-card { filter: drop-shadow(0 0 9px rgba(47,107,255,.34)); }
+:root:not(#x) .diamonds-grid .diamond-card.selected { filter: drop-shadow(0 0 12px rgba(0,240,255,.6)); }
+body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll .back-btn.bk-bar::before, body.lt-scroll .back-btn.bk-bar::after { animation-play-state: paused !important; }
+.vista-sec { animation-duration: .2s; }
+@media (prefers-reduced-motion: reduce) { .back-btn.bk-bar::before, .back-btn.bk-bar::after { animation: none; } }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -2284,7 +2356,7 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
                     </div>
 
                     <div class="form-group" style="margin-top: 1rem;">
-                        <label>ID de la transferencia (Hash / ID) · obligatorio en el reporte manual</label>
+                        <label>ID de la transferencia (Hash / ID) · opcional</label>
                         <input type="text" id="txid-usdt-input" name="lt-tx-manual" autocomplete="off" autocorrect="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" class="form-control no-left-icon" placeholder="Ej. 0x1234abcd..." oninput="validarTxIdInput(this)">
                         <div id="err-txid" class="error-feedback-text">Esto no es una ID de transferencia válida (evita letras inválidas o caracteres erróneos).</div>
                     </div>
@@ -2906,6 +2978,7 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
             if (!Array.isArray(c.paquetesCodm) || c.paquetesCodm.length === 0) c.paquetesCodm = d.paquetesCodm;
             c.paquetesCodm.forEach((p, i) => { if (p.ik === undefined) p.ik = i; });
             c.juegosOn = Object.assign({}, d.juegosOn, (c.juegosOn && typeof c.juegosOn === 'object') ? c.juegosOn : {});
+            c.juegosAgotado = (c.juegosAgotado && typeof c.juegosAgotado === 'object') ? c.juegosAgotado : {};
             c.colorCD = normalizarColor(c.colorCD);
             // Blood Strike ya está habilitado: se quita la etiqueta "PRÓXIMAMENTE" una sola vez
             if (!c.bsHabilitado) { c.bsHabilitado = true; if ((c.etiquetaBloodStrike || '').toUpperCase().indexOf('PR') === 0) c.etiquetaBloodStrike = ''; }
@@ -2998,26 +3071,32 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
             let o = {}; try { o = (tiendaConfig && tiendaConfig.juegosOn) || {}; } catch (e) {}
             return o[id] !== undefined ? !!o[id] : (id !== 'mobilelegends' && id !== 'arenabreakout');
         }
-        /* Habilitados arriba (en su orden), deshabilitados abajo con cinta PRÓXIMAMENTE */
+        function juegoAgotado(id) { try { return !!((tiendaConfig && tiendaConfig.juegosAgotado) || {})[id]; } catch (e) { return false; } }
+        /* Habilitados arriba (en su orden); abajo los desactivados (PRÓXIMAMENTE) y los AGOTADOS (cinta roja lateral) */
         function ordenarJuegos() {
             const grid = document.getElementById('gx-grid'); if (!grid) return;
             const cards = Array.from(grid.querySelectorAll('.gx-card'));
-            const clave = c => { const id = c.dataset.juego, on = juegoActivo(id); return (on ? 0 : 100) + (JUEGOS_ORDEN.indexOf(id) < 0 ? 50 : JUEGOS_ORDEN.indexOf(id)); };
+            const clave = c => { const id = c.dataset.juego, ok = juegoActivo(id) && !juegoAgotado(id); return (ok ? 0 : 100) + (JUEGOS_ORDEN.indexOf(id) < 0 ? 50 : JUEGOS_ORDEN.indexOf(id)); };
             cards.sort((a, b) => clave(a) - clave(b));
             const vacio = document.getElementById('gx-vacio');
             cards.forEach(c => {
-                const on = juegoActivo(c.dataset.juego);
-                c.classList.toggle('gx-off', !on);
-                const img = c.querySelector('.gx-img'); let cinta = c.querySelector('.gx-soon');
-                if (!on && img && !cinta) { cinta = document.createElement('span'); cinta.className = 'gx-soon'; cinta.textContent = 'PRÓXIMAMENTE'; img.appendChild(cinta); }
-                if (on && cinta) cinta.remove();
-                if (grid.lastElementChild !== c || true) grid.insertBefore(c, vacio || null);
+                const id = c.dataset.juego, on = juegoActivo(id), ag = juegoAgotado(id);
+                c.classList.toggle('gx-off', !on && !ag);
+                c.classList.toggle('gx-ago', ag);
+                const img = c.querySelector('.gx-img');
+                let cinta = c.querySelector('.gx-soon'), banda = c.querySelector('.gx-ago-band');
+                if (!on && !ag && img && !cinta) { cinta = document.createElement('span'); cinta.className = 'gx-soon'; cinta.textContent = 'PRÓXIMAMENTE'; img.appendChild(cinta); }
+                if ((on || ag) && cinta) cinta.remove();
+                if (ag && img && !banda) { banda = document.createElement('span'); banda.className = 'gx-ago-band'; banda.innerHTML = '<b>AGOTADO</b>'; img.appendChild(banda); }
+                if (!ag && banda) banda.remove();
+                grid.insertBefore(c, vacio || null);
             });
         }
         let favoritosJuegos = (function () { try { return JSON.parse(localStorage.getItem('lester_favoritos_juegos')) || []; } catch (e) { return []; } })();
         let filtroJuegos = 'todos';
         function proximamente(nombre) { mostrarNotificacion(nombre + ': Próximamente'); }
         function tocarJuego(id) {
+            if (juegoAgotado(id)) return mostrarNotificacion((NOMBRES_JUEGOS[id] || 'Este juego') + ' está agotado por ahora. Vuelve pronto', 'warn');
             if (id === 'freefire') return abrirFreeFire();
             if (id === 'blood') return abrirBloodStrike();
             if (!juegoActivo(id)) return proximamente(NOMBRES_JUEGOS[id] || 'Este juego');
@@ -4303,13 +4382,15 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
             const VELOCIDAD = 1.3;
             let startX = 0, startOff = 0;
 
+            let visible = false, corriendo = false, mitad = 0, cuenta = 0;
             const frame = () => {
-                if (box.offsetParent !== null && track) {
+                if (!visible || document.hidden) { corriendo = false; return; }
+                if (track) {
                     if (!opArrastrando) {
                         if (Math.abs(opVel) > VELOCIDAD) { opOffset += opVel; opVel *= 0.94; }
                         else { opVel = 0; opOffset += VELOCIDAD; }
                     }
-                    const mitad = track.scrollWidth / 2;
+                    if (!mitad || (++cuenta % 180 === 0)) mitad = track.scrollWidth / 2;
                     if (mitad > 0) {
                         opOffset = ((opOffset % mitad) + mitad) % mitad;
                         track.style.transform = 'translate3d(' + (-opOffset) + 'px,0,0)';
@@ -4317,6 +4398,10 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
                 }
                 requestAnimationFrame(frame);
             };
+            const arrancar = () => { if (!corriendo && visible && !document.hidden) { corriendo = true; mitad = 0; requestAnimationFrame(frame); } };
+            if ('IntersectionObserver' in window) new IntersectionObserver(es => { visible = es[es.length - 1].isIntersecting; arrancar(); }).observe(box);
+            else visible = true;
+            document.addEventListener('visibilitychange', arrancar);
 
             box.addEventListener('pointerdown', (e) => {
                 if (e.pointerType === 'mouse' && e.button !== 0) return;
@@ -4335,7 +4420,7 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
             window.addEventListener('pointerup', soltar);
             window.addEventListener('pointercancel', soltar);
             box.addEventListener('wheel', (e) => { opOffset += (e.deltaX || e.deltaY); opVel = 0; }, { passive: true });
-            requestAnimationFrame(frame);
+            arrancar();
         }
 
         function abrirTodasOpiniones() {
@@ -5946,12 +6031,18 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
                         <button class="btn-main" style="margin-top:0; --btn-c: #f59e0b;" onclick="ejecutarGuardarEtiquetaCodmCEO()">Guardar Etiqueta Call of Duty</button>
                     </div>`;
             } else if (accion === 'juegos_habilitados') {
-                let h = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">Los juegos activos salen arriba y se pueden abrir. Los desactivados salen abajo con la cinta PRÓXIMAMENTE.</p>`;
+                let h = `<p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">ACTIVO / DESACTIVADO: los desactivados salen abajo con la cinta PRÓXIMAMENTE. AGOTADO: el juego sale oscuro, con una etiqueta roja a un lado, y no se puede abrir hasta que lo vuelvas a activar.</p>`;
                 JUEGOS_ORDEN.forEach(id => {
-                    const on = juegoActivo(id);
-                    h += `<div style="display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--bg-card); border:1px solid ${on ? '#22c55e' : 'var(--border-color)'}; border-radius:12px; padding:0.7rem 0.9rem; margin-bottom:0.5rem;">
-                        <b style="color:var(--text-main); font-size:0.85rem;">${esc(NOMBRES_JUEGOS[id] || id)}</b>
-                        <button class="ceo-btn" style="padding:6px 14px; font-size:0.74rem; ${on ? 'border-color:#22c55e; color:#22c55e;' : ''}" onclick="alternarJuegoActivoCEO('${id}')">${on ? 'ACTIVO ✓' : 'DESACTIVADO'}</button>
+                    const on = juegoActivo(id), ag = juegoAgotado(id);
+                    h += `<div style="background:var(--bg-card); border:1px solid ${ag ? '#ef4444' : (on ? '#22c55e' : 'var(--border-color)')}; border-radius:12px; padding:0.7rem 0.9rem; margin-bottom:0.5rem;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px;">
+                            <b style="color:var(--text-main); font-size:0.85rem;">${esc(NOMBRES_JUEGOS[id] || id)}</b>
+                            ${ag ? '<span class="ceo-agotado-tag">AGOTADO</span>' : ''}
+                        </div>
+                        <div style="display:flex; gap:8px;">
+                            <button class="ceo-btn" style="flex:1; padding:7px 8px; font-size:0.72rem; ${on ? 'border-color:#22c55e; color:#22c55e;' : ''}" onclick="alternarJuegoActivoCEO('${id}')">${on ? 'ACTIVO ✓' : 'DESACTIVADO'}</button>
+                            <button class="ceo-btn ${ag ? 'ceo-ago-on' : ''}" style="flex:1; padding:7px 8px; font-size:0.72rem;" onclick="alternarJuegoAgotadoCEO('${id}')">${ag ? 'AGOTADO ✓ (quitar)' : 'PONER AGOTADO'}</button>
+                        </div>
                     </div>`;
                 });
                 res.innerHTML = h;
@@ -6291,6 +6382,11 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
         async function ejecutarGuardarEtiquetaCodmCEO() {
             const t = document.getElementById('ceo-etiqueta-codm-texto').value, c = document.getElementById('ceo-etiqueta-codm-color').value;
             await guardarConfig(() => { tiendaConfig.etiquetaCodm = t; tiendaConfig.colorCD = c; }, "Etiqueta Call of Duty actualizada con éxito");
+        }
+        async function alternarJuegoAgotadoCEO(id) {
+            const ahora = juegoAgotado(id);
+            const ok = await guardarConfig(() => { tiendaConfig.juegosAgotado = Object.assign({}, tiendaConfig.juegosAgotado || {}); if (ahora) delete tiendaConfig.juegosAgotado[id]; else tiendaConfig.juegosAgotado[id] = true; }, (NOMBRES_JUEGOS[id] || id) + (ahora ? ': ya se puede comprar' : ': ahora sale AGOTADO'));
+            if (ok) { ordenarJuegos(); cargarAccionCEO('juegos_habilitados'); }
         }
         async function alternarJuegoActivoCEO(id) {
             const ahora = juegoActivo(id);
@@ -6804,6 +6900,25 @@ function limpiarTxIdUSDT(){
 /* ---- Reporte manual de USDT: se verifica en la blockchain que llegó A TU wallet ---- */
 async function confirmarEnvioUSDTDep(){
   var txInput=document.getElementById('txid-usdt-input'), txId=txInput.value.trim();
+  if(!txId){
+    /* Sin ID: se envía a revisión del CEO con el monto indicado */
+    var mEl=document.getElementById('monto-usdt-deposito'), mto=parseFloat(mEl&&mEl.value);
+    if(isNaN(mto)||mto<MIN_USDT){ mostrarNotificacion('Escribe el monto que enviaste (mínimo '+MIN_USDT+' USDT)'); if(mEl){ mEl.focus(); } return; }
+    mostrarCarga('Enviando tu reporte...');
+    solicitudesGlobales.depositos.push({
+      id:Date.now(), correo:usuarioActual.correo.toLowerCase(), usuario:usuarioActual.nombre,
+      monto:mto, moneda:'usdt', telefonoTransfirio:'Sin ID · revisión manual', estado:'Pendiente'
+    });
+    localStorage.setItem('lester_solicitudes',JSON.stringify(solicitudesGlobales));
+    var okg=await guardarEnCloud();
+    ocultarCarga();
+    if(!okg){ mostrarNotificacion('No se pudo enviar. Intenta otra vez.'); return; }
+    mostrarNotificacion('Reporte enviado: '+mto+' USDT quedan pendientes de revisión');
+    limpiarTxIdUSDT();
+    renderizarOrdenes(); cambiarTabOrdenes('depositos');
+    cambiarSeccion('ordenes',document.getElementById('nav-btn-ordenes'));
+    return;
+  }
   if(!/^0x[0-9a-fA-F]{64}$/.test(txId)){ mostrarNotificacion('El ID de transferencia debe empezar con 0x y tener 66 caracteres'); return; }
   mostrarCarga('Verificando en la red...');
   var r;
@@ -6836,7 +6951,7 @@ async function confirmarEnvioUSDTDep(){
    {id:'rb',k:['roblox','robux'],a:'<b>Roblox</b><br>Entra a <b>Juegos → Roblox</b>, escribe el correo que se te pide, elige USDT o Saldo, toca el paquete y confirma. Las instrucciones para canjear los Robux aparecen en la misma pantalla.',acts:[['Ver juegos','go:juegos']]},
    {id:'usdt',k:['usdt','depositar','deposito','recargar saldo','wallet','bep20','bep 20','binance','cripto'],a:'<b>Depositar USDT (automático)</b><br>1. <b>Wallet → USDT</b>.<br>2. Escribe cuánto quieres (mínimo 0.5) y toca <b>GENERAR MI PAGO</b>.<br>3. Envía <b>exactamente</b> el monto que te muestra (con sus decimales, ej. 7.0003) por red <b>BEP 20 (BSC)</b> a la dirección indicada.<br>4. Tienes <b>5 minutos</b>. Tu saldo se acredita solo en segundos; no necesitas pegar ningún ID.',acts:[['Ir a depositar','go:usdt']]},
    {id:'monto',k:['decimal','monto exacto','por que 0.000','exacto','diferente monto','otro monto','envie otro','envie menos','envie mas'],a:'El pequeño decimal (de 0.0001 a 0.0009) es lo que identifica <b>tu</b> pago. Si envías otro monto el sistema no lo reconoce solo. En ese caso usa <b>Reportar para revisión manual</b> en la pantalla del depósito: verificamos en la red que el dinero llegó a nuestra wallet.'},
-   {id:'manual',k:['txid','id de transferencia','hash','revision manual','reportar','pague y no','no se acredito','no llego','no me llego'],a:'Si pagaste y no se acredita:<br>1. Espera 1–2 minutos (la red necesita confirmaciones).<br>2. En el depósito pega el <b>ID de transferencia</b> (empieza con 0x) y toca <b>VERIFICAR AHORA</b>.<br>3. Si pagaste otro monto, usa <b>Reportar para revisión manual</b>. Solo se acepta si la transferencia llegó a la wallet oficial de Lester Tienda.',acts:[['Hablar con Lester','wa']]},
+   {id:'manual',k:['txid','id de transferencia','hash','revision manual','reportar','pague y no','no se acredito','no llego','no me llego'],a:'Si pagaste y no se acredita:<br>1. Espera 1–2 minutos (la red necesita confirmaciones).<br>2. Toca <b>YA PAGUÉ · VERIFICAR AHORA</b>. No necesitas ID: el sistema busca tu pago solo. Si quieres, también puedes pegar el <b>ID de transferencia</b> (empieza con 0x) para que sea más rápido.<br>3. Si pagaste otro monto, usa <b>Reportar para revisión manual</b>. Solo se acepta si la transferencia llegó a la wallet oficial de Lester Tienda.',acts:[['Hablar con Lester','wa']]},
    {id:'saldo',k:['saldo movil','saldo móvil','transferencia movil','cuc','cup','transfermovil'],a:'<b>Depositar Saldo Móvil</b><br>1. <b>Wallet → Saldo Móvil</b>.<br>2. Escribe el monto y el número con el que transferiste.<br>3. Sube la foto del comprobante.<br>4. Envía: queda <b>Pendiente</b> hasta que Lester lo apruebe.',acts:[['Ir a Wallet','go:wallet']]},
    {id:'pedidos',k:['pedido','orden','estado','pendiente','completado','cancelado','donde veo','historial'],a:'En <b>Pedidos</b> ves tus recargas y depósitos. Los colores te dicen el estado:<br>🟡 <b>Pendiente</b>: en proceso.<br>🟢 <b>Completado</b>: ya se entregó.<br>🔴 <b>Cancelado</b>: no se realizó; el importe vuelve a tu saldo.',acts:[['Ir a Pedidos','go:ordenes']]},
    {id:'reembolso',k:['reembolso','devol','dinero de vuelta'],a:'Si una recarga es <b>cancelada</b>, el importe se devuelve automáticamente a tu saldo. Una recarga <b>Completada</b> ya fue entregada.'},
@@ -6847,32 +6962,69 @@ async function confirmarEnvioUSDTDep(){
    {id:'ayuda',k:['ayuda en cada','activar ayuda','ayuda en pantalla','guiame en cada','repetir ayuda'],a:'Puedo <b>guiarte en cada pantalla</b>: cuando entres a un botón te muestro dónde escribir el ID, el monto y qué tocar. Puedes activarlo o apagarlo cuando quieras.',acts:[['Activar ayuda','ayuda_on'],['Apagar ayuda','ayuda_off']]},
    {id:'soporte',k:['soporte','humano','whatsapp','lester','hablar','contacto','problema','ayuda urgente'],a:'Puedes hablar directamente con Lester por WhatsApp. Cuéntale tu usuario y el detalle de tu pedido.',acts:[['Abrir WhatsApp','wa']]},
    {id:'seguridad',k:['seguro','confiable','estafa','segur'],a:'Los pagos USDT se verifican <b>en la blockchain</b> y solo se acreditan si llegaron a la wallet oficial. Nunca compartas tu contraseña ni envíes dinero a otra dirección distinta a la que muestra la página.'}
+   ,{id:'agotado',k:['agotado','agotada','sin stock','no hay stock','no puedo comprar','se agoto','paquete oscuro','etiqueta roja','no se puede abrir'],a:'Cuando un <b>paquete</b> o un <b>juego</b> sale oscuro con la etiqueta roja <b>AGOTADO</b>, no se puede comprar por ahora. Elige otro paquete o vuelve más tarde: Lester lo reactiva en cuanto hay disponibilidad.',acts:[['Ver juegos','go:juegos']]}
+  ,{id:'idcheck',k:['id invalido','id no valido','id incorrecto','verificando id','cuenta verificada','valida mi id','introduce un id','falta tu id','mi id no','id de jugador','donde veo mi id','que id'],a:'<b>Tu ID de jugador</b><br>Al escribirlo, la página lo verifica sola:<br>🟢 <b>Cuenta verificada</b> + el nombre de la cuenta: todo bien.<br>🔴 <b>Por favor introduce un ID válido</b>: revísalo, es el número de tu perfil en el juego.<br>Si tocas confirmar sin ID, te marco el campo para que lo escribas. En Roblox se pide tu <b>correo</b> en lugar del ID.'}
+  ,{id:'cancelarpago',k:['cancelar pago','cancelar orden','cancelar deposito','se vencio','vencio','expiro','expirado','5 minutos','cuenta regresiva','tiempo para pagar'],a:'Cada pago USDT vale <b>5 minutos</b> y solo puedes tener <b>uno activo</b>. Si te arrepientes toca <b>CANCELAR PAGO EN ESPERA</b>; si se vence, genera uno nuevo en Wallet → USDT. Si ya enviaste el dinero justo antes de vencer, usa <b>YA PAGUÉ · VERIFICAR AHORA</b>.',acts:[['Ir a depositar','go:usdt']]}
+  ,{id:'minimo',k:['minimo','monto minimo','cuanto minimo','minimo para depositar','menos de'],a:'El depósito mínimo por USDT es de <b>0.5 USDT</b>. Los paquetes de cada juego tienen su propio precio y lo ves al entrar al juego.'}
+  ,{id:'favoritos',k:['favorito','favoritos','estrella'],a:'Toca la <b>⭐</b> de la tarjeta de un juego para guardarlo en <b>Favoritos</b>. Arriba, en la lista de juegos, el botón <b>Favoritos</b> te muestra solo los tuyos.',acts:[['Ver juegos','go:juegos']]}
+  ,{id:'descuento',k:['descuento','5%','promo','promocion','barato','rebaja'],a:'Cuando un amigo se registra con tu enlace de <b>Referidos</b> ganas un <b>descuento de 5%</b> para una recarga pagando con <b>USDT</b>. Se aplica solo al elegir el paquete.',acts:[['Ir a Referidos','go:referidos']]}
+  ,{id:'precios',k:['precio','precios','cuanto cuesta','cuanto vale','paquete','paquetes','ofertas','oferta'],a:'Los precios los ves al entrar a cada juego. Elige el método de pago arriba: <b>USDT</b> o <b>Saldo Móvil</b>, y los paquetes cambian de precio según el método. Los que salen <b>AGOTADO</b> no se pueden elegir por ahora.',acts:[['Ver juegos','go:juegos']]}
+  ,{id:'pago',k:['metodo de pago','metodos de pago','formas de pago','como pago','con que pago','pagar'],a:'Puedes pagar con <b>USDT</b> (saldo en dólares digitales, red BEP 20) o con <b>Saldo Móvil</b>. Primero depositas en <b>Wallet</b> y luego usas ese saldo para recargar tus juegos.',acts:[['Ir a Wallet','go:wallet']]}
+  ,{id:'perfil',k:['perfil','datos personales','foto de perfil','cambiar foto','cambiar nombre','eliminar cuenta','borrar cuenta'],a:'En <b>Perfil</b> puedes: ver y editar tus <b>Datos Personales</b> y foto, cambiar el <b>tema</b>, <b>transferir saldo</b>, cambiar tu <b>contraseña</b>, leer la <b>información legal</b> y, si lo necesitas, <b>eliminar tu cuenta</b> (no se puede deshacer).',acts:[['Ir a Perfil','go:perfil']]}
+  ,{id:'legal',k:['terminos','privacidad','condiciones','politica','politicas','legal'],a:'Los <b>Términos</b>, la <b>Privacidad</b>, las políticas de <b>Pagos</b> y <b>Reembolsos</b> están en <b>Perfil → Información Legal</b> y al final de la pantalla de Inicio.',acts:[['Ir a Perfil','go:perfil']]}
+  ,{id:'instalar',k:['instalar','descargar app','la app','icono','pantalla de inicio','como instalo','pwa'],a:'Puedes instalar Lester Tienda como una app: toca el botón de <b>descarga ⬇️</b> arriba a la derecha y sigue los pasos. Así la abres desde tu pantalla de inicio, sin navegador.'}
+  ,{id:'proximamente',k:['mobile legends','mlbb','arena breakout','proximamente','que juegos hay','juegos disponibles','otros juegos','mas juegos'],a:'Juegos disponibles: <b>Free Fire</b>, <b>Blood Strike</b>, <b>Roblox</b> y <b>Call of Duty Mobile</b>. <b>Mobile Legends</b> y <b>Arena Breakout</b> salen como <b>Próximamente</b>. Si un juego aparece <b>AGOTADO</b>, es temporal.',acts:[['Ver juegos','go:juegos']]}
+  ,{id:'rb2',k:['correo de roblox','email roblox','canjear robux','como canjeo'],a:'En <b>Roblox</b> escribes tu <b>correo</b> (no el ID). La página te dice al momento si el correo es válido. Al completar la recarga ves las instrucciones para canjear tus Robux en la misma pantalla.',acts:[['Ver juegos','go:juegos']]}
+  ,{id:'barra',k:['flecha','volver','atras','donde estoy','regresar'],a:'En cada pantalla interna arriba hay una barra con la <b>flecha ←</b> y el <b>nombre de donde estás</b> (por ejemplo "Depósito USDT"). Toca la flecha para regresar.'}
   ];
-  var CHIPS=[['Guía paso a paso','guia'],['Recargar Free Fire','ff'],['Depositar USDT','usdt'],['Mis pedidos','pedidos'],['Ayuda en cada pantalla','ayuda'],['Referidos','ref'],['Hablar con Lester','soporte']];
-  function norm(x){return String(x).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+  /* sugerencias relacionadas que salen dentro del chat después de cada respuesta */
+  var BASE=['guia','ff','usdt','pedidos','ref','soporte'];
+  var REL={guia:['ff','usdt','pedidos','ayuda'],registro:['login','ff','usdt'],login:['perfil','soporte'],ff:['idcheck','usdt','precios','pedidos'],bs:['idcheck','usdt','pedidos'],cd:['idcheck','usdt','precios','agotado'],rb:['rb2','usdt','pedidos'],rb2:['usdt','pedidos'],
+    usdt:['monto','cancelarpago','manual','minimo'],monto:['manual','usdt','soporte'],manual:['cancelarpago','soporte','seguridad'],saldo:['usdt','pedidos','precios'],pedidos:['reembolso','soporte','ff'],reembolso:['pedidos','soporte'],
+    ref:['descuento','ff','usdt'],tema:['perfil','instalar'],transferir:['perfil','pedidos'],opinion:['ff','soporte'],ayuda:['guia','ff'],soporte:['usdt','manual','seguridad'],seguridad:['usdt','manual','soporte'],
+    agotado:['precios','proximamente','soporte'],idcheck:['ff','rb2','soporte'],cancelarpago:['usdt','manual'],minimo:['usdt','pago'],favoritos:['proximamente','ff'],descuento:['ref','precios'],precios:['pago','agotado','ff'],pago:['usdt','saldo','minimo'],
+    perfil:['tema','transferir','legal'],legal:['perfil','seguridad'],instalar:['guia','perfil'],proximamente:['favoritos','ff','agotado'],barra:['guia','ff']};
+  var TIT={guia:'Guía paso a paso',ff:'Recargar Free Fire',usdt:'Depositar USDT',pedidos:'Mis pedidos',ref:'Referidos',soporte:'Hablar con Lester',monto:'¿Por qué el decimal?',manual:'Pagué y no llegó',cancelarpago:'Cancelar o vence el pago',minimo:'Monto mínimo',
+    idcheck:'Mi ID de jugador',precios:'Precios y paquetes',agotado:'Qué es AGOTADO',descuento:'Descuento 5%',pago:'Métodos de pago',perfil:'Mi perfil',legal:'Términos y políticas',instalar:'Instalar la app',proximamente:'Juegos disponibles',favoritos:'Favoritos ⭐',
+    registro:'Crear cuenta',login:'Contraseña y acceso',bs:'Blood Strike',cd:'Call of Duty Mobile',rb:'Roblox',rb2:'Correo de Roblox',saldo:'Depositar Saldo Móvil',reembolso:'Reembolsos',tema:'Modo claro / oscuro',transferir:'Transferir saldo',opinion:'Opiniones',ayuda:'Ayuda en cada pantalla',seguridad:'¿Es seguro?',barra:'Flecha de volver'};
+  function norm(x){return String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+  var KBN=KB.map(function(e){ return {e:e,k:e.k.map(norm)}; });
   function hora(){var d=new Date();return d.getHours()+':'+String(d.getMinutes()).padStart(2,'0');}
-  var body,chips,inp,abierto=false,saludado=false;
+  var body,inp,abierto=false,saludado=false,ocupado=false,cola=[];
   function el(id){return document.getElementById(id);}
+  function bajar(){ body.scrollTop=body.scrollHeight; }
+  function quitarSug(){ var s=body.querySelectorAll('.lt-sug'); for(var i=0;i<s.length;i++) s[i].remove(); }
   function add(html,who,acts){
     var d=document.createElement('div'); d.className='lt-msg '+who;
     d.innerHTML=html+(acts?'<div class="lt-acts">'+acts.map(function(a){return '<button class="lt-act" data-act="'+a[1]+'">'+a[0]+'</button>';}).join('')+'</div>':'')+'<time>'+hora()+'</time>';
-    body.appendChild(d); body.scrollTop=body.scrollHeight; return d;
+    body.appendChild(d); bajar(); return d;
   }
-  function typing(cb,ms){
+  function sugerir(id){
+    quitarSug();
+    var ids=(REL[id]||BASE).filter(function(x){return x!==id && TIT[x];}).slice(0,4);
+    if(!ids.length) ids=BASE;
+    var d=document.createElement('div'); d.className='lt-sug';
+    d.innerHTML='<div class="lt-sug-t">Preguntas rápidas</div>'+ids.map(function(x){return '<button class="lt-chip" data-chip="'+x+'">'+TIT[x]+'</button>';}).join('');
+    body.appendChild(d); bajar();
+  }
+  /* cola: las respuestas salen una tras otra, rápido y sin amontonarse */
+  function procesar(){
+    if(ocupado||!cola.length) return;
+    ocupado=true; var t=cola.shift();
     var d=document.createElement('div'); d.className='lt-msg bot lt-typing'; d.innerHTML='<i></i><i></i><i></i>';
-    body.appendChild(d); body.scrollTop=body.scrollHeight;
-    setTimeout(function(){ d.remove(); cb(); },ms||750);
+    quitarSug(); body.appendChild(d); bajar();
+    var ms=t.ms||Math.min(650,220+Math.round(t.html.length*0.7));
+    setTimeout(function(){ d.remove(); add(t.html,'bot',t.acts); if(t.sug!==undefined && !cola.length) sugerir(t.sug); ocupado=false; procesar(); },ms);
   }
-  function bot(html,acts,ms){ typing(function(){ add(html,'bot',acts); },ms); }
+  function bot(html,acts,ms,sug){ cola.push({html:html,acts:acts,ms:ms,sug:sug}); procesar(); }
   function responder(q){
     var n=norm(q), best=null, sc=0;
-    if(/^(hola|buenas|buenos|hey|saludos|holi|que tal)/.test(n)){ bot('¡Hola'+(usuarioActual&&usuarioActual.nombre?' <b>'+esc(usuarioActual.nombre)+'</b>':'')+'! Soy <b>IA LT</b>. Pregúntame lo que quieras sobre la página o elige un tema abajo.'); return; }
-    if(/gracias|genial|perfecto|listo|ok$/.test(n)){ bot('¡Con gusto! Si necesitas algo más, aquí estoy 💙'); return; }
-    KB.forEach(function(e){ var s=0; e.k.forEach(function(w){ if(n.indexOf(norm(w))>-1) s+=w.length; }); if(s>sc){sc=s;best=e;} });
-    if(best) bot(best.a,best.acts); else bot('No encontré eso exactamente, pero puedo ayudarte con estos temas. También puedes escribirle directo a Lester.',[['Guía paso a paso','guia'],['Depositar USDT','usdt'],['Hablar con Lester','wa']]);
+    if(/^(hola|buenas|buenos|hey|saludos|holi|que tal)/.test(n)){ bot('¡Hola'+(usuarioActual&&usuarioActual.nombre?' <b>'+esc(usuarioActual.nombre)+'</b>':'')+'! Soy <b>IA LT</b>. Pregúntame lo que quieras sobre la página o toca una pregunta rápida.',null,0,''); return; }
+    if(/gracias|genial|perfecto|listo|ok$/.test(n)){ bot('¡Con gusto! Si necesitas algo más, aquí estoy 💙',null,0,''); return; }
+    KBN.forEach(function(o){ var s=0; o.k.forEach(function(w){ if(n.indexOf(w)>-1) s+=w.length; }); if(s>sc){sc=s;best=o.e;} });
+    if(best) bot(best.a,best.acts,0,best.id); else bot('No encontré eso exactamente, pero puedo ayudarte con estos temas. También puedes escribirle directo a Lester.',[['Hablar con Lester','wa']],0,'');
   }
   function porId(id){ for(var i=0;i<KB.length;i++) if(KB[i].id===id) return KB[i]; }
-  function chipsRender(){ chips.innerHTML=CHIPS.map(function(c){return '<button class="lt-chip" data-chip="'+c[1]+'">'+c[0]+'</button>';}).join(''); }
   function ir(sec){
     cerrar();
     if(sec==='juegos') return irASelectorJuegos();
@@ -6886,29 +7038,29 @@ async function confirmarEnvioUSDTDep(){
     else if(a==='ayuda_off'){ window.ltAyuda(false); mostrarNotificacion('Ayuda apagada'); }
     else if(a.indexOf('go:')===0){ ir(a.slice(3)); }
   }
-  function enviar(txt){ txt=(txt||'').trim(); if(!txt) return; add(esc(txt),'me'); inp.value=''; responder(txt); }
+  function enviar(txt){ txt=(txt||'').trim(); if(!txt) return; quitarSug(); add(esc(txt),'me'); inp.value=''; responder(txt); }
   window.abrirIA=function(){
     cerrarModalSoporte();
-    var m=el('lt-ia'); m.classList.add('open'); abierto=true;
+    el('lt-ia').classList.add('open'); document.body.classList.add('lt-ia-open'); abierto=true;
     if(!saludado){
       saludado=true;
       var nom=(usuarioActual&&usuarioActual.nombre)?' <b>'+esc(usuarioActual.nombre)+'</b>':'';
-      bot('¡Hola'+nom+'! 👋 Soy <b>IA LT</b>, la asistente de Lester Tienda.',null,500);
-      bot('Conozco toda la página: recargas, depósitos USDT, pedidos, referidos y más. Te explico <b>paso a paso</b> lo que necesites.',[['Iniciar guía','guia']],1300);
+      bot('¡Hola'+nom+'! 👋 Soy <b>IA LT</b>, la asistente de Lester Tienda.',null,350);
+      bot('Conozco toda la página: juegos, recargas, depósitos USDT, pedidos, referidos y más. Toca una pregunta o escríbeme la tuya.',[['Iniciar guía','guia']],450,'');
     }
-      };
-  function cerrar(){ el('lt-ia').classList.remove('open'); abierto=false; }
+  };
+  function cerrar(){ el('lt-ia').classList.remove('open'); document.body.classList.remove('lt-ia-open'); abierto=false; }
   window.cerrarIA=cerrar;
   document.addEventListener('DOMContentLoaded',iniciar);
   function iniciar(){
-    body=el('lt-ia-body'); chips=el('lt-ia-chips'); inp=el('lt-ia-text'); if(!body) return;
-    chipsRender();
+    body=el('lt-ia-body'); inp=el('lt-ia-text'); if(!body||body.dataset.on) return; body.dataset.on='1';
     el('lt-ia-send').onclick=function(){enviar(inp.value);};
     inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){e.preventDefault();enviar(inp.value);} });
-    body.addEventListener('click',function(e){ var b=e.target.closest('.lt-act'); if(b) accion(b.getAttribute('data-act')); });
-    chips.addEventListener('click',function(e){
-      var b=e.target.closest('.lt-chip'); if(!b) return; var id=b.getAttribute('data-chip'), t=porId(id);
-      add(esc(b.textContent),'me'); if(t) bot(t.a,t.acts);
+    body.addEventListener('click',function(e){
+      var b=e.target.closest('.lt-act'); if(b){ accion(b.getAttribute('data-act')); return; }
+      var c=e.target.closest('.lt-chip'); if(!c) return;
+      var id=c.getAttribute('data-chip'), t=porId(id); if(!t) return;
+      quitarSug(); add(esc(TIT[id]||c.textContent),'me'); bot(t.a,t.acts,0,id);
     });
   }
   if(document.readyState!=='loading') iniciar();
@@ -7133,6 +7285,54 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
   function iniciar() { CAMPOS.forEach(function (c) { montar(c[0], c[1], c[2]); }); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
   setTimeout(iniciar, 1500);
+})();
+</script>
+
+<script>
+/* v19: barra de título con flecha + fluidez */
+(function () {
+  var FLECHA = '<svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg>';
+  var MAPA = {
+    'seccion-juegos-selector': 'Juegos', 'seccion-freefire': 'Free Fire', 'seccion-bloodstrike': 'Blood Strike', 'seccion-roblox': 'Roblox', 'seccion-codm': 'Call of Duty Mobile',
+    'seccion-comprobante-recarga': 'Comprobante de recarga', 'seccion-deposito-detalle': 'Detalle del depósito', 'seccion-opiniones': 'Opiniones', 'seccion-opinion-nueva': 'Deja tu opinión',
+    'seccion-wallet-usdt': 'Depósito USDT', 'seccion-wallet-saldo': 'Depósito Saldo Móvil', 'seccion-ceo': 'Panel CEO',
+    'sub-datos': 'Datos Personales', 'sub-apariencia': 'Apariencia', 'sub-transferir': 'Transferir Saldo', 'sub-password': 'Cambiar Contraseña', 'sub-eliminar': 'Eliminar Cuenta', 'sub-legal': 'Información Legal', 'sub-legal-detalle': 'Información Legal'
+  };
+  function limpio(t) { return String(t || '').replace(/\s+/g, ' ').trim(); }
+  function armar(btn) {
+    if (btn.dataset.bk) return; btn.dataset.bk = '1';
+    var sec = btn.closest('[id^="seccion-"],[id^="sub-"]');
+    var id = sec ? sec.id : '';
+    var h2 = sec ? sec.querySelector('h2.page-title') : null;
+    var txt = (h2 && limpio(h2.textContent)) || MAPA[id] || 'Volver';
+    if (id === 'sub-legal-detalle' && h2) txt = limpio(h2.textContent) || txt;
+    btn.classList.add('bk-bar');
+    btn.innerHTML = '<span class="bk-ar">' + FLECHA + '</span><span class="bk-t"></span>';
+    var t = btn.querySelector('.bk-t'); t.textContent = txt;
+    btn.setAttribute('aria-label', 'Volver · ' + txt);
+    if (h2) {
+      if (/#ff3b30|rgb\(255, ?59, ?48\)/i.test(h2.getAttribute('style') || '')) btn.classList.add('bk-red');
+      h2.classList.add('bk-hid');
+      var mo = new MutationObserver(function () { var v = limpio(h2.textContent); if (v) t.textContent = v; });
+      mo.observe(h2, { childList: true, characterData: true, subtree: true });
+    }
+  }
+  function todos() { var b = document.querySelectorAll('.back-btn'); for (var i = 0; i < b.length; i++) armar(b[i]); }
+
+  /* El borde LED solo corre en las tarjetas visibles */
+  var SEL = '.sub-card,.order-card-pro,.live-history-card,.menu-list,.profile-header-card,.shine-card,.ua-box,.ua-pago,.wallet-card,.invite-banner,.game-card-character';
+  var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('lt-vis', e.isIntersecting); }); }, { rootMargin: '40px' }) : null;
+  var visto = new WeakSet();
+  function observar() {
+    if (!io) return;
+    document.querySelectorAll(SEL).forEach(function (n) { if (!visto.has(n)) { visto.add(n); io.observe(n); } });
+  }
+  document.querySelectorAll('img').forEach(function (i) { if (!i.decoding) i.decoding = 'async'; });
+  var tm;
+  function tick() { clearTimeout(tm); tm = setTimeout(function () { todos(); observar(); }, 250); }
+  new MutationObserver(tick).observe(document.body, { childList: true, subtree: true });
+  todos(); observar();
+  /* pausa también cuando se hace scroll (se reactiva sola) */
 })();
 </script>
 </body>
