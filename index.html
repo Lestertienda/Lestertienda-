@@ -2233,10 +2233,10 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
                     <div id="ua-paso1">
                         <div class="form-group">
                             <label>¿Cuánto quieres depositar? (USDT)</label>
-                            <input type="number" id="monto-usdt-auto" class="form-control no-left-icon" placeholder="Mínimo 1.1" inputmode="decimal" min="1.1" step="0.01">
+                            <input type="number" id="monto-usdt-auto" class="form-control no-left-icon" placeholder="Mínimo 0.5" inputmode="decimal" min="0.5" step="0.01">
                         </div>
                         <button class="btn-main" style="--btn-c: #26a69a; margin-top: .6rem;" onclick="crearOrdenUSDT()">GENERAR MI PAGO</button>
-                        <p style="font-size:.72rem; color:var(--text-muted); text-align:center; margin-top:.8rem;">Tu saldo se acredita solo, en unos segundos, cuando llegue el pago. Mínimo 1.1 USDT.</p>
+                        <p style="font-size:.72rem; color:var(--text-muted); text-align:center; margin-top:.8rem;">Tu saldo se acredita solo, en unos segundos, cuando llegue el pago. Mínimo 0.5 USDT.</p>
                     </div>
 
                     <!-- Paso 2: pagar y esperar -->
@@ -2280,7 +2280,7 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
 
                     <div class="form-group" style="margin-top: 1rem;">
                         <label>Monto</label>
-                        <input type="number" id="monto-usdt-deposito" class="form-control no-left-icon" placeholder="Mínimo 1.1" min="1.1" step="0.01" inputmode="decimal">
+                        <input type="number" id="monto-usdt-deposito" class="form-control no-left-icon" placeholder="Mínimo 0.5" min="0.5" step="0.01" inputmode="decimal">
                     </div>
 
                     <div class="form-group" style="margin-top: 1rem;">
@@ -5195,7 +5195,7 @@ body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pau
         let ordenUSDT = null, pollUSDT = null, relojUSDT = null;
         const CLAVE_ORDEN_USDT = 'lester_usdt_orden';
         const VENTANA_USDT = 5 * 60 * 1000; /* la orden y su validación duran máximo 5 minutos */
-        const MIN_USDT = 1.1;
+        const MIN_USDT = 0.5;
         function restanteUSDT(o) { return o ? Math.max(0, Math.min(o.expira || 0, (o.creada || 0) + VENTANA_USDT) - Date.now()) : 0; }
         function fmtCuentaUSDT(ms) { const t = Math.ceil(ms / 1000); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); }
 
@@ -6834,7 +6834,7 @@ async function confirmarEnvioUSDTDep(){
    {id:'bs',k:['blood strike','bloodstrike','blood'],a:'<b>Recargar Blood Strike</b><br>Entra a <b>Juegos → Blood Strike</b>, escribe tu ID de jugador, elige USDT o Saldo, toca el paquete y confirma. Lo ves en <b>Pedidos</b>.',acts:[['Ver juegos','go:juegos']]},
    {id:'cd',k:['call of duty','call off duty','codm','cod mobile','cod m','duty','puntos cod'],a:'<b>Call of Duty Mobile (CP)</b><br>¡Ya está disponible! Entra a <b>Juegos → Call of Duty</b>, escribe tu <b>ID de jugador</b> (solo números), elige USDT o Saldo, toca el paquete de CP que quieres y confirma. Hay paquetes desde 115 CP hasta 1323 CP. Lo sigues en <b>Pedidos</b>.',acts:[['Ver juegos','go:juegos']]},
    {id:'rb',k:['roblox','robux'],a:'<b>Roblox</b><br>Entra a <b>Juegos → Roblox</b>, escribe el correo que se te pide, elige USDT o Saldo, toca el paquete y confirma. Las instrucciones para canjear los Robux aparecen en la misma pantalla.',acts:[['Ver juegos','go:juegos']]},
-   {id:'usdt',k:['usdt','depositar','deposito','recargar saldo','wallet','bep20','bep 20','binance','cripto'],a:'<b>Depositar USDT (automático)</b><br>1. <b>Wallet → USDT</b>.<br>2. Escribe cuánto quieres (mínimo 1.1) y toca <b>GENERAR MI PAGO</b>.<br>3. Envía <b>exactamente</b> el monto que te muestra (con sus decimales, ej. 7.0003) por red <b>BEP 20 (BSC)</b> a la dirección indicada.<br>4. Tienes <b>5 minutos</b>. Tu saldo se acredita solo en segundos; no necesitas pegar ningún ID.',acts:[['Ir a depositar','go:usdt']]},
+   {id:'usdt',k:['usdt','depositar','deposito','recargar saldo','wallet','bep20','bep 20','binance','cripto'],a:'<b>Depositar USDT (automático)</b><br>1. <b>Wallet → USDT</b>.<br>2. Escribe cuánto quieres (mínimo 0.5) y toca <b>GENERAR MI PAGO</b>.<br>3. Envía <b>exactamente</b> el monto que te muestra (con sus decimales, ej. 7.0003) por red <b>BEP 20 (BSC)</b> a la dirección indicada.<br>4. Tienes <b>5 minutos</b>. Tu saldo se acredita solo en segundos; no necesitas pegar ningún ID.',acts:[['Ir a depositar','go:usdt']]},
    {id:'monto',k:['decimal','monto exacto','por que 0.000','exacto','diferente monto','otro monto','envie otro','envie menos','envie mas'],a:'El pequeño decimal (de 0.0001 a 0.0009) es lo que identifica <b>tu</b> pago. Si envías otro monto el sistema no lo reconoce solo. En ese caso usa <b>Reportar para revisión manual</b> en la pantalla del depósito: verificamos en la red que el dinero llegó a nuestra wallet.'},
    {id:'manual',k:['txid','id de transferencia','hash','revision manual','reportar','pague y no','no se acredito','no llego','no me llego'],a:'Si pagaste y no se acredita:<br>1. Espera 1–2 minutos (la red necesita confirmaciones).<br>2. En el depósito pega el <b>ID de transferencia</b> (empieza con 0x) y toca <b>VERIFICAR AHORA</b>.<br>3. Si pagaste otro monto, usa <b>Reportar para revisión manual</b>. Solo se acepta si la transferencia llegó a la wallet oficial de Lester Tienda.',acts:[['Hablar con Lester','wa']]},
    {id:'saldo',k:['saldo movil','saldo móvil','transferencia movil','cuc','cup','transfermovil'],a:'<b>Depositar Saldo Móvil</b><br>1. <b>Wallet → Saldo Móvil</b>.<br>2. Escribe el monto y el número con el que transferiste.<br>3. Sube la foto del comprobante.<br>4. Envía: queda <b>Pendiente</b> hasta que Lester lo apruebe.',acts:[['Ir a Wallet','go:wallet']]},
@@ -7000,7 +7000,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
    'seccion-ordenes':{sel:'#pd-switch',t:'Tus pedidos',x:'Cambia entre Recargas y Depósitos. Amarillo = pendiente, verde = completado, rojo = cancelado.'},
    'seccion-referidos':{sel:'#enlace-ref',t:'Tu enlace personal',x:'Copia o comparte este enlace. Con 10 amigos válidos ganas 110 diamantes.'},
    'seccion-wallet':{sel:'#wallet-cards-container',t:'Tu Wallet',x:'Toca USDT para depositar de forma automática, o Saldo Móvil para depositar con comprobante.'},
-   'seccion-wallet-usdt':{sel:'#monto-usdt-auto',t:'¿Cuánto vas a depositar?',x:'Escribe el monto (mínimo 1.1) y toca GENERAR MI PAGO. Te daré el monto exacto a enviar.'},
+   'seccion-wallet-usdt':{sel:'#monto-usdt-auto',t:'¿Cuánto vas a depositar?',x:'Escribe el monto (mínimo 0.5) y toca GENERAR MI PAGO. Te daré el monto exacto a enviar.'},
    'seccion-wallet-saldo':{sel:'#monto-deposito',t:'Depósito de Saldo Móvil',x:'Escribe el monto, el número con el que transferiste y sube la foto del comprobante.'},
    'seccion-perfil':{sel:'.profile-header-card',t:'Tu perfil',x:'Aquí ves tus datos y tu código. Abajo cambias tus datos, contraseña, tema y transfieres saldo.'},
    'sub-transferir':{sel:'#trans-destino',t:'Transferir saldo',x:'Escribe el usuario o correo de quien recibe, la moneda, el monto y tu contraseña.'},
@@ -7046,41 +7046,127 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
 </script>
 
 <script>
-/* ===== G2Bulk: nombre de la cuenta + envío automático ===== */
+/* ===== G2Bulk: tarjeta de ID 3D, botón Pegar, nombre de cuenta y envío automático ===== */
 (function () {
-  var CAMPOS = [['player-id-input', 'freefire'], ['player-id-input-bs', 'blood'], ['player-id-input-cd', 'codm']];
+  var css = [
+    '.g2c{position:relative;margin:2px 0 8px;padding:14px;border-radius:20px;background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.015)),var(--bg-card);border:1px solid rgba(255,255,255,.10);box-shadow:0 1px 0 rgba(255,255,255,.14) inset,0 -3px 0 rgba(0,0,0,.35) inset,0 18px 30px -12px rgba(0,0,0,.7),0 5px 0 rgba(0,0,0,.28);}',
+    '.g2c-row{display:flex;align-items:center;gap:10px;}',
+    '.g2c-badge{width:46px;height:46px;flex:none;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#3b82ff,#00d0ff);box-shadow:0 1px 0 rgba(255,255,255,.55) inset,0 -4px 0 rgba(0,0,0,.25) inset,0 10px 18px -4px rgba(0,140,255,.6);}',
+    '.g2c-badge svg{width:23px;height:23px;fill:#fff;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3));}',
+    '.g2c-field{flex:1;min-width:0;}',
+    '.g2c-field .form-control{width:100%;height:48px;border-radius:14px;font-weight:800;font-size:1.02rem;letter-spacing:.6px;box-shadow:0 4px 10px rgba(0,0,0,.45) inset,0 1px 0 rgba(255,255,255,.09);}',
+    '.g2c-paste{flex:none;height:48px;padding:0 14px;border:0;border-radius:14px;display:flex;align-items:center;gap:6px;font-weight:900;font-size:.8rem;letter-spacing:.4px;color:#04202a;background:linear-gradient(180deg,#67f3ff,#00b9da);box-shadow:0 1px 0 rgba(255,255,255,.65) inset,0 -3px 0 rgba(0,0,0,.2) inset,0 5px 0 #007c94,0 12px 18px rgba(0,200,230,.35);cursor:pointer;transition:transform .08s,box-shadow .08s;-webkit-tap-highlight-color:transparent;}',
+    '.g2c-paste svg{width:17px;height:17px;fill:#04202a;}',
+    '.g2c-paste:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(255,255,255,.65) inset,0 -3px 0 rgba(0,0,0,.2) inset,0 1px 0 #007c94,0 4px 8px rgba(0,200,230,.3);}',
+    '.g2c-st{display:none;margin-top:12px;align-items:center;gap:12px;padding:11px 13px;border-radius:15px;animation:g2in .28s ease both;}',
+    '.g2c-st.on{display:flex;}',
+    '@keyframes g2in{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}',
+    '.g2c-st .ico{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:1.05rem;color:#fff;}',
+    '.g2c-st .tx{min-width:0;line-height:1.25;}',
+    '.g2c-st .tx small{display:block;font-size:.66rem;font-weight:800;letter-spacing:1px;opacity:.85;}',
+    '.g2c-st .tx b{display:block;font-size:1rem;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+    '.g2c-st.wait{background:rgba(148,163,184,.12);color:var(--text-muted);box-shadow:0 1px 0 rgba(255,255,255,.08) inset;}',
+    '.g2c-st.wait .ico{background:transparent;}',
+    '.g2c-st.wait .ico i{width:22px;height:22px;border-radius:50%;border:3px solid rgba(148,163,184,.35);border-top-color:#00d0ff;animation:g2sp .7s linear infinite;}',
+    '@keyframes g2sp{to{transform:rotate(360deg)}}',
+    '.g2c-st.ok{background:linear-gradient(160deg,rgba(34,197,94,.20),rgba(34,197,94,.06));color:#4ade80;box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 -3px 0 rgba(0,0,0,.18) inset,0 8px 16px -8px rgba(34,197,94,.6);border:1px solid rgba(34,197,94,.45);}',
+    '.g2c-st.ok .ico{background:linear-gradient(145deg,#22c55e,#15803d);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 -3px 0 rgba(0,0,0,.22) inset,0 6px 12px -3px rgba(34,197,94,.6);}',
+    '.g2c-st.ok .tx b{color:var(--text-main);}',
+    '.g2c-st.bad{background:linear-gradient(160deg,rgba(239,68,68,.20),rgba(239,68,68,.06));color:#f87171;box-shadow:0 1px 0 rgba(255,255,255,.1) inset,0 -3px 0 rgba(0,0,0,.18) inset,0 8px 16px -8px rgba(239,68,68,.6);border:1px solid rgba(239,68,68,.45);}',
+    '.g2c-st.bad .ico{background:linear-gradient(145deg,#ef4444,#b91c1c);box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 -3px 0 rgba(0,0,0,.22) inset,0 6px 12px -3px rgba(239,68,68,.6);}',
+    '.g2c-st.bad .tx b{color:var(--text-main);font-size:.92rem;white-space:normal;}',
+    ':root[data-theme="light"] .g2c{background:linear-gradient(160deg,#ffffff,#eaf0ff);border-color:#c4d0ec;box-shadow:0 1px 0 #fff inset,0 -3px 0 rgba(30,60,140,.10) inset,0 16px 26px -14px rgba(30,60,140,.45),0 4px 0 rgba(30,60,140,.12);}',
+    ':root[data-theme="light"] .g2c-field .form-control{box-shadow:0 3px 8px rgba(30,60,140,.14) inset;}',
+    ':root[data-theme="light"] .g2c-st.ok{color:#15803d;} :root[data-theme="light"] .g2c-st.bad{color:#b91c1c;}'
+  ].join('');
+  var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+
+  var ICO_ID = 'M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm5 3.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM5.5 16h7v-.5c0-1.4-2.3-2-3.5-2s-3.5.6-3.5 2V16zM14 9h6v1.5h-6V9zm0 3h6v1.5h-6V12z';
+  var ICO_MAIL = 'M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z';
+  var ICO_PASTE = 'M19 2h-4.18C14.4.84 13.3 0 12 0S9.6.84 9.18 2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 18H5V4h2v3h10V4h2v16z';
+  var CAMPOS = [['player-id-input', 'freefire', 0], ['player-id-input-bs', 'blood', 0], ['player-id-input-cd', 'codm', 0], ['player-id-input-rb', 'roblox', 1]];
+
   function url() { return (typeof WORKER_URL !== 'undefined' ? WORKER_URL : '').replace(/\/$/, ''); }
+  function aviso(m) { try { mostrarNotificacion(m, 'warn'); } catch (e) {} }
+  function svg(d) { return '<svg viewBox="0 0 24 24"><path d="' + d + '"/></svg>'; }
   window.g2IdInvalido = function (inp) { return !!inp && inp.dataset.g2 === 'invalido' && inp.dataset.g2id === inp.value.trim(); };
   window.g2Pedir = function (id, correo) {
     return fetch(url() + '/api/g2/pedir', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id, correo: correo }) })
       .then(function (r) { return r.json(); }).catch(function () {});
   };
-  function montar(idInput, juego) {
+
+  function montar(idInput, juego, esCorreo) {
     var inp = document.getElementById(idInput); if (!inp || inp.dataset.g2on) return;
     inp.dataset.g2on = '1';
-    var msg = document.createElement('div');
-    msg.style.cssText = 'font-size:13px;font-weight:600;margin:6px 2px 0;min-height:0;';
-    inp.insertAdjacentElement('afterend', msg);
+    var viejo = inp.closest('.form-group') || inp.parentElement;
+    var card = document.createElement('div'); card.className = 'g2c';
+    var fila = document.createElement('div'); fila.className = 'g2c-row';
+    var badge = document.createElement('div'); badge.className = 'g2c-badge'; badge.innerHTML = svg(esCorreo ? ICO_MAIL : ICO_ID);
+    var campo = document.createElement('div'); campo.className = 'g2c-field';
+    var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'g2c-paste'; btn.innerHTML = svg(ICO_PASTE) + '<span>Pegar</span>';
+    var est = document.createElement('div'); est.className = 'g2c-st';
+    viejo.parentNode.insertBefore(card, viejo);
+    campo.appendChild(inp); fila.appendChild(badge); fila.appendChild(campo); fila.appendChild(btn);
+    card.appendChild(fila); card.appendChild(est);
+    viejo.style.display = 'none';
+
+    function ocultar() { est.className = 'g2c-st'; est.innerHTML = ''; }
+    function mostrar(tipo, ico, etiqueta, texto) {
+      est.className = 'g2c-st on ' + tipo; est.innerHTML = '';
+      var i = document.createElement('div'); i.className = 'ico';
+      if (ico === 'spin') i.appendChild(document.createElement('i')); else i.textContent = ico;
+      var t = document.createElement('div'); t.className = 'tx';
+      if (etiqueta) { var s = document.createElement('small'); s.textContent = etiqueta; t.appendChild(s); }
+      var b = document.createElement('b'); b.textContent = texto; t.appendChild(b);
+      est.appendChild(i); est.appendChild(t);
+    }
+
+    btn.addEventListener('click', function () {
+      if (!navigator.clipboard || !navigator.clipboard.readText) { aviso('Tu navegador no permite pegar con el botón. Mantén presionado el campo y elige Pegar'); inp.focus(); return; }
+      navigator.clipboard.readText().then(function (t) {
+        t = String(t || '').trim();
+        if (esCorreo) t = t.toLowerCase().replace(/\s+/g, '');
+        else { var m = t.match(/\d{5,}/); t = m ? m[0] : t.replace(/\D/g, ''); }
+        if (!t) { aviso(esCorreo ? 'No hay un correo copiado' : 'No hay un ID copiado'); return; }
+        inp.value = t; inp.dispatchEvent(new Event('input', { bubbles: true })); inp.focus();
+      }).catch(function () { aviso('Permite el acceso al portapapeles para pegar, o mantén presionado el campo'); inp.focus(); });
+    });
+
     var timer = null;
-    function poner(txt, color) { msg.textContent = txt; msg.style.color = color; }
     inp.addEventListener('input', function () {
       clearTimeout(timer); inp.dataset.g2 = ''; inp.classList.remove('rb-ok', 'rb-bad');
       var v = inp.value.trim();
-      if (v.length < 6) { poner('', ''); return; }
-      poner('Verificando ID…', '#9ca3af');
+      if (esCorreo) {
+        if (v.length < 5) { ocultar(); return; }
+        timer = setTimeout(function () {
+          if (inp.value.trim() !== v) return;
+          var ok = typeof correoValido === 'function' ? correoValido(v) : /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+          if (ok) { inp.classList.add('rb-ok'); mostrar('ok', '✔', 'CORREO VÁLIDO', v); }
+          else if (v.indexOf('@') > 0 && v.length > 8) { inp.classList.add('rb-bad'); mostrar('bad', '✕', '', 'Escribe un correo real, por ejemplo tucorreo@gmail.com'); }
+          else ocultar();
+        }, 400);
+        return;
+      }
+      if (v.length < 6) { ocultar(); return; }
+      mostrar('wait', 'spin', '', 'Verificando ID…');
       timer = setTimeout(function () {
         fetch(url() + '/api/g2/validar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ juego: juego, id: v }) })
           .then(function (r) { return r.json(); })
           .then(function (d) {
             if (inp.value.trim() !== v) return;
-            if (d.estado === 'valido') { inp.dataset.g2 = 'valido'; inp.dataset.g2id = v; inp.classList.add('rb-ok'); poner('✔ Cuenta: ' + d.nombre, '#22c55e'); }
-            else if (d.estado === 'invalido') { inp.dataset.g2 = 'invalido'; inp.dataset.g2id = v; inp.classList.add('rb-bad'); poner('Por favor introduce un ID válido', '#ef4444'); }
-            else poner('', '');
-          }).catch(function () { if (inp.value.trim() === v) poner('', ''); });
+            if (d.estado === 'valido') {
+              inp.dataset.g2 = 'valido'; inp.dataset.g2id = v; inp.classList.add('rb-ok');
+              var ini = Array.from(String(d.nombre || '?').trim())[0] || '?';
+              mostrar('ok', ini.toUpperCase(), 'CUENTA VERIFICADA', d.nombre || 'Cuenta encontrada');
+            } else if (d.estado === 'invalido') {
+              inp.dataset.g2 = 'invalido'; inp.dataset.g2id = v; inp.classList.add('rb-bad');
+              mostrar('bad', '✕', '', 'Por favor introduce un ID válido');
+            } else ocultar();
+          }).catch(function () { if (inp.value.trim() === v) ocultar(); });
       }, 500);
     });
   }
-  function iniciar() { CAMPOS.forEach(function (c) { montar(c[0], c[1]); }); }
+  function iniciar() { CAMPOS.forEach(function (c) { montar(c[0], c[1], c[2]); }); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
   setTimeout(iniciar, 1500);
 })();
