@@ -1501,7 +1501,42 @@
 :root[data-theme="light"] .wallet-card.wc2 { background: radial-gradient(circle at 100% 0%, rgba(var(--wc),.20), transparent 55%), linear-gradient(165deg, #ffffff, #eef3ff) !important; }
 :root[data-theme="light"] .wc2-ico svg { fill: rgb(var(--wc)); filter: none; }
 :root[data-theme="light"] .wc2-ico { background: linear-gradient(150deg, rgba(var(--wc),.28), rgba(var(--wc),.08)); box-shadow: inset 0 1.5px 0 rgba(255,255,255,.8), inset 0 -3px 0 rgba(var(--wc),.18), 0 8px 16px rgba(var(--wc),.25); }
-    </style>
+    
+/* ================= v18: AGOTADO, brillo vivo en ofertas, más fluidez ================= */
+.diamonds-grid .diamond-card .diamond-img-render, .diamonds-grid .diamond-card .dc-info { position: relative; z-index: 1; }
+.diamonds-grid .diamond-card .dc-shine { position: absolute; left: 1.5px; right: 1.5px; top: 1.5px; bottom: 3.5px; z-index: 0; pointer-events: none; overflow: hidden;
+  clip-path: polygon(13px 0, calc(100% - 13px) 0, 100% 13px, 100% calc(100% - 11px), calc(100% - 11px) 100%, 11px 100%, 0 calc(100% - 11px), 0 13px); }
+.diamonds-grid .diamond-card .dc-shine::before { content: ""; position: absolute; top: -10%; left: 0; width: 42%; height: 120%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.24), transparent); transform: translateX(-160%) skewX(-20deg); animation: dcShine 4.6s ease-in-out infinite; will-change: transform; }
+.diamonds-grid .diamond-card:nth-child(2n) .dc-shine::before { animation-delay: .8s; }
+.diamonds-grid .diamond-card:nth-child(3n) .dc-shine::before { animation-delay: 1.7s; }
+.diamonds-grid .diamond-card:nth-child(5n) .dc-shine::before { animation-delay: 2.5s; }
+.diamonds-grid .diamond-card.selected .dc-shine::before { background: linear-gradient(100deg, transparent, rgba(255,255,255,.4), transparent); animation-duration: 2.8s; }
+@keyframes dcShine { 0%, 55% { transform: translateX(-160%) skewX(-20deg); } 100% { transform: translateX(340%) skewX(-20deg); } }
+:root[data-theme="light"] .diamonds-grid .diamond-card .dc-shine::before { background: linear-gradient(100deg, transparent, rgba(36,87,255,.16), transparent); }
+
+/* paquete agotado: oscuro, sin tocar, etiqueta roja */
+:root:not(#x) .diamonds-grid .diamond-card.agotado { pointer-events: none; cursor: not-allowed; filter: drop-shadow(0 4px 6px rgba(0,0,0,.4)); transform: none; }
+:root:not(#x) .diamonds-grid .diamond-card.agotado::after { background: linear-gradient(180deg, #151b2b, #0a0e18); }
+:root[data-theme="light"]:not(#x) .diamonds-grid .diamond-card.agotado::after { background: linear-gradient(180deg, #e6eaf3, #d5dbe9); }
+.diamonds-grid .diamond-card.agotado .diamond-img-render, .diamonds-grid .diamond-card.agotado .dc-info { opacity: .3; filter: grayscale(1); }
+.diamonds-grid .diamond-card.agotado .dc-shine { display: none; }
+.dc-agotado { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-8deg); z-index: 3; padding: 5px 13px; border-radius: 8px; white-space: nowrap;
+  font-size: .72rem; font-weight: 900; letter-spacing: 1.8px; color: #fff; background: linear-gradient(180deg, #ff5a5a, #d61f2c); border: 1px solid rgba(255,255,255,.4);
+  box-shadow: 0 4px 12px rgba(214,31,44,.55), inset 0 1px 0 rgba(255,255,255,.35); text-shadow: 0 1px 2px rgba(0,0,0,.45); }
+.ceo-agotado-tag { padding: 2px 8px; border-radius: 6px; font-size: .62rem; font-weight: 900; letter-spacing: 1px; color: #fff; background: linear-gradient(180deg, #ff5a5a, #d61f2c); }
+
+/* ID faltante: sacudida */
+.lt-shake { animation: ltShakeId .5s ease; }
+@keyframes ltShakeId { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-7px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+
+/* fluidez */
+html { -webkit-tap-highlight-color: transparent; }
+button, a, .diamond-card, .gx-card, .nav-item, .pay-method-pill-btn, .menu-row, .adm-btn, .ceo-btn, .btn-main { touch-action: manipulation; }
+header.navbar, .bottom-nav { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.order-card-pro { content-visibility: auto; contain-intrinsic-size: auto 130px; }
+body.lt-scroll *, body.lt-scroll *::before, body.lt-scroll *::after, body.lt-pausa *, body.lt-pausa *::before, body.lt-pausa *::after { animation-play-state: paused !important; }
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -2951,11 +2986,11 @@
         /* El espacio de arriba se ajusta a la altura real del encabezado */
         function ajustarEncabezado() {
             const h = document.querySelector('header.navbar');
-            if (h) document.body.style.paddingTop = h.offsetHeight + 'px';
+            if (h) { const v = h.offsetHeight + 'px'; if (document.body.style.paddingTop !== v) document.body.style.paddingTop = v; }
         }
         window.addEventListener('load', ajustarEncabezado);
         window.addEventListener('resize', ajustarEncabezado);
-        setInterval(ajustarEncabezado, 1500);
+        (function () { const h = document.querySelector('header.navbar'); if (h && window.ResizeObserver) new ResizeObserver(ajustarEncabezado).observe(h); else setInterval(ajustarEncabezado, 1500); })();
         /* ===== Inicio y selector de juegos ===== */
         const NOMBRES_JUEGOS = { freefire: 'Free Fire', blood: 'Blood Strike', mobilelegends: 'Mobile Legends', arenabreakout: 'Arena Breakout', roblox: 'Roblox', codm: 'Call of Duty Mobile' };
         const JUEGOS_ORDEN = ['freefire', 'blood', 'roblox', 'codm', 'mobilelegends', 'arenabreakout'];
@@ -3814,15 +3849,20 @@
                     let precioMostrado = metodoPagoActual === 'usdt' ? `${Number(p.precioUsdt).toFixed(2)} USDT` : `${p.precioSaldo} saldo`;
                     const def = imgDefectoPaquete(j, p, idx);
                     let src = (p.imagen && p.imagen.trim() !== "") ? p.imagen : def;
+                    const ago = !!p.agotado;
+                    if (ago && ofertaSeleccionada && juegoActual === j && ofertaSeleccionada.paqueteId === p.id) ofertaSeleccionada = null;
                     let sel = (ofertaSeleccionada && juegoActual === j && ofertaSeleccionada.paqueteId === p.id) ? ' selected' : '';
+                    if (ago) sel = ' agotado';
                     html += `
-                        <div class="diamond-card${sel}" onclick="seleccionarOferta(${idx}, this)">
-                            <div class="diamond-img-render"><img src="${src}" alt="${esc(p.nombre)}" onerror="this.onerror=null;this.src='${def.length < 300 ? def : IMG_DIAMANTE}'"></div>
+                        <div class="diamond-card${sel}" ${ago ? 'aria-disabled="true"' : `onclick="seleccionarOferta(${idx}, this)"`}>
+                            <i class="dc-shine"></i>
+                            <div class="diamond-img-render"><img src="${src}" alt="${esc(p.nombre)}" decoding="async" onerror="this.onerror=null;this.src='${def.length < 300 ? def : IMG_DIAMANTE}'"></div>
                             <div class="dc-info">
                                 <span class="dc-qty">${esc(p.textoDetalle || p.nombre)}</span>
                                 <span class="dc-unit">${j === 'roblox' ? 'Robux' : (j === 'codm' ? 'CP' : (j === 'blood' ? 'BC' : 'Diamantes'))}</span>
                                 <span class="diamond-price">${precioMostrado}</span>
                             </div>
+                            ${ago ? '<span class="dc-agotado">AGOTADO</span>' : ''}
                         </div>`;
                 });
                 container.innerHTML = html;
@@ -4452,6 +4492,7 @@
         function seleccionarOferta(idx, el) {
             const p = listaPaquetes(juegoActual)[idx];
             if (!p) return;
+            if (p.agotado) { mostrarNotificacion("Este paquete está agotado por ahora", 'warn'); return; }
             let precioFinal = metodoPagoActual === 'usdt' ? p.precioUsdt : p.precioSaldo;
             if (usuarioActual && usuarioActual.descuentosDisponibles > 0 && metodoPagoActual === 'usdt') {
                 precioFinal = parseFloat((precioFinal * 0.95).toFixed(2));
@@ -4461,6 +4502,15 @@
             if (el) el.classList.add('selected');
         }
 
+        function pedirIdJugador(inp, msg) {
+            if (!inp) return;
+            inp.classList.add('rb-bad', 'lt-shake');
+            setTimeout(() => inp.classList.remove('lt-shake'), 600);
+            try { inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+            setTimeout(() => { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 280);
+            mostrarNotificacion(msg, 'error');
+        }
+
         function procesarRecarga() {
             const nombreJ = nombreJuegoDe({ juego: juegoActual });
             const playerIdInput = document.getElementById(juegoActual === 'roblox' ? 'player-id-input-rb' : (juegoActual === 'codm' ? 'player-id-input-cd' : (juegoActual === 'blood' ? 'player-id-input-bs' : 'player-id-input')));
@@ -4468,9 +4518,14 @@
 
             if (juegoActual === 'roblox') {
                 playerId = playerId.toLowerCase();
-                if (!correoValido(playerId)) { playerIdInput.classList.add('rb-bad'); mostrarNotificacion("Escribe un correo real, por ejemplo tucorreo@gmail.com"); return; }
-            } else if (!playerId || playerId.length < 6) { mostrarNotificacion("Introduce un ID de " + nombreJ + " válido"); return; }
+                if (!playerId) { pedirIdJugador(playerIdInput, "Falta tu correo de Roblox. Escríbelo para confirmar la recarga"); return; }
+                if (!correoValido(playerId)) { pedirIdJugador(playerIdInput, "Escribe un correo real, por ejemplo tucorreo@gmail.com"); return; }
+            } else if (!playerId) { pedirIdJugador(playerIdInput, "Falta tu ID de " + nombreJ + ". Escríbelo para confirmar la recarga"); return; }
+            else if (playerId.length < 6) { pedirIdJugador(playerIdInput, "Tu ID de " + nombreJ + " está incompleto, revísalo"); return; }
             if (!ofertaSeleccionada) { mostrarNotificacion(juegoActual === 'roblox' ? "Selecciona un paquete de Robux" : (juegoActual === 'codm' ? "Selecciona un paquete de CP" : juegoActual === 'blood' ? "Selecciona un paquete de BC" : "Selecciona un paquete de diamantes")); return; }
+
+            const pqSel = listaPaquetes(juegoActual).find(x => x.id === ofertaSeleccionada.paqueteId);
+            if (pqSel && pqSel.agotado) { ofertaSeleccionada = null; renderizarPaquetesTienda(); mostrarNotificacion("Ese paquete se agotó. Elige otro", 'warn'); return; }
 
             if (ofertaSeleccionada.moneda === 'usdt') {
                 if (usuarioActual.balanceUSDT < ofertaSeleccionada.precio) {
@@ -5731,6 +5786,7 @@
                                 <div style="display:flex; align-items:center; gap:8px;">
                                     <img src="${src}" style="width:32px; height:32px; object-fit:contain; border-radius:6px; background:var(--bg-main);" alt="Icono">
                                     <b style="color:var(--text-main);">${esc(p.nombre)}</b>
+                                    ${p.agotado ? '<span class="ceo-agotado-tag">AGOTADO</span>' : ''}
                                 </div>
                                 <div style="display:flex; gap:4px;">
                                     <button class="ceo-btn" style="padding:5px 9px; font-size:0.7rem;" onclick="abrirSelectorImagenCatalogo(${pIdx})">Subir</button>
@@ -5749,6 +5805,7 @@
                                 <div style="flex:1;"><label style="font-size:0.65rem; color:var(--text-muted);">Cantidad:</label>
                                     <input type="text" id="paq-cant-${pIdx}" value="${esc(p.textoDetalle || '')}" style="width:100%; background:var(--bg-main); border:1px solid var(--border-color); color:var(--text-main); padding:6px; border-radius:8px;"></div>
                             </div>
+                            <button class="btn-main" style="margin-top:8px; padding:6px; font-size:0.78rem; --btn-c:${p.agotado ? '#16a34a' : '#dc2626'};" onclick="alternarAgotadoPaqueteCEO(${pIdx})">${p.agotado ? 'ACTIVAR PAQUETE (volver a vender)' : 'DESACTIVAR (poner AGOTADO)'}</button>
                             <div style="display:flex; gap:6px;">
                                 <button class="btn-main" style="margin-top:8px; padding:6px; font-size:0.78rem; flex:2;" onclick="guardarPrecioPaqueteCEO(${pIdx})">Guardar paquete</button>
                                 <button class="btn-main" style="margin-top:8px; padding:6px; font-size:0.78rem; flex:1; --btn-c:#ef4444;" onclick="eliminarPaqueteCEO(${pIdx})">Eliminar</button>
@@ -6012,6 +6069,17 @@
                     if (!isNaN(n) && n > 0) p.diamantesNum = n;
                 }
             }, "Paquete actualizado en tiempo real");
+        }
+
+        async function alternarAgotadoPaqueteCEO(pIdx) {
+            const p = (tiendaConfig[catalogoActual] || [])[pIdx];
+            if (!p) return;
+            const nuevo = !p.agotado;
+            const ok = await guardarConfig(() => {
+                const q = tiendaConfig[catalogoActual][pIdx];
+                if (nuevo) q.agotado = true; else delete q.agotado;
+            }, nuevo ? "Paquete desactivado: ahora sale AGOTADO" : "Paquete activado: ya se puede comprar");
+            if (ok) { cargarAccionCEO(accionDeCatalogo()); renderizarPaquetesTienda(); }
         }
 
         async function eliminarPaqueteCEO(pIdx) {
@@ -6962,6 +7030,16 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
   mostrarVista=function(id){ mv(id); cerrar(); if(TIPS[id]) setTimeout(function(){ mostrar(id,TIPS[id]); },380); };
   var mo=mostrarOrdenUSDT;
   mostrarOrdenUSDT=function(o){ mo(o); setTimeout(function(){ mostrar('usdt-pago',{sel:'.ua-pago',t:'Envía este monto exacto',x:'Copia el monto y la dirección con los botones y paga por red BEP 20 desde tu wallet. Se acredita solo en segundos.'}); },380); };
+})();
+</script>
+<script>
+/* v18: menos trabajo mientras se hace scroll o la app está en segundo plano */
+(function () {
+  var t, on = false;
+  function par() { if (!on) { on = true; document.body.classList.add('lt-scroll'); } clearTimeout(t); t = setTimeout(function () { on = false; document.body.classList.remove('lt-scroll'); }, 160); }
+  document.addEventListener('scroll', par, { passive: true, capture: true });
+  document.addEventListener('visibilitychange', function () { document.body.classList.toggle('lt-pausa', document.hidden); });
+  document.addEventListener('input', function (e) { var x = e.target; if (x && x.id && x.id.indexOf('player-id-input') === 0 && x.id !== 'player-id-input-rb') x.classList.remove('rb-bad'); });
 })();
 </script>
 </body>
