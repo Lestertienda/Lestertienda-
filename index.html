@@ -1608,6 +1608,39 @@ body.lt-ia-open > *:not(#lt-ia):not(#notification-toast):not(script):not(style) 
 body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll .back-btn.bk-bar::before, body.lt-scroll .back-btn.bk-bar::after { animation-play-state: paused !important; }
 .vista-sec { animation-duration: .2s; }
 @media (prefers-reduced-motion: reduce) { .back-btn.bk-bar::before, .back-btn.bk-bar::after { animation: none; } }
+
+/* ===== MODO CLARO (arreglo): barras claras con texto oscuro y botones azules bien visibles. El modo oscuro no se toca. ===== */
+:root[data-theme="light"] .navbar, :root[data-theme="light"] .bottom-nav {
+  background: linear-gradient(#ffffff, #f3f7ff) padding-box, linear-gradient(120deg, #2f6bff, #1aa6c8, #16c784, #1aa6c8, #2f6bff) border-box !important;
+  background-size: 100% 100%, 200% 100% !important;
+  box-shadow: 0 10px 26px rgba(36,87,255,.20), 0 2px 6px rgba(15,23,42,.10) !important;
+}
+:root[data-theme="light"] .navbar .brand-lester, :root[data-theme="light"] .nav-brand-title { color: #0b1530 !important; }
+:root[data-theme="light"] .nav-brand-title .brand-tienda {
+  background: linear-gradient(90deg, #1d4ed8, #0e9f6e, #1d4ed8) !important; background-size: 200% 100% !important;
+  -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important;
+}
+:root[data-theme="light"] .header-wallet-pill, :root[data-theme="light"] .nav-top-icon-btn {
+  background: linear-gradient(180deg, #ffffff, #e8f0ff) !important; border: 1.5px solid #7f9ff0 !important; box-shadow: 0 2px 6px rgba(36,87,255,.18) !important;
+}
+:root[data-theme="light"] .hw-ico { background: #fff !important; border-color: #7f9ff0 !important; }
+:root[data-theme="light"] .hw-ico svg { fill: #1d4ed8 !important; }
+:root[data-theme="light"] .hw-usdt > span:not(.hw-ico) { color: #07795a !important; }
+:root[data-theme="light"] .hw-saldo > span:not(.hw-ico) { color: #1d4ed8 !important; }
+:root[data-theme="light"] .nav-top-icon-btn svg { stroke: #1d4ed8 !important; }
+:root[data-theme="light"] .nav-top-icon-btn::after { border-color: #16c784 !important; }
+:root[data-theme="light"] .bottom-nav .nav-item { color: #44557f !important; }
+:root[data-theme="light"] .bottom-nav .nav-item svg { stroke: #44557f; }
+:root[data-theme="light"] .bottom-nav .nav-avatar { border-color: #7f9ff0 !important; color: #44557f !important; }
+:root[data-theme="light"] .bottom-nav::before { background: linear-gradient(180deg, #4a8dff 0%, #2563eb 55%, #1d4ed8 100%) !important; box-shadow: inset 0 1.5px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(8,28,110,.35), 0 6px 16px rgba(37,99,235,.40) !important; animation: none !important; }
+:root[data-theme="light"] .bottom-nav .nav-item.active { color: #fff !important; }
+:root[data-theme="light"] .bottom-nav .nav-item.active > span:not(.nav-avatar) { -webkit-text-fill-color: #fff !important; color: #fff !important; }
+:root[data-theme="light"] .bottom-nav .nav-item.active svg { stroke: #fff !important; fill: none; }
+:root[data-theme="light"] .bottom-nav .nav-item.active .nav-avatar { border-color: #fff !important; box-shadow: 0 0 0 2px rgba(255,255,255,.35) !important; }
+/* etiquetas de colores (verde/amarilla/...) más oscuras para que se lean sobre blanco */
+:root[data-theme="light"] .etq-pill { filter: brightness(.58) saturate(1.6); }
+:root[data-theme="light"] .wallet-card h3, :root[data-theme="light"] .wallet-card small { color: #0b1530 !important; }
+:root[data-theme="light"] .wallet-card small { color: #44557f !important; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
@@ -7075,8 +7108,10 @@ async function confirmarEnvioUSDTDep(){
   }
   /* ---------- Chat en vivo con soporte (dentro de IA LT) ---------- */
   var modoHumano=false,nChat=0,propiosPend=0,pollT=null;
-  function CU(){ return (typeof usuarioActual!=='undefined'&&usuarioActual&&usuarioActual.correo&&usuarioActual.pass)?usuarioActual:null; }
-  function cred(){ var u=CU(); return u?{correo:u.correo,pass:u.pass}:null; }
+  function passSesion(u){ if(u&&u.pass) return u.pass; try{ var m=document.cookie.match(/(?:^|;\s*)lester_sesion=([^;]*)/); if(m){ var j=JSON.parse(decodeURIComponent(m[1])); if(j&&j.p&&String(j.c||'').toLowerCase()===String(u&&u.correo||'').toLowerCase()) return j.p; } }catch(e){} return ''; }
+  /* Basta con tener sesión iniciada (correo); la contraseña se toma del usuario o de la cookie de sesión */
+  function CU(){ return (typeof usuarioActual!=='undefined'&&usuarioActual&&usuarioActual.correo)?usuarioActual:null; }
+  function cred(){ var u=CU(); return u?{correo:u.correo,pass:passSesion(u)}:null; }
   function apiChat(ruta,datos){ var u=(typeof WORKER_URL!=='undefined'?WORKER_URL:'').replace(/\/$/,''); return fetch(u+ruta,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)}).then(function(r){return r.json();}); }
   function banner(on){
     var b=el('lt-live');
@@ -7121,6 +7156,7 @@ async function confirmarEnvioUSDTDep(){
     quitarSug(); banner(true); nChat=0; propiosPend=0;
     bot('Listo ✅ Te conecté con <b>soporte</b>. Escribe tu mensaje aquí abajo y Lester te responde en este mismo chat. Te aviso en cuanto conteste.',null,300);
     cargarChat(true).then(function(d){
+      if(d && d.mensaje && !d.estado){ salirHumano(); bot('No pude conectar con soporte ('+esc(String(d.mensaje))+'). Escríbele a Lester por WhatsApp mientras lo arreglo.',[['Abrir WhatsApp','wa']],0,''); return; }
       if(d && d.estado==='abierto') return;
       propiosPend++;
       apiChat('/api/chat/enviar',{correo:c.correo,pass:c.pass,texto:'🙋 Pidió hablar con soporte (desde IA LT)'}).then(function(r){ if(r&&r.mensaje) propiosPend=Math.max(0,propiosPend-1); }).catch(function(){ propiosPend=Math.max(0,propiosPend-1); });
