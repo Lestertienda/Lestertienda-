@@ -1915,8 +1915,15 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     <span class="hw-ico"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></span>
                     <span id="header-saldo-balance">0<small class="hw-unit">saldo</small></span>
                 </div>
-                <button class="nav-top-icon-btn" onclick="instalarApp()" title="Instalar aplicación">
-                    <svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10.5l5 5 5-5"/><path d="M5 20h14"/></svg>
+                <button class="nav-top-icon-btn lt-sb" onclick="ltBuscarAbrir()" title="Buscar juegos" aria-label="Buscar juegos">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+                </button>
+                <button class="nav-top-icon-btn lt-sb lt-bell" onclick="ltCampanaAbrir()" title="Notificaciones" aria-label="Notificaciones">
+                    <svg viewBox="0 0 24 24"><path d="M18 8.5a6 6 0 0 0-12 0c0 6.5-2.6 8-2.6 8h17.2S18 15 18 8.5"/><path d="M13.8 20.2a2 2 0 0 1-3.6 0"/></svg>
+                    <i id="lt-bell-n" class="lt-badge"></i>
+                </button>
+                <button class="nav-top-icon-btn lt-dl" onclick="instalarApp()" title="Descargar la aplicación" aria-label="Descargar la aplicación">
+                    <svg viewBox="0 0 24 24"><path d="M12 4v10.5"/><path d="M7.5 10.5l4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>
                 </button>
             </div>
         </header>
@@ -1946,7 +1953,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                         <p>Invita 5 socios válidos y elige la primera oferta del juego que quieras. ¡Es gratis!</p>
                         <button class="btn-invite" onclick="cambiarSeccion('referidos', document.getElementById('nav-btn-referidos'))">Ver Referidos</button>
                     </div>
-                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); padding: 12px 14px; border-radius: 14px; text-align: center;">
+                    <div id="lt-bonus" onclick="ltBonusToca()" style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--border-color); padding: 12px 14px; border-radius: 14px; text-align: center; cursor:pointer;">
                         <svg width="28" height="24" viewBox="0 0 24 24" fill="var(--accent-glow)"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.5 15.38 12 17 10.83 14.92 8H20v6z"/></svg>
                         <span style="display: block; font-size: 0.55rem; font-weight: bold; color: var(--accent-glow); margin-top: 2px;">BONUS</span>
                     </div>
@@ -2681,7 +2688,6 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     </button>
                 </div>
 
-                <div id="panel-ceo-container" style="display: none;"></div>
             </div>
 
             <!-- ====== SUBPÁGINAS DEL PERFIL (cada una con flecha Volver) ====== -->
@@ -2821,8 +2827,14 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             </div>
 
             <!-- PÁGINA GENÉRICA DEL PANEL CEO -->
+            <div id="seccion-ceo-menu" class="vista-sec" style="display: none;">
+                <div class="back-row"><button class="back-btn" onclick="cambiarSeccion('inicio', document.getElementById('nav-btn-inicio'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver</button></div>
+                <h2 class="page-title" style="color:#ff3b30;">Panel CEO</h2>
+                <div id="panel-ceo-container" style="display: none;"></div>
+            </div>
+
             <div id="seccion-ceo" class="vista-sec" style="display: none;">
-                <div class="back-row"><button class="back-btn" onclick="volverAPerfil()"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver</button></div>
+                <div class="back-row"><button class="back-btn" onclick="volverMenuCEO()"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver</button></div>
                 <h2 class="page-title" id="ceo-pagina-titulo" style="color:#ff3b30;">Panel CEO</h2>
                 <div id="ceo-resultado"></div>
             </div>
@@ -4364,7 +4376,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
                     elemento.classList.add('active');
                 }
-                if (seccion === 'perfil') { cargarDatosPerfilEnInputs(); verificarAccesoCEO(); }
+                if (seccion === 'perfil') { cargarDatosPerfilEnInputs(); }
                 if (seccion === 'ordenes') renderizarOrdenes();
                 if (seccion === 'referidos') actualizarPerfilUI();
                 if (seccion === 'wallet') { renderizarWalletCards(); renderizarOrdenes(); }
@@ -4378,6 +4390,10 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             marcarNav('nav-btn-perfil');
             if (id === 'sub-datos') cargarDatosPerfilEnInputs();
             if (id === 'sub-apariencia') marcarTemaActivo();
+        }
+        function volverMenuCEO() {
+            if (!esCEOUsuario()) { cambiarSeccion('inicio', document.getElementById('nav-btn-inicio')); return; }
+            mostrarVista('seccion-ceo-menu'); verificarAccesoCEO(); window.scrollTo(0, 0);
         }
         function volverAPerfil() {
             cambiarSeccion('perfil', document.getElementById('nav-btn-perfil'));
@@ -6137,7 +6153,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 
         function verificarAccesoCEO() {
             const contenedorCEO = document.getElementById('panel-ceo-container');
-            if (usuarioActual && (usuarioActual.rango >= 1)) {
+            if (usuarioActual && esCEOUsuario() && contenedorCEO) {
                 contenedorCEO.style.display = 'block';
                 let esCEO = esCEOUsuario();
 
@@ -6185,7 +6201,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                         ${destacados}
                         <div class="ceo-grid">${htmlBotones}</div>
                     </div>`;
-            } else {
+            } else if (contenedorCEO) {
                 contenedorCEO.style.display = 'none';
             }
         }
@@ -7497,10 +7513,10 @@ async function confirmarEnvioUSDTDep(){
    {id:'guia',k:['guia','tutorial','paso a paso','empezar','como funciona','como se usa','como uso','explica'],a:'Te muestro la página <b>paso a paso</b>, resaltando cada parte. Puedes saltarla cuando quieras.',acts:[['Iniciar guía','guia']]},
    {id:'registro',k:['registr','crear cuenta','cuenta nueva','unirme','inscrib'],a:'<b>Crear tu cuenta</b><br>1. Pestaña <b>Registrarse</b>.<br>2. Usuario (mín. 4 letras, sin espacios) y tu correo.<br>3. Contraseña de 6+ caracteres con letras, números y un símbolo (!@#$).<br>4. Repítela y, si te invitó alguien, escribe su nombre en <b>Patrocinador</b>.<br>5. Toca <b>REGISTRARSE</b>.'},
    {id:'login',k:['contrasena','clave','olvide','iniciar sesion','login','entrar','no puedo entrar','cambiar contra'],a:'Inicia con tu <b>correo</b> y contraseña en la pestaña <b>Iniciar Sesión</b>. Para cambiar tu contraseña: <b>Perfil → Contraseña</b>. Nunca compartas tu clave con nadie; IA LT jamás te la pedirá.',acts:[['Ir a Perfil','go:perfil']]},
-   {id:'ff',k:['free fire','freefire','diamante','recargar ff','recarga ff','recargar free'],a:'<b>Recargar Free Fire</b><br>1. Inicio → botón <b>Ver juegos</b> del anuncio → <b>Free Fire</b>.<br>2. Escribe tu <b>ID de jugador</b> (solo números).<br>3. Elige el método de pago: <b>USDT</b> o <b>Saldo</b>.<br>4. Toca el paquete que quieres y confirma.<br>5. Sigue tu pedido en <b>Pedidos</b>: Pendiente → Completado.',acts:[['Ver juegos','go:juegos']]},
-   {id:'bs',k:['blood strike','bloodstrike','blood'],a:'<b>Recargar Blood Strike</b><br>Entra a <b>Juegos → Blood Strike</b>, escribe tu ID de jugador, elige USDT o Saldo, toca el paquete y confirma. Lo ves en <b>Pedidos</b>.',acts:[['Ver juegos','go:juegos']]},
-   {id:'cd',k:['call of duty','call off duty','codm','cod mobile','cod m','duty','puntos cod'],a:'<b>Call of Duty Mobile (CP)</b><br>¡Ya está disponible! Entra a <b>Juegos → Call of Duty</b>, escribe tu <b>ID de jugador</b> (solo números), elige USDT o Saldo, toca el paquete de CP que quieres y confirma. Hay paquetes desde 115 CP hasta 1323 CP. Lo sigues en <b>Pedidos</b>.',acts:[['Ver juegos','go:juegos']]},
-   {id:'rb',k:['roblox','robux'],a:'<b>Roblox</b><br>Entra a <b>Juegos → Roblox</b>, escribe el correo que se te pide, elige USDT o Saldo, toca el paquete y confirma. Las instrucciones para canjear los Robux aparecen en la misma pantalla.',acts:[['Ver juegos','go:juegos']]},
+   {id:'ff',k:['free fire','freefire','diamante','recargar ff','recarga ff','recargar free'],a:'<b>Recargar Free Fire</b><br>1. Inicio → botón <b>Ver juegos</b> del anuncio → <b>Free Fire</b>.<br>2. Escribe tu <b>ID de jugador</b> (solo números).<br>3. Los paquetes se pagan con <b>ORO LT</b> (si te falta, te llevo a comprarlo).<br>4. Toca el paquete que quieres y confirma.<br>5. Sigue tu pedido en <b>Pedidos</b>: Pendiente → Completado.',acts:[['Ver juegos','go:juegos']]},
+   {id:'bs',k:['blood strike','bloodstrike','blood'],a:'<b>Recargar Blood Strike</b><br>Entra a <b>Juegos → Blood Strike</b>, escribe tu ID de jugador, toca el paquete y confirma. Lo ves en <b>Pedidos</b>.',acts:[['Ver juegos','go:juegos']]},
+   {id:'cd',k:['call of duty','call off duty','codm','cod mobile','cod m','duty','puntos cod'],a:'<b>Call of Duty Mobile (CP)</b><br>¡Ya está disponible! Entra a <b>Juegos → Call of Duty</b>, escribe tu <b>ID de jugador</b> (solo números), toca el paquete de CP que quieres y confirma. Hay paquetes desde 115 CP hasta 1323 CP. Lo sigues en <b>Pedidos</b>.',acts:[['Ver juegos','go:juegos']]},
+   {id:'rb',k:['roblox','robux'],a:'<b>Roblox</b><br>Entra a <b>Juegos → Roblox</b>, escribe el correo que se te pide, toca el paquete y confirma. Las instrucciones para canjear los Robux aparecen en la misma pantalla.',acts:[['Ver juegos','go:juegos']]},
    {id:'usdt',k:['usdt','depositar','deposito','recargar saldo','wallet','bep20','bep 20','binance','cripto'],a:'<b>Depositar USDT (automático)</b><br>1. <b>Wallet → USDT</b>.<br>2. Escribe cuánto quieres (mínimo 0.5) y toca <b>GENERAR MI PAGO</b>.<br>3. Envía <b>exactamente</b> el monto que te muestra (con sus decimales, ej. 7.0003) por red <b>BEP 20 (BSC)</b> a la dirección indicada.<br>4. Tienes <b>5 minutos</b>. Tu saldo se acredita solo en segundos; no necesitas pegar ningún ID.',acts:[['Ir a depositar','go:usdt']]},
    {id:'monto',k:['decimal','monto exacto','por que 0.000','exacto','diferente monto','otro monto','envie otro','envie menos','envie mas'],a:'El pequeño decimal (de 0.0001 a 0.0009) es lo que identifica <b>tu</b> pago. Si envías otro monto el sistema no lo reconoce solo. En ese caso usa <b>Reportar para revisión manual</b> en la pantalla del depósito: verificamos en la red que el dinero llegó a nuestra wallet.'},
    {id:'manual',k:['txid','id de transferencia','hash','revision manual','reportar','pague y no','no se acredito','no llego','no me llego'],a:'Si pagaste y no se acredita:<br>1. Espera 1–2 minutos (la red necesita confirmaciones).<br>2. Toca <b>YA PAGUÉ · VERIFICAR AHORA</b>. No necesitas ID: el sistema busca tu pago solo. Si quieres, también puedes pegar el <b>ID de transferencia</b> (empieza con 0x) para que sea más rápido.<br>3. Si pagaste otro monto, usa <b>Reportar para revisión manual</b>. Solo se acepta si la transferencia llegó a la wallet oficial de Lester Tienda.',acts:[['Reportar mi pago','humano'],['Ir a depositar USDT','go:usdt']]},
@@ -7518,26 +7534,33 @@ async function confirmarEnvioUSDTDep(){
    ,{id:'agotado',k:['agotado','agotada','sin stock','no hay stock','no puedo comprar','se agoto','paquete oscuro','etiqueta roja','no se puede abrir'],a:'Cuando un <b>paquete</b> o un <b>juego</b> sale oscuro con la etiqueta roja <b>AGOTADO</b>, no se puede comprar por ahora. Elige otro paquete o vuelve más tarde: Lester lo reactiva en cuanto hay disponibilidad.',acts:[['Ver juegos','go:juegos']]}
   ,{id:'idcheck',k:['id invalido','id no valido','id incorrecto','verificando id','cuenta verificada','valida mi id','introduce un id','falta tu id','mi id no','id de jugador','donde veo mi id','que id'],a:'<b>Tu ID de jugador</b><br>Al escribirlo, la página lo verifica sola:<br>🟢 <b>Cuenta verificada</b> + el nombre de la cuenta: todo bien.<br>🔴 <b>Por favor introduce un ID válido</b>: revísalo, es el número de tu perfil en el juego.<br>Si tocas confirmar sin ID, te marco el campo para que lo escribas. En Roblox se pide tu <b>correo</b> en lugar del ID.'}
   ,{id:'cancelarpago',k:['cancelar pago','cancelar orden','cancelar deposito','se vencio','vencio','expiro','expirado','5 minutos','cuenta regresiva','tiempo para pagar'],a:'Cada pago USDT vale <b>5 minutos</b> y solo puedes tener <b>uno activo</b>. Si te arrepientes toca <b>CANCELAR PAGO EN ESPERA</b>; si se vence, genera uno nuevo en Wallet → USDT. Si ya enviaste el dinero justo antes de vencer, usa <b>YA PAGUÉ · VERIFICAR AHORA</b>.',acts:[['Ir a depositar','go:usdt']]}
-  ,{id:'minimo',k:['minimo','monto minimo','cuanto minimo','minimo para depositar','menos de'],a:'El depósito mínimo por USDT es de <b>0.5 USDT</b>. Los paquetes de cada juego tienen su propio precio y lo ves al entrar al juego.'}
+  ,{id:'minimo',k:['minimo','monto minimo','cuanto minimo','minimo para depositar','menos de'],a:'Se compra desde <b>1 ORO LT</b>, en números enteros (1, 2, 3...). Los paquetes de cada juego tienen su propio precio en ORO LT.'}
   ,{id:'favoritos',k:['favorito','favoritos','estrella'],a:'Toca la <b>⭐</b> de la tarjeta de un juego para guardarlo en <b>Favoritos</b>. Arriba, en la lista de juegos, el botón <b>Favoritos</b> te muestra solo los tuyos.',acts:[['Ver juegos','go:juegos']]}
   ,{id:'descuento',k:['descuento','5%','promo','promocion','barato','rebaja'],a:'Cuando un amigo se registra con tu enlace de <b>Referidos</b> ganas un <b>descuento de 5%</b> para una recarga pagando con <b>USDT</b> (en cualquier juego). Se aplica solo al elegir el paquete. Además, con <b>5 referidos válidos</b> te regalamos la primera oferta del juego que elijas.',acts:[['Ir a Referidos','go:referidos']]}
-  ,{id:'precios',k:['precio','precios','cuanto cuesta','cuanto vale','paquete','paquetes','ofertas','oferta'],a:'Los precios los ves al entrar a cada juego. Elige el método de pago arriba: <b>USDT</b> o <b>Saldo Móvil</b>, y los paquetes cambian de precio según el método. Los que salen <b>AGOTADO</b> no se pueden elegir por ahora.',acts:[['Ver juegos','go:juegos']]}
-  ,{id:'pago',k:['metodo de pago','metodos de pago','formas de pago','como pago','con que pago','pagar'],a:'Puedes pagar con <b>USDT</b> (saldo en dólares digitales, red BEP 20) o con <b>Saldo Móvil</b>. Primero depositas en <b>Wallet</b> y luego usas ese saldo para recargar tus juegos.',acts:[['Ir a Wallet','go:wallet']]}
+  ,{id:'precios',k:['precio','precios','cuanto cuesta','cuanto vale','paquete','paquetes','ofertas','oferta'],a:'Los precios los ves al entrar a cada juego. Los precios salen en <b>ORO LT</b>. Si te falta, al tocar el paquete te llevo a comprarlo. Los que salen <b>AGOTADO</b> no se pueden elegir por ahora.',acts:[['Ver juegos','go:juegos']]}
+  ,{id:'pago',k:['metodo de pago','metodos de pago','formas de pago','como pago','con que pago','pagar'],a:'Todas las recargas se pagan con <b>ORO LT</b>. Lo compras en <b>Wallet</b> con <b>USDT</b> (red BEP 20) o con <b>Saldo Móvil</b>; la tarjeta llega pronto.',acts:[['Ir a Wallet','go:wallet']]}
   ,{id:'perfil',k:['perfil','datos personales','foto de perfil','cambiar foto','cambiar nombre','eliminar cuenta','borrar cuenta'],a:'En <b>Perfil</b> puedes: ver y editar tus <b>Datos Personales</b> y foto, cambiar el <b>tema</b>, <b>transferir saldo</b>, cambiar tu <b>contraseña</b>, leer la <b>información legal</b> y, si lo necesitas, <b>eliminar tu cuenta</b> (no se puede deshacer).',acts:[['Ir a Perfil','go:perfil']]}
   ,{id:'legal',k:['terminos','privacidad','condiciones','politica','politicas','legal'],a:'Los <b>Términos</b>, la <b>Privacidad</b>, las políticas de <b>Pagos</b> y <b>Reembolsos</b> están en <b>Perfil → Información Legal</b> y al final de la pantalla de Inicio.',acts:[['Ir a Perfil','go:perfil']]}
-  ,{id:'instalar',k:['instalar','descargar app','la app','icono','pantalla de inicio','como instalo','pwa'],a:'Puedes instalar Lester Tienda como una app: toca el botón de <b>descarga ⬇️</b> arriba a la derecha y sigue los pasos. Así la abres desde tu pantalla de inicio, sin navegador.'}
+  ,{id:'instalar',k:['instalar','descargar app','la app','icono','pantalla de inicio','como instalo','pwa'],a:'Puedes instalar Lester Tienda como una app: toca el botón de <b>descarga ⬇️</b> arriba a la derecha, junto a la campana y sigue los pasos. Así la abres desde tu pantalla de inicio, sin navegador.'}
   ,{id:'proximamente',k:['mobile legends','mlbb','arena breakout','proximamente','que juegos hay','juegos disponibles','otros juegos','mas juegos'],a:'Juegos disponibles: <b>Free Fire</b>, <b>Blood Strike</b>, <b>Roblox</b> y <b>Call of Duty Mobile</b>. <b>Mobile Legends</b> y <b>Arena Breakout</b> salen como <b>Próximamente</b>. Si un juego aparece <b>AGOTADO</b>, es temporal.',acts:[['Ver juegos','go:juegos']]}
   ,{id:'rb2',k:['correo de roblox','email roblox','canjear robux','como canjeo'],a:'En <b>Roblox</b> escribes tu <b>correo</b> (no el ID). La página te dice al momento si el correo es válido. Al completar la recarga ves las instrucciones para canjear tus Robux en la misma pantalla.',acts:[['Ver juegos','go:juegos']]}
   ,{id:'barra',k:['flecha','volver','atras','donde estoy','regresar'],a:'En cada pantalla interna arriba hay una barra con la <b>flecha ←</b> y el <b>nombre de donde estás</b> (por ejemplo "Depósito USDT"). Toca la flecha para regresar.'}
+
+  ,{id:'oro',k:['oro lt','que es el oro','que es oro','moneda de la tienda','la moneda','moneda unica','nueva moneda'],a:'<b>ORO LT 🪙 es la moneda única de Lester Tienda.</b><br>• Con ORO LT pagas <b>todas</b> las recargas (Free Fire, Blood Strike, Roblox, Call of Duty...).<br>• La compras en <b>Wallet</b> con <b>USDT</b> (red BEP 20) o con <b>Saldo Móvil</b>.<br>• 1 ORO LT cuesta <b>1 USDT</b>; con Saldo Móvil el precio en saldo lo ves en Wallet.<br>• Tu cantidad sale arriba, junto a la moneda, y en tu <b>Perfil</b>.<br>• Se compra desde <b>1 ORO LT</b>, en números enteros.',acts:[['Comprar ORO LT','go:wallet']]}
+  ,{id:'comprar_oro',k:['comprar oro','como compro oro','como compro el oro','como consigo oro','conseguir oro','obtener oro','recargar oro','comprar oro lt','no tengo oro','sin oro','me falta oro','falta oro','no me alcanza','saldo insuficiente','comprar saldo','como deposito'],a:'<b>Comprar ORO LT paso a paso</b><br>1. Entra a <b>Wallet</b>.<br>2. En el panel <b>ORO LT</b> elige cuántos quieres con <b>−</b> / <b>+</b> o con los botones <b>1, 5, 10, 25, 50</b> (mínimo 1).<br>3. Mira cuánto <b>Pagas</b> y cuánto <b>Recibes</b>.<br>4. En <b>¿Cómo vas a pagar?</b> elige <b>USDT BEP 20</b> o <b>Saldo Móvil</b> (Tarjeta sale pronto).<br>5. Toca <b>Pagar</b> y confirma.<br>6. <b>USDT:</b> envía exactamente el monto que te muestra en 5 minutos. <b>Saldo Móvil:</b> haz la transferencia que te indica y sube la captura. Ambos se acreditan solos.<br>Tu ORO LT aparece arriba en la tienda.',acts:[['Ir a Wallet','go:wallet']]}
+  ,{id:'usar_oro',k:['pagar recarga con oro','usar oro','gastar oro','pagar con oro','precio en oro','cuanto oro','paquete cuesta','oro no alcanza','que pasa si no tengo oro'],a:'<b>Recargar con ORO LT</b><br>1. Entra a un juego y elige el <b>paquete</b>: su precio sale en ORO LT.<br>2. Si tienes suficiente, se descuenta y la recarga se envía.<br>3. Si te falta, al tocar el paquete te llevo a <b>comprar ORO LT</b> por lo que cuesta ese paquete.<br>Sigues el proceso en <b>Pedidos</b>.',acts:[['Ver juegos','go:juegos'],['Comprar ORO LT','go:wallet']]}
+  ,{id:'buscar',k:['lupa','buscador','buscar juego','buscar un juego','como busco','encontrar juego'],a:'La <b>lupa 🔍</b> de arriba es el buscador: escribe el nombre de un juego y te muestra los <b>disponibles</b> (con su etiqueta DISPONIBLE, AGOTADO o PRÓXIMAMENTE). Tócalo y entras directo.'}
+  ,{id:'campana',k:['campana','campanita','notificacion','notificaciones','avisos','alertas','me avisan','me llega'],a:'La <b>campana 🔔</b> de arriba guarda tus <b>notificaciones</b>: avisos de Lester, y cuando tu recarga o depósito se entrega, queda en revisión o se cancela. Si tienes algo sin leer, aparece un numerito rojo.'}
+  ,{id:'novedades',k:['novedad','novedades','que hay de nuevo','que hay nuevo','nuevo en la app','nuevas funciones','actualizacion','actualizaciones','que cambio','que cambios','que mejoras','que trae'],a:'<b>Lo nuevo en Lester Tienda ✨</b><br>🪙 <b>ORO LT</b>: moneda única para pagar todas las recargas.<br>💳 <b>Wallet nueva</b>: eliges cantidad y pagas con USDT BEP 20 o Saldo Móvil, ambos automáticos.<br>🔍 <b>Lupa</b> para buscar juegos.<br>🔔 <b>Campana</b> con tus notificaciones.<br>⬇️ <b>Descarga</b> para instalar la app.<br>🎮 Juegos: Free Fire, Blood Strike, Roblox y Call of Duty; los <b>AGOTADO</b> salen en rojo.<br>⬅️ Barra con flecha para volver en cada pantalla.<br>💬 Chat de soporte aquí mismo.',acts:[['Comprar ORO LT','go:wallet'],['Ver juegos','go:juegos']]}
   ];
   /* sugerencias relacionadas que salen dentro del chat después de cada respuesta */
-  var BASE=['guia','recargar','usdt','pedidos','ref','soporte'];
-  var REL={guia:['recargar','usdt','pedidos','ayuda'],registro:['login','recargar','usdt'],login:['perfil','soporte'],ff:['idcheck','usdt','precios','pedidos'],bs:['idcheck','usdt','pedidos'],cd:['idcheck','usdt','precios','agotado'],rb:['rb2','usdt','pedidos'],rb2:['usdt','pedidos'],
+  var BASE=['novedades','comprar_oro','recargar','pedidos','ref','soporte'];
+  var REL={oro:['comprar_oro','usar_oro','novedades'],comprar_oro:['usdt','saldo','usar_oro','minimo'],usar_oro:['comprar_oro','agotado','pedidos'],buscar:['campana','recargar','novedades'],campana:['pedidos','instalar','novedades'],novedades:['comprar_oro','buscar','campana','instalar'],guia:['recargar','usdt','pedidos','ayuda'],registro:['login','recargar','usdt'],login:['perfil','soporte'],ff:['idcheck','usdt','precios','pedidos'],bs:['idcheck','usdt','pedidos'],cd:['idcheck','usdt','precios','agotado'],rb:['rb2','usdt','pedidos'],rb2:['usdt','pedidos'],
     recargar:['idcheck','usdt','precios','agotado'],ff:['idcheck','usdt','precios','pedidos'],usdt:['monto','cancelarpago','manual','minimo'],monto:['manual','usdt','soporte'],manual:['cancelarpago','soporte','seguridad'],saldo:['usdt','pedidos','precios'],pedidos:['reembolso','soporte','recargar'],reembolso:['pedidos','soporte'],
     ref:['descuento','recargar','usdt'],tema:['perfil','instalar'],transferir:['perfil','pedidos'],opinion:['recargar','soporte'],ayuda:['guia','recargar'],soporte:['usdt','manual','seguridad'],seguridad:['usdt','manual','soporte'],
     agotado:['precios','proximamente','soporte'],idcheck:['recargar','rb2','soporte'],cancelarpago:['usdt','manual'],minimo:['usdt','pago'],favoritos:['proximamente','recargar'],descuento:['ref','precios'],precios:['pago','agotado','recargar'],pago:['usdt','saldo','minimo'],
     perfil:['tema','transferir','legal'],legal:['perfil','seguridad'],instalar:['guia','perfil'],proximamente:['favoritos','recargar','agotado'],barra:['guia','recargar']};
-  var TIT={guia:'Guía paso a paso',recargar:'Recargar un juego',ff:'Recargar Free Fire',usdt:'Depositar USDT',pedidos:'Mis pedidos',ref:'Referidos',soporte:'Hablar con Lester',monto:'¿Por qué el decimal?',manual:'Pagué y no llegó',cancelarpago:'Cancelar o vence el pago',minimo:'Monto mínimo',
+  var TIT={oro:'¿Qué es ORO LT?',comprar_oro:'Cómo comprar ORO LT',usar_oro:'Recargar con ORO LT',buscar:'Buscar juegos 🔍',campana:'Notificaciones 🔔',novedades:'Lo nuevo ✨',guia:'Guía paso a paso',recargar:'Recargar un juego',ff:'Recargar Free Fire',usdt:'Depositar USDT',pedidos:'Mis pedidos',ref:'Referidos',soporte:'Hablar con Lester',monto:'¿Por qué el decimal?',manual:'Pagué y no llegó',cancelarpago:'Cancelar o vence el pago',minimo:'Monto mínimo',
     idcheck:'Mi ID de jugador',precios:'Precios y paquetes',agotado:'Qué es AGOTADO',descuento:'Descuento 5%',pago:'Métodos de pago',perfil:'Mi perfil',legal:'Términos y políticas',instalar:'Instalar la app',proximamente:'Juegos disponibles',favoritos:'Favoritos ⭐',
     registro:'Crear cuenta',login:'Contraseña y acceso',bs:'Blood Strike',cd:'Call of Duty Mobile',rb:'Roblox',rb2:'Correo de Roblox',saldo:'Depositar Saldo Móvil',reembolso:'Reembolsos',tema:'Modo claro / oscuro',transferir:'Transferir saldo',opinion:'Opiniones',ayuda:'Ayuda en cada pantalla',seguridad:'¿Es seguro?',barra:'Flecha de volver'};
   function norm(x){return String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
@@ -7811,7 +7834,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
 (function(){
   var TIPS={
    'seccion-juegos-selector':{sel:'#gx-grid',t:'Elige tu juego',x:'Toca Free Fire, Blood Strike, Roblox o Call of Duty para ver sus ofertas. Los que dicen PRÓXIMAMENTE aún no están disponibles.'},
-   'seccion-freefire':{sel:'#player-id-input',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Free Fire (solo números). Luego elige cómo pagar (USDT o Saldo) y toca el paquete que quieres.'},
+   'seccion-freefire':{sel:'#player-id-input',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Free Fire (solo números). Luego toca el paquete que quieres (se paga con ORO LT).'},
    'seccion-bloodstrike':{sel:'#player-id-input-bs',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Blood Strike (solo números). Luego elige cómo pagar y toca el paquete.'},
    'seccion-codm':{sel:'#player-id-input-cd',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Call of Duty Mobile (solo números). Luego elige cómo pagar y toca el paquete de CP.'},
    'seccion-roblox':{sel:'#player-id-input-rb',t:'Tu correo de Roblox',x:'Escribe aquí el correo que se te pide para canjear los Robux. Luego elige cómo pagar y toca el paquete.'},
@@ -7962,7 +7985,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
   var MAPA = {
     'seccion-juegos-selector': 'Juegos', 'seccion-freefire': 'Free Fire', 'seccion-bloodstrike': 'Blood Strike', 'seccion-roblox': 'Roblox', 'seccion-codm': 'Call of Duty Mobile',
     'seccion-comprobante-recarga': 'Comprobante de recarga', 'seccion-deposito-detalle': 'Detalle del depósito', 'seccion-opiniones': 'Opiniones', 'seccion-opinion-nueva': 'Deja tu opinión',
-    'seccion-wallet-usdt': 'Depósito USDT', 'seccion-wallet-saldo': 'Depósito Saldo Móvil', 'seccion-ceo': 'Panel CEO',
+    'seccion-wallet-usdt': 'Depósito USDT', 'seccion-wallet-saldo': 'Depósito Saldo Móvil', 'seccion-ceo': 'Panel CEO', 'seccion-ceo-menu': 'Panel CEO',
     'sub-datos': 'Datos Personales', 'sub-apariencia': 'Apariencia', 'sub-transferir': 'Transferir Saldo', 'sub-password': 'Cambiar Contraseña', 'sub-eliminar': 'Eliminar Cuenta', 'sub-legal': 'Información Legal', 'sub-legal-detalle': 'Información Legal'
   };
   function limpio(t) { return String(t || '').replace(/\s+/g, ' ').trim(); }
@@ -8958,6 +8981,130 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
    var j=await r.json().catch(function(){return {};});
    if(r.ok&&j.ok){mostrarNotificacion('Precios guardados');ltCargarPrecios();}else mostrarNotificacion(j.mensaje||'No se pudo guardar. Entra con tu cuenta de CEO.');
   }catch(e){mostrarNotificacion('Mala internet. Intenta de nuevo.');}
+ };
+})();
+</script>
+
+<style id="lt-hdr-css">
+.nav-top-icon-btn.lt-sb svg,.nav-top-icon-btn.lt-dl svg{animation:none}
+.nav-top-icon-btn.lt-sb::after{display:none}
+.nav-top-icon-btn.lt-dl svg{stroke:#35e0b8 !important;stroke-width:2.2}
+:root[data-theme="light"] .nav-top-icon-btn.lt-dl svg{stroke:#fff !important}
+.nav-top-icon-btn.lt-sb svg{width:19px;height:19px}
+.lt-bell{position:relative}
+.lt-badge{position:absolute;top:-3px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:linear-gradient(180deg,#ff6b6b,#ef4444);color:#fff;font:900 .6rem/17px system-ui,sans-serif;font-style:normal;text-align:center;border:2px solid var(--bg-main,#0a0f1e);box-sizing:content-box;display:none}
+.lt-badge.on{display:block}
+.lt-ov{position:fixed;inset:0;z-index:99990;background:rgba(3,7,18,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;padding:max(12px,env(safe-area-inset-top)) 12px 12px}
+.lt-ov.on{display:flex}
+.lt-ov-box{width:100%;max-width:480px;max-height:calc(100vh - 28px);display:flex;flex-direction:column;border-radius:22px;border:1.5px solid rgba(80,140,255,.55);background:linear-gradient(180deg,#121a34,#0a1024);box-shadow:0 18px 50px rgba(0,0,0,.6);overflow:hidden;animation:ltOvIn .22s ease-out}
+@keyframes ltOvIn{from{opacity:0;transform:translateY(-10px) scale(.98)}to{opacity:1;transform:none}}
+:root[data-theme="light"] .lt-ov-box{background:linear-gradient(180deg,#fff,#eaf0ff);color:#0b1330;border-color:rgba(36,87,255,.4)}
+.lt-ov-h{display:flex;align-items:center;gap:10px;padding:12px 12px 10px}
+.lt-ov-h h3{flex:1;font-size:1.05rem;font-weight:900;display:flex;align-items:center;gap:8px}
+.lt-ov-x{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border-color);background:rgba(255,255,255,.06);color:inherit;font-size:1.1rem;font-weight:900;cursor:pointer}
+.lt-s-in{flex:1;display:flex;align-items:center;gap:8px;height:42px;padding:0 12px;border-radius:14px;border:1.5px solid rgba(80,140,255,.5);background:rgba(255,255,255,.05)}
+.lt-s-in svg{width:18px;height:18px;fill:none;stroke:#7cc4ff;stroke-width:2.2;stroke-linecap:round;flex:0 0 auto}
+.lt-s-in input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:inherit;font:700 .95rem system-ui,sans-serif}
+.lt-ov-l{overflow:auto;padding:4px 12px 14px;display:flex;flex-direction:column;gap:9px;-webkit-overflow-scrolling:touch}
+.lt-ov-sec{font-size:.62rem;font-weight:900;letter-spacing:1px;color:var(--text-muted);margin:6px 2px 0;text-transform:uppercase}
+.lt-g{display:flex;align-items:center;gap:12px;padding:10px;border-radius:16px;border:1.5px solid var(--border-color);background:rgba(255,255,255,.04);cursor:pointer;text-align:left;color:inherit;width:100%;font-family:inherit}
+.lt-g:active{transform:scale(.985)}
+.lt-g img{width:50px;height:50px;border-radius:13px;object-fit:cover;flex:0 0 auto;background:#0b1128}
+.lt-g b{display:block;font-size:.95rem}.lt-g small{display:block;color:var(--text-muted);font-size:.7rem;font-weight:700;margin-top:2px}
+.lt-g .lt-st{margin-left:auto;font-size:.55rem;font-weight:900;letter-spacing:.7px;padding:4px 8px;border-radius:7px;flex:0 0 auto}
+.lt-st.ok{color:#04271d;background:linear-gradient(180deg,#4df0ae,#1fcf87)}
+.lt-st.ag{color:#fff;background:linear-gradient(180deg,#ff8a8a,#ef4444)}
+.lt-st.px{color:#3b2300;background:linear-gradient(180deg,#ffd45a,#f59e0b)}
+.lt-g.dim{opacity:.6}
+.lt-n{display:flex;gap:11px;padding:11px;border-radius:16px;border:1.5px solid var(--border-color);background:rgba(255,255,255,.04);position:relative}
+.lt-n.nuevo{border-color:rgba(77,141,255,.8);background:rgba(47,107,255,.10)}
+.lt-n.nuevo::after{content:"";position:absolute;top:10px;right:10px;width:9px;height:9px;border-radius:50%;background:#4d8dff;box-shadow:0 0 8px #4d8dff}
+.lt-n-i{width:38px;height:38px;border-radius:12px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:900;color:#fff}
+.lt-n-i.v{background:linear-gradient(150deg,#1fcf87,#0f8f5f)}.lt-n-i.r{background:linear-gradient(150deg,#ff7a7a,#d63a3a)}.lt-n-i.a{background:linear-gradient(150deg,#ffc53d,#e08a06)}.lt-n-i.m{background:linear-gradient(150deg,#4d8dff,#2347c8)}
+.lt-n b{display:block;font-size:.86rem;padding-right:16px}.lt-n small{display:block;color:var(--text-muted);font-size:.7rem;font-weight:700;margin-top:3px;line-height:1.35}
+.lt-vacio{text-align:center;color:var(--text-muted);padding:26px 10px;font-weight:700;font-size:.85rem}
+#lt-ceo-modal .lt-box input{width:100%;margin:10px 0 4px;padding:12px;border-radius:12px;border:1.5px solid rgba(80,140,255,.5);background:rgba(255,255,255,.06);color:inherit;font:700 1rem system-ui,sans-serif;outline:0}
+#lt-ceo-err{color:#ff6b6b;font-size:.75rem;font-weight:800;min-height:1.1em;margin-bottom:8px}
+</style>
+<div id="lt-search" class="lt-ov" onclick="if(event.target===this)ltCerrarOv()"><div class="lt-ov-box">
+ <div class="lt-ov-h"><div class="lt-s-in"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input id="lt-s-q" type="search" placeholder="Buscar juego..." autocomplete="off" oninput="ltBuscarPinta()"></div><button class="lt-ov-x" onclick="ltCerrarOv()" aria-label="Cerrar">✕</button></div>
+ <div class="lt-ov-l" id="lt-s-list"></div></div></div>
+<div id="lt-campana" class="lt-ov" onclick="if(event.target===this)ltCerrarOv()"><div class="lt-ov-box">
+ <div class="lt-ov-h"><h3>🔔 Notificaciones</h3><button class="lt-ov-x" onclick="ltCerrarOv()" aria-label="Cerrar">✕</button></div>
+ <div class="lt-ov-l" id="lt-n-list"></div></div></div>
+<div id="lt-ceo-modal" onclick="if(event.target===this)ltCeoCerrar()" style="position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:20px">
+ <div class="lt-box" style="width:100%;max-width:340px;border-radius:20px;padding:20px;background:linear-gradient(180deg,#141c38,#0b1128);border:1.5px solid rgba(80,140,255,.5);color:#fff;text-align:center">
+  <h3 style="font-weight:900;margin-bottom:4px">Acceso CEO</h3><p style="font-size:.78rem;opacity:.7">Escribe tu contraseña</p>
+  <input id="lt-ceo-pass" type="password" autocomplete="current-password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')ltCeoEntrar()">
+  <div id="lt-ceo-err"></div>
+  <button id="lt-ceo-ok" onclick="ltCeoEntrar()" style="width:100%;padding:13px;border:0;border-radius:13px;background:linear-gradient(180deg,#4d8dff,#2f6bff);color:#fff;font-weight:900;font-size:.95rem;cursor:pointer;margin-bottom:8px">Entrar</button>
+  <button onclick="ltCeoCerrar()" style="width:100%;padding:11px;border:0;border-radius:13px;background:rgba(255,255,255,.08);color:inherit;font-weight:800;cursor:pointer">Cancelar</button>
+ </div></div>
+<script>
+(function(){
+ function $(i){return document.getElementById(i);}
+ function nz(x){return String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+ function esc2(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+ function leer(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}}
+ function guardar(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+ window.ltCerrarOv=function(){['lt-search','lt-campana'].forEach(function(i){var e=$(i);if(e)e.classList.remove('on');});};
+ /* ---- BUSCADOR DE JUEGOS ---- */
+ window.ltBuscarAbrir=function(){ltCerrarOv();$('lt-search').classList.add('on');$('lt-s-q').value='';ltBuscarPinta();setTimeout(function(){try{$('lt-s-q').focus();}catch(e){}},120);};
+ window.ltBuscarPinta=function(){
+  var q=nz($('lt-s-q').value).trim(),ord=(typeof JUEGOS_ORDEN!=='undefined'?JUEGOS_ORDEN:[]),nom=(typeof NOMBRES_JUEGOS!=='undefined'?NOMBRES_JUEGOS:{});
+  var info={freefire:'Diamantes · recarga por ID',blood:'BC · recarga por ID',roblox:'Robux · por correo',codm:'CP · recarga por ID',mobilelegends:'Diamantes',arenabreakout:'Bonds'};
+  var on=[],px=[];
+  ord.forEach(function(id){
+   var n=nom[id]||id; if(q&&nz(n+' '+(info[id]||'')).indexOf(q)<0) return;
+   var im=document.querySelector('.gx-card[data-juego="'+id+'"] img'),src=im?(im.currentSrc||im.src):'';
+   var act=true,ag=false;try{act=juegoActivo(id);ag=juegoAgotado(id);}catch(e){}
+   var h='<button class="lt-g'+(act?'':' dim')+'" onclick="ltBuscarIr(\''+id+'\')">'+(src?'<img src="'+esc2(src)+'" alt="">':'<img alt="">')+'<div><b>'+esc2(n)+'</b><small>'+esc2(info[id]||'')+'</small></div><span class="lt-st '+(!act?'px':ag?'ag':'ok')+'">'+(!act?'PRÓXIMAMENTE':ag?'AGOTADO':'DISPONIBLE')+'</span></button>';
+   (act?on:px).push(h);
+  });
+  var h='';
+  if(on.length) h+='<div class="lt-ov-sec">Juegos disponibles</div>'+on.join('');
+  if(px.length) h+='<div class="lt-ov-sec">Próximamente</div>'+px.join('');
+  $('lt-s-list').innerHTML=h||'<div class="lt-vacio">No encontré ese juego.<br>Prueba con Free Fire, Roblox, Blood Strike...</div>';
+ };
+ window.ltBuscarIr=function(id){ltCerrarOv();try{if(typeof cambiarSeccion==='function'&&seccionActual!=='inicio'){}}catch(e){}setTimeout(function(){try{tocarJuego(id);}catch(e){}},60);};
+ /* ---- CAMPANA ---- */
+ function mios(){
+  var u=null;try{u=usuarioActual;}catch(e){} if(!u) return [];
+  var mail=String(u.correo||'').toLowerCase(),nom=String(u.nombre||'').toLowerCase(),L=[];
+  try{(tiendaConfig.notificaciones||[]).forEach(function(n){var p=String(n.para||'todos').toLowerCase();if(p==='todos'||p===nom)L.push({k:'n:'+n.id,t:Date.parse(n.fecha)||0,ic:'m',tx:'📢',ti:'Aviso de Lester Tienda',de:n.mensaje});});}catch(e){}
+  try{(solicitudesGlobales.recargas||[]).forEach(function(r){if(String(r.correo||'').toLowerCase()!==mail)return;
+   var e=String(r.estado||''),c=/complet|aprob/i.test(e)?'v':/cancel|rechaz/i.test(e)?'r':'a',nm=r.juego||'Recarga';
+   L.push({k:'r:'+r.id+':'+e,t:Date.parse(r.fecha)||r.id||0,ic:c,tx:c==='v'?'✓':c==='r'?'✕':'…',ti:c==='v'?'Recarga entregada':c==='r'?'Recarga cancelada':'Recarga en proceso',de:nm+' · '+(r.detalle||'')+(c==='r'?' · el importe vuelve a tu saldo':'')});});}catch(e){}
+  try{(solicitudesGlobales.depositos||[]).forEach(function(d){if(String(d.correo||'').toLowerCase()!==mail)return;
+   var e=String(d.estado||''),c=/complet|aprob|acredit/i.test(e)?'v':/cancel|rechaz/i.test(e)?'r':'a';
+   L.push({k:'d:'+d.id+':'+e,t:d.id||0,ic:c,tx:c==='v'?'✓':c==='r'?'✕':'…',ti:c==='v'?'ORO LT acreditado':c==='r'?'Depósito rechazado':'Depósito en revisión',de:(d.monto!=null?d.monto+' ':'')+String(d.moneda||'').toUpperCase()});});}catch(e){}
+  L.sort(function(a,b){return b.t-a.t;});
+  return L.slice(0,25);
+ }
+ function noLeidas(L){var v=leer('lt_bell_vistas',null);if(v===null){guardar('lt_bell_vistas',L.map(function(x){return x.k;}));return 0;}var S={};v.forEach(function(k){S[k]=1;});return L.filter(function(x){return !S[x.k];}).length;}
+ window.ltBellBadge=function(){var b=$('lt-bell-n');if(!b)return;var n=0;try{n=noLeidas(mios());}catch(e){}b.textContent=n>9?'9+':n;b.classList.toggle('on',n>0);};
+ window.ltCampanaAbrir=function(){
+  ltCerrarOv();var L=mios(),v=leer('lt_bell_vistas',[]),S={};v.forEach(function(k){S[k]=1;});
+  $('lt-n-list').innerHTML=L.length?L.map(function(x){return '<div class="lt-n'+(S[x.k]?'':' nuevo')+'"><div class="lt-n-i '+x.ic+'">'+x.tx+'</div><div><b>'+esc2(x.ti)+'</b><small>'+esc2(x.de)+'</small></div></div>';}).join(''):'<div class="lt-vacio">🔔<br>Aún no tienes notificaciones.<br>Aquí verás el estado de tus recargas, depósitos y los avisos de Lester.</div>';
+  $('lt-campana').classList.add('on');
+  guardar('lt_bell_vistas',L.map(function(x){return x.k;}).concat(v).slice(0,300));
+  setTimeout(ltBellBadge,50);
+ };
+ setInterval(function(){if(!document.hidden)ltBellBadge();},8000);setTimeout(ltBellBadge,2500);
+ /* ---- CEO oculto (botón BONUS) ---- */
+ window.ltBonusToca=function(){
+  var ceo=false;try{ceo=esCEOUsuario();}catch(e){}
+  if(!ceo){try{cambiarSeccion('referidos',document.getElementById('nav-btn-referidos'));}catch(e){}return;}
+  $('lt-ceo-pass').value='';$('lt-ceo-err').textContent='';$('lt-ceo-modal').style.display='flex';setTimeout(function(){$('lt-ceo-pass').focus();},100);
+ };
+ window.ltCeoCerrar=function(){$('lt-ceo-modal').style.display='none';$('lt-ceo-pass').value='';};
+ window.ltCeoEntrar=async function(){
+  var p=$('lt-ceo-pass').value;if(!p){$('lt-ceo-err').textContent='Escribe la contraseña';return;}
+  var b=$('lt-ceo-ok');b.disabled=true;b.textContent='Verificando...';
+  var ok=false;try{ok=await verificarClaveAdmin(p);}catch(e){}
+  b.disabled=false;b.textContent='Entrar';
+  if(!ok){$('lt-ceo-err').textContent='Contraseña incorrecta';$('lt-ceo-pass').value='';return;}
+  ltCeoCerrar();mostrarVista('seccion-ceo-menu');verificarAccesoCEO();
  };
 })();
 </script>
