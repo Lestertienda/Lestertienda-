@@ -1643,7 +1643,64 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 :root[data-theme="light"] .etq-pill { filter: brightness(.58) saturate(1.6); }
 :root[data-theme="light"] .wallet-card h3, :root[data-theme="light"] .wallet-card small { color: #0b1530 !important; }
 :root[data-theme="light"] .wallet-card small { color: #44557f !important; }
-</style>
+
+        /* ===== Saldo Móvil automático ===== */
+        .sm-hide { display: none !important; }
+        .sm-card { background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 18px; padding: 1.3rem; box-shadow: 0 0 25px rgba(0,240,255,0.12); }
+        .sm-head { display: flex; align-items: center; gap: 12px; padding-bottom: .9rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+        .sm-head-ico { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--accent-glow); background: rgba(0,102,255,.18); border: 2px solid var(--accent-glow); }
+        .sm-head h3 { font-size: .98rem; font-weight: 900; color: var(--text-main); line-height: 1.2; }
+        .sm-head span { font-size: .7rem; color: var(--text-muted); font-weight: 600; }
+        .sm-steps { list-style: none; display: flex; gap: 6px; margin: 0 0 1.2rem; padding: 0; }
+        .sm-steps li { flex: 1; display: flex; align-items: center; gap: 7px; font-size: .66rem; font-weight: 800; color: var(--text-muted); letter-spacing: .2px; padding: 7px 8px; border-radius: 10px; background: var(--bg-main); border: 1px solid var(--border-color); min-width: 0; }
+        .sm-steps li i { font-style: normal; width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; font-size: .66rem; background: var(--border-color); color: var(--text-main); }
+        .sm-steps li span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sm-steps li.act { color: var(--text-main); border-color: var(--accent-glow); }
+        .sm-steps li.act i { background: var(--primary-blue); color: #fff; }
+        .sm-steps li.ok i { background: #10b981; color: #fff; }
+        .sm-steps li.ok { color: var(--text-main); }
+        .sm-help { display: block; margin-top: 6px; font-size: .68rem; color: var(--text-muted); line-height: 1.45; }
+        .sm-info { display: flex; gap: 10px; align-items: flex-start; margin-top: 1rem; padding: .8rem .9rem; border-radius: 12px; background: rgba(0,102,255,.10); border: 1px solid rgba(0,102,255,.35); color: var(--text-main); }
+        .sm-info svg { flex-shrink: 0; margin-top: 1px; color: var(--accent-glow); }
+        .sm-info p { font-size: .72rem; line-height: 1.5; color: var(--text-main); }
+        .sm-resumen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .sm-resumen > div { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: .55rem .6rem; text-align: center; min-width: 0; }
+        .sm-resumen small { display: block; font-size: .6rem; letter-spacing: .4px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 2px; }
+        .sm-resumen b { display: block; font-size: .82rem; color: var(--text-main); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sm-numero { font-weight: 900; font-size: 1.15rem; background: var(--bg-main); color: var(--accent-glow); text-align: center; letter-spacing: 1.5px; }
+        .sm-btn-sec { width: 100%; margin-top: .6rem; padding: .7rem; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: .8rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); transition: border-color .2s, transform .2s; }
+        .sm-btn-sec:hover { border-color: var(--accent-glow); }
+        .sm-link { display: block; width: 100%; margin-top: .9rem; background: none; border: none; color: var(--text-muted); font-size: .72rem; font-weight: 700; text-decoration: underline; cursor: pointer; padding: .3rem; }
+        .sm-lista { margin: 1rem 0 0; padding: 0 0 0 1.15rem; font-size: .75rem; color: var(--text-muted); line-height: 1.6; }
+        .sm-lista li { margin-bottom: 3px; }
+        .sm-lista b { color: var(--text-main); }
+        .sm-reqs { background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 12px; padding: .75rem .9rem; margin-bottom: .7rem; }
+        .sm-reqs b { font-size: .72rem; color: var(--text-main); display: block; margin-bottom: 4px; }
+        .sm-reqs ul { margin: 0; padding-left: 1.05rem; font-size: .7rem; color: var(--text-muted); line-height: 1.55; }
+        .sm-drop { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 1rem; border-radius: 12px; cursor: pointer; background: var(--bg-main); color: var(--text-main); border: 1.5px dashed var(--accent-glow); font-weight: 800; font-size: .82rem; }
+        .sm-drop svg { color: var(--accent-glow); }
+        #sm-prev { margin-top: .7rem; }
+        #sm-prev img { width: 100%; max-height: 240px; object-fit: contain; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-main); }
+        #sm-progreso { display: flex; align-items: center; gap: 10px; margin-top: .8rem; font-size: .76rem; color: var(--text-muted); font-weight: 700; }
+        .sm-spin { width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--border-color); border-top-color: var(--accent-glow); animation: smgira .8s linear infinite; flex-shrink: 0; }
+        @keyframes smgira { to { transform: rotate(360deg); } }
+        .sm-checks { list-style: none; margin: .8rem 0 0; padding: 0; display: grid; gap: 6px; }
+        .sm-checks li { display: flex; gap: 9px; align-items: flex-start; font-size: .73rem; line-height: 1.4; padding: .5rem .65rem; border-radius: 10px; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-main); }
+        .sm-checks li svg { flex-shrink: 0; margin-top: 1px; }
+        .sm-checks li.ok svg { color: #10b981; }
+        .sm-checks li.no { border-color: rgba(239,68,68,.6); background: rgba(239,68,68,.08); }
+        .sm-checks li.no svg { color: var(--error-color); }
+        .sm-checks li.na { color: var(--text-muted); }
+        .sm-err { margin-top: .7rem; padding: .7rem .85rem; border-radius: 10px; font-size: .74rem; line-height: 1.5; color: var(--error-color); background: rgba(239,68,68,.09); border: 1px solid rgba(239,68,68,.45); font-weight: 700; }
+        #sm-btn-pagar:disabled { opacity: .45; cursor: not-allowed; filter: grayscale(.4); transform: none; box-shadow: none; }
+        .sm-estado { text-align: center; padding: 1.2rem .5rem .4rem; }
+        .sm-estado-ico { width: 64px; height: 64px; margin: 0 auto .9rem; border-radius: 50%; display: grid; place-items: center; background: rgba(0,102,255,.14); border: 2px solid var(--accent-glow); color: var(--accent-glow); }
+        .sm-estado-ico.ok { background: rgba(16,185,129,.14); border-color: #10b981; color: #10b981; }
+        .sm-estado-ico.warn { background: rgba(245,158,11,.14); border-color: #f59e0b; color: #f59e0b; }
+        .sm-estado-ico .sm-spin { width: 30px; height: 30px; border-width: 4px; }
+        .sm-estado h4 { font-size: 1.02rem; font-weight: 900; color: var(--text-main); margin-bottom: .45rem; }
+        .sm-estado p { font-size: .76rem; line-height: 1.6; color: var(--text-muted); max-width: 30em; margin: 0 auto; }
+    </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -2403,49 +2460,110 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 </div>
             </div>
 
-            <!-- DETALLE WALLET SALDO MÓVIL -->
+            <!-- DETALLE WALLET SALDO MÓVIL (automático: SMS + captura) -->
             <div id="seccion-wallet-saldo" class="vista-sec" style="display: none;">
                 <div class="back-row">
-                    <button class="back-btn" onclick="cambiarSeccion('wallet', document.getElementById('nav-btn-wallet'))"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Billeteras</button>
+                    <button class="back-btn" onclick="smSalir()"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver a Billeteras</button>
                 </div>
 
-                <div style="background: var(--bg-card); border: 1.5px solid var(--accent-glow); border-radius: 18px; padding: 1.3rem; box-shadow: 0 0 25px rgba(0,240,255,0.15);">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem;">
-                        <div style="width: 38px; height: 38px; background: rgba(0, 102, 255, 0.2); border: 2px solid var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--accent-glow)"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                <div class="sm-card">
+                    <div class="sm-head">
+                        <div class="sm-head-ico">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
                         </div>
                         <div>
-                            <h3 style="font-size: 0.95rem; font-weight: 900; color: var(--text-main);">Saldo Móvil</h3>
-                            <span style="font-size: 0.68rem; color: #10b981; font-weight: bold;">Recarga rápida</span>
+                            <h3>Depósito de Saldo Móvil</h3>
+                            <span>Acreditación automática tras verificar tu transferencia</span>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Número Oficial para Recibir el Pago</label>
-                        <div class="form-control no-left-icon" id="wallet-numero-saldo-display" style="font-weight: 900; font-size: 1.1rem; background: var(--bg-main); color: var(--accent-glow); text-align: center; letter-spacing: 1px;"></div>
-                        <button class="btn-main" style="margin-top: 0.6rem; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color);" onclick="copiarNumeroWallet()">Copiar Número</button>
+                    <ol class="sm-steps" id="sm-steps">
+                        <li class="act" data-n="1"><i>1</i><span>Datos</span></li>
+                        <li data-n="2"><i>2</i><span>Pago</span></li>
+                        <li data-n="3"><i>3</i><span>Verificar</span></li>
+                    </ol>
+
+                    <!-- PASO 1: datos -->
+                    <div id="sm-p1">
+                        <div class="form-group">
+                            <label for="telefono-transfirio">Número desde el que realizarás la transferencia</label>
+                            <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="5XXXXXXX" inputmode="numeric" maxlength="12" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            <small class="sm-help">Tu número de celular (8 dígitos). Es el que aparecerá en la notificación de ETECSA.</small>
+                        </div>
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label for="monto-deposito">Monto a transferir (CUP)</label>
+                            <input type="number" id="monto-deposito" class="form-control no-left-icon" placeholder="Ej. 300" inputmode="decimal" min="1" step="1">
+                            <small class="sm-help">Transfiere exactamente este monto. Una diferencia impide la verificación automática.</small>
+                        </div>
+                        <div class="sm-info">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                            <p><b>Tiempo de verificación.</b> Normalmente tarda unos minutos y puede tardar hasta <b>1 hora</b>, porque depende de la entrega de las notificaciones de la red móvil.</p>
+                        </div>
+                        <button class="btn-main" id="sm-btn-continuar" onclick="smContinuar()">CONTINUAR</button>
                     </div>
 
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label>Monto exacto transferido</label>
-                        <input type="number" id="monto-deposito" class="form-control no-left-icon" placeholder="Ej. 300">
+                    <!-- PASO 2: pago + captura -->
+                    <div id="sm-p2" class="sm-hide">
+                        <div class="sm-resumen">
+                            <div><small>Desde</small><b id="sm-r-tel">—</b></div>
+                            <div><small>Monto exacto</small><b id="sm-r-monto">—</b></div>
+                            <div><small>Vence en</small><b id="sm-r-vence">—</b></div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <label>Número oficial para recibir el pago</label>
+                            <div class="form-control no-left-icon sm-numero" id="wallet-numero-saldo-display"></div>
+                            <button class="sm-btn-sec" type="button" onclick="copiarNumeroWallet()">Copiar número</button>
+                        </div>
+
+                        <ol class="sm-lista">
+                            <li>Desde el número indicado, transfiere el saldo por el <b>monto exacto</b> al número oficial.</li>
+                            <li>Toma una captura de pantalla de la confirmación de la transferencia.</li>
+                            <li>Adjúntala aquí y pulsa <b>Ya realicé el pago</b>.</li>
+                        </ol>
+
+                        <div class="form-group" style="margin-top: 1.1rem;">
+                            <label>Captura de la transferencia</label>
+                            <div class="sm-reqs">
+                                <b>Requisitos de la captura</b>
+                                <ul>
+                                    <li>Captura de pantalla completa, sin recortar.</li>
+                                    <li>Sin tachaduras, marcas ni ediciones.</li>
+                                    <li>Deben verse el monto, el número, la fecha y la hora.</li>
+                                    <li>Debe ser de esta operación, tomada hace instantes.</li>
+                                </ul>
+                            </div>
+                            <input type="file" id="comprobante-deposito-input" accept="image/*" style="display: none;" onchange="smElegirArchivo(event)">
+                            <button type="button" class="sm-drop" id="sm-drop" onclick="document.getElementById('comprobante-deposito-input').click()">
+                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+                                <span id="sm-drop-txt">Adjuntar captura de la galería</span>
+                            </button>
+                            <div id="sm-prev" class="sm-hide"></div>
+                            <div id="sm-progreso" class="sm-hide"><div class="sm-spin"></div><span id="sm-progreso-txt">Analizando captura…</span></div>
+                            <ul id="sm-checks" class="sm-checks sm-hide"></ul>
+                            <div id="sm-aviso-err" class="sm-err sm-hide"></div>
+                            <button type="button" id="sm-btn-forzar" class="sm-btn-sec sm-hide" onclick="smForzarRevision()">Mi captura es correcta: enviar para revisión manual</button>
+                        </div>
+
+                        <button class="btn-main" id="sm-btn-pagar" onclick="smPagar()" disabled>YA REALICÉ EL PAGO</button>
+                        <button class="sm-link" type="button" onclick="smCancelarOrden()">Cancelar y empezar de nuevo</button>
                     </div>
 
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label>Tu número con el que transfirió el saldo</label>
-                        <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="59578110" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    <!-- PASO 3: verificación -->
+                    <div id="sm-p3" class="sm-hide">
+                        <div class="sm-estado" id="sm-estado">
+                            <div class="sm-estado-ico" id="sm-estado-ico"></div>
+                            <h4 id="sm-estado-tit">Verificando tu pago</h4>
+                            <p id="sm-estado-txt"></p>
+                        </div>
+                        <div class="sm-resumen" style="margin-top: 1rem;">
+                            <div><small>Desde</small><b id="sm-e-tel">—</b></div>
+                            <div><small>Monto</small><b id="sm-e-monto">—</b></div>
+                            <div><small>Enviado</small><b id="sm-e-hora">—</b></div>
+                        </div>
+                        <button class="btn-main" onclick="smVerDepositos()">VER MIS DEPÓSITOS</button>
+                        <button class="sm-btn-sec" type="button" onclick="smNuevo()">Realizar otro depósito</button>
                     </div>
-
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label>Comprobante de la transferencia (foto de tu galería)</label>
-                        <input type="file" id="comprobante-deposito-input" accept="image/*" style="display: none;" onchange="seleccionarComprobanteDeposito(event)">
-                        <button type="button" class="btn-main" style="background: var(--bg-main); color: var(--text-main); border: 1px dashed var(--accent-glow);" onclick="document.getElementById('comprobante-deposito-input').click()">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--accent-glow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -4px; margin-right: 6px;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>Elegir foto de la galería
-                        </button>
-                        <div id="comprobante-deposito-prev" style="display: none; margin-top: 8px;"></div>
-                    </div>
-
-                    <button class="btn-main" onclick="confirmarDepositoSaldo()">CONFIRMAR DEPÓSITO</button>
                 </div>
             </div>
 
@@ -2877,7 +2995,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         const TEXTOS_LEGALES = {
             terminos: "Al usar Lester Tienda aceptas estas condiciones.\n\n1. Servicio: vendemos recargas para juegos (Free Fire, Blood Strike, Call of Duty Mobile, Roblox y otros que se vayan agregando) mediante el ID de jugador o el correo que se pida en cada juego. Es tu responsabilidad escribir el ID correctamente.\n\n2. Cuenta: eres responsable de tu usuario y contraseña. No compartas tus credenciales con nadie.\n\n3. Precios: los precios pueden cambiar sin previo aviso. Se aplica el precio vigente al momento de la compra.\n\n4. Entrega: las recargas se procesan manualmente y pueden tardar unos minutos. Puedes ver el estado en la sección Órdenes.\n\n5. Uso indebido: podemos suspender cuentas por fraude, comprobantes falsos o abuso del sistema.\n\n6. Free Fire, Blood Strike, Call of Duty Mobile, Roblox y demás juegos son marcas de sus respectivos dueños. Lester Tienda es una tienda independiente y no está afiliada a sus desarrolladores.",
             privacidad: "Tu privacidad es importante.\n\nDatos que guardamos: nombre de usuario, correo electrónico, número de móvil (opcional), foto de perfil (opcional), saldo e historial de órdenes y depósitos.\n\nUso: solo para gestionar tu cuenta, procesar tus recargas y darte soporte.\n\nNo vendemos tus datos a terceros.\n\nPuedes cambiar tus datos o eliminar tu cuenta en cualquier momento desde Perfil.",
-            pagos: "Métodos de pago disponibles:\n\n• USDT (red indicada en la sección Wallet): envía el monto a la dirección oficial y registra el ID de la transferencia.\n• Saldo Móvil: transfiere al número oficial y registra el monto exacto y el número desde el que enviaste.\n• Tarjeta: próximamente.\n\nLos depósitos se revisan manualmente. Una vez aprobados, el saldo se acredita en tu cuenta.\n\nVerifica siempre la dirección o el número antes de enviar y usa únicamente la red indicada. Los fondos enviados a una red o dirección incorrecta no pueden recuperarse.",
+            pagos: "Métodos de pago disponibles:\n\n• USDT (red indicada en la sección Wallet): envía el monto a la dirección oficial y registra el ID de la transferencia.\n• Saldo Móvil: indica tu número y el monto, transfiere al número oficial y adjunta la captura completa. Se acredita automáticamente al verificar el pago (hasta 1 hora).\n• Tarjeta: próximamente.\n\nLos depósitos USDT y de Saldo Móvil se verifican automáticamente; si algo no se puede verificar, un administrador lo revisa. Una vez aprobados, el saldo se acredita en tu cuenta.\n\nVerifica siempre la dirección o el número antes de enviar y usa únicamente la red indicada. Los fondos enviados a una red o dirección incorrecta no pueden recuperarse.",
             reembolsos: "Política de reembolsos:\n\n• Si una recarga es cancelada, el importe se devuelve automáticamente a tu saldo.\n• Una recarga marcada como Completada ya fue entregada y no es reembolsable.\n• Si escribiste mal el ID de jugador, contáctanos de inmediato por soporte; revisaremos el caso.\n• Los depósitos enviados con datos incorrectos pueden tardar más en validarse.\n\nPara cualquier reclamación escribe a soporte con tu usuario y el detalle de la orden.",
             soporte: "¿Necesitas ayuda?\n\nEscríbenos por WhatsApp desde el botón flotante de la pantalla o con el botón de abajo. Indica tu nombre de usuario y el detalle de tu orden para atenderte más rápido."
         };
@@ -4255,7 +4373,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             setTimeout(() => {
                 ocultarCarga();
                 if (opcion === 'usdt') { mostrarVista('seccion-wallet-usdt'); abrirDepositoUSDTAuto(); }
-                else if (opcion === 'saldo') mostrarVista('seccion-wallet-saldo');
+                else if (opcion === 'saldo') { mostrarVista('seccion-wallet-saldo'); smIniciar(); }
                 else mostrarNotificacion("Pago con Tarjeta: " + ((tiendaConfig.wallet.tarjeta.etiqueta.texto) || "Próximamente disponible"));
             }, 150);
         }
@@ -4566,68 +4684,391 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             }, 500);
         }
 
-        function confirmarDepositoSaldo() {
-            const monto = parseFloat(document.getElementById('monto-deposito').value);
-            const telefonoTransfirio = document.getElementById('telefono-transfirio').value.trim();
+        /* ================= SALDO MÓVIL AUTOMÁTICO (SMS + captura) ================= */
+        const SM_CLAVE_ORDEN = 'lester_saldo_orden';
+        const SM_VENTANA_MS = 60 * 60 * 1000;
+        const SM_OCR_SRC = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+        let sm = { orden: null, archivo: null, chequeo: null, rechazos: 0, forzado: false, poll: null, reloj: null, ocupado: false };
 
-            if (isNaN(monto) || monto <= 0) { mostrarNotificacion("Introduce un monto válido"); return; }
-            if (!telefonoTransfirio || telefonoTransfirio.length < 6) { mostrarNotificacion("Introduce el número con el que realizaste la transferencia"); return; }
-            if (!comprobanteDepositoData) { mostrarNotificacion("Sube la foto del comprobante desde tu galería"); return; }
+        /* ---------- Reglas de validación de la captura (función pura: se prueba aparte) ---------- */
+        /* SM:EVAL:INI */
+        function smHoraHavana(ms) {
+            const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Havana', hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(new Date(ms));
+            const g = t => Number((p.find(x => x.type === t) || {}).value);
+            return { d: g('day'), m: g('month'), y: g('year'), min: g('hour') * 60 + g('minute') };
+        }
+        function smEvaluarCaptura(e) {
+            // e: { ancho, alto, ocr: null | { texto, palabras:[{t,y0,y1}], alto }, monto, telUsuario, telTienda, creado, ahora }
+            const checks = [];
+            const ratio = e.alto / e.ancho;
+            const geomOk = e.ancho >= 400 && e.alto > e.ancho && ratio >= 1.7 && ratio <= 3.4;
+            checks.push({ id: 'completa', ok: geomOk, msg: geomOk ? 'Captura de pantalla completa' : 'La captura parece recortada o no es una captura de pantalla. Sube la pantalla completa, sin recortar.' });
+            const salida = { ok: geomOk, checks, ocr: 'no_disponible', horaBarra: null, fecha: null };
+            if (!e.ocr) return salida;
 
-            mostrarCarga("Enviando depósito...");
-            setTimeout(async () => {
-                const idDep = Date.now();
-                solicitudesGlobales.depositos.push({
-                    id: idDep, correo: usuarioActual.correo.toLowerCase(), usuario: usuarioActual.nombre,
-                    monto: monto, moneda: 'saldo', telefonoTransfirio: telefonoTransfirio, estado: 'Pendiente',
-                    comprobante: comprobanteDepositoData
-                });
-                localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-                let ok = await guardarEnCloud();
-                let sinFoto = false;
-                if (!ok) {
-                    // La nube no aceptó la foto: se reenvía el depósito sin foto para que el CEO reciba monto y número
-                    const dep = solicitudesGlobales.depositos.find(d => d.id === idDep);
-                    if (dep) { delete dep.comprobante; dep.sinComprobante = true; }
-                    localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-                    ok = await guardarEnCloud();
-                    sinFoto = ok;
+            salida.ocr = 'ok';
+            const texto = String(e.ocr.texto || '');
+            const limpio = texto.replace(/(?<=\d)[ ,](?=\d{3}(?!\d))/g, '');
+            // monto: el número exacto, sin pegarse a otras cifras ni a fechas/horas
+            const base = Number(e.monto);
+            const ent = String(Math.trunc(base));
+            const dec = Math.round((base - Math.trunc(base)) * 100);
+            const decTxt = dec ? '[.,]' + (dec % 10 === 0 ? String(dec / 10) + '0?' : String(dec).padStart(2, '0')) : '(?:[.,]00?)?';
+            const reMonto = new RegExp('(?<![\\d.,:/-])' + ent + decTxt + '(?![\\d:/-]|[.,]\\d)', 'm');
+            const montoOk = reMonto.test(limpio);
+            checks.push({ id: 'monto', ok: montoOk, msg: montoOk ? 'Monto visible' : 'No se ve el monto ' + base + ' en la captura, o está tapado.' });
+
+            // números: se buscan los 8 dígitos del número receptor o del emisor
+            const soloDig = texto.replace(/[Oo]/g, '0').replace(/[Il|]/g, '1').replace(/\D/g, '');
+            const ult8 = s => String(s || '').replace(/\D/g, '').slice(-8);
+            const numOk = [e.telTienda, e.telUsuario].map(ult8).filter(x => x.length === 8).some(x => soloDig.includes(x));
+            checks.push({ id: 'numero', ok: numOk, msg: numOk ? 'Número visible' : 'No se ve el número de la transferencia, o está tapado.' });
+
+            // hora de la barra de estado (arriba del todo) y hora/fecha dentro de la captura
+            const alto = e.ocr.alto || e.alto;
+            let reloj = null;
+            for (const w of e.ocr.palabras || []) {
+                if (w.y1 > alto * 0.075) continue;
+                const m = /^(\d{1,2})[:.;](\d{2})$/.exec(String(w.t).trim());
+                if (m && +m[1] < 24 && +m[2] < 60) { reloj = +m[1] * 60 + +m[2]; salida.horaBarra = m[1].padStart(2, '0') + ':' + m[2]; break; }
+            }
+            const cuerpo = (e.ocr.palabras && e.ocr.palabras.length)
+                ? e.ocr.palabras.filter(w => w.y1 > alto * 0.075).map(w => w.t).join(' ')
+                : texto;
+            const hoy = smHoraHavana(e.ahora);
+            let hayHoraCuerpo = /(?<!\d)([01]?\d|2[0-3]):[0-5]\d(?!\d)/.test(cuerpo);
+            let fechaMala = false, hayFecha = false;
+            const reFecha = /(?<!\d)(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4}|\d{2})(?!\d)|(?<!\d)(\d{4})-(\d{2})-(\d{2})(?!\d)/g;
+            const dias = [hoy, smHoraHavana(e.ahora - 86400000)];
+            let fm;
+            while ((fm = reFecha.exec(cuerpo))) {
+                let d, mo, y;
+                if (fm[4]) { y = +fm[4]; mo = +fm[5]; d = +fm[6]; } else { d = +fm[1]; mo = +fm[2]; y = +fm[3]; if (y < 100) y += 2000; }
+                if (mo < 1 || mo > 12 || d < 1 || d > 31) continue;
+                hayFecha = true;
+                const permitido = [dias[0]].concat(hoy.min < 180 ? [dias[1]] : []); // pasada la medianoche vale también "ayer"
+                if (permitido.some(x => x.d === d && x.m === mo && x.y === y)) { fechaMala = false; salida.fecha = d + '/' + mo + '/' + y; break; }
+                fechaMala = true;
+            }
+            const hayHora = reloj !== null || hayHoraCuerpo || (hayFecha && !fechaMala);
+            checks.push({ id: 'hora', ok: hayHora && !fechaMala, msg: fechaMala ? 'La fecha de la captura no es la de hoy.' : (hayHora ? 'Fecha y hora visibles' : 'No se ven la fecha y la hora en la captura.') });
+
+            // frescura: la hora de la barra de estado debe caer entre la creación de la operación y ahora
+            let recienteOk = true, msgReciente = 'Captura tomada durante esta operación';
+            if (reloj !== null) {
+                const c = smHoraHavana(e.creado).min, n = hoy.min;
+                const espera = Math.max(0, Math.round((e.ahora - e.creado) / 60000));
+                const okReloj = r => { const d = ((r - c) % 1440 + 1440) % 1440; return d <= espera + 10 || d >= 1440 - 10; };
+                recienteOk = okReloj(reloj) || okReloj(reloj + 720) || okReloj(reloj - 720);
+                if (!recienteOk) msgReciente = 'La hora de la captura (' + salida.horaBarra + ') no corresponde a esta operación. Toma una captura nueva.';
+            } else { msgReciente = 'No se pudo leer la hora de la barra superior'; }
+            checks.push({ id: 'reciente', ok: recienteOk, blando: reloj === null, msg: msgReciente });
+
+            salida.ok = checks.every(c => c.ok);
+            return salida;
+        }
+        /* SM:EVAL:FIN */
+
+        /* ---------- Lectura de la captura (OCR en el teléfono; si no carga, se sigue sin él) ---------- */
+        function smCargarOCR() {
+            if (window.Tesseract) return Promise.resolve(window.Tesseract);
+            return new Promise((res, rej) => {
+                const t = setTimeout(() => rej(new Error('tiempo')), 25000);
+                const s = document.createElement('script');
+                s.src = SM_OCR_SRC; s.async = true;
+                s.onload = () => { clearTimeout(t); window.Tesseract ? res(window.Tesseract) : rej(new Error('sin_lib')); };
+                s.onerror = () => { clearTimeout(t); rej(new Error('red')); };
+                document.head.appendChild(s);
+            });
+        }
+        async function smLeerOCR(canvas, progreso) {
+            const T = await smCargarOCR();
+            const w = await T.createWorker('eng', 1, { logger: m => { if (m && m.status === 'recognizing text' && progreso) progreso(Math.round((m.progress || 0) * 100)); } });
+            try {
+                const r = await Promise.race([w.recognize(canvas), new Promise((_, rej) => setTimeout(() => rej(new Error('tiempo')), 90000))]);
+                const d = r.data || {};
+                let ws = d.words;
+                if (!ws && d.blocks) ws = d.blocks.flatMap(b => b.paragraphs.flatMap(p => p.lines.flatMap(l => l.words)));
+                let palabras = (ws || []).map(x => ({ t: x.text, y0: x.bbox.y0, y1: x.bbox.y1 }));
+                // Segunda pasada solo sobre la franja de arriba (reloj de la barra de estado), ampliada
+                if (!palabras.some(p => p.y1 <= canvas.height * 0.075 && /^\d{1,2}[:.;]\d{2}$/.test(p.t))) {
+                    try {
+                        const h = Math.round(canvas.height * 0.07), top = document.createElement('canvas');
+                        top.width = canvas.width * 2; top.height = h * 2;
+                        const c2 = top.getContext('2d'); c2.imageSmoothingQuality = 'high';
+                        c2.drawImage(canvas, 0, 0, canvas.width, h, 0, 0, top.width, top.height);
+                        await w.setParameters({ tessedit_pageseg_mode: '11' });
+                        const r2 = await w.recognize(top);
+                        let ws2 = (r2.data || {}).words;
+                        if (!ws2 && r2.data && r2.data.blocks) ws2 = r2.data.blocks.flatMap(b => b.paragraphs.flatMap(p => p.lines.flatMap(l => l.words)));
+                        (ws2 || []).forEach(x => palabras.push({ t: x.text, y0: x.bbox.y0 / 2, y1: x.bbox.y1 / 2 }));
+                    } catch (e) { /* la segunda pasada es opcional */ }
                 }
-                ocultarCarga();
-                if (!ok) {
-                    solicitudesGlobales.depositos = solicitudesGlobales.depositos.filter(d => d.id !== idDep);
-                    localStorage.setItem('lester_solicitudes', JSON.stringify(solicitudesGlobales));
-                    mostrarNotificacion("Mala internet. No se pudo enviar, intenta de nuevo.");
-                    return;
-                }
-                mostrarNotificacion(sinFoto ? "Enviado sin foto por mala internet. Avisa al CEO." : "Depósito de saldo móvil enviado a revisión");
-                document.getElementById('monto-deposito').value = '';
-                document.getElementById('telefono-transfirio').value = '';
-                comprobanteDepositoData = '';
-                document.getElementById('comprobante-deposito-prev').style.display = 'none';
-                renderizarOrdenes();
-                cambiarTabOrdenes('depositos');
-                cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
-            }, 500);
+                return { texto: d.text || '', palabras, alto: canvas.height };
+            } finally { try { await w.terminate(); } catch (e) {} }
         }
 
-        let comprobanteDepositoData = '';
-        async function seleccionarComprobanteDeposito(event) {
-            const file = event.target.files[0];
-            event.target.value = '';
-            if (!file) return;
-            mostrarCarga("Preparando comprobante...");
+        function smCargarImagen(file) {
+            return new Promise((res, rej) => {
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => { URL.revokeObjectURL(url); res(img); };
+                img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('imagen')); };
+                img.src = url;
+            });
+        }
+        async function smHashArchivo(file) {
+            try { const b = await file.arrayBuffer(); const h = await crypto.subtle.digest('SHA-256', b); return Array.from(new Uint8Array(h)).map(x => x.toString(16).padStart(2, '0')).join(''); } catch (e) { return null; }
+        }
+        function smIconoCheck(ok) {
+            return ok === 'ok'
+                ? '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M7.8 12.4l3 3 5.4-6"/></svg>'
+                : (ok === 'no'
+                    ? '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9 9l6 6M15 9l-6 6"/></svg>'
+                    : '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 8v4.5M12 16h.01"/></svg>');
+        }
+        function smPintarChecks(lista) {
+            const ul = document.getElementById('sm-checks');
+            ul.innerHTML = lista.map(c => '<li class="' + (c.ok ? (c.blando ? 'na' : 'ok') : 'no') + '">' + smIconoCheck(c.ok ? (c.blando ? 'aviso' : 'ok') : 'no') + '<span>' + esc(c.msg) + '</span></li>').join('');
+            ul.classList.remove('sm-hide');
+        }
+
+        /* ---------- Pasos ---------- */
+        function smPaso(n) {
+            ['sm-p1', 'sm-p2', 'sm-p3'].forEach((id, i) => document.getElementById(id).classList.toggle('sm-hide', i + 1 !== n));
+            document.querySelectorAll('#sm-steps li').forEach(li => {
+                const k = +li.dataset.n;
+                li.classList.toggle('act', k === n);
+                li.classList.toggle('ok', k < n);
+            });
+            window.scrollTo(0, 0);
+        }
+        function smGuardarOrden(o) { try { o ? localStorage.setItem(SM_CLAVE_ORDEN, o.id) : localStorage.removeItem(SM_CLAVE_ORDEN); } catch (e) {} }
+        function smFmtMonto(m) { return (Number(m) % 1 ? Number(m).toFixed(2) : String(Number(m))) + ' CUP'; }
+        function smDetener() { clearInterval(sm.poll); clearInterval(sm.reloj); sm.poll = sm.reloj = null; }
+
+        function smLimpiarCaptura() {
+            sm.archivo = null; sm.chequeo = null; sm.forzado = false;
+            ['sm-prev', 'sm-progreso', 'sm-checks', 'sm-aviso-err', 'sm-btn-forzar'].forEach(id => document.getElementById(id).classList.add('sm-hide'));
+            document.getElementById('sm-btn-pagar').disabled = true;
+            document.getElementById('sm-drop-txt').textContent = 'Adjuntar captura de la galería';
+        }
+
+        /* Se llama al abrir la pantalla: retoma una operación en curso o empieza de cero */
+        async function smIniciar() {
+            smDetener(); smLimpiarCaptura(); sm.rechazos = 0;
+            const tel = document.getElementById('telefono-transfirio');
+            if (tel && !tel.value && usuarioActual && usuarioActual.telefono) tel.value = String(usuarioActual.telefono).replace(/\D/g, '').slice(-8);
+            smPaso(1);
+            let id = null; try { id = localStorage.getItem(SM_CLAVE_ORDEN); } catch (e) {}
+            if (!id) return;
             try {
-                comprobanteDepositoData = await comprimirImagen(file, 1000, 60000);
-                const prev = document.getElementById('comprobante-deposito-prev');
-                prev.innerHTML = '<img src="' + comprobanteDepositoData + '" alt="Comprobante" style="width:100%; max-height:200px; object-fit:contain; border-radius:12px; border:1px solid var(--border-color); background:var(--bg-main);">';
-                prev.style.display = 'block';
-                mostrarNotificacion("Comprobante listo");
-            } catch (e) {
-                mostrarNotificacion("No se pudo leer la imagen");
-            } finally {
-                ocultarCarga();
+                const r = await fetch(WORKER_URL + '/api/saldo/estado?id=' + encodeURIComponent(id), { cache: 'no-store' });
+                if (!r.ok) { smGuardarOrden(null); return; }
+                const o = (await r.json()).orden;
+                if (o.estado === 'creada' && Date.now() < o.expira) { sm.orden = o; smMostrarPaso2(); }
+                else if (o.estado === 'esperando' || o.estado === 'aprobada') { sm.orden = o; smMostrarEstado(o); smIniciarPoll(); }
+                else smGuardarOrden(null);
+            } catch (e) { /* sin internet: se queda en el paso 1 */ }
+        }
+        function smSalir() { smDetener(); cambiarSeccion('wallet', document.getElementById('nav-btn-wallet')); }
+
+        async function smContinuar() {
+            if (sm.ocupado) return;
+            const tel = document.getElementById('telefono-transfirio').value.replace(/\D/g, '');
+            const monto = parseFloat(document.getElementById('monto-deposito').value);
+            const t8 = tel.length === 10 && tel.startsWith('53') ? tel.slice(2) : tel;
+            if (!/^5\d{7}$/.test(t8)) { mostrarNotificacion("Escribe tu número de celular: 8 dígitos, empieza con 5"); return; }
+            if (isNaN(monto) || monto < 1) { mostrarNotificacion("Introduce un monto válido"); return; }
+            if (Math.round(monto * 100) !== monto * 100 && Math.abs(Math.round(monto * 100) - monto * 100) > 1e-6) { mostrarNotificacion("Usa como máximo 2 decimales"); return; }
+            if (!usuarioActual || !usuarioActual.correo) { mostrarNotificacion("Inicia sesión para depositar"); return; }
+            sm.ocupado = true; mostrarCarga("Preparando tu operación...");
+            try {
+                const r = await fetch(WORKER_URL + '/api/saldo/orden', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ correo: usuarioActual.correo.toLowerCase(), tel: t8, monto }) });
+                const j = await r.json().catch(() => ({}));
+                if (!r.ok || !j.orden) { mostrarNotificacion(j.mensaje || "No se pudo iniciar. Intenta de nuevo."); return; }
+                sm.orden = j.orden; smGuardarOrden(j.orden);
+                smLimpiarCaptura(); sm.rechazos = 0;
+                smMostrarPaso2();
+            } catch (e) { mostrarNotificacion("Sin conexión. Revisa tu internet e intenta de nuevo."); }
+            finally { sm.ocupado = false; ocultarCarga(); }
+        }
+
+        function smMostrarPaso2() {
+            const o = sm.orden;
+            document.getElementById('sm-r-tel').textContent = o.tel;
+            document.getElementById('sm-r-monto').textContent = smFmtMonto(o.monto);
+            const n = document.getElementById('wallet-numero-saldo-display');
+            if (n && tiendaConfig && tiendaConfig.wallet && tiendaConfig.wallet.saldo) n.textContent = tiendaConfig.wallet.saldo.numero;
+            smPaso(2);
+            clearInterval(sm.reloj);
+            const pintar = () => {
+                const resto = o.expira - Date.now();
+                const el = document.getElementById('sm-r-vence');
+                if (resto <= 0) { el.textContent = 'Vencida'; clearInterval(sm.reloj); return; }
+                el.textContent = String(Math.floor(resto / 60000)).padStart(2, '0') + ':' + String(Math.floor(resto / 1000) % 60).padStart(2, '0');
+            };
+            pintar(); sm.reloj = setInterval(pintar, 1000);
+        }
+
+        async function smElegirArchivo(event) {
+            const file = event.target.files && event.target.files[0];
+            event.target.value = '';
+            if (!file || !sm.orden) return;
+            smLimpiarCaptura();
+            const err = document.getElementById('sm-aviso-err');
+            if (!/^image\/(jpeg|png|webp)$/i.test(file.type) || file.size > 25 * 1024 * 1024) { err.textContent = 'Sube la captura como imagen (JPG o PNG).'; err.classList.remove('sm-hide'); return; }
+            const prog = document.getElementById('sm-progreso'), progTxt = document.getElementById('sm-progreso-txt');
+            prog.classList.remove('sm-hide'); progTxt.textContent = 'Leyendo la captura…';
+            document.getElementById('sm-btn-pagar').disabled = true;
+            let img;
+            try { img = await smCargarImagen(file); } catch (e) { prog.classList.add('sm-hide'); err.textContent = 'No se pudo leer la imagen. Prueba con otra.'; err.classList.remove('sm-hide'); return; }
+
+            // Imagen que se enviará (la proporción original se conserva, para poder medir el recorte)
+            let ancho = Math.min(img.naturalWidth, 1080), alto = Math.round(img.naturalHeight * ancho / img.naturalWidth);
+            const canvas = document.createElement('canvas'); canvas.width = ancho; canvas.height = alto;
+            const cx = canvas.getContext('2d'); cx.fillStyle = '#fff'; cx.fillRect(0, 0, ancho, alto); cx.drawImage(img, 0, 0, ancho, alto);
+            let calidad = 0.86, dataUrl = canvas.toDataURL('image/jpeg', calidad);
+            while (dataUrl.length > 1200000 && calidad > 0.5) { calidad -= 0.1; dataUrl = canvas.toDataURL('image/jpeg', calidad); }
+            const hashOrig = await smHashArchivo(file);
+
+            // Lectura (OCR)
+            let ocr = null, ocrEstado = 'no_disponible';
+            const geomPrevia = img.naturalHeight / img.naturalWidth;
+            if (geomPrevia >= 1.7 && geomPrevia <= 3.4) {
+                progTxt.textContent = 'Preparando lector de comprobantes…';
+                try {
+                    ocr = await smLeerOCR(canvas, p => { progTxt.textContent = 'Verificando la captura… ' + p + '%'; });
+                } catch (e) { ocr = null; ocrEstado = (e && e.message === 'tiempo') ? 'tiempo' : 'no_disponible'; }
             }
+            prog.classList.add('sm-hide');
+
+            const o = sm.orden;
+            const ev = smEvaluarCaptura({ ancho: img.naturalWidth, alto: img.naturalHeight, ocr, monto: o.monto, telUsuario: o.tel, telTienda: (tiendaConfig.wallet.saldo.numero || ''), creado: o.creado, ahora: Date.now() });
+            if (!ocr) ev.ocr = ocrEstado;
+            smPintarChecks(ev.checks);
+            const prev = document.getElementById('sm-prev');
+            prev.innerHTML = '<img src="' + dataUrl + '" alt="Captura de la transferencia">'; prev.classList.remove('sm-hide');
+
+            sm.chequeo = { ocr: ev.ocr, horaBarra: ev.horaBarra, fecha: ev.fecha, ancho: img.naturalWidth, alto: img.naturalHeight, checks: ev.checks.map(c => c.id + ':' + (c.ok ? 1 : 0)).join(',') };
+            if (ev.ok) {
+                sm.archivo = { dataUrl, hashOrig };
+                document.getElementById('sm-btn-pagar').disabled = false;
+                document.getElementById('sm-drop-txt').textContent = 'Cambiar captura';
+                if (ev.ocr !== 'ok') { err.textContent = ''; }
+            } else {
+                sm.rechazos++;
+                const geom = ev.checks[0].ok;
+                err.textContent = geom ? 'La captura no cumple los requisitos. Corrige lo marcado y súbela de nuevo.' : ev.checks[0].msg;
+                err.classList.remove('sm-hide');
+                // Si la imagen es completa pero la lectura falla repetidamente, se ofrece revisión manual
+                if (geom && sm.rechazos >= 2) {
+                    sm.archivo = { dataUrl, hashOrig };
+                    document.getElementById('sm-btn-forzar').classList.remove('sm-hide');
+                }
+            }
+        }
+        function smForzarRevision() {
+            if (!sm.archivo || !sm.chequeo) return;
+            sm.forzado = true; sm.chequeo.forzado = true; sm.chequeo.ocr = 'rechazada';
+            document.getElementById('sm-btn-forzar').classList.add('sm-hide');
+            const err = document.getElementById('sm-aviso-err');
+            err.textContent = 'Se enviará para revisión manual: un administrador confirmará tu pago y puede tardar más.';
+            err.classList.remove('sm-hide');
+            document.getElementById('sm-btn-pagar').disabled = false;
+        }
+
+        async function smPagar() {
+            if (sm.ocupado || !sm.orden || !sm.archivo) return;
+            if (Date.now() > sm.orden.expira) { mostrarNotificacion("La operación venció. Crea una nueva."); smGuardarOrden(null); smDetener(); smPaso(1); return; }
+            sm.ocupado = true; mostrarCarga("Enviando comprobante...");
+            try {
+                const r = await fetch(WORKER_URL + '/api/saldo/comprobante', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: sm.orden.id, imagen: sm.archivo.dataUrl, hashOrig: sm.archivo.hashOrig, chequeo: sm.chequeo }) });
+                const j = await r.json().catch(() => ({}));
+                if (r.status === 410) { mostrarNotificacion(j.mensaje || "La operación venció."); smGuardarOrden(null); smDetener(); smPaso(1); return; }
+                if (!r.ok || !j.orden) {
+                    const err = document.getElementById('sm-aviso-err');
+                    err.textContent = j.mensaje || 'No se pudo enviar. Intenta de nuevo.'; err.classList.remove('sm-hide');
+                    if (j.resultado === 'repetida' || j.resultado === 'recortada') { document.getElementById('sm-btn-pagar').disabled = true; sm.archivo = null; }
+                    return;
+                }
+                sm.orden = j.orden;
+                try { await traerEstadoFresco(); refrescarUsuarioActual(); actualizarPerfilUI(); renderizarOrdenes(); } catch (e) {}
+                smMostrarEstado(j.orden);
+                smIniciarPoll();
+            } catch (e) { mostrarNotificacion("Mala internet. No se pudo enviar, intenta de nuevo."); }
+            finally { sm.ocupado = false; ocultarCarga(); }
+        }
+
+        async function smCancelarOrden() {
+            const o = sm.orden; smDetener(); smLimpiarCaptura(); smGuardarOrden(null); sm.orden = null;
+            if (o) { try { await fetch(WORKER_URL + '/api/saldo/cancelar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: o.id }) }); } catch (e) {} }
+            smPaso(1);
+        }
+        function smNuevo() {
+            smDetener(); smGuardarOrden(null); sm.orden = null; smLimpiarCaptura();
+            document.getElementById('monto-deposito').value = '';
+            smPaso(1);
+        }
+        function smVerDepositos() {
+            smDetener();
+            try { renderizarOrdenes(); cambiarTabOrdenes('depositos'); } catch (e) {}
+            cambiarSeccion('ordenes', document.getElementById('nav-btn-ordenes'));
+        }
+
+        /* ---------- Estado de la verificación ---------- */
+        function smMostrarEstado(o) {
+            smPaso(3);
+            const ico = document.getElementById('sm-estado-ico'), tit = document.getElementById('sm-estado-tit'), txt = document.getElementById('sm-estado-txt');
+            document.getElementById('sm-e-tel').textContent = o.tel;
+            document.getElementById('sm-e-monto').textContent = smFmtMonto(o.monto);
+            document.getElementById('sm-e-hora').textContent = o.enviado ? new Date(o.enviado).toLocaleTimeString('es-CU', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Havana' }) : '—';
+            ico.className = 'sm-estado-ico';
+            document.querySelectorAll('#sm-steps li').forEach(li => { if (o.estado === 'aprobada') { li.classList.remove('act'); li.classList.add('ok'); } });
+            if (o.estado === 'aprobada') {
+                ico.classList.add('ok');
+                ico.innerHTML = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+                tit.textContent = 'Pago verificado';
+                txt.textContent = 'Se acreditaron ' + smFmtMonto(o.monto) + ' en tu saldo móvil. Ya puedes usarlos en tus recargas.';
+            } else if (o.manual) {
+                ico.classList.add('warn');
+                ico.innerHTML = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3 2"/></svg>';
+                tit.textContent = 'En revisión manual';
+                txt.textContent = 'Recibimos tu captura. Un administrador confirmará tu pago y el saldo se acreditará al validarlo. Puedes cerrar esta pantalla.';
+            } else if (Date.now() > o.expira + 5 * 60 * 1000) {
+                ico.classList.add('warn');
+                ico.innerHTML = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3 2"/></svg>';
+                tit.textContent = 'Aún sin confirmación de la red';
+                txt.textContent = 'Todavía no recibimos la notificación de tu transferencia. Tu captura quedó guardada y será revisada por un administrador. No necesitas enviar nada más.';
+            } else {
+                ico.innerHTML = '<div class="sm-spin"></div>';
+                tit.textContent = 'Verificando tu pago';
+                txt.textContent = 'Estamos esperando la confirmación de tu transferencia. Normalmente tarda unos minutos y puede tardar hasta 1 hora. Puedes cerrar esta pantalla: tu saldo se acreditará automáticamente.';
+            }
+        }
+        function smIniciarPoll() {
+            clearInterval(sm.poll);
+            const paso = async () => {
+                if (!sm.orden) return;
+                const vis = document.getElementById('seccion-wallet-saldo');
+                if (!vis || vis.style.display === 'none') { clearInterval(sm.poll); return; }
+                try {
+                    const r = await fetch(WORKER_URL + '/api/saldo/estado?id=' + encodeURIComponent(sm.orden.id), { cache: 'no-store' });
+                    if (!r.ok) return;
+                    const o = (await r.json()).orden;
+                    const antes = sm.orden.estado;
+                    sm.orden = o; smMostrarEstado(o);
+                    if (o.estado === 'aprobada') {
+                        clearInterval(sm.poll); smGuardarOrden(null);
+                        if (antes !== 'aprobada') {
+                            try { await traerEstadoFresco(); refrescarUsuarioActual(); actualizarPerfilUI(); renderizarOrdenes(); } catch (e) {}
+                            mostrarNotificacion("Pago verificado. Saldo acreditado.");
+                        }
+                    } else if (o.estado !== 'esperando') { clearInterval(sm.poll); smGuardarOrden(null); }
+                } catch (e) { /* sin internet: se reintenta */ }
+            };
+            sm.poll = setInterval(paso, 8000);
+            paso();
         }
 
         /* ================= COMPRAS ================= */
@@ -7032,7 +7473,7 @@ async function confirmarEnvioUSDTDep(){
    {id:'usdt',k:['usdt','depositar','deposito','recargar saldo','wallet','bep20','bep 20','binance','cripto'],a:'<b>Depositar USDT (automático)</b><br>1. <b>Wallet → USDT</b>.<br>2. Escribe cuánto quieres (mínimo 0.5) y toca <b>GENERAR MI PAGO</b>.<br>3. Envía <b>exactamente</b> el monto que te muestra (con sus decimales, ej. 7.0003) por red <b>BEP 20 (BSC)</b> a la dirección indicada.<br>4. Tienes <b>5 minutos</b>. Tu saldo se acredita solo en segundos; no necesitas pegar ningún ID.',acts:[['Ir a depositar','go:usdt']]},
    {id:'monto',k:['decimal','monto exacto','por que 0.000','exacto','diferente monto','otro monto','envie otro','envie menos','envie mas'],a:'El pequeño decimal (de 0.0001 a 0.0009) es lo que identifica <b>tu</b> pago. Si envías otro monto el sistema no lo reconoce solo. En ese caso usa <b>Reportar para revisión manual</b> en la pantalla del depósito: verificamos en la red que el dinero llegó a nuestra wallet.'},
    {id:'manual',k:['txid','id de transferencia','hash','revision manual','reportar','pague y no','no se acredito','no llego','no me llego'],a:'Si pagaste y no se acredita:<br>1. Espera 1–2 minutos (la red necesita confirmaciones).<br>2. Toca <b>YA PAGUÉ · VERIFICAR AHORA</b>. No necesitas ID: el sistema busca tu pago solo. Si quieres, también puedes pegar el <b>ID de transferencia</b> (empieza con 0x) para que sea más rápido.<br>3. Si pagaste otro monto, usa <b>Reportar para revisión manual</b>. Solo se acepta si la transferencia llegó a la wallet oficial de Lester Tienda.',acts:[['Reportar mi pago','humano'],['Ir a depositar USDT','go:usdt']]},
-   {id:'saldo',k:['saldo movil','saldo móvil','transferencia movil','cuc','cup','transfermovil'],a:'<b>Depositar Saldo Móvil</b><br>1. <b>Wallet → Saldo Móvil</b>.<br>2. Escribe el monto y el número con el que transferiste.<br>3. Sube la foto del comprobante.<br>4. Envía: queda <b>Pendiente</b> hasta que Lester lo apruebe.',acts:[['Ir a Wallet','go:wallet']]},
+   {id:'saldo',k:['saldo movil','saldo móvil','transferencia movil','cuc','cup','transfermovil'],a:'<b>Depositar Saldo Móvil</b><br>1. <b>Wallet → Saldo Móvil</b>.<br>2. Escribe tu número y el monto, y pulsa <b>Continuar</b>.<br>3. Transfiere el monto exacto al número oficial y adjunta la captura completa (sin recortar ni tachar).<br>4. Pulsa <b>Ya realicé el pago</b>: se acredita solo al verificarse, normalmente en minutos y hasta en 1 hora.',acts:[['Ir a Wallet','go:wallet']]},
    {id:'pedidos',k:['pedido','orden','estado','pendiente','completado','cancelado','donde veo','historial'],a:'En <b>Pedidos</b> ves tus recargas y depósitos. Los colores te dicen el estado:<br>🟡 <b>Pendiente</b>: en proceso.<br>🟢 <b>Completado</b>: ya se entregó.<br>🔴 <b>Cancelado</b>: no se realizó; el importe vuelve a tu saldo.',acts:[['Ir a Pedidos','go:ordenes']]},
    {id:'reembolso',k:['reembolso','devol','dinero de vuelta'],a:'Si una recarga es <b>cancelada</b>, el importe se devuelve automáticamente a tu saldo. Una recarga <b>Completada</b> ya fue entregada.'},
    {id:'ref',k:['referid','invitar','invita','enlace','patrocinador','amigos','premio','reclamar','primera oferta','5 referidos','cinco referidos','regalo','gratis','gano'],a:'<b>Referidos y premio 🎁</b><br>1. Entra a <b>Referidos</b> y copia o comparte tu enlace personal.<br>2. Tu amigo se registra con tu enlace y hace su <b>primera recarga o depósito aprobado</b>: así cuenta como <b>referido válido</b>.<br>3. Al llegar a <b>5 referidos válidos</b> se abre un menú de felicitación: eliges tu <b>juego favorito</b> entre los disponibles (Free Fire, Blood Strike o Call of Duty Mobile; Roblox no entra en este premio) y se te acredita <b>al instante</b> en tu saldo USDT el valor de la <b>primera oferta</b> de ese juego.<br>El premio es único por cuenta. Si cierras el menú sin elegir, lo reclamas cuando quieras desde <b>Referidos</b>.',acts:[['Ir a Referidos','go:referidos']]},
@@ -7347,7 +7788,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
    'seccion-referidos':{sel:'#enlace-ref',t:'Tu enlace personal',x:'Copia o comparte este enlace. Con 5 referidos válidos eliges un juego y te acreditamos su primera oferta.'},
    'seccion-wallet':{sel:'#wallet-cards-container',t:'Tu Wallet',x:'Toca USDT para depositar de forma automática, o Saldo Móvil para depositar con comprobante.'},
    'seccion-wallet-usdt':{sel:'#monto-usdt-auto',t:'¿Cuánto vas a depositar?',x:'Escribe el monto (mínimo 0.5) y toca GENERAR MI PAGO. Te daré el monto exacto a enviar.'},
-   'seccion-wallet-saldo':{sel:'#monto-deposito',t:'Depósito de Saldo Móvil',x:'Escribe el monto, el número con el que transferiste y sube la foto del comprobante.'},
+   'seccion-wallet-saldo':{sel:'#monto-deposito',t:'Depósito de Saldo Móvil',x:'Escribe tu número y el monto, transfiere al número oficial y adjunta la captura completa. Se acredita solo al verificar el pago.'},
    'seccion-perfil':{sel:'.profile-header-card',t:'Tu perfil',x:'Aquí ves tus datos y tu código. Abajo cambias tus datos, contraseña, tema y transfieres saldo.'},
    'sub-transferir':{sel:'#trans-destino',t:'Transferir saldo',x:'Escribe el usuario o correo de quien recibe, la moneda, el monto y tu contraseña.'},
    'sub-password':{sel:'#p-act',t:'Cambiar contraseña',x:'Escribe tu contraseña actual y luego la nueva dos veces.'},
