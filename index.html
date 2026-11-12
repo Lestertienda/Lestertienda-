@@ -7372,5 +7372,88 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
   /* pausa también cuando se hace scroll (se reactiva sola) */
 })();
 </script>
+
+<style id="lt-pro">
+/* ===== LED limpio: un solo color, sin animación ===== */
+:root:not(#x){--ledbase:#2a4f8f}
+:root[data-theme="light"]:not(#x){--ledbase:#aebfe6}
+:root:not(#x) .navbar,:root:not(#x) .bottom-nav{
+ background:linear-gradient(var(--bg-card),var(--bg-card)) padding-box,
+  linear-gradient(90deg,transparent 16%,#4d8dff 28%,#fff 38%,#4d8dff 45%,transparent 56%) top/100% 50% no-repeat border-box,
+  linear-gradient(90deg,transparent 48%,#4d8dff 60%,#fff 71%,#4d8dff 78%,transparent 90%) bottom/100% 50% no-repeat border-box,
+  linear-gradient(var(--ledbase),var(--ledbase)) border-box !important;
+ box-shadow:0 0 16px rgba(47,107,255,.16) !important}
+:root:not(#x) .navbar{animation:navDown .6s cubic-bezier(.2,.9,.3,1.15) backwards !important}
+:root:not(#x) .bottom-nav{animation:navUp .6s cubic-bezier(.2,.9,.3,1.15) .1s backwards !important}
+:root:not(#x) .nav-brand-logo{background:linear-gradient(#000,#000) padding-box,linear-gradient(135deg,#2f6bff,#1aa6c8) border-box !important;animation:none !important}
+/* ===== Menos lag: se quitan animaciones infinitas ===== */
+.hw-ico img,.nav-top-icon-btn svg,.nav-top-icon-btn::after,.nav-item.active svg,.bottom-nav::before,.animated-diamond-img,.dc-shine,
+.header-wallet-pill::before,.header-wallet-pill::after,.sub-card::after,.order-card-pro::after,.live-history-card::after,.menu-list::after,
+.profile-header-card::after,.shine-card::after,.ua-box::after,.ua-pago::after,.btn-main::after,.btn-main::before,.op-cta::after,.op-cta::before,
+.back-btn.bk-bar::before,.back-btn.bk-bar::after,body::before,body::after{animation:none !important}
+.dc-shine{display:none !important}
+.navbar,.bottom-nav,.modal-overlay{-webkit-backdrop-filter:none !important;backdrop-filter:none !important}
+/* ===== Tarjetas de ofertas: 3D sin neblina ===== */
+:root:not(#x) .diamonds-grid .diamond-card{filter:drop-shadow(0 6px 4px rgba(0,0,0,.35)) !important}
+:root:not(#x) .diamonds-grid .diamond-card::before{background:linear-gradient(180deg,#8bb8ff 0%,#2f6bff 14%,#1c46b8 70%,#0d2a78 100%) !important}
+:root:not(#x) .diamonds-grid .diamond-card::after{bottom:5px !important;background:linear-gradient(180deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,0) 34%),linear-gradient(180deg,#1a2342 0%,#0c1330 100%) !important}
+:root:not(#x) .diamonds-grid .diamond-card.selected::before{background:linear-gradient(180deg,#9af2d4 0%,#16c784 14%,#0f8f63 70%,#096142 100%) !important}
+:root[data-theme="light"]:not(#x) .diamonds-grid .diamond-card::after{background:linear-gradient(180deg,#fff 0%,#e8efff 100%) !important}
+:root:not(#x) .diamonds-grid .diamond-card:active{transform:translateY(3px) scale(.98)}
+.diamond-price{display:inline-block !important;color:#fff !important;font-weight:900;padding:5px 13px;border-radius:12px;
+ background:linear-gradient(180deg,#4d8dff,#2f6bff 55%,#1f4fd0) !important;text-shadow:0 1px 1px rgba(0,0,0,.3);
+ box-shadow:0 3px 0 #153a9c,0 6px 10px rgba(47,107,255,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+/* ===== Campo de ID ===== */
+input[id^="player-id-input"]{height:52px;border-radius:16px !important;padding:0 92px 0 16px !important;font-weight:800;font-size:1rem;color:#fff;
+ background:linear-gradient(180deg,#0b1122,#0e1730) !important;border:1.5px solid #27427a !important;
+ box-shadow:inset 0 2px 8px rgba(0,0,0,.55),0 0 0 1px rgba(47,107,255,.10) !important;transition:border-color .2s,box-shadow .2s}
+input[id^="player-id-input"]:focus{border-color:#4d8dff !important;outline:none;box-shadow:inset 0 2px 8px rgba(0,0,0,.5),0 0 0 3px rgba(77,141,255,.28) !important}
+:root[data-theme="light"] input[id^="player-id-input"]{color:#0b1530;background:linear-gradient(180deg,#f1f5ff,#fff) !important;border-color:#b9c9ee !important;
+ box-shadow:inset 0 2px 6px rgba(20,40,90,.10) !important}
+.lt-pegar{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;cursor:pointer;color:#fff;font-weight:900;font-size:.78rem;
+ padding:8px 14px;border-radius:12px;background:linear-gradient(180deg,#4d8dff,#2f6bff 55%,#1f4fd0);box-shadow:0 3px 0 #153a9c,inset 0 1px 0 rgba(255,255,255,.35)}
+.lt-pegar:active{transform:translateY(calc(-50% + 2px));box-shadow:0 1px 0 #153a9c}
+/* ===== Botones USDT / Saldo móvil: chicos ===== */
+.pay-method-pill-btn{padding:.45rem .6rem !important;border-radius:13px !important;font-size:.78rem !important;gap:6px !important;min-height:0 !important}
+.pay-method-pill-btn img,.pay-method-pill-btn svg{width:20px !important;height:20px !important}
+.pay-method-pill-btn.active{background:linear-gradient(180deg,#4d8dff,#2f6bff 55%,#1f4fd0) !important;color:#fff !important;border-color:transparent !important;
+ box-shadow:0 3px 0 #153a9c,0 6px 10px rgba(47,107,255,.3) !important}
+/* ===== Panel CEO: sin animaciones ===== */
+#panel-ceo-container,#panel-ceo-container *,#panel-ceo-container *::before,#panel-ceo-container *::after{animation:none !important;transition:none !important}
+#panel-ceo-container .ceo-btn::before,#panel-ceo-container .ceo-btn::after,#panel-ceo-container .ceo-btn-verde::before,#panel-ceo-container .ceo-btn-verde::after{display:none !important}
+#panel-ceo-container .ceo-btn:hover,#panel-ceo-container .ceo-btn:active,#panel-ceo-container .ceo-btn-verde:hover,#panel-ceo-container .ceo-btn-verde:active{transform:none !important;filter:none !important}
+/* ===== Soporte: 3D ===== */
+.soporte-option-btn{animation:none !important;filter:none !important;border-radius:16px !important;transition:transform .12s,box-shadow .12s !important;
+ background:linear-gradient(180deg,#22314f,#141d33) !important;border:1px solid #2c4377 !important;
+ box-shadow:0 4px 0 #0a1124,0 8px 14px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12) !important}
+.soporte-option-btn::before,.soporte-option-btn::after{display:none !important}
+.soporte-option-btn.lt-ia-opt{background:linear-gradient(180deg,#1fa5c4,#0f5f86) !important;border-color:#2cc6e8 !important;box-shadow:0 4px 0 #083d58,0 8px 14px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.3) !important}
+.soporte-option-btn:active{transform:translateY(3px) !important;box-shadow:0 1px 0 #0a1124,inset 0 1px 0 rgba(255,255,255,.1) !important}
+:root[data-theme="light"] .soporte-option-btn:not(.lt-ia-opt){background:linear-gradient(180deg,#fff,#e6edff) !important;border-color:#b9c9ee !important;
+ box-shadow:0 4px 0 #b3c3e8,0 8px 14px rgba(20,40,90,.15),inset 0 1px 0 #fff !important}
+#sub-legal-detalle .btn-main{background:linear-gradient(180deg,#34d985,#12a35a) !important;color:#fff !important;border:0 !important;border-radius:16px !important;animation:none !important;
+ box-shadow:0 4px 0 #0b6e3b,0 8px 14px rgba(18,163,90,.3),inset 0 1px 0 rgba(255,255,255,.35) !important}
+#sub-legal-detalle .btn-main:active{transform:translateY(3px) !important;box-shadow:0 1px 0 #0b6e3b !important}
+</style>
+
+<script>
+(function(){
+ function pegar(){document.querySelectorAll('input[id^="player-id-input"]').forEach(function(inp){
+  if(inp.dataset.ltp)return;inp.dataset.ltp=1;var p=inp.parentNode;
+  if(getComputedStyle(p).position==='static')p.style.position='relative';
+  var b=document.createElement('button');b.type='button';b.className='lt-pegar';b.textContent='Pegar';
+  b.onclick=function(){
+   if(navigator.clipboard&&navigator.clipboard.readText){navigator.clipboard.readText().then(function(t){inp.value=t.trim();inp.dispatchEvent(new Event('input',{bubbles:true}));inp.focus();}).catch(function(){inp.focus();try{mostrarNotificacion('Mantén pulsado el campo y elige Pegar');}catch(e){}});}
+   else inp.focus();};
+  p.appendChild(b);});}
+ function guia(){
+  var r=document.querySelector('.menu-row[onclick*="sub-password"]');if(!r||document.getElementById('btn-ver-guia'))return;
+  var b=document.createElement('button');b.id='btn-ver-guia';b.className='menu-row';
+  b.innerHTML='<span class="mr-icon"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg></span><span class="mr-text">Ver la guía otra vez<span class="mr-sub">La IA LT te enseña todo paso a paso</span></span><span class="mr-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>';
+  b.onclick=function(){try{window.ltAyuda(true);}catch(e){}if(window.iniciarGuiaLT)window.iniciarGuiaLT(true);};
+  r.parentNode.insertBefore(b,r);}
+ pegar();guia();setTimeout(function(){pegar();guia();},1500);
+})();
+</script>
 </body>
 </html>
