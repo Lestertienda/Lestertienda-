@@ -2487,8 +2487,9 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     <div id="sm-p1">
                         <div class="form-group">
                             <label for="telefono-transfirio">Número desde el que realizarás la transferencia</label>
-                            <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="5XXXXXXX" inputmode="numeric" maxlength="12" autocomplete="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            <input type="text" id="telefono-transfirio" class="form-control no-left-icon" placeholder="5XXXXXXX" inputmode="numeric" maxlength="12" autocomplete="tel" oninput="smErrTel(null);this.value = this.value.replace(/[^0-9]/g, '')">
                             <small class="sm-help">Tu número de celular (8 dígitos). Es el que aparecerá en la notificación de ETECSA.</small>
+                            <div id="sm-err-tel" class="sm-err sm-hide" style="color:#ef4444;font-weight:700;margin-top:.45rem"></div>
                         </div>
                         <div class="form-group" style="margin-top: 1rem;">
                             <label for="monto-deposito">Monto a transferir (CUP)</label>
@@ -4808,6 +4809,10 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 
         /* ---------- Pasos ---------- */
         function smPaso(n) {
+            try { if (window.ltTip) window.ltTip('saldo-p' + n, [null,
+                { sel: '#telefono-transfirio', t: 'Paso 1: tus datos', x: 'Escribe el número desde el que vas a transferir (8 dígitos, empieza con 5) y el monto EXACTO. Si falta el número, te marcará un error en rojo y no avanza.' },
+                { sel: '#sm-btn-pagar', t: 'Paso 2: transfiere', x: 'Transfiere exactamente ese monto al número oficial desde TU número. Cuando termines pulsa "Ya realicé el pago". No necesitas captura.' },
+                { sel: '#sm-estado', t: 'Paso 3: verificando', x: 'Tu pago se verifica solo con el SMS de ETECSA. Cuando se confirme, la pantalla te dice Confirmado y vuelve al Wallet. Si tarda más de 3 minutos aparece el botón para enviar tu captura a soporte.' }][n]); } catch (e) {}
             ['sm-p1', 'sm-p2', 'sm-p3'].forEach((id, i) => document.getElementById(id).classList.toggle('sm-hide', i + 1 !== n));
             document.querySelectorAll('#sm-steps li').forEach(li => {
                 const k = +li.dataset.n;
@@ -4831,7 +4836,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         async function smIniciar() {
             smDetener(); smLimpiarCaptura(); sm.rechazos = 0;
             const tel = document.getElementById('telefono-transfirio');
-            if (tel && !tel.value && usuarioActual && usuarioActual.telefono) tel.value = String(usuarioActual.telefono).replace(/\D/g, '').slice(-8);
+            smErrTel(null);
             smPaso(1);
             let id = null; try { id = localStorage.getItem(SM_CLAVE_ORDEN); } catch (e) {}
             if (!id) return;
@@ -4846,12 +4851,19 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         }
         function smSalir() { smDetener(); cambiarSeccion('wallet', document.getElementById('nav-btn-wallet')); }
 
+        function smErrTel(msg) {
+            const el = document.getElementById('sm-err-tel'), inp = document.getElementById('telefono-transfirio');
+            if (!el || !inp) return;
+            if (msg) { el.textContent = msg; el.classList.remove('sm-hide'); inp.style.borderColor = '#ef4444'; inp.style.boxShadow = '0 0 0 3px rgba(239,68,68,.25)'; inp.focus(); }
+            else { el.classList.add('sm-hide'); inp.style.borderColor = ''; inp.style.boxShadow = ''; }
+        }
         async function smContinuar() {
             if (sm.ocupado) return;
             const tel = document.getElementById('telefono-transfirio').value.replace(/\D/g, '');
             const monto = parseFloat(document.getElementById('monto-deposito').value);
             const t8 = tel.length === 10 && tel.startsWith('53') ? tel.slice(2) : tel;
-            if (!/^5\d{7}$/.test(t8)) { mostrarNotificacion("Escribe tu número de celular: 8 dígitos, empieza con 5"); return; }
+            if (!/^5\d{7}$/.test(t8)) { smErrTel(tel.length ? "El número debe tener 8 dígitos y empezar con 5 (ej. 5XXXXXXX)." : "Escribe el número de celular desde el que vas a transferir."); return; }
+            smErrTel(null);
             if (isNaN(monto) || monto < 1) { mostrarNotificacion("Introduce un monto válido"); return; }
             if (Math.round(monto * 100) !== monto * 100 && Math.abs(Math.round(monto * 100) - monto * 100) > 1e-6) { mostrarNotificacion("Usa como máximo 2 decimales"); return; }
             if (!usuarioActual || !usuarioActual.correo) { mostrarNotificacion("Inicia sesión para depositar"); return; }
@@ -7800,9 +7812,9 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
    'seccion-roblox':{sel:'#player-id-input-rb',t:'Tu correo de Roblox',x:'Escribe aquí el correo que se te pide para canjear los Robux. Luego elige cómo pagar y toca el paquete.'},
    'seccion-ordenes':{sel:'#pd-switch',t:'Tus pedidos',x:'Cambia entre Recargas y Depósitos. Amarillo = pendiente, verde = completado, rojo = cancelado.'},
    'seccion-referidos':{sel:'#enlace-ref',t:'Tu enlace personal',x:'Copia o comparte este enlace. Con 5 referidos válidos eliges un juego y te acreditamos su primera oferta.'},
-   'seccion-wallet':{sel:'#wallet-cards-container',t:'Tu Wallet',x:'Toca USDT para depositar de forma automática, o Saldo Móvil para depositar con comprobante.'},
+   'seccion-wallet':{sel:'#wallet-cards-container',t:'Tu Wallet',x:'Toca USDT para depositar de forma automática, o Saldo Móvil: transfieres y se acredita solo, sin enviar captura.'},
    'seccion-wallet-usdt':{sel:'#monto-usdt-auto',t:'¿Cuánto vas a depositar?',x:'Escribe el monto (mínimo 0.5) y toca GENERAR MI PAGO. Te daré el monto exacto a enviar.'},
-   'seccion-wallet-saldo':{sel:'#monto-deposito',t:'Depósito de Saldo Móvil',x:'Escribe tu número y el monto, transfiere al número oficial y adjunta la captura completa. Se acredita solo al verificar el pago.'},
+   'seccion-wallet-saldo':{sel:'#telefono-transfirio',t:'Depósito de Saldo Móvil',x:'Escribe el número DESDE el que vas a transferir (obligatorio) y el monto exacto. Luego sigues los 3 pasos y no necesitas captura.'},
    'seccion-perfil':{sel:'.profile-header-card',t:'Tu perfil',x:'Aquí ves tus datos y tu código. Abajo cambias tus datos, contraseña, tema y transfieres saldo.'},
    'sub-transferir':{sel:'#trans-destino',t:'Transferir saldo',x:'Escribe el usuario o correo de quien recibe, la moneda, el monto y tu contraseña.'},
    'sub-password':{sel:'#p-act',t:'Cambiar contraseña',x:'Escribe tu contraseña actual y luego la nueva dos veces.'},
@@ -7829,6 +7841,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
     if(e&&e.offsetParent!==null){ hlEl=e; e.classList.add('lt-hl'); }
     tmr=setTimeout(cerrar,20000);
   }
+  window.LT_TIPS=TIPS; window.ltTip=mostrar; /* LT_TIPS = lo que sabe la IA. Si cambias una pantalla, cambia su texto aquí. */
   var mv=mostrarVista;
   mostrarVista=function(id){ mv(id); cerrar(); if(TIPS[id]) setTimeout(function(){ mostrar(id,TIPS[id]); },380); };
   var mo=mostrarOrdenUSDT;
