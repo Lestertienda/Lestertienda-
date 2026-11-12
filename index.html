@@ -7455,5 +7455,70 @@ input[id^="player-id-input"]:focus{border-color:#4d8dff !important;outline:none;
  pegar();guia();setTimeout(function(){pegar();guia();},1500);
 })();
 </script>
+
+<style id="lt-pro2">
+/* ===== Tarjetas de ofertas: caben completas ===== */
+:root:not(#x) .diamonds-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important}
+:root:not(#x) .diamonds-grid .diamond-card{min-width:0 !important;padding-left:6px !important;padding-right:6px !important;gap:4px !important}
+:root:not(#x) .diamonds-grid .diamond-img-render{width:42px !important;height:42px !important;flex:0 0 42px !important}
+:root:not(#x) .diamonds-grid .dc-info{min-width:0 !important}
+:root:not(#x) .diamonds-grid .dc-qty{font-size:.95rem !important;white-space:nowrap}
+:root:not(#x) .diamonds-grid .diamond-price{font-size:.74rem !important;padding:4px 8px !important;border-radius:10px !important;letter-spacing:0 !important;white-space:nowrap;max-width:100%}
+/* ===== Tarjeta del ID (ID + cuenta verificada juntos) ===== */
+.lt-idcard{position:relative;padding:10px !important;border-radius:20px;border:2px solid transparent;
+ background:linear-gradient(180deg,#1a2342 0%,#0c1330 100%) padding-box,linear-gradient(180deg,#8bb8ff 0%,#2f6bff 14%,#1c46b8 70%,#0d2a78 100%) border-box;
+ box-shadow:0 5px 0 #0a1d5c,0 10px 16px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+:root[data-theme="light"] .lt-idcard{background:linear-gradient(180deg,#fff 0%,#e8efff 100%) padding-box,linear-gradient(180deg,#8bb8ff 0%,#2f6bff 14%,#1c46b8 70%,#0d2a78 100%) border-box;
+ box-shadow:0 5px 0 #9fb4e6,0 10px 16px rgba(20,40,90,.18)}
+:root:not(#x) .lt-idcard input[id^="player-id-input"],:root:not(#x) .lt-idcard input[id^="player-id-input"].rb-ok,:root:not(#x) .lt-idcard input[id^="player-id-input"].rb-bad{
+ background:linear-gradient(180deg,#080d1b,#0d1630) !important;color:#fff !important;-webkit-text-fill-color:#fff;border:1.5px solid #27427a !important;
+ box-shadow:inset 0 2px 8px rgba(0,0,0,.6) !important}
+:root:not(#x) .lt-idcard input[id^="player-id-input"].rb-ok{border-color:#16c784 !important}
+:root:not(#x) .lt-idcard input[id^="player-id-input"].rb-bad{border-color:#ef4444 !important}
+:root[data-theme="light"]:not(#x) .lt-idcard input[id^="player-id-input"],:root[data-theme="light"]:not(#x) .lt-idcard input[id^="player-id-input"].rb-ok,:root[data-theme="light"]:not(#x) .lt-idcard input[id^="player-id-input"].rb-bad{
+ background:linear-gradient(180deg,#eaf0ff,#fff) !important;color:#0b1530 !important;-webkit-text-fill-color:#0b1530;box-shadow:inset 0 2px 6px rgba(20,40,90,.14) !important}
+.lt-idcard .lt-pegar{top:20px !important;right:18px !important;transform:none !important}
+.lt-idcard .lt-pegar:active{transform:translateY(2px) !important}
+/* cuenta verificada: misma familia, un poco menos */
+.lt-idcard .g2c-st{margin:10px 0 0 !important;border-radius:14px !important;box-shadow:0 2px 0 rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.07) !important}
+</style>
+
+<script>
+(function(){
+ /* ID: marcar la tarjeta */
+ function tarjeta(){document.querySelectorAll('.lt-pegar').forEach(function(b){if(b.parentNode)b.parentNode.classList.add('lt-idcard');});}
+ tarjeta();setTimeout(tarjeta,1600);
+ /* Peticiones al servidor con límite de tiempo (si se cuelgan en segundo plano, no bloquean la app) */
+ var _f=window.fetch;
+ window.fetch=function(u,o){
+  try{ if(typeof u==='string'&&u.indexOf('/api/')>-1&&!(o&&o.signal)&&window.AbortController){
+   var c=new AbortController(),t=setTimeout(function(){c.abort();},40000);
+   return _f.call(this,u,Object.assign({},o||{},{signal:c.signal})).finally(function(){clearTimeout(t);});
+  } }catch(e){}
+  return _f.apply(this,arguments);
+ };
+ /* Al volver a la app: destraba y recarga datos */
+ var oculto=0;
+ function volver(){
+  var seg=oculto?(Date.now()-oculto)/1000:0;oculto=0;
+  if(seg>15){
+   try{guardandoCloud=false;}catch(e){}
+   try{ultimaEscritura=0;}catch(e){}
+   try{var o=document.getElementById('loading-overlay');if(o)o.style.display='none';}catch(e){}
+  }
+  try{if(typeof sincronizar==='function')sincronizar(true);}catch(e){}
+  try{if(typeof revisarVersion==='function')revisarVersion();}catch(e){}
+  setTimeout(function(){
+   try{renderizarPaquetesTienda();}catch(e){}
+   try{actualizarPerfilUI();}catch(e){}
+   try{aplicarConfiguracionVisual();}catch(e){}
+   tarjeta();
+  },900);
+ }
+ document.addEventListener('visibilitychange',function(){if(document.hidden)oculto=Date.now();else volver();});
+ window.addEventListener('pageshow',function(e){if(e.persisted)volver();});
+ window.addEventListener('online',volver);
+})();
+</script>
 </body>
 </html>
