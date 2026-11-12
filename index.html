@@ -2326,7 +2326,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                         </div>
                         <div class="ua-estado" id="ua-estado"><span class="ua-spin"></span><span id="ua-estado-txt">Esperando tu pago…</span><span class="ua-cuenta" id="ua-cuenta">5:00</span></div>
                         <div class="form-group">
-                            <label>¿Ya pagaste? Toca verificar. Si tarda, puedes pegar el ID de la transferencia (opcional)</label>
+                            <label>¿Ya pagaste? Toca verificar. Si tarda, puedes pegar el ID de la transferencia</label>
                             <input type="text" id="ua-txid" name="lt-tx-nuevo" class="form-control no-left-icon" placeholder="0x…" autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')">
                         </div>
                         <button class="btn-main" style="--btn-c: #2f6bff; margin-top: .4rem;" onclick="verificarTxIdUSDTAuto()">YA PAGUÉ · VERIFICAR AHORA</button>
@@ -2356,7 +2356,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     </div>
 
                     <div class="form-group" style="margin-top: 1rem;">
-                        <label>ID de la transferencia (Hash / ID) · opcional</label>
+                        <label>ID de la transferencia (Hash / ID)</label>
                         <input type="text" id="txid-usdt-input" name="lt-tx-manual" autocomplete="off" autocorrect="off" spellcheck="false" readonly onfocus="this.removeAttribute('readonly')" class="form-control no-left-icon" placeholder="Ej. 0x1234abcd..." oninput="validarTxIdInput(this)">
                         <div id="err-txid" class="error-feedback-text">Esto no es una ID de transferencia válida (evita letras inválidas o caracteres erróneos).</div>
                     </div>
@@ -4280,7 +4280,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             else if (!origenLegal) origenLegal = 'perfil';
             const lista = document.getElementById('legal-lista');
             const orden = ['terminos', 'privacidad', 'pagos', 'reembolsos', 'soporte', 'opiniones'];
-            lista.innerHTML = orden.map(k => {
+            lista.innerHTML = ltIaCard() + orden.map(k => {
                 const t = TITULOS_LEGALES[k];
                 return `<button class="menu-row" onclick="abrirLegal('${k}')">
                     <span class="mr-icon"><svg viewBox="0 0 24 24"><path d="${ICON[t[1]]}"/></svg></span>
@@ -4323,6 +4323,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             } else {
                 let html = `<div class="legal-text">${esc(tiendaConfig.legal[clave] || '')}</div>`;
                 if (clave === 'soporte') {
+                    html = ltIaCard() + html;
                     html += `<button class="btn-main" onclick="mostrarModalSoporte()">Abrir WhatsApp</button>`;
                 }
                 cont.innerHTML = html;
@@ -5658,6 +5659,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     destacados = `<div class="ceo-destacados">
                         <button class="ceo-btn-verde" onclick="cargarAccionCEO('solicitudes_deposito')">${iconoSVG('money')}<span>Depósitos<small>Solicitudes por revisar</small></span><em>${pendDep} pendientes</em></button>
                         <button class="ceo-btn-verde" onclick="cargarAccionCEO('solicitudes_recarga')">${iconoSVG('bolt')}<span>Recargas<small>Solicitudes por completar</small></span><em>${pendRec} pendientes</em></button>
+                        <button class="ceo-btn-verde" onclick="cargarAccionCEO('chats_soporte')">${iconoSVG('bolt')}<span>Chats de soporte<small>Usuarios que piden hablar contigo</small></span><em id="ceo-chat-badge">${window._ltChatNA || 0} sin leer</em></button>
                         <button class="ceo-btn-verde" onclick="cargarAccionCEO('socios_vip')">${iconoSVG('star')}<span>Socios para VIP<small>10 o más referidos válidos</small></span></button>
                         <button class="ceo-btn-verde" onclick="cargarAccionCEO('catalogo_precios')">${iconoSVG('image')}<span>Catálogo e Imágenes<small>Free Fire: precios y fotos de los paquetes</small></span></button>
                         <button class="ceo-btn-verde" onclick="cargarAccionCEO('catalogo_blood')">${iconoSVG('image')}<span>Catálogo Blood Strike<small>Precios y fotos de los BC</small></span></button>
@@ -5739,6 +5741,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         }
 
         const TITULOS_CEO = {
+            chats_soporte: 'Chats de soporte',
             socios_vip: 'Socios para VIP', historial_depositos: 'Historial de Depósitos', usuarios: 'Usuarios Registrados', acreditar: 'Acreditar Saldo', desacreditar: 'Desacreditar Saldo',
             solicitudes_recarga: 'Gestionar Recargas', solicitudes_deposito: 'Solicitudes de Depósito',
             cambiar_rango: 'Gestionar Rangos', control_total_historial: 'Control Total Historial',
@@ -6988,7 +6991,7 @@ async function confirmarEnvioUSDTDep(){
    {id:'rb',k:['roblox','robux'],a:'<b>Roblox</b><br>Entra a <b>Juegos → Roblox</b>, escribe el correo que se te pide, elige USDT o Saldo, toca el paquete y confirma. Las instrucciones para canjear los Robux aparecen en la misma pantalla.',acts:[['Ver juegos','go:juegos']]},
    {id:'usdt',k:['usdt','depositar','deposito','recargar saldo','wallet','bep20','bep 20','binance','cripto'],a:'<b>Depositar USDT (automático)</b><br>1. <b>Wallet → USDT</b>.<br>2. Escribe cuánto quieres (mínimo 0.5) y toca <b>GENERAR MI PAGO</b>.<br>3. Envía <b>exactamente</b> el monto que te muestra (con sus decimales, ej. 7.0003) por red <b>BEP 20 (BSC)</b> a la dirección indicada.<br>4. Tienes <b>5 minutos</b>. Tu saldo se acredita solo en segundos; no necesitas pegar ningún ID.',acts:[['Ir a depositar','go:usdt']]},
    {id:'monto',k:['decimal','monto exacto','por que 0.000','exacto','diferente monto','otro monto','envie otro','envie menos','envie mas'],a:'El pequeño decimal (de 0.0001 a 0.0009) es lo que identifica <b>tu</b> pago. Si envías otro monto el sistema no lo reconoce solo. En ese caso usa <b>Reportar para revisión manual</b> en la pantalla del depósito: verificamos en la red que el dinero llegó a nuestra wallet.'},
-   {id:'manual',k:['txid','id de transferencia','hash','revision manual','reportar','pague y no','no se acredito','no llego','no me llego'],a:'Si pagaste y no se acredita:<br>1. Espera 1–2 minutos (la red necesita confirmaciones).<br>2. Toca <b>YA PAGUÉ · VERIFICAR AHORA</b>. No necesitas ID: el sistema busca tu pago solo. Si quieres, también puedes pegar el <b>ID de transferencia</b> (empieza con 0x) para que sea más rápido.<br>3. Si pagaste otro monto, usa <b>Reportar para revisión manual</b>. Solo se acepta si la transferencia llegó a la wallet oficial de Lester Tienda.',acts:[['Hablar con Lester','wa']]},
+   {id:'manual',k:['txid','id de transferencia','hash','revision manual','reportar','pague y no','no se acredito','no llego','no me llego'],a:'Si pagaste y no se acredita:<br>1. Espera 1–2 minutos (la red necesita confirmaciones).<br>2. Toca <b>YA PAGUÉ · VERIFICAR AHORA</b>. No necesitas ID: el sistema busca tu pago solo. Si quieres, también puedes pegar el <b>ID de transferencia</b> (empieza con 0x) para que sea más rápido.<br>3. Si pagaste otro monto, usa <b>Reportar para revisión manual</b>. Solo se acepta si la transferencia llegó a la wallet oficial de Lester Tienda.',acts:[['Reportar mi pago','humano'],['Ir a depositar USDT','go:usdt']]},
    {id:'saldo',k:['saldo movil','saldo móvil','transferencia movil','cuc','cup','transfermovil'],a:'<b>Depositar Saldo Móvil</b><br>1. <b>Wallet → Saldo Móvil</b>.<br>2. Escribe el monto y el número con el que transferiste.<br>3. Sube la foto del comprobante.<br>4. Envía: queda <b>Pendiente</b> hasta que Lester lo apruebe.',acts:[['Ir a Wallet','go:wallet']]},
    {id:'pedidos',k:['pedido','orden','estado','pendiente','completado','cancelado','donde veo','historial'],a:'En <b>Pedidos</b> ves tus recargas y depósitos. Los colores te dicen el estado:<br>🟡 <b>Pendiente</b>: en proceso.<br>🟢 <b>Completado</b>: ya se entregó.<br>🔴 <b>Cancelado</b>: no se realizó; el importe vuelve a tu saldo.',acts:[['Ir a Pedidos','go:ordenes']]},
    {id:'reembolso',k:['reembolso','devol','dinero de vuelta'],a:'Si una recarga es <b>cancelada</b>, el importe se devuelve automáticamente a tu saldo. Una recarga <b>Completada</b> ya fue entregada.'},
@@ -6997,7 +7000,7 @@ async function confirmarEnvioUSDTDep(){
    {id:'transferir',k:['transferir','enviar saldo','mandar saldo','pasar saldo'],a:'<b>Transferir saldo</b> a otro usuario: <b>Perfil → Transferir</b>. Escribes su usuario o correo, la moneda, el monto y tu contraseña.',acts:[['Ir a Perfil','go:perfil']]},
    {id:'opinion',k:['opinion','reseña','resena','comentario','calificar'],a:'Las opiniones de clientes están en Inicio (<b>Ver más</b>). Ahí mismo puedes dejar la tuya con estrellas y, si quieres, una foto.'},
    {id:'ayuda',k:['ayuda en cada','activar ayuda','ayuda en pantalla','guiame en cada','repetir ayuda'],a:'Puedo <b>guiarte en cada pantalla</b>: cuando entres a un botón te muestro dónde escribir el ID, el monto y qué tocar. Puedes activarlo o apagarlo cuando quieras.',acts:[['Activar ayuda','ayuda_on'],['Apagar ayuda','ayuda_off']]},
-   {id:'soporte',k:['soporte','humano','whatsapp','lester','hablar','contacto','problema','ayuda urgente'],a:'Puedes hablar directamente con Lester por WhatsApp. Cuéntale tu usuario y el detalle de tu pedido.',acts:[['Abrir WhatsApp','wa']]},
+   {id:'soporte',k:['soporte','humano','whatsapp','lester','hablar','contacto','problema','ayuda urgente','agente','asesor','persona real','atencion','comunicar'],a:'Claro 👍 Puedo conectarte con <b>soporte</b> aquí mismo, en este chat, y Lester te responde en vivo. También puedes escribirle por WhatsApp.',acts:[['Chatear con soporte aquí','humano'],['Abrir WhatsApp','wa']]},
    {id:'seguridad',k:['seguro','confiable','estafa','segur'],a:'Los pagos USDT se verifican <b>en la blockchain</b> y solo se acreditan si llegaron a la wallet oficial. Nunca compartas tu contraseña ni envíes dinero a otra dirección distinta a la que muestra la página.'}
    ,{id:'agotado',k:['agotado','agotada','sin stock','no hay stock','no puedo comprar','se agoto','paquete oscuro','etiqueta roja','no se puede abrir'],a:'Cuando un <b>paquete</b> o un <b>juego</b> sale oscuro con la etiqueta roja <b>AGOTADO</b>, no se puede comprar por ahora. Elige otro paquete o vuelve más tarde: Lester lo reactiva en cuanto hay disponibilidad.',acts:[['Ver juegos','go:juegos']]}
   ,{id:'idcheck',k:['id invalido','id no valido','id incorrecto','verificando id','cuenta verificada','valida mi id','introduce un id','falta tu id','mi id no','id de jugador','donde veo mi id','que id'],a:'<b>Tu ID de jugador</b><br>Al escribirlo, la página lo verifica sola:<br>🟢 <b>Cuenta verificada</b> + el nombre de la cuenta: todo bien.<br>🔴 <b>Por favor introduce un ID válido</b>: revísalo, es el número de tu perfil en el juego.<br>Si tocas confirmar sin ID, te marco el campo para que lo escribas. En Roblox se pide tu <b>correo</b> en lugar del ID.'}
@@ -7051,7 +7054,7 @@ async function confirmarEnvioUSDTDep(){
     var d=document.createElement('div'); d.className='lt-msg bot lt-typing'; d.innerHTML='<i></i><i></i><i></i>';
     quitarSug(); body.appendChild(d); bajar();
     var ms=t.ms||Math.min(650,220+Math.round(t.html.length*0.7));
-    setTimeout(function(){ d.remove(); add(t.html,'bot',t.acts); if(t.sug!==undefined && !cola.length) sugerir(t.sug); ocupado=false; procesar(); },ms);
+    setTimeout(function(){ d.remove(); add(t.html,'bot',acciones(t.acts,t.sug)); if(t.sug!==undefined && !cola.length) sugerir(t.sug); ocupado=false; procesar(); },ms);
   }
   function bot(html,acts,ms,sug){ cola.push({html:html,acts:acts,ms:ms,sug:sug}); procesar(); }
   function responder(q){
@@ -7059,7 +7062,85 @@ async function confirmarEnvioUSDTDep(){
     if(/^(hola|buenas|buenos|hey|saludos|holi|que tal)/.test(n)){ bot('¡Hola'+(usuarioActual&&usuarioActual.nombre?' <b>'+esc(usuarioActual.nombre)+'</b>':'')+'! Soy <b>IA LT</b>. Pregúntame lo que quieras sobre la página o toca una pregunta rápida.',null,0,''); return; }
     if(/gracias|genial|perfecto|listo|ok$/.test(n)){ bot('¡Con gusto! Si necesitas algo más, aquí estoy 💙',null,0,''); return; }
     KBN.forEach(function(o){ var s=0; o.k.forEach(function(w){ if(n.indexOf(w)>-1) s+=w.length; }); if(s>sc){sc=s;best=o.e;} });
-    if(best) bot(best.a,best.acts,0,best.id); else bot('No encontré eso exactamente, pero puedo ayudarte con estos temas. También puedes escribirle directo a Lester.',[['Hablar con Lester','wa']],0,'');
+    if(best) bot(best.a,best.acts,0,best.id); else bot('No encontré eso exactamente, pero puedo ayudarte con estos temas. También puedes escribirle directo a Lester.',[['Hablar con soporte','humano'],['Abrir WhatsApp','wa']],0,'');
+  }
+  /* ---------- Botones de acción en todas las respuestas ---------- */
+  var DEF_ACTS={reembolso:[['Ver mis pedidos','go:ordenes']],pedidos:[['Ver mis pedidos','go:ordenes']],usdt:[['Ir a depositar USDT','go:usdt']],monto:[['Ir a depositar USDT','go:usdt']],manual:[['Ir a depositar USDT','go:usdt']],cancelarpago:[['Ir a depositar USDT','go:usdt']],minimo:[['Ir a depositar USDT','go:usdt']],saldo:[['Ir a Wallet','go:wallet']],pago:[['Ir a Wallet','go:wallet']],
+    ff:[['Ver juegos','go:juegos']],bs:[['Ver juegos','go:juegos']],cd:[['Ver juegos','go:juegos']],rb:[['Ver juegos','go:juegos']],rb2:[['Ver juegos','go:juegos']],idcheck:[['Ver juegos','go:juegos']],agotado:[['Ver juegos','go:juegos']],proximamente:[['Ver juegos','go:juegos']],precios:[['Ver juegos','go:juegos']],
+    registro:[['Iniciar guía','guia']],login:[['Ir a Perfil','go:perfil']],ref:[['Ir a Referidos','go:referidos']],opinion:[['Iniciar guía','guia']],seguridad:[['Iniciar guía','guia']],instalar:[['Iniciar guía','guia']],barra:[['Iniciar guía','guia']]};
+  function acciones(acts,id){
+    var a=(acts&&acts.length)?acts.slice():((id&&DEF_ACTS[id])?DEF_ACTS[id].slice():[]);
+    if(!modoHumano && !a.some(function(x){return x[1]==='humano';})) a.push(['Hablar con soporte','humano']);
+    return a;
+  }
+  /* ---------- Chat en vivo con soporte (dentro de IA LT) ---------- */
+  var modoHumano=false,nChat=0,propiosPend=0,pollT=null;
+  function CU(){ return (typeof usuarioActual!=='undefined'&&usuarioActual&&usuarioActual.correo&&usuarioActual.pass)?usuarioActual:null; }
+  function cred(){ var u=CU(); return u?{correo:u.correo,pass:u.pass}:null; }
+  function apiChat(ruta,datos){ var u=(typeof WORKER_URL!=='undefined'?WORKER_URL:'').replace(/\/$/,''); return fetch(u+ruta,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(datos)}).then(function(r){return r.json();}); }
+  function banner(on){
+    var b=el('lt-live');
+    if(on){
+      if(!b){ b=document.createElement('div'); b.id='lt-live'; b.className='lt-live'; b.innerHTML='<i></i><span>Chat con soporte · en vivo</span><button type="button">Terminar chat</button>'; el('lt-ia').querySelector('.lt-ia-head').insertAdjacentElement('afterend',b); b.querySelector('button').onclick=terminarHumano; }
+      b.style.display='flex'; if(inp) inp.placeholder='Escribe tu mensaje a soporte…';
+    } else { if(b) b.style.display='none'; if(inp) inp.placeholder='Pregúntale a IA LT…'; }
+  }
+  function addSup(texto,sis){
+    var d=document.createElement('div'); d.className='lt-msg '+(sis?'lt-sys':'sup');
+    if(!sis){ var w=document.createElement('b'); w.className='lt-who'; w.textContent='Lester · Soporte'; d.appendChild(w); }
+    var p=document.createElement('div'); p.className='lt-txt'; p.textContent=texto; d.appendChild(p);
+    if(!sis){ var t=document.createElement('time'); t.textContent=hora(); d.appendChild(t); }
+    body.appendChild(d); bajar();
+  }
+  function cargarChat(primera){
+    var c=cred(); if(!c) return Promise.resolve(null); c.n=nChat;
+    return apiChat('/api/chat/ver',c).then(function(d){
+      if(!d||d.mensaje) return d;
+      if(primera && d.estado==='cerrado'){ nChat=d.n; return d; }
+      nChat=d.n; var ultimo=null;
+      (d.msgs||[]).forEach(function(m){
+        if(m.de==='u'){ if(propiosPend>0) propiosPend--; else add(esc(m.t),'me'); }
+        else if(m.de==='a'){ addSup(m.t,false); ultimo=m.t; }
+        else addSup(m.t,true);
+      });
+      if(ultimo!==null && !abierto){ var fb=el('floating-bot-soporte'); if(fb) fb.classList.add('lt-dot'); try{ mostrarNotificacion('💬 Soporte respondió: '+ultimo.slice(0,60)); }catch(e){} }
+      if(d.estado==='cerrado' && modoHumano){ salirHumano(); bot('El chat con soporte se cerró. Si necesitas algo más, aquí estoy 💙',null,0,''); }
+      return d;
+    }).catch(function(){ return null; });
+  }
+  function programar(){
+    clearTimeout(pollT); if(!modoHumano) return;
+    pollT=setTimeout(function(){ if(!modoHumano) return; if(!CU()){ salirHumano(); return; } cargarChat(false).then(programar); }, abierto?4000:20000);
+  }
+  function salirHumano(){ modoHumano=false; clearTimeout(pollT); try{localStorage.removeItem('lt_chat_humano');}catch(e){} banner(false); }
+  function activarHumano(){
+    var c=cred();
+    if(!c){ bot('Para chatear con soporte necesitas <b>iniciar sesión</b>. Mientras tanto puedes escribirle a Lester por WhatsApp.',[['Abrir WhatsApp','wa']],0,''); return; }
+    if(modoHumano){ bot('Ya estás conectado con soporte. Escribe tu mensaje aquí abajo 👇',null,0); return; }
+    modoHumano=true; try{localStorage.setItem('lt_chat_humano','1');}catch(e){}
+    quitarSug(); banner(true); nChat=0; propiosPend=0;
+    bot('Listo ✅ Te conecté con <b>soporte</b>. Escribe tu mensaje aquí abajo y Lester te responde en este mismo chat. Te aviso en cuanto conteste.',null,300);
+    cargarChat(true).then(function(d){
+      if(d && d.estado==='abierto') return;
+      propiosPend++;
+      apiChat('/api/chat/enviar',{correo:c.correo,pass:c.pass,texto:'🙋 Pidió hablar con soporte (desde IA LT)'}).then(function(r){ if(r&&r.mensaje) propiosPend=Math.max(0,propiosPend-1); }).catch(function(){ propiosPend=Math.max(0,propiosPend-1); });
+    });
+    programar();
+  }
+  function enviarHumano(txt){
+    var c=cred(); if(!c){ salirHumano(); bot('Tu sesión se cerró. Inicia sesión otra vez para chatear con soporte.',null,0,''); return; }
+    propiosPend++; c.texto=txt;
+    apiChat('/api/chat/enviar',c).then(function(r){
+      if(r&&r.mensaje){ propiosPend=Math.max(0,propiosPend-1); addSup(r.mensaje==='Espera un momento'?'Espera un momento antes de enviar otro mensaje.':'No se pudo enviar: '+r.mensaje,true); }
+      else setTimeout(function(){ cargarChat(false); },1200);
+    }).catch(function(){ propiosPend=Math.max(0,propiosPend-1); addSup('No se pudo enviar. Revisa tu conexión.',true); });
+  }
+  function terminarHumano(){ var c=cred(); if(c) apiChat('/api/chat/cerrar',c).catch(function(){}); salirHumano(); bot('Terminaste el chat con soporte. Cuando quieras volver a hablar con ellos, toca el botón 💙',null,0,''); }
+  function reanudarIntento(){
+    try{ if(localStorage.getItem('lt_chat_humano')!=='1'||modoHumano) return; }catch(e){ return; }
+    if(!CU()||!body){ setTimeout(reanudarIntento,3000); return; }
+    modoHumano=true; banner(true); nChat=0; propiosPend=0;
+    cargarChat(true).then(function(d){ if(!d||d.estado!=='abierto'){ salirHumano(); return; } programar(); });
   }
   function porId(id){ for(var i=0;i<KB.length;i++) if(KB[i].id===id) return KB[i]; }
   function ir(sec){
@@ -7071,14 +7152,16 @@ async function confirmarEnvioUSDTDep(){
   function accion(a){
     if(a==='guia'){ cerrar(); setTimeout(function(){window.iniciarGuiaLT(false);},350); }
     else if(a==='wa'){ abrirWhatsAppReal('normal'); }
+    else if(a==='humano'){ activarHumano(); }
     else if(a==='ayuda_on'){ window.ltAyuda(true); cerrar(); mostrarNotificacion('Ayuda activada: IA LT te guiará en cada pantalla'); }
     else if(a==='ayuda_off'){ window.ltAyuda(false); mostrarNotificacion('Ayuda apagada'); }
     else if(a.indexOf('go:')===0){ ir(a.slice(3)); }
   }
-  function enviar(txt){ txt=(txt||'').trim(); if(!txt) return; quitarSug(); add(esc(txt),'me'); inp.value=''; responder(txt); }
+  function enviar(txt){ txt=(txt||'').trim(); if(!txt) return; quitarSug(); add(esc(txt),'me'); inp.value=''; if(modoHumano){ enviarHumano(txt); return; } responder(txt); }
   window.abrirIA=function(){
     cerrarModalSoporte();
     el('lt-ia').classList.add('open'); document.body.classList.add('lt-ia-open'); abierto=true;
+    var fb=el('floating-bot-soporte'); if(fb) fb.classList.remove('lt-dot'); if(modoHumano) cargarChat(false);
     if(!saludado){
       saludado=true;
       var nom=(usuarioActual&&usuarioActual.nombre)?' <b>'+esc(usuarioActual.nombre)+'</b>':'';
@@ -7101,6 +7184,7 @@ async function confirmarEnvioUSDTDep(){
     });
   }
   if(document.readyState!=='loading') iniciar();
+  setTimeout(reanudarIntento,3000);
 })();
 
 /* ================= Guía paso a paso ================= */
@@ -7554,5 +7638,165 @@ body.lt-scroll *,body.lt-scroll *::before,body.lt-scroll *::after{animation-play
 :root[data-theme="light"]:not(#x) .diamonds-grid .diamond-card.selected .dc-shine{box-shadow:0 2px 0 #075a31,0 0 0 2px #fff,0 4px 8px rgba(20,40,90,.25) !important}
 .diamond-card.selected .dc-shine::before,.diamond-card.selected .dc-shine::after{display:none !important}
 </style>
+<script>
+/* ===== Soporte en vivo: bandeja del CEO, tarjeta IA LT en Legal y avisos ===== */
+(function () {
+  var css = [
+    '.lt-live{display:flex;align-items:center;gap:8px;padding:8px 12px;background:linear-gradient(90deg,rgba(22,199,132,.22),rgba(22,199,132,.06));border-bottom:1px solid rgba(22,199,132,.45);color:#8ff3c9;font-size:.74rem;font-weight:800;}',
+    '.lt-live i{width:9px;height:9px;border-radius:50%;background:#16c784;box-shadow:0 0 8px #16c784;animation:ltPuls 1.4s infinite;flex:none;}',
+    '.lt-live span{flex:1;}',
+    '.lt-live button{border:1px solid rgba(239,68,68,.6);background:rgba(239,68,68,.15);color:#fca5a5;font-size:.68rem;font-weight:800;padding:5px 10px;border-radius:9px;cursor:pointer;}',
+    '.lt-msg.sup{align-self:flex-start;background:linear-gradient(160deg,#0f3a2c,#0a2219);border:1px solid rgba(22,199,132,.55);color:#e8fff6;border-top-left-radius:4px;box-shadow:0 0 16px rgba(22,199,132,.18);}',
+    '.lt-msg.sup .lt-who{display:block;color:#8ff3c9;font-size:.72rem;margin-bottom:2px;}',
+    '.lt-txt{white-space:pre-wrap;}',
+    '.lt-msg.lt-sys{align-self:center;max-width:90%;background:rgba(148,163,184,.14);color:#cbd5e1;font-size:.72rem;text-align:center;padding:6px 12px;border-radius:12px;}',
+    ':root[data-theme="light"] .lt-msg.sup{background:#e6fbf3;color:#064e3b;} :root[data-theme="light"] .lt-msg.lt-sys{color:#475569;}',
+    '.floating-bot.lt-dot::after{content:"";position:absolute;top:0;right:0;width:14px;height:14px;border-radius:50%;background:#ef4444;border:2px solid #fff;box-shadow:0 0 8px #ef4444;}',
+    '.adm-vacio{color:var(--text-muted);font-size:.82rem;text-align:center;padding:1.2rem .5rem;}',
+    '.adm-chat{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:12px;margin-bottom:8px;border-radius:14px;background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-main);cursor:pointer;}',
+    '.adm-chat.off{opacity:.6;}',
+    '.adm-av{width:42px;height:42px;flex:none;border-radius:50%;display:grid;place-items:center;font-weight:900;color:#fff;background:linear-gradient(145deg,#2f6bff,#00c8ff);}',
+    '.adm-cb{flex:1;min-width:0;} .adm-cb b{display:block;font-size:.9rem;} .adm-cb small{display:block;color:var(--text-muted);font-size:.7rem;}',
+    '.adm-cb p{margin:2px 0 0;font-size:.78rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
+    '.adm-n{min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:#ef4444;color:#fff;font-size:.72rem;font-weight:900;display:grid;place-items:center;}',
+    '.adm-conv{display:flex;flex-direction:column;gap:10px;}',
+    '.adm-ch{display:flex;align-items:center;gap:8px;}',
+    '.adm-ch .t{flex:1;min-width:0;} .adm-ch .t b{display:block;font-size:.95rem;} .adm-ch .t small{color:var(--text-muted);font-size:.7rem;}',
+    '.adm-ch button{padding:7px 11px;border-radius:10px;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-main);font-size:.74rem;font-weight:800;cursor:pointer;}',
+    '.adm-ch button.rojo{border-color:rgba(239,68,68,.6);color:#f87171;}',
+    '.adm-cbody{height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:7px;padding:10px;border-radius:14px;background:var(--bg-card);border:1px solid var(--border-color);}',
+    '.adm-m{max-width:82%;padding:8px 11px;border-radius:13px;font-size:.84rem;line-height:1.4;white-space:pre-wrap;word-wrap:break-word;}',
+    '.adm-m.u{align-self:flex-start;background:rgba(148,163,184,.18);color:var(--text-main);border-top-left-radius:4px;}',
+    '.adm-m.a{align-self:flex-end;background:linear-gradient(135deg,#2160ff,#0a8bd6);color:#fff;border-top-right-radius:4px;}',
+    '.adm-m.s{align-self:center;background:transparent;color:var(--text-muted);font-size:.72rem;text-align:center;}',
+    '.adm-m small{display:block;opacity:.6;font-size:.62rem;margin-top:2px;text-align:right;}',
+    '.adm-send{display:flex;gap:8px;} .adm-send input{flex:1;min-width:0;height:46px;border-radius:12px;} .adm-send button{width:50px;border:0;border-radius:12px;background:linear-gradient(135deg,#00c8ff,#2f6bff);color:#fff;font-size:1.1rem;font-weight:900;cursor:pointer;}'
+  ].join('');
+  var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+
+  function CU() { return (typeof usuarioActual !== 'undefined' && usuarioActual && usuarioActual.correo && usuarioActual.pass) ? usuarioActual : null; }
+  function cred() { var u = (typeof usuarioActual !== 'undefined' && usuarioActual) || {}; return { correo: u.correo || '', pass: u.pass || '' }; }
+  function pase() { try { return localStorage.getItem('lester_admin_token') || ''; } catch (e) { return ''; } }
+  function api(ruta, datos) {
+    var u = (typeof WORKER_URL !== 'undefined' ? WORKER_URL : '').replace(/\/$/, '');
+    var h = { 'Content-Type': 'application/json' }; var t = pase(); if (t) h['X-Admin'] = t;
+    return fetch(u + ruta, { method: 'POST', headers: h, body: JSON.stringify(datos) }).then(function (r) { return r.json(); });
+  }
+  function res() { return document.getElementById('ceo-resultado'); }
+  function hm(ts) { var d = new Date(ts || Date.now()); return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); }
+
+  /* ---- Tarjeta IA LT para Información Legal y Soporte ---- */
+  window.ltIaCard = function () {
+    var av = (typeof LT_IA_AV !== 'undefined') ? LT_IA_AV : 'icon-192.png';
+    var fl = (typeof ICON !== 'undefined' && ICON.arrow) ? '<span class="mr-arrow"><svg viewBox="0 0 24 24"><path d="' + ICON.arrow + '"/></svg></span>' : '';
+    return '<button class="menu-row lt-ia-opt" onclick="abrirIA()" style="margin-bottom:10px"><span class="mr-icon" style="background:none;box-shadow:none"><img src="' + av + '" alt="IA LT"></span>' +
+      '<span class="mr-text">IA LT <span class="lt-badge">IA</span><small style="display:block;font-size:.68rem;font-weight:600;opacity:.8;margin-top:2px">Asistente 24/7 · chat en vivo con soporte</small></span>' + fl + '</button>';
+  };
+
+  /* ---- Bandeja de chats del CEO ---- */
+  var tLista = null, tConv = null;
+  function parar() { clearInterval(tLista); clearInterval(tConv); tLista = tConv = null; }
+
+  function lista() {
+    parar();
+    res().innerHTML = '<div id="adm-lista"><p class="adm-vacio">Cargando chats…</p></div>';
+    function cargar() {
+      if (!document.getElementById('adm-lista')) { parar(); return; }
+      api('/api/chat/lista', cred()).then(function (d) {
+        var box = document.getElementById('adm-lista'); if (!box || !d || !d.chats) return;
+        box.innerHTML = '';
+        if (!d.chats.length) { box.innerHTML = '<p class="adm-vacio">Aún no hay chats. Cuando un usuario pida hablar contigo desde IA LT, aparecerá aquí.</p>'; return; }
+        d.chats.forEach(function (c) {
+          var b = document.createElement('button'); b.className = 'adm-chat' + (c.estado === 'cerrado' ? ' off' : '');
+          var av = document.createElement('div'); av.className = 'adm-av'; av.textContent = (Array.from(c.nombre || '?')[0] || '?').toUpperCase();
+          var cb = document.createElement('div'); cb.className = 'adm-cb';
+          var n1 = document.createElement('b'); n1.textContent = c.nombre || c.correo;
+          var n2 = document.createElement('small'); n2.textContent = c.correo + (c.estado === 'cerrado' ? ' · Cerrado' : ' · Abierto');
+          var n3 = document.createElement('p'); n3.textContent = c.ultimo || '';
+          cb.appendChild(n1); cb.appendChild(n2); cb.appendChild(n3);
+          b.appendChild(av); b.appendChild(cb);
+          if (c.na > 0 && c.estado === 'abierto') { var bd = document.createElement('span'); bd.className = 'adm-n'; bd.textContent = c.na; b.appendChild(bd); }
+          b.onclick = function () { conv(c.correo, c.nombre); };
+          box.appendChild(b);
+        });
+      }).catch(function () {});
+    }
+    cargar(); tLista = setInterval(cargar, 6000);
+  }
+
+  function conv(correo, nombre) {
+    parar();
+    var n = 0, r = res(); r.innerHTML = '';
+    var w = document.createElement('div'); w.className = 'adm-conv';
+    var h = document.createElement('div'); h.className = 'adm-ch';
+    var bv = document.createElement('button'); bv.textContent = '← Chats'; bv.onclick = lista;
+    var t = document.createElement('div'); t.className = 't';
+    var tb = document.createElement('b'); tb.textContent = nombre || correo; var ts = document.createElement('small'); ts.textContent = correo;
+    t.appendChild(tb); t.appendChild(ts);
+    var bc = document.createElement('button'); bc.className = 'rojo'; bc.textContent = 'Cerrar chat';
+    h.appendChild(bv); h.appendChild(t); h.appendChild(bc);
+    var cuerpo = document.createElement('div'); cuerpo.id = 'adm-cbody'; cuerpo.className = 'adm-cbody';
+    var fila = document.createElement('div'); fila.className = 'adm-send';
+    var ip = document.createElement('input'); ip.type = 'text'; ip.className = 'form-control no-left-icon'; ip.placeholder = 'Escribe tu respuesta…'; ip.maxLength = 600; ip.autocomplete = 'off';
+    var en = document.createElement('button'); en.type = 'button'; en.textContent = '➤';
+    fila.appendChild(ip); fila.appendChild(en);
+    w.appendChild(h); w.appendChild(cuerpo); w.appendChild(fila); r.appendChild(w);
+
+    function pintar(m) {
+      var d = document.createElement('div'); d.className = 'adm-m ' + (m.de === 'a' ? 'a' : (m.de === 'u' ? 'u' : 's'));
+      d.appendChild(document.createTextNode(m.t));
+      if (m.de !== 's') { var s = document.createElement('small'); s.textContent = hm(m.ts); d.appendChild(s); }
+      cuerpo.appendChild(d);
+    }
+    function traer() {
+      if (!document.getElementById('adm-cbody')) { parar(); return Promise.resolve(); }
+      var c = cred(); c.usuario = correo; c.n = n;
+      return api('/api/chat/admin-ver', c).then(function (d) {
+        if (!d || d.mensaje) return;
+        if (d.reset) cuerpo.innerHTML = '';
+        var abajo = cuerpo.scrollHeight - cuerpo.scrollTop - cuerpo.clientHeight < 80 || n === 0;
+        n = d.n; (d.msgs || []).forEach(pintar);
+        if (abajo || (d.msgs || []).length) cuerpo.scrollTop = cuerpo.scrollHeight;
+      }).catch(function () {});
+    }
+    function enviar() {
+      var tx = ip.value.trim(); if (!tx) return;
+      var c = cred(); c.usuario = correo; c.texto = tx; ip.value = '';
+      api('/api/chat/admin-enviar', c).then(function (d) { if (d && d.mensaje) mostrarNotificacion(d.mensaje); traer(); }).catch(function () { mostrarNotificacion('No se pudo enviar'); });
+    }
+    en.onclick = enviar; ip.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); enviar(); } });
+    bc.onclick = function () {
+      if (!confirm('¿Cerrar este chat? El usuario verá que soporte lo cerró.')) return;
+      var c = cred(); c.usuario = correo;
+      api('/api/chat/admin-cerrar', c).then(traer);
+    };
+    traer(); tConv = setInterval(traer, 4000);
+  }
+
+  var orig = window.cargarAccionCEO;
+  window.cargarAccionCEO = function (a) {
+    if (a !== 'chats_soporte') return orig.apply(this, arguments);
+    if (!esCEOUsuario()) { mostrarNotificacion('Acceso solo para el CEO'); return; }
+    if (document.getElementById('seccion-ceo').style.display === 'none') { mostrarVista('seccion-ceo'); marcarNav('nav-btn-perfil'); }
+    document.getElementById('ceo-pagina-titulo').innerText = 'Chats de soporte';
+    lista();
+  };
+
+  /* ---- Aviso al CEO cuando un usuario pide soporte ---- */
+  var ult = null;
+  function revisar() {
+    if (typeof esCEOUsuario !== 'function' || !esCEOUsuario()) return;
+    var c = cred(); if (!c) return;
+    api('/api/chat/lista', c).then(function (d) {
+      if (!d || typeof d.total_na !== 'number') return;
+      window._ltChatNA = d.total_na;
+      var e = document.getElementById('ceo-chat-badge'); if (e) e.textContent = d.total_na + ' sin leer';
+      if (ult !== null && d.total_na > ult) { try { mostrarNotificacion('💬 IA LT: un usuario quiere hablar con soporte'); } catch (x) {} }
+      ult = d.total_na;
+    }).catch(function () {});
+  }
+  setTimeout(revisar, 4000); setInterval(revisar, 20000);
+})();
+</script>
 </body>
 </html>
