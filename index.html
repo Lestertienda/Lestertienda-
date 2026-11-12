@@ -2518,11 +2518,11 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 
                         <ol class="sm-lista">
                             <li>Desde el número indicado, transfiere el saldo por el <b>monto exacto</b> al número oficial.</li>
-                            <li>Toma una captura de pantalla de la confirmación de la transferencia.</li>
-                            <li>Adjúntala aquí y pulsa <b>Ya realicé el pago</b>.</li>
+                        
+                            <li>Cuando termines, pulsa <b>Ya realicé el pago</b>. Tu saldo se acredita solo, sin enviar captura.</li>
                         </ol>
 
-                        <div class="form-group" style="margin-top: 1.1rem;">
+                        <div class="form-group" style="margin-top: 1.1rem; display:none;">
                             <label>Captura de la transferencia</label>
                             <div class="sm-reqs">
                                 <b>Requisitos de la captura</b>
@@ -2545,7 +2545,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                             <button type="button" id="sm-btn-forzar" class="sm-btn-sec sm-hide" onclick="smForzarRevision()">Mi captura es correcta: enviar para revisión manual</button>
                         </div>
 
-                        <button class="btn-main" id="sm-btn-pagar" onclick="smPagar()" disabled>YA REALICÉ EL PAGO</button>
+                        <button class="btn-main" id="sm-btn-pagar" onclick="smPagar()">YA REALICÉ EL PAGO</button>
                         <button class="sm-link" type="button" onclick="smCancelarOrden()">Cancelar y empezar de nuevo</button>
                     </div>
 
@@ -2555,6 +2555,11 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                             <div class="sm-estado-ico" id="sm-estado-ico"></div>
                             <h4 id="sm-estado-tit">Verificando tu pago</h4>
                             <p id="sm-estado-txt"></p>
+                        </div>
+                        <div id="sm-sop" class="sm-hide" style="margin-top:1rem;text-align:center">
+                            <p style="font-size:.85rem;opacity:.85;margin:0 0 .6rem">¿Ya transferiste y no se acredita? Envía tu captura a soporte y la revisamos.</p>
+                            <input type="file" id="sm-sop-input" accept="image/*" style="display:none" onchange="smSopElegir(event)">
+                            <button type="button" class="sm-btn-sec" id="sm-sop-btn" onclick="document.getElementById('sm-sop-input').click()">Enviar captura a soporte</button>
                         </div>
                         <div class="sm-resumen" style="margin-top: 1rem;">
                             <div><small>Desde</small><b id="sm-e-tel">—</b></div>
@@ -4818,7 +4823,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         function smLimpiarCaptura() {
             sm.archivo = null; sm.chequeo = null; sm.forzado = false;
             ['sm-prev', 'sm-progreso', 'sm-checks', 'sm-aviso-err', 'sm-btn-forzar'].forEach(id => document.getElementById(id).classList.add('sm-hide'));
-            document.getElementById('sm-btn-pagar').disabled = true;
+            document.getElementById('sm-btn-pagar').disabled = false;
             document.getElementById('sm-drop-txt').textContent = 'Adjuntar captura de la galería';
         }
 
@@ -4947,24 +4952,19 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         }
 
         async function smPagar() {
-            if (sm.ocupado || !sm.orden || !sm.archivo) return;
+            if (sm.ocupado || !sm.orden) return;
             if (Date.now() > sm.orden.expira) { mostrarNotificacion("La operación venció. Crea una nueva."); smGuardarOrden(null); smDetener(); smPaso(1); return; }
-            sm.ocupado = true; mostrarCarga("Enviando comprobante...");
+            sm.ocupado = true; mostrarCarga("Confirmando...");
             try {
-                const r = await fetch(WORKER_URL + '/api/saldo/comprobante', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: sm.orden.id, imagen: sm.archivo.dataUrl, hashOrig: sm.archivo.hashOrig, chequeo: sm.chequeo }) });
+                const r = await fetch(WORKER_URL + '/api/saldo/confirmar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: sm.orden.id }) });
                 const j = await r.json().catch(() => ({}));
                 if (r.status === 410) { mostrarNotificacion(j.mensaje || "La operación venció."); smGuardarOrden(null); smDetener(); smPaso(1); return; }
-                if (!r.ok || !j.orden) {
-                    const err = document.getElementById('sm-aviso-err');
-                    err.textContent = j.mensaje || 'No se pudo enviar. Intenta de nuevo.'; err.classList.remove('sm-hide');
-                    if (j.resultado === 'repetida' || j.resultado === 'recortada') { document.getElementById('sm-btn-pagar').disabled = true; sm.archivo = null; }
-                    return;
-                }
-                sm.orden = j.orden;
+                if (!r.ok || !j.orden) { mostrarNotificacion(j.mensaje || 'No se pudo enviar. Intenta de nuevo.'); return; }
+                sm.orden = j.orden; sm.sopOk = false; smGuardarOrden(j.orden);
                 try { await traerEstadoFresco(); refrescarUsuarioActual(); actualizarPerfilUI(); renderizarOrdenes(); } catch (e) {}
                 smMostrarEstado(j.orden);
                 smIniciarPoll();
-            } catch (e) { mostrarNotificacion("Mala internet. No se pudo enviar, intenta de nuevo."); }
+            } catch (e) { mostrarNotificacion("Mala internet. Intenta de nuevo."); }
             finally { sm.ocupado = false; ocultarCarga(); }
         }
 
@@ -4987,35 +4987,66 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         /* ---------- Estado de la verificación ---------- */
         function smMostrarEstado(o) {
             smPaso(3);
-            const ico = document.getElementById('sm-estado-ico'), tit = document.getElementById('sm-estado-tit'), txt = document.getElementById('sm-estado-txt');
+            const ico = document.getElementById('sm-estado-ico'), tit = document.getElementById('sm-estado-tit'), txt = document.getElementById('sm-estado-txt'), sop = document.getElementById('sm-sop');
             document.getElementById('sm-e-tel').textContent = o.tel;
             document.getElementById('sm-e-monto').textContent = smFmtMonto(o.monto);
             document.getElementById('sm-e-hora').textContent = o.enviado ? new Date(o.enviado).toLocaleTimeString('es-CU', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Havana' }) : '—';
-            ico.className = 'sm-estado-ico';
+            ico.className = 'sm-estado-ico'; ico.removeAttribute('style');
+            const svgOk = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+            const svgX = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+            const svgReloj = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3 2"/></svg>';
+            let mostrarSop = false;
             document.querySelectorAll('#sm-steps li').forEach(li => { if (o.estado === 'aprobada') { li.classList.remove('act'); li.classList.add('ok'); } });
             if (o.estado === 'aprobada') {
-                ico.classList.add('ok');
-                ico.innerHTML = '<svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-                tit.textContent = 'Pago verificado';
+                ico.classList.add('ok'); ico.innerHTML = svgOk;
+                tit.textContent = 'Confirmado';
                 txt.textContent = 'Se acreditaron ' + smFmtMonto(o.monto) + ' en tu saldo móvil. Ya puedes usarlos en tus recargas.';
-            } else if (o.manual) {
-                ico.classList.add('warn');
-                ico.innerHTML = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3 2"/></svg>';
-                tit.textContent = 'En revisión manual';
-                txt.textContent = 'Recibimos tu captura. Un administrador confirmará tu pago y el saldo se acreditará al validarlo. Puedes cerrar esta pantalla.';
-            } else if (Date.now() > o.expira + 5 * 60 * 1000) {
-                ico.classList.add('warn');
-                ico.innerHTML = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3 2"/></svg>';
-                tit.textContent = 'Aún sin confirmación de la red';
-                txt.textContent = 'Todavía no recibimos la notificación de tu transferencia. Tu captura quedó guardada y será revisada por un administrador. No necesitas enviar nada más.';
+            } else if (o.estado === 'rechazada' || o.estado === 'cancelada' || o.estado === 'vencida') {
+                ico.innerHTML = svgX; ico.style.color = '#ef4444'; ico.style.background = 'rgba(239,68,68,.14)';
+                tit.textContent = 'Cancelado';
+                txt.textContent = 'Tu pago no fue confirmado. Si ya hiciste la transferencia, envía tu captura a soporte aquí abajo.';
+                mostrarSop = true;
+            } else if (o.estado === 'sin_sms') {
+                ico.classList.add('warn'); ico.innerHTML = svgReloj;
+                tit.textContent = 'No pudimos confirmar tu pago';
+                txt.textContent = 'No recibimos la confirmación automática. Envía tu captura a soporte y un administrador lo revisa.';
+                mostrarSop = true;
             } else {
                 ico.innerHTML = '<div class="sm-spin"></div>';
                 tit.textContent = 'Verificando tu pago';
-                txt.textContent = 'Estamos esperando la confirmación de tu transferencia. Normalmente tarda unos minutos y puede tardar hasta 1 hora. Puedes cerrar esta pantalla: tu saldo se acreditará automáticamente.';
+                txt.textContent = 'Estamos esperando la confirmación de tu transferencia. Normalmente tarda unos minutos y puede tardar hasta 1 hora. Tu saldo se acredita automáticamente y esta pantalla se cierra sola.';
+                mostrarSop = !!o.enviado && (Date.now() - o.enviado > 3 * 60 * 1000);
             }
+            if (sop) sop.classList.toggle('sm-hide', !mostrarSop || !!sm.sopOk);
+        }
+        function smSopElegir(ev) {
+            const f = ev.target.files && ev.target.files[0]; ev.target.value = '';
+            if (!f || !sm.orden) return;
+            mostrarCarga("Enviando a soporte...");
+            const rd = new FileReader();
+            rd.onload = () => {
+                const im = new Image();
+                im.onload = async () => {
+                    try {
+                        const k = Math.min(1, 1200 / im.width), cv = document.createElement('canvas');
+                        cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k);
+                        cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+                        const r = await fetch(WORKER_URL + '/api/saldo/comprobante', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: sm.orden.id, imagen: cv.toDataURL('image/jpeg', 0.82), chequeo: { soporte: true } }) });
+                        const j = await r.json().catch(() => ({}));
+                        if (r.ok && j.orden) { sm.sopOk = true; document.getElementById('sm-sop').classList.add('sm-hide'); mostrarNotificacion("Enviado a soporte. Te confirmamos en breve."); }
+                        else mostrarNotificacion(j.mensaje || "No se pudo enviar. Intenta de nuevo.");
+                    } catch (e) { mostrarNotificacion("Mala internet. Intenta de nuevo."); }
+                    finally { ocultarCarga(); }
+                };
+                im.onerror = () => { ocultarCarga(); mostrarNotificacion("No se pudo leer la imagen."); };
+                im.src = rd.result;
+            };
+            rd.onerror = () => { ocultarCarga(); mostrarNotificacion("No se pudo leer la imagen."); };
+            rd.readAsDataURL(f);
         }
         function smIniciarPoll() {
             clearInterval(sm.poll);
+            const FIN = ['aprobada', 'rechazada', 'cancelada', 'vencida'];
             const paso = async () => {
                 if (!sm.orden) return;
                 const vis = document.getElementById('seccion-wallet-saldo');
@@ -5024,18 +5055,18 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     const r = await fetch(WORKER_URL + '/api/saldo/estado?id=' + encodeURIComponent(sm.orden.id), { cache: 'no-store' });
                     if (!r.ok) return;
                     const o = (await r.json()).orden;
-                    const antes = sm.orden.estado;
                     sm.orden = o; smMostrarEstado(o);
-                    if (o.estado === 'aprobada') {
+                    if (FIN.indexOf(o.estado) > -1) {
                         clearInterval(sm.poll); smGuardarOrden(null);
-                        if (antes !== 'aprobada') {
+                        if (o.estado === 'aprobada') {
                             try { await traerEstadoFresco(); refrescarUsuarioActual(); actualizarPerfilUI(); renderizarOrdenes(); } catch (e) {}
-                            mostrarNotificacion("Pago verificado. Saldo acreditado.");
-                        }
-                    } else if (o.estado !== 'esperando') { clearInterval(sm.poll); smGuardarOrden(null); }
+                            mostrarNotificacion("Pago confirmado. Saldo acreditado.");
+                        } else mostrarNotificacion("Pago cancelado.");
+                        setTimeout(() => { const v = document.getElementById('seccion-wallet-saldo'); if (v && v.style.display !== 'none') smSalir(); }, 3200);
+                    } else if (o.estado !== 'esperando' && o.estado !== 'sin_sms') { clearInterval(sm.poll); smGuardarOrden(null); }
                 } catch (e) { /* sin internet: se reintenta */ }
             };
-            sm.poll = setInterval(paso, 8000);
+            sm.poll = setInterval(paso, 4000);
             paso();
         }
 
