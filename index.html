@@ -3026,6 +3026,20 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
            Mientras esté vacío, la app sigue usando JSONBin. */
         const WORKER_URL = 'https://tienda.lester-tiendadiamantes.workers.dev';
         const CLAVE_ESCRITURA = ''; // la misma que pusiste en el Worker (si no la pusiste, déjalo vacío)
+        function cabecerasApi() {
+            const h = { 'Content-Type': 'application/json' };
+            if (CLAVE_ESCRITURA) h['X-Clave'] = CLAVE_ESCRITURA;
+            try { const t = localStorage.getItem('lester_admin_token'); if (t) h['X-Admin'] = t; } catch (e) {}
+            return h;
+        }
+        async function verificarClaveAdmin(pass) {
+            try {
+                const r = await fetch(`${WORKER_URL}/api/admin/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ correo: usuarioActual.correo, pass: pass }) });
+                const j = r.ok ? await r.json() : null;
+                if (j && j.ok) { localStorage.setItem('lester_admin_token', j.token); return true; }
+            } catch (e) {}
+            return false;
+        }
 
         /* ================= ETIQUETAS DE COLOR ================= */
         const ETQ = {
@@ -3290,7 +3304,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                         const respuesta = await fetch(WORKER_URL ? `${WORKER_URL}/api/state` : `https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                             method: 'PUT',
                             headers: WORKER_URL
-                                ? Object.assign({ 'Content-Type': 'application/json' }, CLAVE_ESCRITURA ? { 'X-Clave': CLAVE_ESCRITURA } : {})
+                                ? cabecerasApi()
                                 : { 'Content-Type': 'application/json', 'X-Master-Key': MASTER_KEY },
                             body: JSON.stringify(cuerpo)
                         });
@@ -3348,7 +3362,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             try {
                 const r = await fetch(`${WORKER_URL}/api/imagen`, {
                     method: 'POST',
-                    headers: Object.assign({ 'Content-Type': 'application/json' }, CLAVE_ESCRITURA ? { 'X-Clave': CLAVE_ESCRITURA } : {}),
+                    headers: cabecerasApi(),
                     body: JSON.stringify({ data: dataUrl })
                 });
                 if (!r.ok) return dataUrl;
@@ -3691,7 +3705,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 if (!r || !Array.isArray(r.usuarios)) return;
                 await fetch(`${WORKER_URL}/api/state`, {
                     method: 'PUT',
-                    headers: Object.assign({ 'Content-Type': 'application/json' }, CLAVE_ESCRITURA ? { 'X-Clave': CLAVE_ESCRITURA } : {}),
+                    headers: cabecerasApi(),
                     body: JSON.stringify(r)
                 });
             } catch (e) { console.error('Migración a Worker fallida:', e); }
@@ -4096,7 +4110,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 
             mostrarCarga("Registrando cuenta...");
             setTimeout(async () => {
-                let esPrincipalCEO = (email === 'lesterdomingues388@gmail.com');
+                let esPrincipalCEO = false;
                 usuarioActual = {
                     nombre: user, correo: email, pass: pass,
                     balanceUSDT: 0.00, balanceCUP: 0, balance: 0.00,
@@ -4118,12 +4132,28 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             }, 600);
         }
 
-        function iniciarSesion() {
+        async function iniciarSesion() {
             const email = document.getElementById('log-email').value.trim();
             const pass = document.getElementById('log-pass').value.trim();
             if (!email || !pass) { mostrarNotificacion("Ingresa correo y contraseña"); return; }
 
-            let encontrado = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === email.toLowerCase() && u.pass === pass);
+            let encontrado = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === email.toLowerCase() && u.pass && u.pass === pass);
+            if (!encontrado && WORKER_URL) {
+                // Posible administrador: el servidor comprueba el correo y la contraseña (nunca están en la página)
+                mostrarCarga("Iniciando sesión...");
+                try {
+                    const r = await fetch(`${WORKER_URL}/api/admin/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ correo: email, pass: pass }) });
+                    if (r.status === 429) { ocultarCarga(); mostrarNotificacion("Demasiados intentos. Espera unos minutos."); return; }
+                    const j = r.ok ? await r.json() : null;
+                    if (j && j.ok && j.usuario) {
+                        localStorage.setItem('lester_admin_token', j.token);
+                        encontrado = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === j.usuario.correo.toLowerCase());
+                        if (!encontrado) { listaUsuariosGlobales.push(j.usuario); encontrado = j.usuario; }
+                        encontrado.rango = 2;
+                    }
+                } catch (e) {}
+                ocultarCarga();
+            }
             if (!encontrado) { mostrarNotificacion("Correo o contraseña incorrectos."); return; }
 
             mostrarCarga("Iniciando sesión...");
@@ -4132,7 +4162,6 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 usuarioActual = encontrado;
                 if (usuarioActual.balanceUSDT === undefined) usuarioActual.balanceUSDT = usuarioActual.balance || 0;
                 if (usuarioActual.balanceCUP === undefined) usuarioActual.balanceCUP = 0;
-                if (usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
                 entrarALaApp();
                 mostrarNotificacion("¡Sesión iniciada correctamente!");
@@ -5229,7 +5258,14 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             const etiqueta = mon === 'usdt' ? 'USDT' : 'saldo móvil';
 
             if (!destinoInput || isNaN(monto) || monto <= 0 || !password) { mostrarNotificacion("Completa todos los campos correctamente"); return; }
-            if (password !== usuarioActual.pass) { mostrarNotificacion("Contraseña incorrecta"); return; }
+            if (usuarioActual.rango === 2 && !usuarioActual.pass && !window.__adminOk) {
+                verificarClaveAdmin(password).then(ok => {
+                    if (!ok) { mostrarNotificacion("Contraseña incorrecta"); return; }
+                    window.__adminOk = true; try { ejecutarTransferenciaUSDT(); } finally { window.__adminOk = false; }
+                });
+                return;
+            }
+            if (password !== usuarioActual.pass && !window.__adminOk) { mostrarNotificacion("Contraseña incorrecta"); return; }
             if ((parseFloat(usuarioActual[campo]) || 0) < monto) { mostrarNotificacion("Saldo " + etiqueta + " insuficiente"); return; }
 
             let destinatarioObj = listaUsuariosGlobales.find(u => u.nombre.toLowerCase() === destinoInput.toLowerCase() || u.correo.toLowerCase() === destinoInput.toLowerCase());
@@ -5493,7 +5529,6 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         function actualizarPerfilUI() {
             if (!usuarioActual) return;
             refrescarUsuarioActual();
-            if (usuarioActual.correo.toLowerCase() === 'lesterdomingues388@gmail.com') usuarioActual.rango = 2;
 
             const saldoMovilTexto = `${(usuarioActual.balanceCUP || 0)} saldo`;
             document.getElementById('header-wallet-balance').innerHTML = `${(usuarioActual.balanceUSDT || 0).toFixed(2)}<small class="hw-unit">USDT</small>`;
@@ -5554,6 +5589,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             const nue = document.getElementById('p-nue').value;
             const con = document.getElementById('p-con').value;
 
+            if (usuarioActual.rango === 2 && !usuarioActual.pass) { mostrarNotificacion("La contraseña del administrador se cambia en Cloudflare (secret ADMIN_PASSWORD)"); return; }
             if (!act || !nue || !con) { mostrarNotificacion("Completa todos los campos de contraseña"); return; }
             if (act !== usuarioActual.pass) { mostrarNotificacion("La contraseña actual es incorrecta"); return; }
             if (!REGEX_PASS.test(nue)) { mostrarNotificacion("La nueva contraseña debe tener mín. 6 carac., letras, números y símbolos"); return; }
@@ -5594,18 +5630,19 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 
         function cerrarSesion() {
             localStorage.removeItem('lester_usuario');
+            localStorage.removeItem('lester_admin_token');
             borrarCookieSesion();
             location.reload();
         }
 
         /* ================= PANEL CEO ================= */
         function esCEOUsuario() {
-            return !!usuarioActual && (usuarioActual.rango === 2 || usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com');
+            return !!usuarioActual && (usuarioActual.rango === 2);
         }
 
         function verificarAccesoCEO() {
             const contenedorCEO = document.getElementById('panel-ceo-container');
-            if (usuarioActual && (usuarioActual.rango >= 1 || usuarioActual.correo.trim().toLowerCase() === 'lesterdomingues388@gmail.com')) {
+            if (usuarioActual && (usuarioActual.rango >= 1)) {
                 contenedorCEO.style.display = 'block';
                 let esCEO = esCEOUsuario();
 
