@@ -1302,11 +1302,11 @@
 @keyframes ltBlink{50%{opacity:.25;transform:scale(.7)}}
 :root{--led:#00c8ff;--led2:#16c784;--ledb:rgba(0,170,255,.38);--glow:rgba(0,140,255,.30)}
 :root[data-theme="light"]{--led:#2f6bff;--led2:#0fb981;--ledb:rgba(36,87,255,.40);--glow:rgba(36,87,255,.20)}
-.sub-card,.order-card-pro,.live-history-card,.menu-list,.profile-header-card,.shine-card,.ua-box,.ua-pago,.wallet-card,.invite-banner,.game-card-character,.op-card-h,.op-add-h{
+.sub-card,.order-card-pro,.live-history-card,.menu-list,.profile-header-card,.shine-card,.ua-box,.sm-card,.ua-pago,.wallet-card,.invite-banner,.game-card-character,.op-card-h,.op-add-h{
   border:1.5px solid var(--ledb) !important;box-shadow:0 0 18px var(--glow),inset 0 0 20px rgba(0,110,255,.08) !important}
-:root[data-theme="light"] .sub-card,:root[data-theme="light"] .order-card-pro,:root[data-theme="light"] .live-history-card,:root[data-theme="light"] .menu-list,:root[data-theme="light"] .profile-header-card,:root[data-theme="light"] .shine-card,:root[data-theme="light"] .ua-box,:root[data-theme="light"] .ua-pago,:root[data-theme="light"] .wallet-card,:root[data-theme="light"] .invite-banner,:root[data-theme="light"] .game-card-character{box-shadow:0 6px 18px var(--glow) !important}
+:root[data-theme="light"] .sub-card,:root[data-theme="light"] .order-card-pro,:root[data-theme="light"] .live-history-card,:root[data-theme="light"] .menu-list,:root[data-theme="light"] .profile-header-card,:root[data-theme="light"] .shine-card,:root[data-theme="light"] .ua-box,:root[data-theme="light"] .sm-card,:root[data-theme="light"] .ua-pago,:root[data-theme="light"] .wallet-card,:root[data-theme="light"] .invite-banner,:root[data-theme="light"] .game-card-character{box-shadow:0 6px 18px var(--glow) !important}
 /* luz LED que recorre todo el borde */
-.sub-card::after,.order-card-pro::after,.live-history-card::after,.menu-list::after,.profile-header-card::after,.shine-card::after,.ua-box::after,.ua-pago::after,.wallet-card::after,.invite-banner::after,.game-card-character::after,.navbar::after,.bottom-nav::after{
+.sub-card::after,.order-card-pro::after,.live-history-card::after,.menu-list::after,.profile-header-card::after,.shine-card::after,.ua-box::after,.sm-card::after,.ua-pago::after,.wallet-card::after,.invite-banner::after,.game-card-character::after,.navbar::after,.bottom-nav::after{
   content:'';position:absolute;inset:0;border-radius:inherit;padding:2.5px;pointer-events:none;z-index:3;
   background:conic-gradient(from var(--lt-a),transparent 0,var(--led) 9%,#fff 12%,transparent 22%,transparent 50%,var(--led2) 59%,#fff 62%,transparent 72%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
@@ -1603,8 +1603,8 @@ body.lt-pausa *, body.lt-pausa *::before, body.lt-pausa *::after { animation-pla
 body.lt-ia-open > *:not(#lt-ia):not(#notification-toast):not(script):not(style) { visibility: hidden !important; }
 
 /* --- fluidez: el borde LED solo corre en las tarjetas que se ven y a pasos --- */
-.sub-card::after, .order-card-pro::after, .live-history-card::after, .menu-list::after, .profile-header-card::after, .shine-card::after, .ua-box::after, .ua-pago::after, .wallet-card::after, .invite-banner::after, .game-card-character::after { animation: none !important; }
-.sub-card.lt-vis::after, .order-card-pro.lt-vis::after, .live-history-card.lt-vis::after, .menu-list.lt-vis::after, .profile-header-card.lt-vis::after, .shine-card.lt-vis::after, .ua-box.lt-vis::after, .ua-pago.lt-vis::after, .wallet-card.lt-vis::after, .invite-banner.lt-vis::after, .game-card-character.lt-vis::after { animation: ltLed 7s steps(84) infinite !important; }
+.sub-card::after, .order-card-pro::after, .live-history-card::after, .menu-list::after, .profile-header-card::after, .shine-card::after, .ua-box::after,.sm-card::after, .ua-pago::after, .wallet-card::after, .invite-banner::after, .game-card-character::after { animation: none !important; }
+.sub-card.lt-vis::after, .order-card-pro.lt-vis::after, .live-history-card.lt-vis::after, .menu-list.lt-vis::after, .profile-header-card.lt-vis::after, .shine-card.lt-vis::after, .ua-box.lt-vis::after, .sm-card.lt-vis::after, .ua-pago.lt-vis::after, .wallet-card.lt-vis::after, .invite-banner.lt-vis::after, .game-card-character.lt-vis::after { animation: ltLed 7s steps(84) infinite !important; }
 :root:not(#x) .diamonds-grid .diamond-card { filter: drop-shadow(0 0 9px rgba(47,107,255,.34)); }
 :root:not(#x) .diamonds-grid .diamond-card.selected { filter: drop-shadow(0 0 12px rgba(0,240,255,.6)); }
 body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll .back-btn.bk-bar::before, body.lt-scroll .back-btn.bk-bar::after { animation-play-state: paused !important; }
@@ -2529,14 +2529,14 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                                 <ul>
                                     <li>Captura de pantalla completa, sin recortar.</li>
                                     <li>Sin tachaduras, marcas ni ediciones.</li>
-                                    <li>Deben verse el monto, el número, la fecha y la hora.</li>
-                                    <li>Debe ser de esta operación, tomada hace instantes.</li>
+                                    <li>Deben verse el monto y el número de la transferencia.</li>
+                                    <li>Debe ser de esta operación.</li>
                                 </ul>
                             </div>
                             <input type="file" id="comprobante-deposito-input" accept="image/*" style="display: none;" onchange="smElegirArchivo(event)">
                             <button type="button" class="sm-drop" id="sm-drop" onclick="document.getElementById('comprobante-deposito-input').click()">
-                                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-                                <span id="sm-drop-txt">Adjuntar captura de la galería</span>
+                                <span class="sm-drop-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V5M7.5 9.5 12 5l4.5 4.5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+                                <span class="sm-drop-tx"><b id="sm-drop-txt">Adjuntar captura de la galería</b><small>JPG o PNG · pantalla completa</small></span>
                             </button>
                             <div id="sm-prev" class="sm-hide"></div>
                             <div id="sm-progreso" class="sm-hide"><div class="sm-spin"></div><span id="sm-progreso-txt">Analizando captura…</span></div>
@@ -3071,9 +3071,9 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 notificaciones: [],
                 legal: Object.assign({}, TEXTOS_LEGALES),
                 wallet: {
-                    usdt: { red: 'BEP 20', redDesc: 'Red Binance Smart Chain (BSC)', direccion: '0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2', etiqueta: { texto: 'Tether USD (Red Binance Smart Chain)', color: 'verde' } },
-                    saldo: { numero: '59578110', etiqueta: { texto: 'Saldo Interno Habilitado', color: 'verde' } },
-                    tarjeta: { etiqueta: { texto: 'Próximamente disponible', color: 'amarilla' } }
+                    usdt: { red: 'BEP 20', redDesc: 'Red Binance Smart Chain (BSC)', direccion: '0x5E0fb4a5D6403a3161abC02EB3bc2aAf6FfA48A2', tag: { texto: 'AUTOMÁTICO', color: 'verde' }, etiqueta: { texto: 'Tether USD (Red Binance Smart Chain)', color: 'verde' } },
+                    saldo: { numero: '59578110', tag: { texto: 'AUTOMÁTICO', color: 'verde' }, etiqueta: { texto: 'Saldo Interno Habilitado', color: 'verde' } },
+                    tarjeta: { tag: { texto: '', color: 'verde' }, etiqueta: { texto: 'Próximamente disponible', color: 'amarilla' } }
                 },
                 paquetesBlood: [
                     { id: 1, nombre: '51 BC', diamantesNum: 51, precioUsdt: 0.78, precioSaldo: 200, textoDetalle: '51', imagen: '', ik: 0 },
@@ -3152,6 +3152,8 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             ['usdt', 'saldo', 'tarjeta'].forEach(k => {
                 c.wallet[k].etiqueta = Object.assign({ texto: '', color: 'verde' }, c.wallet[k].etiqueta || {});
                 c.wallet[k].etiqueta.color = normalizarColor(c.wallet[k].etiqueta.color);
+                c.wallet[k].tag = Object.assign({ texto: '', color: 'verde' }, (d.wallet[k] && d.wallet[k].tag) || {}, c.wallet[k].tag || {});
+                c.wallet[k].tag.color = normalizarColor(c.wallet[k].tag.color);
             });
             c.colorFF = normalizarColor(c.colorFF);
             c.colorBS = normalizarColor(c.colorBS);
@@ -3209,6 +3211,10 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             const e = ETQ[normalizarColor(color)];
             if (fuerte) return `background:rgba(${e.rgb},0.85);border:1px solid rgba(255,255,255,0.35);color:#fff;`;
             return `background:rgba(${e.rgb},0.18);border:1px solid rgba(${e.rgb},0.65);color:${e.txt};`;
+        }
+        function tagWallet(t) {
+            if (!t || !t.texto || !t.texto.trim()) return '';
+            return `<span class="wc2-tag wc2-tag-${normalizarColor(t.color)}">${esc(t.texto.trim())}</span>`;
         }
         function pillEtq(et) {
             if (!et || !et.texto || !et.texto.trim()) return '';
@@ -3985,17 +3991,17 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 <div class="wallet-card wc2" onclick="abrirVistaWalletDetalle('usdt')">
                     <i class="wc2-bar"></i>
                     <div class="wc2-ico"><img src="${IMG_USDT}" alt="USDT"></div>
-                    <div class="wc2-txt"><h3>USDT ${esc(w.usdt.red)} <span class="wc2-tag">AUTOMÁTICO</span></h3><small>${esc(w.usdt.redDesc)}</small>${pillEtq(w.usdt.etiqueta)}</div>${go}
+                    <div class="wc2-txt"><h3>USDT ${esc(w.usdt.red)} ${tagWallet(w.usdt.tag)}</h3><small>${esc(w.usdt.redDesc)}</small>${pillEtq(w.usdt.etiqueta)}</div>${go}
                 </div>
                 <div class="wallet-card wc2 wc-saldo" onclick="abrirVistaWalletDetalle('saldo')">
                     <i class="wc2-bar"></i>
                     <div class="wc2-ico"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
-                    <div class="wc2-txt"><h3>Saldo Móvil</h3><small>Transferencia con comprobante</small>${pillEtq(w.saldo.etiqueta)}</div>${go}
+                    <div class="wc2-txt"><h3>Saldo Móvil ${tagWallet(w.saldo.tag)}</h3><small>Transferencia con comprobante</small>${pillEtq(w.saldo.etiqueta)}</div>${go}
                 </div>
                 <div class="wallet-card wc2 wc-card" onclick="abrirVistaWalletDetalle('tarjeta')">
                     <i class="wc2-bar"></i>
                     <div class="wc2-ico"><svg viewBox="0 0 24 24"><path d="${ICON.card}"/></svg></div>
-                    <div class="wc2-txt"><h3>Pago con Tarjeta</h3><small>Visa · Mastercard</small>${pillEtq(w.tarjeta.etiqueta)}</div>${go}
+                    <div class="wc2-txt"><h3>Pago con Tarjeta ${tagWallet(w.tarjeta.tag)}</h3><small>Visa · Mastercard</small>${pillEtq(w.tarjeta.etiqueta)}</div>${go}
                 </div>`;
         }
 
@@ -4724,45 +4730,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             const numOk = [e.telTienda, e.telUsuario].map(ult8).filter(x => x.length === 8).some(x => soloDig.includes(x));
             checks.push({ id: 'numero', ok: numOk, msg: numOk ? 'Número visible' : 'No se ve el número de la transferencia, o está tapado.' });
 
-            // hora de la barra de estado (arriba del todo) y hora/fecha dentro de la captura
-            const alto = e.ocr.alto || e.alto;
-            let reloj = null;
-            for (const w of e.ocr.palabras || []) {
-                if (w.y1 > alto * 0.075) continue;
-                const m = /^(\d{1,2})[:.;](\d{2})$/.exec(String(w.t).trim());
-                if (m && +m[1] < 24 && +m[2] < 60) { reloj = +m[1] * 60 + +m[2]; salida.horaBarra = m[1].padStart(2, '0') + ':' + m[2]; break; }
-            }
-            const cuerpo = (e.ocr.palabras && e.ocr.palabras.length)
-                ? e.ocr.palabras.filter(w => w.y1 > alto * 0.075).map(w => w.t).join(' ')
-                : texto;
-            const hoy = smHoraHavana(e.ahora);
-            let hayHoraCuerpo = /(?<!\d)([01]?\d|2[0-3]):[0-5]\d(?!\d)/.test(cuerpo);
-            let fechaMala = false, hayFecha = false;
-            const reFecha = /(?<!\d)(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4}|\d{2})(?!\d)|(?<!\d)(\d{4})-(\d{2})-(\d{2})(?!\d)/g;
-            const dias = [hoy, smHoraHavana(e.ahora - 86400000)];
-            let fm;
-            while ((fm = reFecha.exec(cuerpo))) {
-                let d, mo, y;
-                if (fm[4]) { y = +fm[4]; mo = +fm[5]; d = +fm[6]; } else { d = +fm[1]; mo = +fm[2]; y = +fm[3]; if (y < 100) y += 2000; }
-                if (mo < 1 || mo > 12 || d < 1 || d > 31) continue;
-                hayFecha = true;
-                const permitido = [dias[0]].concat(hoy.min < 180 ? [dias[1]] : []); // pasada la medianoche vale también "ayer"
-                if (permitido.some(x => x.d === d && x.m === mo && x.y === y)) { fechaMala = false; salida.fecha = d + '/' + mo + '/' + y; break; }
-                fechaMala = true;
-            }
-            const hayHora = reloj !== null || hayHoraCuerpo || (hayFecha && !fechaMala);
-            checks.push({ id: 'hora', ok: hayHora && !fechaMala, msg: fechaMala ? 'La fecha de la captura no es la de hoy.' : (hayHora ? 'Fecha y hora visibles' : 'No se ven la fecha y la hora en la captura.') });
-
-            // frescura: la hora de la barra de estado debe caer entre la creación de la operación y ahora
-            let recienteOk = true, msgReciente = 'Captura tomada durante esta operación';
-            if (reloj !== null) {
-                const c = smHoraHavana(e.creado).min, n = hoy.min;
-                const espera = Math.max(0, Math.round((e.ahora - e.creado) / 60000));
-                const okReloj = r => { const d = ((r - c) % 1440 + 1440) % 1440; return d <= espera + 10 || d >= 1440 - 10; };
-                recienteOk = okReloj(reloj) || okReloj(reloj + 720) || okReloj(reloj - 720);
-                if (!recienteOk) msgReciente = 'La hora de la captura (' + salida.horaBarra + ') no corresponde a esta operación. Toma una captura nueva.';
-            } else { msgReciente = 'No se pudo leer la hora de la barra superior'; }
-            checks.push({ id: 'reciente', ok: recienteOk, blando: reloj === null, msg: msgReciente });
+            // (la fecha y la hora de la captura ya no se exigen: solo monto y número)
 
             salida.ok = checks.every(c => c.ok);
             return salida;
@@ -6353,6 +6321,10 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                         <input type="text" id="wl-usdt-redDesc" value="${esc(w.usdt.redDesc)}">
                         <label>Dirección de la billetera</label>
                         <input type="text" id="wl-usdt-dir" value="${esc(w.usdt.direccion)}">
+                        <label>Insignia (ej. AUTOMÁTICO) · vacío = sin insignia</label>
+                        <input type="text" id="wl-usdt-tag" value="${esc(w.usdt.tag.texto)}" placeholder="Vacío = sin insignia" maxlength="20">
+                        <label>Insignia (color)</label>
+                        ${selectColorHTML('wl-usdt-tag-color', w.usdt.tag.color)}
                         <label>Etiqueta (texto)</label>
                         <input type="text" id="wl-usdt-etq" value="${esc(w.usdt.etiqueta.texto)}" placeholder="Vacío = sin etiqueta">
                         <label>Etiqueta (color)</label>
@@ -6362,6 +6334,10 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                         <h4 style="color:var(--accent-glow);">Saldo Móvil</h4>
                         <label>Número oficial para recibir el pago</label>
                         <input type="text" id="wl-saldo-num" value="${esc(w.saldo.numero)}">
+                        <label>Insignia (ej. AUTOMÁTICO) · vacío = sin insignia</label>
+                        <input type="text" id="wl-saldo-tag" value="${esc(w.saldo.tag.texto)}" placeholder="Vacío = sin insignia" maxlength="20">
+                        <label>Insignia (color)</label>
+                        ${selectColorHTML('wl-saldo-tag-color', w.saldo.tag.color)}
                         <label>Etiqueta (texto)</label>
                         <input type="text" id="wl-saldo-etq" value="${esc(w.saldo.etiqueta.texto)}" placeholder="Vacío = sin etiqueta">
                         <label>Etiqueta (color)</label>
@@ -6369,6 +6345,10 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     </div>
                     <div class="ceo-action-form" style="border-color:#f59e0b;">
                         <h4 style="color:#f59e0b;">Pago con Tarjeta</h4>
+                        <label>Insignia (ej. AUTOMÁTICO) · vacío = sin insignia</label>
+                        <input type="text" id="wl-tarjeta-tag" value="${esc(w.tarjeta.tag.texto)}" placeholder="Vacío = sin insignia" maxlength="20">
+                        <label>Insignia (color)</label>
+                        ${selectColorHTML('wl-tarjeta-tag-color', w.tarjeta.tag.color)}
                         <label>Etiqueta (texto)</label>
                         <input type="text" id="wl-tarjeta-etq" value="${esc(w.tarjeta.etiqueta.texto)}" placeholder="Vacío = sin etiqueta">
                         <label>Etiqueta (color)</label>
@@ -6886,9 +6866,12 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 w.usdt.redDesc = g('wl-usdt-redDesc');
                 w.usdt.direccion = dir;
                 w.usdt.etiqueta = { texto: g('wl-usdt-etq'), color: document.getElementById('wl-usdt-color').value };
+                w.usdt.tag = { texto: g('wl-usdt-tag'), color: document.getElementById('wl-usdt-tag-color').value };
                 w.saldo.numero = num;
                 w.saldo.etiqueta = { texto: g('wl-saldo-etq'), color: document.getElementById('wl-saldo-color').value };
+                w.saldo.tag = { texto: g('wl-saldo-tag'), color: document.getElementById('wl-saldo-tag-color').value };
                 w.tarjeta.etiqueta = { texto: g('wl-tarjeta-etq'), color: document.getElementById('wl-tarjeta-color').value };
+                w.tarjeta.tag = { texto: g('wl-tarjeta-tag'), color: document.getElementById('wl-tarjeta-tag-color').value };
             }, "Control Wallet actualizado");
         }
 
@@ -7955,7 +7938,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
   function todos() { var b = document.querySelectorAll('.back-btn'); for (var i = 0; i < b.length; i++) armar(b[i]); }
 
   /* El borde LED solo corre en las tarjetas visibles */
-  var SEL = '.sub-card,.order-card-pro,.live-history-card,.menu-list,.profile-header-card,.shine-card,.ua-box,.ua-pago,.wallet-card,.invite-banner,.game-card-character';
+  var SEL = '.sub-card,.order-card-pro,.live-history-card,.menu-list,.profile-header-card,.shine-card,.ua-box,.sm-card,.ua-pago,.wallet-card,.invite-banner,.game-card-character';
   var io = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('lt-vis', e.isIntersecting); }); }, { rootMargin: '40px' }) : null;
   var visto = new WeakSet();
   function observar() {
@@ -8623,5 +8606,118 @@ body.pr-open{overflow:hidden}
   window.addEventListener('focus', revisar); window.addEventListener('online', revisar);
 })();
 </script>
+
+<style id="lt-deposito-pro">
+/* ===== Depósitos (Saldo móvil + USDT): tarjetas, casillas y botones limpios ===== */
+:root:not(#x) .sm-card,:root:not(#x) .ua-box{position:relative;background:linear-gradient(180deg,#0f1a33,#0b1326) !important;border:1.5px solid var(--ledb) !important;border-radius:20px !important;
+ padding:1.15rem !important;box-shadow:0 10px 18px -12px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.06) !important}
+:root[data-theme="light"]:not(#x) .sm-card,:root[data-theme="light"]:not(#x) .ua-box{background:linear-gradient(180deg,#fff,#f3f7ff) !important;box-shadow:0 8px 16px -12px rgba(20,40,90,.35) !important}
+
+/* cabecera */
+:root:not(#x) .sm-head{border-bottom:1px solid rgba(77,141,255,.18) !important;padding-bottom:.95rem !important;margin-bottom:1.05rem !important}
+:root:not(#x) .sm-head-ico{width:44px !important;height:44px !important;border-radius:14px !important;border:0 !important;color:#fff !important;
+ background:linear-gradient(180deg,#4d8dff,#2f6bff 55%,#1f4fd0) !important;box-shadow:0 3px 0 #153a9c,inset 0 1px 0 rgba(255,255,255,.35)}
+:root:not(#x) .sm-head h3{font-size:1.02rem !important;letter-spacing:.2px}
+:root:not(#x) .sm-head span{font-size:.72rem !important}
+
+/* pasos */
+:root:not(#x) .sm-steps{gap:8px !important;margin-bottom:1.25rem !important}
+:root:not(#x) .sm-steps li{flex-direction:column;justify-content:center;gap:5px !important;padding:9px 4px 8px !important;border-radius:14px !important;font-size:.66rem !important;text-align:center;
+ background:rgba(255,255,255,.03) !important;border:1px solid rgba(77,141,255,.18) !important}
+:root:not(#x) .sm-steps li i{width:24px !important;height:24px !important;font-size:.72rem !important;background:#1b2a4a !important;color:#9fb4d6 !important}
+:root:not(#x) .sm-steps li.act{background:rgba(47,107,255,.14) !important;border-color:#4d8dff !important;color:var(--text-main)}
+:root:not(#x) .sm-steps li.act i{background:linear-gradient(180deg,#4d8dff,#1f4fd0) !important;color:#fff !important;box-shadow:0 2px 0 #153a9c}
+:root:not(#x) .sm-steps li.ok{border-color:rgba(22,199,132,.55) !important}
+:root:not(#x) .sm-steps li.ok i{background:linear-gradient(180deg,#3fe093,#12a35a) !important;color:#fff !important;box-shadow:0 2px 0 #075a31}
+:root[data-theme="light"]:not(#x) .sm-steps li{background:#f1f5ff !important}
+:root[data-theme="light"]:not(#x) .sm-steps li i{background:#d5def5 !important;color:#44557f !important}
+:root[data-theme="light"]:not(#x) .sm-steps li.act i{background:linear-gradient(180deg,#4d8dff,#1f4fd0) !important;color:#fff !important}
+:root[data-theme="light"]:not(#x) .sm-steps li.ok i{background:linear-gradient(180deg,#3fe093,#12a35a) !important;color:#fff !important}
+:root[data-theme="light"]:not(#x) .sm-steps li.act{background:rgba(47,107,255,.10) !important}
+
+/* casillas (inputs) */
+:root:not(#x) .sm-card .form-group label,:root:not(#x) .ua-box .form-group label{font-size:.74rem !important;font-weight:800 !important;letter-spacing:.3px;color:var(--text-main);margin-bottom:7px !important;display:block}
+:root:not(#x) .sm-card .form-control,:root:not(#x) .ua-box .form-control{height:52px;border-radius:14px !important;font-weight:800;font-size:1rem !important;color:#fff;
+ background:linear-gradient(180deg,#080d1b,#0d1630) !important;border:1.5px solid #27427a !important;box-shadow:inset 0 2px 8px rgba(0,0,0,.55) !important;transition:border-color .2s,box-shadow .2s}
+:root:not(#x) .sm-card .form-control::placeholder,:root:not(#x) .ua-box .form-control::placeholder{color:#6f7fa6;font-weight:600}
+:root:not(#x) .sm-card .form-control:focus,:root:not(#x) .ua-box .form-control:focus{border-color:#4d8dff !important;outline:none;box-shadow:inset 0 2px 8px rgba(0,0,0,.5),0 0 0 3px rgba(77,141,255,.25) !important}
+:root[data-theme="light"]:not(#x) .sm-card .form-control,:root[data-theme="light"]:not(#x) .ua-box .form-control{color:#0b1530;background:linear-gradient(180deg,#eef3ff,#fff) !important;border-color:#b9c9ee !important;box-shadow:inset 0 2px 6px rgba(20,40,90,.12) !important}
+:root[data-theme="light"]:not(#x) .sm-card .form-control::placeholder,:root[data-theme="light"]:not(#x) .ua-box .form-control::placeholder{color:#8a99bd}
+:root:not(#x) .sm-help{font-size:.7rem !important;color:var(--text-muted)}
+:root:not(#x) .sm-numero{height:auto !important;padding:.95rem .6rem !important;font-size:1.3rem !important;letter-spacing:2px;color:#7fe3ff !important;display:block;text-align:center;
+ background:linear-gradient(180deg,#0a1a3a,#081226) !important;border:1.5px solid #2f6bff !important}
+:root[data-theme="light"]:not(#x) .sm-numero{color:#1d4ed8 !important;background:linear-gradient(180deg,#eef3ff,#fff) !important}
+
+/* aviso de tiempo / requisitos / pasos a seguir: tarjetas planas, sin tinte de neblina */
+:root:not(#x) .sm-info{background:rgba(255,255,255,.03) !important;border:1px solid rgba(77,141,255,.28) !important;border-left:3px solid #4d8dff !important;border-radius:14px !important}
+:root:not(#x) .sm-info svg{color:#7fb0ff !important}
+:root:not(#x) .sm-resumen{gap:8px !important}
+:root:not(#x) .sm-resumen>div{background:linear-gradient(180deg,#0a1226,#0c172e) !important;border:1px solid rgba(77,141,255,.25) !important;border-radius:14px !important;padding:.65rem .5rem !important}
+:root:not(#x) .sm-resumen small{color:#8fa6cf !important}
+:root:not(#x) .sm-resumen b{font-size:.9rem !important}
+:root[data-theme="light"]:not(#x) .sm-resumen>div,:root[data-theme="light"]:not(#x) .sm-info{background:#f1f5ff !important}
+:root:not(#x) .sm-lista{list-style:none;padding:0 !important;margin-top:1.1rem !important;counter-reset:smn;display:grid;gap:8px}
+:root:not(#x) .sm-lista li{counter-increment:smn;position:relative;margin:0 !important;padding:.65rem .75rem .65rem 2.7rem;border-radius:12px;font-size:.76rem !important;line-height:1.45;
+ background:rgba(255,255,255,.03);border:1px solid rgba(77,141,255,.16)}
+:root:not(#x) .sm-lista li::before{content:counter(smn);position:absolute;left:.7rem;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+ font-size:.7rem;font-weight:900;color:#fff;background:linear-gradient(180deg,#4d8dff,#1f4fd0);box-shadow:0 2px 0 #153a9c}
+:root[data-theme="light"]:not(#x) .sm-lista li{background:#f1f5ff}
+:root:not(#x) .sm-reqs{background:rgba(255,255,255,.03) !important;border:1px solid rgba(77,141,255,.2) !important;border-radius:14px !important;padding:.85rem 1rem !important}
+:root:not(#x) .sm-reqs b{font-size:.74rem !important;letter-spacing:.4px;text-transform:uppercase;color:#7fb0ff !important;margin-bottom:6px !important}
+:root:not(#x) .sm-reqs ul{list-style:none;padding:0 !important;display:grid;gap:5px}
+:root:not(#x) .sm-reqs li{position:relative;padding-left:1.5rem;font-size:.74rem}
+:root:not(#x) .sm-reqs li::before{content:'';position:absolute;left:0;top:.18em;width:14px;height:14px;border-radius:50%;
+ background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/9px no-repeat,linear-gradient(180deg,#3fe093,#12a35a)}
+
+/* subir la foto */
+:root:not(#x) .sm-drop{justify-content:flex-start !important;text-align:left;gap:14px !important;padding:.95rem 1rem !important;border-radius:16px !important;border:1.5px dashed #4d8dff !important;
+ background:linear-gradient(180deg,#0a1530,#0b1226) !important;transition:border-color .2s,transform .12s}
+:root:not(#x) .sm-drop:active{transform:scale(.985)}
+:root:not(#x) .sm-drop:hover{border-color:#7fb0ff !important}
+:root:not(#x) .sm-drop-ico{flex:none;width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;
+ background:linear-gradient(180deg,#4d8dff,#2f6bff 55%,#1f4fd0);box-shadow:0 3px 0 #153a9c,inset 0 1px 0 rgba(255,255,255,.35)}
+:root:not(#x) .sm-drop-ico svg{color:#fff !important}
+:root:not(#x) .sm-drop-tx{display:flex;flex-direction:column;gap:2px;min-width:0}
+:root:not(#x) .sm-drop-tx b{font-size:.88rem;font-weight:900;color:var(--text-main)}
+:root:not(#x) .sm-drop-tx small{font-size:.68rem;font-weight:600;color:var(--text-muted)}
+:root[data-theme="light"]:not(#x) .sm-drop{background:linear-gradient(180deg,#f1f5ff,#fff) !important}
+:root:not(#x) #sm-prev img{border-radius:14px !important;border:1.5px solid rgba(77,141,255,.4) !important;box-shadow:0 8px 14px -10px rgba(0,0,0,.7)}
+:root:not(#x) #sm-progreso{padding:.7rem .85rem;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(77,141,255,.2)}
+
+/* verificación de la foto */
+:root:not(#x) .sm-checks li{border-radius:12px !important;padding:.6rem .75rem !important;background:rgba(255,255,255,.03) !important;border:1px solid rgba(77,141,255,.18) !important}
+:root:not(#x) .sm-checks li.ok{border-color:rgba(22,199,132,.5) !important;background:rgba(22,199,132,.07) !important}
+:root:not(#x) .sm-checks li.no{border-color:rgba(239,68,68,.6) !important;background:rgba(239,68,68,.08) !important}
+:root:not(#x) .sm-err{border-radius:12px !important}
+
+/* botones */
+:root:not(#x) .sm-btn-sec{height:46px;border-radius:14px !important;font-weight:900 !important;font-size:.82rem !important;color:#fff !important;border:0 !important;
+ background:linear-gradient(180deg,#24365c,#15213d) !important;box-shadow:0 4px 0 #0a1124,0 8px 12px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.14) !important;transition:transform .12s,box-shadow .12s}
+:root:not(#x) .sm-btn-sec:active{transform:translateY(3px);box-shadow:0 1px 0 #0a1124 !important}
+:root[data-theme="light"]:not(#x) .sm-btn-sec{color:#0b1530 !important;background:linear-gradient(180deg,#fff,#e6edff) !important;box-shadow:0 4px 0 #b3c3e8,0 8px 12px rgba(20,40,90,.12),inset 0 1px 0 #fff !important}
+:root:not(#x) .sm-link{color:#7fb0ff !important;font-weight:800 !important}
+:root:not(#x) #sm-btn-pagar:disabled{opacity:.5;filter:grayscale(.35)}
+
+/* estado final */
+:root:not(#x) .sm-estado-ico{width:72px !important;height:72px !important;border-width:0 !important;background:linear-gradient(180deg,#4d8dff,#1f4fd0) !important;color:#fff !important;box-shadow:0 4px 0 #153a9c}
+:root:not(#x) .sm-estado-ico.ok{background:linear-gradient(180deg,#3fe093,#12a35a) !important;box-shadow:0 4px 0 #075a31}
+:root:not(#x) .sm-estado-ico.warn{background:linear-gradient(180deg,#ffc94d,#e08a00) !important;box-shadow:0 4px 0 #8a5200}
+:root:not(#x) .sm-estado-ico .sm-spin{border-color:rgba(255,255,255,.35);border-top-color:#fff}
+
+/* ----- USDT: mismo estilo, sin tintes verdes difusos ----- */
+:root:not(#x) .ua-pago{background:linear-gradient(180deg,#0f1f3f,#0a1428) padding-box,linear-gradient(135deg,#2f6bff,#26a69a,#16c784) border-box !important;border:1.5px solid transparent !important;
+ box-shadow:0 10px 18px -12px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.08) !important}
+:root:not(#x) .ua-monto{text-shadow:none !important}
+:root:not(#x) .ua-dir{background:rgba(255,255,255,.04) !important;border:1px solid rgba(77,141,255,.25);border-radius:12px !important;color:#7fe3ff !important}
+:root:not(#x) .ua-aviso{background:rgba(255,255,255,.03) !important;border:1px solid rgba(245,158,11,.4) !important;border-left:3px solid #f59e0b !important;border-radius:12px !important;color:#ffd27a}
+:root:not(#x) .ua-estado{background:rgba(255,255,255,.03) !important;border:1px solid rgba(77,141,255,.25) !important;border-radius:14px !important}
+:root:not(#x) details.ua-manual summary{color:#7fb0ff !important}
+:root:not(#x) .ua-box .back-btn{box-shadow:none}
+
+:root:not(#x) .wc2-tag{display:inline-block;vertical-align:middle;white-space:nowrap}
+:root:not(#x) .wc2-tag-amarilla{color:#3b2300;background:linear-gradient(180deg,#ffd45a,#f59e0b);box-shadow:0 2px 8px rgba(245,158,11,.45)}
+:root:not(#x) .wc2-tag-azul{color:#fff;background:linear-gradient(180deg,#5aa0ff,#2358f4);box-shadow:0 2px 8px rgba(36,88,244,.45)}
+:root:not(#x) .wc2-tag-roja{color:#fff;background:linear-gradient(180deg,#ff8a8a,#ef4444);box-shadow:0 2px 8px rgba(239,68,68,.45)}
+</style>
 </body>
 </html>
