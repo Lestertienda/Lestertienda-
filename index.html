@@ -7290,12 +7290,87 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
   .lt-otp-resend{margin-top:13px;padding:0;border:0;background:none;color:#6dffa9;font-size:10px;font-weight:800;letter-spacing:.7px;cursor:pointer}.lt-otp-resend:disabled{opacity:.45;cursor:default}
   .lt-otp-feedback{min-height:15px;margin-top:9px;font-size:11px;color:#ff9b9b;line-height:1.4}.lt-otp-feedback.ok{color:#75ffb0}
   @media(max-width:420px){.lt-email-otp-card{padding:16px 13px}.lt-email-otp-code{height:54px;font-size:23px;letter-spacing:9px}}
+  /* Rediseño premium azul hielo: pantalla de segundo paso, panel negro y LED lateral. */
+  .lt-otp-step-modal{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;padding:22px 17px;background:radial-gradient(ellipse at 50% 18%,rgba(31,104,190,.22),transparent 48%),rgba(2,6,15,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,visibility .28s ease}
+  .lt-otp-step-modal.is-open{opacity:1;visibility:visible;pointer-events:auto}
+  body.lt-otp-modal-open{overflow:hidden!important}
+  .lt-otp-step-shell{position:relative;width:min(100%,440px);max-height:calc(100dvh - 38px);overflow-y:auto;overscroll-behavior:contain;padding:21px 18px 17px;border-radius:25px;background:linear-gradient(145deg,#080d18 0%,#050912 48%,#0a1220 100%);border:1px solid rgba(157,205,255,.25);box-shadow:0 28px 90px rgba(0,0,0,.72),0 0 38px rgba(42,133,255,.13),inset 0 1px 0 rgba(255,255,255,.08);color:#f4f8ff;isolation:isolate}
+  .lt-otp-step-shell:before{content:"";position:absolute;inset:0;border-radius:25px;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.75),rgba(73,158,255,.12) 28%,transparent 48%,rgba(72,158,255,.55) 78%,rgba(255,255,255,.48));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:.85}
+  .lt-otp-step-shell:after{content:"";position:absolute;left:12%;right:12%;top:-1px;height:2px;background:linear-gradient(90deg,transparent,#fff,#6abaff,transparent);filter:drop-shadow(0 0 7px #69baff);animation:ltOtpTopGlow 3.8s ease-in-out infinite;pointer-events:none}
+  @keyframes ltOtpTopGlow{0%,100%{opacity:.35;transform:scaleX(.55)}50%{opacity:1;transform:scaleX(1)}}
+  .lt-otp-back{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;margin:0 0 18px;border:1px solid rgba(164,202,255,.17);border-radius:10px;background:rgba(255,255,255,.035);color:#b9d8ff;font-size:10px;font-weight:800;letter-spacing:1px}
+  .lt-otp-back:first-letter{font-size:21px}
+  .lt-otp-brandline{display:flex;align-items:center;gap:9px;color:#eaf4ff;font-size:11px;font-weight:900;letter-spacing:1.5px}
+  .lt-otp-brandline b{color:#83bdff}
+  .lt-otp-brandmark{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:linear-gradient(145deg,#162b49,#08111f);border:1px solid rgba(131,189,255,.48);color:#dceeff;box-shadow:0 0 18px rgba(72,151,255,.2);font-size:12px}
+  .lt-otp-brandline i{margin-left:auto;color:#8097b5;font-size:8px;font-style:normal;letter-spacing:1px}
+  .lt-otp-step-title{margin-top:25px;font-size:25px;line-height:1.12;font-weight:900;letter-spacing:-.6px;color:#f7fbff}
+  .lt-otp-step-subtitle{margin-top:8px;margin-bottom:21px;color:#91a4bd;font-size:12px;line-height:1.5}
+  .lt-otp-step-content{position:relative}
+  .lt-email-otp-card{margin:0!important;padding:20px 17px 16px!important;border-radius:19px!important;background:linear-gradient(145deg,#05080e,#0b1421 58%,#060a12)!important;border:1px solid rgba(115,177,255,.32)!important;box-shadow:inset 0 0 28px rgba(74,142,230,.07),0 12px 32px rgba(0,0,0,.42),0 0 22px rgba(70,145,255,.08)!important}
+  .lt-email-otp-card:before{inset:-2px!important;background:conic-gradient(from 0deg,transparent 0 15%,#fff 21%,#68baff 27%,transparent 35% 65%,#72baff 75%,#fff 81%,transparent 90%)!important;animation:ltOtpLed 4.5s linear infinite!important;opacity:.95!important}
+  .lt-email-otp-card:after{background:linear-gradient(145deg,#05080e,#0b1421 60%,#060a12)!important}
+  .lt-otp-icon{background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(69,151,255,.12))!important;border:1px solid rgba(153,205,255,.4)!important;color:#d7edff!important;box-shadow:0 0 20px rgba(89,166,255,.18)!important}
+  .lt-otp-head strong{color:#eaf5ff!important;letter-spacing:1.35px!important;font-size:12px!important}
+  .lt-otp-head span:not(.lt-otp-live){color:#8fa4bd!important;font-size:11px!important}
+  .lt-otp-live{border-color:rgba(127,190,255,.38)!important;background:rgba(66,143,231,.1)!important;color:#a9d5ff!important}
+  .lt-otp-desc{color:#aebdd0!important;font-size:13px!important}
+  .lt-otp-email{color:#fff!important;font-size:14px!important}
+  .lt-otp-label{color:#a8c5e8!important;font-size:10px!important;letter-spacing:1.5px!important}
+  .lt-email-otp-code{height:64px!important;border-radius:14px!important;border:1px solid rgba(157,205,255,.65)!important;background:linear-gradient(180deg,#03060b,#0a1422)!important;color:#f4f9ff!important;letter-spacing:13px!important;box-shadow:inset 0 2px 14px rgba(0,0,0,.65),0 0 0 3px rgba(83,157,255,.07),0 0 23px rgba(76,151,255,.13)!important}
+  .lt-email-otp-code:focus{border-color:#fff!important;box-shadow:0 0 0 3px rgba(105,177,255,.14),0 0 27px rgba(91,166,255,.28)!important}
+  .lt-email-otp-code::placeholder{color:#61758f!important}
+  .lt-otp-hint{color:#91a7c1!important;font-size:10px!important}
+  .lt-otp-dot{background:#a9d6ff!important;box-shadow:0 0 9px #65b4ff!important}
+  .lt-otp-resend{color:#a9d4ff!important;font-size:11px!important;letter-spacing:1px!important}
+  .lt-otp-feedback{min-height:18px!important;color:#ffaaaa!important;font-size:11px!important}
+  .lt-otp-feedback.ok{color:#a9e3ff!important}
+  .lt-otp-confirm-btn{display:block!important;width:100%!important;margin:13px 0 0!important;padding:16px 14px!important;border-radius:13px!important;border:1px solid rgba(192,224,255,.65)!important;background:linear-gradient(110deg,#eaf5ff,#8ec6ff 48%,#dceeff)!important;color:#07111f!important;font-size:12px!important;font-weight:950!important;letter-spacing:1px!important;box-shadow:0 7px 25px rgba(65,145,235,.24),inset 0 1px 0 #fff!important}
+  .lt-otp-confirm-btn:disabled{opacity:.58!important}
+  .lt-otp-step-footnote{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;color:#627994;font-size:8px;font-weight:800;letter-spacing:1.1px}
+  .lt-otp-step-footnote span{width:6px;height:6px;border-radius:50%;background:#9fd2ff;box-shadow:0 0 9px #6ebaff}
+  @media(max-width:420px){.lt-otp-step-modal{padding:12px}.lt-otp-step-shell{padding:18px 14px 15px;border-radius:22px;max-height:calc(100dvh - 24px)}.lt-otp-step-title{font-size:23px;margin-top:21px}.lt-email-otp-card{padding:17px 13px 14px!important}.lt-email-otp-code{height:59px!important;letter-spacing:10px!important}.lt-otp-brandline i{font-size:7px}}
+  @media(prefers-reduced-motion:reduce){.lt-email-otp-card:before,.lt-otp-step-shell:after{animation:none!important}}
   `;
   var st=document.createElement('style');st.id='lt-email-otp-style';st.textContent=css;document.head.appendChild(st);
 
+  /* Segundo paso independiente: la verificación ya no ocupa espacio debajo del registro. */
+  var modal=document.createElement('div');
+  modal.id='lt-otp-step-modal';
+  modal.className='lt-otp-step-modal';
+  modal.innerHTML='<div class="lt-otp-step-shell" role="dialog" aria-modal="true" aria-labelledby="lt-otp-step-title">'+
+    '<button type="button" class="lt-otp-back" id="lt-otp-back" aria-label="Volver al registro">‹ <span>VOLVER</span></button>'+
+    '<div class="lt-otp-brandline"><span class="lt-otp-brandmark">LT</span><span>LESTER <b>TIENDA</b></span><i>SEGURIDAD DE CUENTA</i></div>'+
+    '<div class="lt-otp-step-title" id="lt-otp-step-title">Verifica tu correo</div>'+
+    '<div class="lt-otp-step-subtitle">Un último paso para proteger tu cuenta.</div>'+
+    '<div class="lt-otp-step-content" id="lt-otp-step-content"></div>'+
+    '<div class="lt-otp-step-footnote"><span></span> CONEXIÓN CIFRADA · VERIFICACIÓN SEGURA</div>'+
+  '</div>';
+  document.body.appendChild(modal);
+
   function el(id){return document.getElementById(id)}
+  function prepararPasoOtp(){
+    var content=el('lt-otp-step-content'),cardEl=el('lt-email-otp-card'),submit=el('lt-reg-submit');
+    if(content&&cardEl&&cardEl.parentNode!==content)content.appendChild(cardEl);
+    if(content&&submit&&submit.parentNode!==content)content.appendChild(submit);
+    if(submit)submit.classList.add('lt-otp-confirm-btn');
+  }
+  function abrirPasoOtp(){
+    prepararPasoOtp();
+    var m=el('lt-otp-step-modal');
+    if(m){m.classList.add('is-open');document.body.classList.add('lt-otp-modal-open')}
+    setTimeout(function(){if(el('lt-email-otp-code'))el('lt-email-otp-code').focus()},220);
+  }
+  function cerrarPasoOtp(){
+    var m=el('lt-otp-step-modal'),form=el('form-registro')||el('form-register')||el('form-register-container');
+    if(m){m.classList.remove('is-open');document.body.classList.remove('lt-otp-modal-open')}
+    var cardEl=el('lt-email-otp-card'),submit=el('lt-reg-submit');
+    if(form&&cardEl&&submit){form.appendChild(cardEl);form.appendChild(submit)}
+    if(cardEl)cardEl.style.display='none';
+  }
+  document.getElementById('lt-otp-back').addEventListener('click',cerrarPasoOtp);
   function feedback(msg,ok){var n=el('lt-otp-feedback');if(n){n.textContent=msg||'';n.classList.toggle('ok',!!ok)}}
-  function card(show){var c=el('lt-email-otp-card');if(c)c.style.display=show?'block':'none'}
+  function card(show){var c=el('lt-email-otp-card');if(c)c.style.display=show?'block':'none';if(show)abrirPasoOtp();else cerrarPasoOtp()}
   function btn(text,disabled){var b=el('lt-reg-submit');if(b){b.textContent=text;b.disabled=!!disabled;b.style.opacity=disabled?'.65':''}}
   function correo(){return (el('reg-email')&&el('reg-email').value||'').trim().toLowerCase()}
   function cambiarEspera(seg){var b=el('lt-otp-resend');if(!b)return;clearInterval(otpEsperaTimer);var restante=Math.max(0,Number(seg)||0);b.disabled=restante>0;b.textContent=restante>0?'REENVIAR EN '+restante+' S':'REENVIAR CÓDIGO';if(restante>0)otpEsperaTimer=setInterval(function(){restante--;b.disabled=restante>0;b.textContent=restante>0?'REENVIAR EN '+restante+' S':'REENVIAR CÓDIGO';if(restante<=0)clearInterval(otpEsperaTimer)},1000)}
