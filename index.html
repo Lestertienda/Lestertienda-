@@ -4350,6 +4350,10 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 return;
             }
 
+            emailPedirCodigo(user, email, pass, referidoPor);
+        }
+
+        function crearCuentaVerificada(user, email, pass, referidoPor) {
             mostrarCarga("Registrando cuenta...");
             setTimeout(async () => {
                 let esPrincipalCEO = false;
@@ -9483,6 +9487,75 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
   }
   function iniciar() { document.querySelectorAll('.gx-card').forEach(preparar); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar); else iniciar();
+})();
+</script>
+
+<style>
+#em-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;background:rgba(0,5,25,.82);padding:16px}
+#em-modal.on{display:flex}
+.em-box{width:100%;max-width:380px;background:#0a2a8a;padding:3px;clip-path:polygon(15px 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,0 100%,0 15px)}
+.em-in{background:var(--bg-card,#0b1633);color:var(--text-main,#fff);padding:22px 18px;text-align:center;clip-path:polygon(13px 0,100% 0,100% calc(100% - 13px),calc(100% - 13px) 100%,0 100%,0 13px)}
+.em-in h3{margin:0 0 6px;font-family:'Barlow Condensed',sans-serif;font-size:24px;letter-spacing:1px}
+.em-in p{margin:0 0 12px;font-size:14px;color:var(--text-muted,#9ab)}
+.em-in b{color:var(--text-main,#fff);word-break:break-all}
+#em-cod{width:100%;box-sizing:border-box;text-align:center;font-size:30px;letter-spacing:10px;padding:10px;border-radius:8px;border:2px solid #2a86ff;background:transparent;color:inherit;font-family:inherit}
+#em-msg{min-height:18px;margin:8px 0;font-size:13px;color:#ff6b6b}
+.em-btn{width:100%;padding:12px;border:0;border-radius:8px;background:linear-gradient(90deg,#0a3cff,#1ea0ff);color:#fff;font-weight:700;font-size:16px;cursor:pointer;font-family:inherit}
+.em-btn:disabled{opacity:.6}
+.em-link{background:none;border:0;color:#1ea0ff;font-size:14px;cursor:pointer;margin:10px 6px 0;font-family:inherit}
+.em-link:disabled{color:var(--text-muted,#889)}
+</style>
+<div id="em-modal"><div class="em-box"><div class="em-in">
+<h3>VERIFICA TU CORREO</h3>
+<p>Te enviamos un código de 6 dígitos a <b id="em-to"></b>. Búscalo en tu Gmail (revisa también <b>Spam</b>).</p>
+<input id="em-cod" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+<div id="em-msg"></div>
+<button class="em-btn" id="em-ok" onclick="emailVerificar()">VERIFICAR</button>
+<div><button class="em-link" id="em-re" onclick="emailReenviar()">Reenviar código</button><button class="em-link" onclick="emailCerrar()">Cambiar correo</button></div>
+</div></div></div>
+<script>
+(function(){
+var D=null,T=null,esp=0;
+function $(i){return document.getElementById(i);}
+function msg(t){$('em-msg').textContent=t||'';}
+async function api(ruta,body){
+  var r=await fetch(WORKER_URL+ruta,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  var j={};try{j=await r.json();}catch(e){}
+  return {ok:r.ok&&j.ok,j:j};
+}
+function cuenta(s){
+  esp=s;clearInterval(T);var b=$('em-re');
+  function t(){if(esp>0){b.disabled=true;b.textContent='Reenviar en '+esp+'s';esp--;}else{b.disabled=false;b.textContent='Reenviar código';clearInterval(T);}}
+  t();T=setInterval(t,1000);
+}
+window.emailPedirCodigo=async function(user,email,pass,ref){
+  D={user:user,email:email,pass:pass,ref:ref};
+  mostrarCarga('Enviando código a tu correo...');
+  var r;try{r=await api('/api/email/codigo',{correo:email});}catch(e){r={ok:false,j:{mensaje:'Sin conexión. Intenta de nuevo.'}};}
+  ocultarCarga();
+  if(!r.ok){mostrarNotificacion(r.j.mensaje||'No se pudo enviar el código','error');return;}
+  $('em-to').textContent=email;$('em-cod').value='';msg('');
+  $('em-modal').classList.add('on');cuenta(r.j.espera||60);
+  setTimeout(function(){$('em-cod').focus();},100);
+};
+window.emailReenviar=async function(){
+  if(!D||esp>0)return;msg('');$('em-re').disabled=true;
+  var r;try{r=await api('/api/email/codigo',{correo:D.email});}catch(e){r={ok:false,j:{mensaje:'Sin conexión.'}};}
+  if(!r.ok){msg(r.j.mensaje||'No se pudo reenviar');cuenta(r.j.espera||5);return;}
+  msg('');mostrarNotificacion('Código reenviado');cuenta(r.j.espera||60);
+};
+window.emailVerificar=async function(){
+  if(!D)return;var c=$('em-cod').value.replace(/\D/g,'');
+  if(c.length!==6){msg('Escribe los 6 dígitos.');return;}
+  var b=$('em-ok');b.disabled=true;b.textContent='VERIFICANDO...';
+  var r;try{r=await api('/api/email/verificar',{correo:D.email,codigo:c});}catch(e){r={ok:false,j:{mensaje:'Sin conexión.'}};}
+  b.disabled=false;b.textContent='VERIFICAR';
+  if(!r.ok){msg(r.j.mensaje||'Código incorrecto');return;}
+  var d=D;D=null;clearInterval(T);$('em-modal').classList.remove('on');
+  crearCuentaVerificada(d.user,d.email,d.pass,d.ref);
+};
+window.emailCerrar=function(){D=null;clearInterval(T);$('em-modal').classList.remove('on');};
+document.addEventListener('input',function(e){if(e.target&&e.target.id==='em-cod'){e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);if(e.target.value.length===6)window.emailVerificar();}});
 })();
 </script>
 </body>
