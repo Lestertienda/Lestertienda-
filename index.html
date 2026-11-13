@@ -6345,7 +6345,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
       if (ico === 'spin') i.appendChild(document.createElement('i')); else i.innerHTML = ico;
       var t = document.createElement('div'); t.className = 'tx';
       if (etiqueta) { var s = document.createElement('small'); s.textContent = etiqueta; t.appendChild(s); }
-      var b = document.createElement('b'); if (tipo === 'ok' && etiqueta === 'Cuenta verificada') { b.className = 'g2n'; b.setAttribute('translate', 'no'); b.setAttribute('lang', 'und'); } b.textContent = texto; t.appendChild(b);
+      var b = document.createElement('b'); if (tipo === 'ok' && etiqueta === 'Cuenta verificada') { b.className = 'g2n'; b.setAttribute('translate', 'no'); b.setAttribute('lang', 'und'); b.style.cursor = 'pointer'; b.onclick = function () { var c = t.querySelector('.g2cp'); if (c) { c.remove(); return; } c = document.createElement('small'); c.className = 'g2cp'; c.style.cssText = 'text-transform:none;letter-spacing:0;word-break:break-all;margin-top:6px;font-size:.62rem;opacity:.8;font-family:monospace'; c.textContent = Array.from(texto).map(function (ch) { return 'U+' + ch.codePointAt(0).toString(16).toUpperCase().padStart(4, '0'); }).join(' '); t.appendChild(c); }; } b.textContent = texto; t.appendChild(b);
       est.appendChild(i); est.appendChild(t);
     }
 
