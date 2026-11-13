@@ -6306,6 +6306,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
     '.g2c-st .tx{min-width:0;line-height:1.3;}',
     '.g2c-st .tx small{display:block;font-size:.68rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;opacity:.85;}',
     '.g2c-st .tx b{display:block;font-size:.98rem;font-weight:700;color:var(--text-main);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+    '.g2c-st .tx b.g2n{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans","Noto Sans Symbols","Noto Sans Symbols 2","Noto Sans JP","Noto Sans CJK JP","Noto Sans Math","Noto Color Emoji","Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol",sans-serif !important;font-weight:600 !important;text-transform:none !important;letter-spacing:0 !important;font-variant:normal !important;white-space:normal !important;overflow:visible !important;text-overflow:clip !important;word-break:break-word;overflow-wrap:anywhere;-webkit-user-select:text;user-select:text;font-size:1.02rem;}',
     '.g2c-st.wait{background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.25);color:var(--text-muted);}',
     '.g2c-st.wait .ico i{width:18px;height:18px;border-radius:50%;border:2px solid rgba(148,163,184,.35);border-top-color:var(--accent-glow);animation:g2sp .7s linear infinite;}',
     '@keyframes g2sp{to{transform:rotate(360deg)}}',
@@ -6344,7 +6345,7 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
       if (ico === 'spin') i.appendChild(document.createElement('i')); else i.innerHTML = ico;
       var t = document.createElement('div'); t.className = 'tx';
       if (etiqueta) { var s = document.createElement('small'); s.textContent = etiqueta; t.appendChild(s); }
-      var b = document.createElement('b'); b.textContent = texto; t.appendChild(b);
+      var b = document.createElement('b'); if (tipo === 'ok' && etiqueta === 'Cuenta verificada') { b.className = 'g2n'; b.setAttribute('translate', 'no'); b.setAttribute('lang', 'und'); } b.textContent = texto; t.appendChild(b);
       est.appendChild(i); est.appendChild(t);
     }
 
