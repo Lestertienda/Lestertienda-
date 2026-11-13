@@ -7819,16 +7819,19 @@ async function confirmarEnvioUSDTDep(){
 /* ================= Guía paso a paso ================= */
 (function(){
   var S=[
-   {t:'¡Bienvenido a Lester Tienda!',x:'Soy IA LT. En menos de un minuto te muestro cómo usar la página, paso a paso. Puedes saltar la guía cuando quieras.',sel:null,go:'inicio'},
-   {t:'Tus saldos',x:'Arriba ves tu saldo en USDT y tu Saldo Móvil. Toca cualquiera para ir a tu Wallet y depositar.',sel:'.nav-top-icons',go:'inicio'},
+   {t:'¡Bienvenido a Lester Tienda!',x:'Soy IA LT. En menos de un minuto te muestro la página paso a paso, con todo lo nuevo. Puedes saltar la guía cuando quieras.',sel:null,go:'inicio'},
+   {t:'Tu ORO LT 🪙',x:'Esta es tu cantidad de ORO LT, la moneda de la tienda: con ella pagas todas las recargas. Tócala para ir a tu Wallet y comprar más.',sel:'.header-wallet-pill.hw-usdt',go:'inicio'},
+   {t:'Buscador de juegos',x:'La lupa abre el buscador: escribe el nombre de un juego y te muestra si está DISPONIBLE, AGOTADO o PRÓXIMAMENTE. Tócalo y entras directo.',sel:'.nav-top-icon-btn[onclick*=ltBuscarAbrir]',go:'inicio'},
+   {t:'Notificaciones 🔔',x:'La campana guarda los avisos de Lester y el estado de tus recargas y depósitos, separados en pestañas. Toca la ✕ de una para eliminarla o usa Borrar todas.',sel:'.nav-top-icon-btn.lt-bell',go:'inicio'},
+   {t:'Instala la app',x:'Este botón te permite instalar Lester Tienda como una app y abrirla desde tu pantalla de inicio, sin navegador.',sel:'.nav-top-icon-btn.lt-dl',go:'inicio'},
    {t:'Anuncios y accesos',x:'Estos anuncios cambian solos. Usa el botón pequeño de cada uno: uno te lleva a tus referidos y el otro a los juegos disponibles.',sel:'#lt-ads',go:'inicio'},
-   {t:'Elige tu juego',x:'Desde aquí entras a Free Fire, Blood Strike, Roblox o Call of Duty Mobile. Escribes tu ID, eliges el paquete, el método de pago y listo.',sel:'#inicio-tabs',go:'inicio'},
-   {t:'Pedidos',x:'Aquí ves tus recargas y depósitos. 🟡 Pendiente, 🟢 Completado, 🔴 Cancelado.',sel:'#nav-btn-ordenes',go:'inicio'},
+   {t:'Elige tu juego',x:'Aquí están Free Fire, Blood Strike, Roblox, Call of Duty Mobile y Arena Breakout. Escribes tu ID y la página te muestra el nombre de tu cuenta para confirmar que es la tuya; después eliges el paquete y pagas con ORO LT.',sel:'#inicio-tabs',go:'inicio'},
+   {t:'Pedidos',x:'Arriba ves el total de recargas realizadas y los filtros: Todos, Completado, Pendiente y Fallidos. Abajo, cada pedido con su franja de color: 🟡 pendiente, 🟢 completado, 🔴 cancelado. También tienes la pestaña Depósito.',sel:'.lt-stat',go:'ordenes'},
    {t:'Referidos',x:'Invita amigos con tu enlace. Con 5 referidos válidos eliges tu juego favorito y te regalamos la primera oferta.',sel:'#nav-btn-referidos'},
-   {t:'Wallet',x:'En tu Wallet depositas USDT (red BEP 20) o Saldo Móvil. El depósito en USDT se acredita solo cuando llega el pago.',sel:'#lt-wallet',go:'wallet'},
-   {t:'Tu perfil',x:'Cambia tus datos, la contraseña, el modo claro u oscuro y transfiere saldo desde tu Perfil.',sel:'#nav-btn-perfil'},
-   {t:'Soporte con IA LT',x:'Este botón abre el soporte. Elige IA LT para preguntarme lo que quieras o habla con Lester por WhatsApp.',sel:'#floating-bot-soporte'},
-   {t:'¡Todo listo!',x:'Ya conoces lo principal. Si te pierdes, abre el soporte y pídeme la guía otra vez. ¡Buenas recargas!',sel:null}
+   {t:'Wallet · compra ORO LT',x:'Elige cuántos ORO LT quieres, paga con USDT (red BEP 20) o Saldo Móvil, y se acredita solo. Mira cuánto pagas y cuánto recibes antes de confirmar.',sel:'#lt-wallet',go:'wallet'},
+   {t:'Tu perfil',x:'Cambia tus datos, la contraseña, el modo claro u oscuro, transfiere saldo y lee la información legal desde tu Perfil.',sel:'#nav-btn-perfil'},
+   {t:'Soporte con IA LT',x:'Este botón abre el soporte. Pregúntame lo que quieras o pídeme hablar con soporte: Lester te responde en vivo en este mismo chat.',sel:'#floating-bot-soporte'},
+   {t:'¡Todo listo!',x:'Ya conoces lo principal y lo nuevo. Si te pierdes, abre el soporte y pídeme la guía otra vez. ¡Buenas recargas!',sel:null}
   ];
   var i=0,on=false,esAuto=false,box,spot,tip,prog,dims,raf=0,tPaso=0,ajusto=false;
   window.ltGuiaOn=function(){ return on; };
@@ -7846,7 +7849,7 @@ async function confirmarEnvioUSDTDep(){
     window.addEventListener('resize',function(){ if(on) seguir(600); });
     window.addEventListener('orientationchange',function(){ if(on) setTimeout(function(){ seguir(600); },300); });
   }
-  function irA(s){ if(s==='wallet') cambiarSeccion('wallet',document.getElementById('nav-btn-wallet')); else if(s==='inicio'){ var a=document.getElementById('seccion-inicio'); if(!a||a.style.display==='none') cambiarSeccion('inicio',document.getElementById('nav-btn-inicio')); } }
+  function irA(s){ if(s==='inicio'){ var a=document.getElementById('seccion-inicio'); if(!a||a.style.display==='none') cambiarSeccion('inicio',document.getElementById('nav-btn-inicio')); } else cambiarSeccion(s,document.getElementById('nav-btn-'+s)); }
   function paso(n){
     if(n<0) n=0; if(n>=S.length){ fin(); return; }
     tPaso=Date.now(); i=n; var st=S[i]; ajusto=false; if(st.go) irA(st.go);
@@ -7924,12 +7927,12 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
 (function(){
   var TIPS={
    'seccion-juegos-selector':{sel:'#gx-grid',t:'Elige tu juego',x:'Toca Free Fire, Blood Strike, Roblox, Call of Duty o Arena Breakout para ver sus ofertas. Los que dicen PRÓXIMAMENTE aún no están disponibles.'},
-   'seccion-freefire':{sel:'#player-id-input',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Free Fire (solo números). Luego toca el paquete que quieres (se paga con ORO LT).'},
-   'seccion-bloodstrike':{sel:'#player-id-input-bs',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Blood Strike (solo números). Luego elige cómo pagar y toca el paquete.'},
-   'seccion-arena':{sel:'#player-id-input-ar',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Arena Breakout (solo números). Luego toca el paquete de Bonds que quieras.'},
-   'seccion-codm':{sel:'#player-id-input-cd',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Call of Duty Mobile (solo números). Luego elige cómo pagar y toca el paquete de CP.'},
+   'seccion-freefire':{sel:'#player-id-input',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Free Fire (solo números). Verás el nombre de tu cuenta en verde si es correcto. Luego toca el paquete que quieres (se paga con ORO LT).'},
+   'seccion-bloodstrike':{sel:'#player-id-input-bs',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Blood Strike (solo números). Verás el nombre de tu cuenta si es correcto. Luego toca el paquete (se paga con ORO LT).'},
+   'seccion-arena':{sel:'#player-id-input-ar',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Arena Breakout (solo números). Luego toca el paquete de Bonds que quieras (se paga con ORO LT).'},
+   'seccion-codm':{sel:'#player-id-input-cd',t:'Aquí va tu ID',x:'Escribe tu ID de jugador de Call of Duty Mobile (solo números). Verás el nombre de tu cuenta si es correcto. Luego toca el paquete de CP (se paga con ORO LT).'},
    'seccion-roblox':{sel:'#player-id-input-rb',t:'Tu correo de Roblox',x:'Escribe aquí el correo que se te pide para canjear los Robux. Luego elige cómo pagar y toca el paquete.'},
-   'seccion-ordenes':{sel:'#pd-switch',t:'Tus pedidos',x:'Cambia entre Recargas y Depósitos. Amarillo = pendiente, verde = completado, rojo = cancelado.'},
+   'seccion-ordenes':{sel:'#pd-switch',t:'Tus pedidos',x:'Cambia entre Recargas y Depósito. Abajo ves tu total y los filtros (Todos, Completado, Pendiente, Fallidos). Amarillo = pendiente, verde = completado, rojo = cancelado.'},
    'seccion-referidos':{sel:'#enlace-ref',t:'Tu enlace personal',x:'Copia o comparte este enlace. Con 5 referidos válidos eliges un juego y te acreditamos su primera oferta.'},
    'seccion-wallet':{sel:'#lt-wallet',t:'Compra ORO LT',x:'ORO LT es la moneda de la tienda. Elige cuántos ORO LT quieres, escoge USDT o Saldo Móvil (te dice el precio exacto), pulsa Pagar y confirma. Te lleva directo a donde pagas y se acredita solo.'},
    'seccion-wallet-usdt':{sel:'#monto-usdt-auto',t:'¿Cuánto vas a depositar?',x:'Escribe el monto (mínimo 0.5) y toca GENERAR MI PAGO. Te daré el monto exacto a enviar.'},
