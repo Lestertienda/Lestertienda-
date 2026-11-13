@@ -9491,33 +9491,72 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
 </script>
 
 <style>
-#em-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;background:rgba(0,5,25,.82);padding:16px}
+#em-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;background:rgba(0,5,25,.86);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:16px}
 #em-modal.on{display:flex}
-.em-box{width:100%;max-width:380px;background:#0a2a8a;padding:3px;clip-path:polygon(15px 0,100% 0,100% calc(100% - 15px),calc(100% - 15px) 100%,0 100%,0 15px)}
-.em-in{background:var(--bg-card,#0b1633);color:var(--text-main,#fff);padding:22px 18px;text-align:center;clip-path:polygon(13px 0,100% 0,100% calc(100% - 13px),calc(100% - 13px) 100%,0 100%,0 13px)}
-.em-in h3{margin:0 0 6px;font-family:'Barlow Condensed',sans-serif;font-size:24px;letter-spacing:1px}
-.em-in p{margin:0 0 12px;font-size:14px;color:var(--text-muted,#9ab)}
-.em-in b{color:var(--text-main,#fff);word-break:break-all}
-#em-cod{width:100%;box-sizing:border-box;text-align:center;font-size:30px;letter-spacing:10px;padding:10px;border-radius:8px;border:2px solid #2a86ff;background:transparent;color:inherit;font-family:inherit}
-#em-msg{min-height:18px;margin:8px 0;font-size:13px;color:#ff6b6b}
-.em-btn{width:100%;padding:12px;border:0;border-radius:8px;background:linear-gradient(90deg,#0a3cff,#1ea0ff);color:#fff;font-weight:700;font-size:16px;cursor:pointer;font-family:inherit}
-.em-btn:disabled{opacity:.6}
-.em-link{background:none;border:0;color:#1ea0ff;font-size:14px;cursor:pointer;margin:10px 6px 0;font-family:inherit}
-.em-link:disabled{color:var(--text-muted,#889)}
+.em-box{width:100%;max-width:370px;animation:em-in .28s ease-out}
+@keyframes em-in{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.em-in{position:relative;color:#fff;padding:26px 20px 18px;text-align:center;border-radius:24px;overflow:hidden;
+  background:linear-gradient(180deg,#0e0e12 0%,#000 100%);border:1.5px solid rgba(120,170,255,.38);
+  box-shadow:0 8px 0 #05070d,0 22px 44px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.10),inset 0 -10px 18px rgba(0,0,0,.6)}
+.em-in::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:2.5px;pointer-events:none;z-index:3;
+  background:conic-gradient(from var(--lt-a),transparent 0,#2f8bff 9%,#fff 12%,transparent 22%,transparent 50%,#2f8bff 59%,#fff 62%,transparent 72%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:ltLed 5s linear infinite}
+.em-in>*{position:relative;z-index:1}
+.em-ico{width:60px;height:60px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;color:#fff;background:radial-gradient(circle at 35% 30%,#7fb4ff,#2f6bff 60%,#153a9c);box-shadow:0 0 0 4px rgba(47,107,255,.25),0 0 22px rgba(47,107,255,.6);transition:all .25s}
+.em-ico.ok{background:radial-gradient(circle at 35% 30%,#7bf0c4,#16c784 60%,#0b7a52);box-shadow:0 0 0 4px rgba(22,199,132,.25),0 0 22px rgba(22,199,132,.6)}
+.em-in h3{margin:0 0 10px;font-family:'Barlow Condensed',sans-serif;font-size:26px;letter-spacing:1.2px;text-transform:uppercase;color:#fff}
+.em-tags{display:flex;gap:6px;justify-content:center;margin:0 0 12px}
+.em-tags .wc2-tag{font-size:.58rem;padding:4px 8px;border-radius:7px}
+.em-in p{margin:0 0 16px;font-size:13.5px;line-height:1.55;color:#b7c3de}
+.em-in p b{color:#fff;word-break:break-all}
+.em-mail{display:inline-block;margin-top:4px;padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(120,170,255,.25);font-weight:800;color:#fff}
+.em-digs{display:flex;gap:8px;justify-content:center;margin:0 0 6px}
+.em-d{width:100%;max-width:46px;height:58px;box-sizing:border-box;text-align:center;font-size:26px;font-weight:800;font-family:inherit;color:#fff;background:rgba(255,255,255,.05);border:2px solid rgba(120,170,255,.32);border-radius:12px;outline:none;caret-color:#1ea0ff;transition:border-color .15s,background .15s,transform .15s;padding:0}
+.em-d:focus{border-color:#1ea0ff;background:rgba(30,160,255,.12);transform:translateY(-1px);box-shadow:0 0 0 3px rgba(30,160,255,.18)}
+.em-d.llena{border-color:rgba(30,160,255,.7)}
+.em-digs.mal .em-d{border-color:#ff5b5b;background:rgba(255,91,91,.1);animation:em-sh .38s}
+.em-digs.bien .em-d{border-color:#22d391;background:rgba(34,211,145,.12)}
+@keyframes em-sh{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+#em-msg{min-height:20px;margin:8px 0 6px;font-size:13px;font-weight:600;color:#ff7b7b}
+#em-msg.info{color:#9fb3d9;font-weight:500}
+.em-vence{font-size:12px;color:#8fa0c4;margin:0 0 14px}
+.em-vence b{color:#fff;font-variant-numeric:tabular-nums}
+.em-btn{width:100%;padding:14px;border:0;border-radius:14px;background:linear-gradient(180deg,#4d8dff,#2f6bff 55%,#1f4fd0);color:#fff;font-weight:900;font-size:15px;letter-spacing:.8px;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #153a9c,0 8px 14px rgba(47,107,255,.35);transition:transform .12s,box-shadow .12s}
+.em-btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #153a9c,0 3px 8px rgba(47,107,255,.3)}
+.em-btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:0 4px 0 #153a9c}
+.em-acc{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:12px}
+.em-link{background:none;border:0;color:#1ea0ff;font-size:13px;font-weight:700;cursor:pointer;padding:6px 8px;font-family:inherit}
+.em-link:disabled{color:#8fa0c4;cursor:default;font-weight:500}
+.em-tip{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(120,170,255,.18);font-size:11.5px;line-height:1.5;color:#9fb0d2}
+.em-tip b{color:#fff}
 </style>
-<div id="em-modal"><div class="em-box"><div class="em-in">
-<h3>VERIFICA TU CORREO</h3>
-<p>Te enviamos un código de 6 dígitos a <b id="em-to"></b>. Búscalo en tu Gmail (revisa también <b>Spam</b>).</p>
-<input id="em-cod" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••">
+<div id="em-modal" role="dialog" aria-modal="true" aria-labelledby="em-tit"><div class="em-box"><div class="em-in">
+<div class="em-ico" id="em-ico"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></div>
+<h3 id="em-tit">Verifica tu correo</h3>
+<div class="em-tags"><span class="wc2-tag">SEGURO</span><span class="wc2-tag wc2-tag-azul">CÓDIGO DE 6 DÍGITOS</span></div>
+<p>Enviamos un código a<br><span class="em-mail"><b id="em-to"></b></span></p>
+<div class="em-digs" id="em-digs">
+<input class="em-d" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="Dígito 1">
+<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
+<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
+<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
+<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
+<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
+</div>
 <div id="em-msg"></div>
-<button class="em-btn" id="em-ok" onclick="emailVerificar()">VERIFICAR</button>
-<div><button class="em-link" id="em-re" onclick="emailReenviar()">Reenviar código</button><button class="em-link" onclick="emailCerrar()">Cambiar correo</button></div>
+<div class="em-vence">El código vence en <b id="em-vence">10:00</b></div>
+<button class="em-btn" id="em-ok" onclick="emailVerificar()" disabled>VERIFICAR</button>
+<div class="em-acc"><button class="em-link" id="em-re" onclick="emailReenviar()">Reenviar código</button><button class="em-link" onclick="emailCerrar()">Cambiar correo</button></div>
+<div class="em-tip">¿No lo ves? Revisa <b>Spam</b> o <b>Promociones</b> en tu Gmail. Puede tardar un minuto.</div>
 </div></div></div>
 <script>
 (function(){
-var D=null,T=null,esp=0;
+var D=null,T=null,TV=null,esp=0,fin=0,enviando=false;
 function $(i){return document.getElementById(i);}
-function msg(t){$('em-msg').textContent=t||'';}
+function dig(){return Array.prototype.slice.call(document.querySelectorAll('#em-digs .em-d'));}
+function valor(){return dig().map(function(i){return i.value;}).join('');}
+function msg(t,info){var m=$('em-msg');m.textContent=t||'';m.className=info?'info':'';}
+function ocultarCorreo(e){var p=String(e).split('@');if(p.length!==2)return e;var u=p[0];return (u.length<=2?u.charAt(0):u.slice(0,2))+'•••••@'+p[1];}
 async function api(ruta,body){
   var r=await fetch(WORKER_URL+ruta,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
   var j={};try{j=await r.json();}catch(e){}
@@ -9528,34 +9567,85 @@ function cuenta(s){
   function t(){if(esp>0){b.disabled=true;b.textContent='Reenviar en '+esp+'s';esp--;}else{b.disabled=false;b.textContent='Reenviar código';clearInterval(T);}}
   t();T=setInterval(t,1000);
 }
+function vigencia(seg){
+  fin=Date.now()+seg*1000;clearInterval(TV);
+  function t(){var r=Math.max(0,Math.round((fin-Date.now())/1000));$('em-vence').textContent=String(Math.floor(r/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0');
+    if(r<=0){clearInterval(TV);msg('El código venció. Pide uno nuevo.');$('em-ok').disabled=true;}}
+  t();TV=setInterval(t,1000);
+}
+function refrescar(){
+  var v=valor();dig().forEach(function(i){i.classList.toggle('llena',!!i.value);});
+  $('em-ok').disabled=!(v.length===6&&Date.now()<fin);
+}
+function limpiar(){dig().forEach(function(i){i.value='';});$('em-digs').className='em-digs';refrescar();dig()[0].focus();}
+function repartir(txt,desde){
+  var n=String(txt).replace(/\D/g,'').slice(0,6),d=dig();
+  if(!n)return;
+  if(n.length>1)desde=0;
+  for(var k=0;k<n.length&&desde+k<6;k++)d[desde+k].value=n.charAt(k);
+  var sig=Math.min(5,desde+n.length);d[sig].focus();
+  refrescar();
+  if(valor().length===6)window.emailVerificar();
+}
+function conectar(){
+  dig().forEach(function(inp,i,d){
+    inp.addEventListener('input',function(){
+      $('em-digs').className='em-digs';
+      if(inp.value.length>1||(i===0&&inp.value.replace(/\D/g,'').length>1)){var t=inp.value;inp.value='';repartir(t,i);return;}
+      inp.value=inp.value.replace(/\D/g,'').slice(0,1);
+      if(inp.value&&i<5)d[i+1].focus();
+      refrescar();
+      if(valor().length===6)window.emailVerificar();
+    });
+    inp.addEventListener('keydown',function(e){
+      if(e.key==='Backspace'&&!inp.value&&i>0){d[i-1].value='';d[i-1].focus();refrescar();e.preventDefault();}
+      else if(e.key==='ArrowLeft'&&i>0){d[i-1].focus();e.preventDefault();}
+      else if(e.key==='ArrowRight'&&i<5){d[i+1].focus();e.preventDefault();}
+      else if(e.key==='Enter'){window.emailVerificar();}
+    });
+    inp.addEventListener('paste',function(e){var t=(e.clipboardData||window.clipboardData).getData('text');e.preventDefault();repartir(t,i);});
+    inp.addEventListener('focus',function(){try{inp.select();}catch(e){}});
+  });
+}
+conectar();
 window.emailPedirCodigo=async function(user,email,pass,ref){
   D={user:user,email:email,pass:pass,ref:ref};
   mostrarCarga('Enviando código a tu correo...');
   var r;try{r=await api('/api/email/codigo',{correo:email});}catch(e){r={ok:false,j:{mensaje:'Sin conexión. Intenta de nuevo.'}};}
   ocultarCarga();
   if(!r.ok){mostrarNotificacion(r.j.mensaje||'No se pudo enviar el código','error');return;}
-  $('em-to').textContent=email;$('em-cod').value='';msg('');
-  $('em-modal').classList.add('on');cuenta(r.j.espera||60);
-  setTimeout(function(){$('em-cod').focus();},100);
+  $('em-to').textContent=ocultarCorreo(email);$('em-ico').className='em-ico';$('em-tit').textContent='Verifica tu correo';
+  msg('');limpiar();
+  $('em-modal').classList.add('on');cuenta(r.j.espera||60);vigencia(600);
+  setTimeout(function(){dig()[0].focus();},120);
 };
 window.emailReenviar=async function(){
   if(!D||esp>0)return;msg('');$('em-re').disabled=true;
   var r;try{r=await api('/api/email/codigo',{correo:D.email});}catch(e){r={ok:false,j:{mensaje:'Sin conexión.'}};}
   if(!r.ok){msg(r.j.mensaje||'No se pudo reenviar');cuenta(r.j.espera||5);return;}
-  msg('');mostrarNotificacion('Código reenviado');cuenta(r.j.espera||60);
+  limpiar();msg('Código nuevo enviado. Revisa tu correo.',true);cuenta(r.j.espera||60);vigencia(600);
 };
 window.emailVerificar=async function(){
-  if(!D)return;var c=$('em-cod').value.replace(/\D/g,'');
+  if(!D||enviando)return;var c=valor();
   if(c.length!==6){msg('Escribe los 6 dígitos.');return;}
-  var b=$('em-ok');b.disabled=true;b.textContent='VERIFICANDO...';
-  var r;try{r=await api('/api/email/verificar',{correo:D.email,codigo:c});}catch(e){r={ok:false,j:{mensaje:'Sin conexión.'}};}
-  b.disabled=false;b.textContent='VERIFICAR';
-  if(!r.ok){msg(r.j.mensaje||'Código incorrecto');return;}
-  var d=D;D=null;clearInterval(T);$('em-modal').classList.remove('on');
-  crearCuentaVerificada(d.user,d.email,d.pass,d.ref);
+  if(Date.now()>=fin){msg('El código venció. Pide uno nuevo.');return;}
+  enviando=true;var b=$('em-ok');b.disabled=true;b.textContent='VERIFICANDO...';msg('');
+  var r;try{r=await api('/api/email/verificar',{correo:D.email,codigo:c});}catch(e){r={ok:false,j:{mensaje:'Sin conexión. Intenta de nuevo.'}};}
+  enviando=false;b.textContent='VERIFICAR';
+  if(!r.ok){
+    $('em-digs').className='em-digs mal';msg(r.j.mensaje||'Código incorrecto');
+    setTimeout(function(){var d=dig();d.forEach(function(i){i.value='';});$('em-digs').className='em-digs';refrescar();d[0].focus();},650);
+    return;
+  }
+  $('em-digs').className='em-digs bien';$('em-ico').className='em-ico ok';
+  $('em-ico').innerHTML='<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  $('em-tit').textContent='Correo verificado';msg('Creando tu cuenta...',true);
+  var d0=D;D=null;clearInterval(T);clearInterval(TV);
+  setTimeout(function(){$('em-modal').classList.remove('on');
+    $('em-ico').innerHTML='<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>';
+    crearCuentaVerificada(d0.user,d0.email,d0.pass,d0.ref);},700);
 };
-window.emailCerrar=function(){D=null;clearInterval(T);$('em-modal').classList.remove('on');};
-document.addEventListener('input',function(e){if(e.target&&e.target.id==='em-cod'){e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);if(e.target.value.length===6)window.emailVerificar();}});
+window.emailCerrar=function(){D=null;clearInterval(T);clearInterval(TV);$('em-modal').classList.remove('on');};
 })();
 </script>
 </body>
