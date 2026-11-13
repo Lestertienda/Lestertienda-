@@ -2654,7 +2654,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     <p class="pf-noact">Referidos no activos: <b id="stat-ref-no-activos">0</b></p>
 
                     <div class="pf-actions">
-                        <button class="pf-logros" onclick="mostrarNotificacion('Tus logros se activarán pronto.')">Mis logros</button>
+                        <button class="pf-logros" onclick="ltLogros()">Mis logros</button>
                         <button class="pf-sec" onclick="abrirSelectorGaleria()">Mi avatar</button>
                         <button class="pf-icon" onclick="compartirPerfil()" aria-label="Compartir">
                             <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/></svg>
@@ -2784,19 +2784,24 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 
             <div id="sub-transferir" class="vista-sec" style="display: none;">
                 <div class="back-row"><button class="back-btn" onclick="volverAPerfil()"><svg viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg> Volver</button></div>
-                <h2 class="page-title">Transferir Saldo a Otro Usuario</h2>
+                <h2 class="page-title">Transferir ORO LT</h2>
+                <div class="lt-saldo-card"><div><small>TU SALDO DISPONIBLE</small><b id="trans-saldo-lt">0.00</b></div><i class="lt-coin lt-float"></i></div>
                 <div class="sub-card">
                     <div class="form-group">
                         <label>Destinatario (Nombre de usuario o Correo)</label>
                         <input type="text" id="trans-destino" class="form-control no-left-icon" placeholder="usuario o correo@gmail.com">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display:none">
                         <label>Moneda a enviar</label>
                         <select id="trans-moneda" class="form-control no-left-icon"><option value="usdt">USDT</option><option value="saldo">Saldo Móvil</option></select>
                     </div>
                     <div class="form-group">
-                        <label>Monto a transferir</label>
+                        <label>Monto a transferir (ORO LT)</label>
                         <input type="number" id="trans-monto" class="form-control no-left-icon" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Mensaje (opcional)</label>
+                        <input type="text" id="trans-msg" maxlength="80" class="form-control no-left-icon" placeholder="Ej: Feliz cumpleaños 🎂">
                     </div>
                     <div class="form-group">
                         <label>Tu contraseña actual (Confirmación)</label>
@@ -4350,10 +4355,6 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 return;
             }
 
-            emailPedirCodigo(user, email, pass, referidoPor);
-        }
-
-        function crearCuentaVerificada(user, email, pass, referidoPor) {
             mostrarCarga("Registrando cuenta...");
             setTimeout(async () => {
                 let esPrincipalCEO = false;
@@ -5837,9 +5838,9 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             const destinoInput = document.getElementById('trans-destino').value.trim();
             const monto = parseFloat(document.getElementById('trans-monto').value);
             const password = document.getElementById('trans-pass').value;
-            const mon = document.getElementById('trans-moneda').value;
+            const mon = 'usdt'; // solo ORO LT
             const campo = mon === 'usdt' ? 'balanceUSDT' : 'balanceCUP';
-            const etiqueta = mon === 'usdt' ? 'USDT' : 'saldo móvil';
+            const etiqueta = 'ORO LT';
 
             if (!destinoInput || isNaN(monto) || monto <= 0 || !password) { mostrarNotificacion("Completa todos los campos correctamente"); return; }
             if (usuarioActual.rango === 2 && !usuarioActual.pass && !window.__adminOk) {
@@ -5866,9 +5867,12 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 usuarioActual[campo] = redondea((parseFloat(usuarioActual[campo]) || 0) - monto);
                 destinatarioObj[campo] = redondea((parseFloat(destinatarioObj[campo]) || 0) + monto);
                 if (mon === 'usdt') { usuarioActual.balance = usuarioActual.balanceUSDT; destinatarioObj.balance = destinatarioObj.balanceUSDT; }
+                const tid = Date.now(), mensajeT = (document.getElementById('trans-msg').value || '').trim().slice(0, 80), fechaT = new Date().toISOString();
+                usuarioActual.transferencias = (usuarioActual.transferencias || []).concat([{ id: tid, tipo: 'env', con: destinatarioObj.nombre, monto: monto, msg: mensajeT, fecha: fechaT }]).slice(-30);
+                destinatarioObj.transferencias = (destinatarioObj.transferencias || []).concat([{ id: tid, tipo: 'rec', con: usuarioActual.nombre, monto: monto, msg: mensajeT, fecha: fechaT }]).slice(-30);
 
                 let uLocal = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === usuarioActual.correo.toLowerCase());
-                if (uLocal) { uLocal[campo] = usuarioActual[campo]; if (mon === 'usdt') uLocal.balance = usuarioActual.balanceUSDT; }
+                if (uLocal) { uLocal[campo] = usuarioActual[campo]; if (mon === 'usdt') uLocal.balance = usuarioActual.balanceUSDT; uLocal.transferencias = usuarioActual.transferencias; }
 
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -5877,6 +5881,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 
                 document.getElementById('trans-destino').value = '';
                 document.getElementById('trans-monto').value = '';
+                document.getElementById('trans-msg').value = '';
                 document.getElementById('trans-pass').value = '';
                 actualizarPerfilUI();
                 mostrarNotificacion(`Transferencia de ${monto} ${etiqueta} exitosa`);
@@ -9210,6 +9215,8 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
   try{(solicitudesGlobales.depositos||[]).forEach(function(d){if(String(d.correo||'').toLowerCase()!==mail)return;
    var e=String(d.estado||''),c=/complet|aprob|acredit/i.test(e)?'v':/cancel|rechaz/i.test(e)?'r':'a';
    L.push({g:'d',k:'d:'+d.id+':'+e,t:d.id||0,ic:c,tx:c==='v'?'✓':c==='r'?'✕':'…',ti:c==='v'?'ORO LT acreditado':c==='r'?'Depósito rechazado':'Depósito en revisión',de:(d.monto!=null?d.monto+' ':'')+String(d.moneda||'').toUpperCase()});});}catch(e){}
+  try{(u.transferencias||[]).forEach(function(t){var rec=t.tipo==='rec';L.push({g:'x',k:'t:'+t.id+':'+t.tipo,t:Date.parse(t.fecha)||t.id||0,ic:rec?'v':'m',tx:rec?'in':'out',ti:rec?'Recibiste '+t.monto+' ORO LT':'Enviaste '+t.monto+' ORO LT',de:(rec?'De ':'Para ')+t.con+(t.msg?' · «'+t.msg+'»':'')});});}catch(e){}
+  try{(u.avisosPropios||[]).forEach(function(a){L.push({g:'a',k:'p:'+a.id,t:Date.parse(a.fecha)||a.id||0,ic:'o',tx:'logro',ti:a.ti,de:a.de});});}catch(e){}
   L.sort(function(a,b){return b.t-a.t;});
   var DEL=leer('lt_bell_borradas',[]),DM={};DEL.forEach(function(k){DM[k]=1;});return L.filter(function(x){return !DM[x.k];}).slice(0,60);
  }
@@ -9222,16 +9229,26 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
   guardar('lt_bell_vistas',L.map(function(x){return x.k;}).concat(v).slice(0,500));
   setTimeout(ltBellBadge,50);
  };
- var nFiltro='t',nNuevas={},G_NOM={a:'Avisos de Lester',r:'Recargas',d:'Depósitos'};
+ var nFiltro='t',nNuevas={},G_NOM={a:'Avisos de Lester',x:'Transferencias',r:'Recargas',d:'Depósitos'};
+ function icoN(x){
+  var S=function(p){return '<svg viewBox="0 0 24 24">'+p+'</svg>';};
+  var ck=S('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),xx=S('<path d="M6 6l12 12M18 6L6 18"/>'),rl=S('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>');
+  if(x.tx==='in') return S('<path d="M12 4v11M7 11l5 5 5-5M5 20h14"/>');
+  if(x.tx==='out') return S('<path d="M12 20V9M7 13l5-5 5 5M5 4h14"/>');
+  if(x.tx==='logro') return '<i class="lt-coin" style="width:24px;height:24px;margin:0"></i>';
+  if(x.g==='a') return S('<path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15zM10 20a2 2 0 004 0"/>');
+  if(x.g==='d'&&x.ic==='v') return '<i class="lt-coin" style="width:24px;height:24px;margin:0"></i>';
+  return x.ic==='v'?ck:x.ic==='r'?xx:rl;
+ }
  function hace(t){if(!t)return '';var s=Math.max(0,(Date.now()-t)/1000);if(s<60)return 'ahora';if(s<3600)return 'hace '+Math.floor(s/60)+' min';if(s<86400)return 'hace '+Math.floor(s/3600)+' h';return 'hace '+Math.floor(s/86400)+' d';}
  function pintaN(){
-  var L=mios(),cnt={t:L.length,a:0,r:0,d:0};L.forEach(function(x){cnt[x.g]=(cnt[x.g]||0)+1;});
-  var tabs=[['t','Todas'],['a','Avisos'],['r','Recargas'],['d','Depósitos']];
+  var L=mios(),cnt={t:L.length,a:0,x:0,r:0,d:0};L.forEach(function(x){cnt[x.g]=(cnt[x.g]||0)+1;});
+  var tabs=[['t','Todas'],['a','Avisos'],['x','Transfer.'],['r','Recargas'],['d','Depósitos']];
   $('lt-n-tabs').innerHTML=tabs.map(function(t){return '<button class="lt-tab'+(nFiltro===t[0]?' on':'')+'" onclick="ltNFiltro(\''+t[0]+'\')">'+t[1]+'<b>'+(cnt[t[0]]||0)+'</b></button>';}).join('');
   var vis=nFiltro==='t'?L:L.filter(function(x){return x.g===nFiltro;}),h='';
-  function item(x){return '<div class="lt-n ic-'+x.ic+(nNuevas[x.k]?' nuevo':'')+'" data-k="'+esc2(x.k)+'"><div class="lt-n-i '+x.ic+'">'+x.tx+'</div><div class="lt-n-c"><b>'+esc2(x.ti)+'</b><small>'+esc2(x.de)+'</small><em>'+hace(x.t)+'</em></div><button class="lt-n-x" aria-label="Eliminar notificación">✕</button></div>';}
+  function item(x){return '<div class="lt-n ic-'+x.ic+(nNuevas[x.k]?' nuevo':'')+'" data-k="'+esc2(x.k)+'"><div class="lt-n-i '+x.ic+'">'+icoN(x)+'</div><div class="lt-n-c"><b>'+esc2(x.ti)+'</b><small>'+esc2(x.de)+'</small><em>'+hace(x.t)+'</em></div><button class="lt-n-x" aria-label="Eliminar notificación">✕</button></div>';}
   if(!vis.length) h='<div class="lt-vacio">🔔<br>'+(L.length?'No hay notificaciones en esta pestaña.':'Aún no tienes notificaciones.<br>Aquí verás el estado de tus recargas, depósitos y los avisos de Lester.')+'</div>';
-  else if(nFiltro==='t'){['a','r','d'].forEach(function(g){var s=vis.filter(function(x){return x.g===g;});if(s.length)h+='<div class="lt-n-sec">'+G_NOM[g]+'</div>'+s.map(item).join('');});}
+  else if(nFiltro==='t'){['a','x','r','d'].forEach(function(g){var s=vis.filter(function(x){return x.g===g;});if(s.length)h+='<div class="lt-n-sec">'+G_NOM[g]+'</div>'+s.map(item).join('');});}
   else h=vis.map(item).join('');
   $('lt-n-list').innerHTML=h;
   var c=$('lt-n-clear');if(c){c.style.display=L.length?'':'none';c.classList.remove('sure');c.textContent='Borrar todas';}
@@ -9490,163 +9507,130 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
 })();
 </script>
 
-<style>
-#em-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;background:rgba(0,5,25,.86);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:16px}
-#em-modal.on{display:flex}
-.em-box{width:100%;max-width:370px;animation:em-in .28s ease-out}
-@keyframes em-in{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
-.em-in{position:relative;color:#fff;padding:26px 20px 18px;text-align:center;border-radius:24px;overflow:hidden;
-  background:linear-gradient(180deg,#0e0e12 0%,#000 100%);border:1.5px solid rgba(120,170,255,.38);
-  box-shadow:0 8px 0 #05070d,0 22px 44px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.10),inset 0 -10px 18px rgba(0,0,0,.6)}
-.em-in::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:2.5px;pointer-events:none;z-index:3;
-  background:conic-gradient(from var(--lt-a),transparent 0,#2f8bff 9%,#fff 12%,transparent 22%,transparent 50%,#2f8bff 59%,#fff 62%,transparent 72%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:ltLed 5s linear infinite}
-.em-in>*{position:relative;z-index:1}
-.em-ico{width:60px;height:60px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;color:#fff;background:radial-gradient(circle at 35% 30%,#7fb4ff,#2f6bff 60%,#153a9c);box-shadow:0 0 0 4px rgba(47,107,255,.25),0 0 22px rgba(47,107,255,.6);transition:all .25s}
-.em-ico.ok{background:radial-gradient(circle at 35% 30%,#7bf0c4,#16c784 60%,#0b7a52);box-shadow:0 0 0 4px rgba(22,199,132,.25),0 0 22px rgba(22,199,132,.6)}
-.em-in h3{margin:0 0 10px;font-family:'Barlow Condensed',sans-serif;font-size:26px;letter-spacing:1.2px;text-transform:uppercase;color:#fff}
-.em-tags{display:flex;gap:6px;justify-content:center;margin:0 0 12px}
-.em-tags .wc2-tag{font-size:.58rem;padding:4px 8px;border-radius:7px}
-.em-in p{margin:0 0 16px;font-size:13.5px;line-height:1.55;color:#b7c3de}
-.em-in p b{color:#fff;word-break:break-all}
-.em-mail{display:inline-block;margin-top:4px;padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(120,170,255,.25);font-weight:800;color:#fff}
-.em-digs{display:flex;gap:8px;justify-content:center;margin:0 0 6px}
-.em-d{width:100%;max-width:46px;height:58px;box-sizing:border-box;text-align:center;font-size:26px;font-weight:800;font-family:inherit;color:#fff;background:rgba(255,255,255,.05);border:2px solid rgba(120,170,255,.32);border-radius:12px;outline:none;caret-color:#1ea0ff;transition:border-color .15s,background .15s,transform .15s;padding:0}
-.em-d:focus{border-color:#1ea0ff;background:rgba(30,160,255,.12);transform:translateY(-1px);box-shadow:0 0 0 3px rgba(30,160,255,.18)}
-.em-d.llena{border-color:rgba(30,160,255,.7)}
-.em-digs.mal .em-d{border-color:#ff5b5b;background:rgba(255,91,91,.1);animation:em-sh .38s}
-.em-digs.bien .em-d{border-color:#22d391;background:rgba(34,211,145,.12)}
-@keyframes em-sh{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-#em-msg{min-height:20px;margin:8px 0 6px;font-size:13px;font-weight:600;color:#ff7b7b}
-#em-msg.info{color:#9fb3d9;font-weight:500}
-.em-vence{font-size:12px;color:#8fa0c4;margin:0 0 14px}
-.em-vence b{color:#fff;font-variant-numeric:tabular-nums}
-.em-btn{width:100%;padding:14px;border:0;border-radius:14px;background:linear-gradient(180deg,#4d8dff,#2f6bff 55%,#1f4fd0);color:#fff;font-weight:900;font-size:15px;letter-spacing:.8px;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #153a9c,0 8px 14px rgba(47,107,255,.35);transition:transform .12s,box-shadow .12s}
-.em-btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #153a9c,0 3px 8px rgba(47,107,255,.3)}
-.em-btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:0 4px 0 #153a9c}
-.em-acc{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:12px}
-.em-link{background:none;border:0;color:#1ea0ff;font-size:13px;font-weight:700;cursor:pointer;padding:6px 8px;font-family:inherit}
-.em-link:disabled{color:#8fa0c4;cursor:default;font-weight:500}
-.em-tip{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(120,170,255,.18);font-size:11.5px;line-height:1.5;color:#9fb0d2}
-.em-tip b{color:#fff}
+<style id="lt-trans">
+.lt-saldo-card{display:flex;align-items:center;justify-content:space-between;margin:0 0 14px;padding:16px 18px;border-radius:20px;border:2px solid transparent;color:#fff;
+ background:linear-gradient(180deg,#07090f,#03040a) padding-box,
+ linear-gradient(90deg,transparent 12%,#4d8dff 26%,#fff 36%,#4d8dff 44%,transparent 56%) top/100% 50% no-repeat border-box,
+ linear-gradient(90deg,transparent 46%,#4d8dff 58%,#fff 69%,#4d8dff 76%,transparent 88%) bottom/100% 50% no-repeat border-box,
+ linear-gradient(#1c3b7a,#1c3b7a) border-box;box-shadow:0 0 18px rgba(47,107,255,.22)}
+.lt-saldo-card small{display:block;font-size:.68rem;letter-spacing:1.4px;color:#9fb4e6;font-weight:800;margin-bottom:4px}
+.lt-saldo-card b{font-size:1.9rem;font-weight:900;letter-spacing:.3px}
+.lt-saldo-card .lt-coin{width:46px;height:46px;margin:0}
+.lt-float{animation:ltFloat 2.6s ease-in-out infinite}
+@keyframes ltFloat{0%,100%{transform:translateY(3px)}50%{transform:translateY(-4px)}}
+.pf-stat > i.lt-coin{width:26px;height:26px;margin:0 0 4px;display:block}
+.lt-n-i{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.16);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 3px 0 rgba(0,0,0,.35);background:linear-gradient(180deg,#4d8dff,#1f4fd0);font-size:0}
+.lt-n-i svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.lt-n-i.v{background:linear-gradient(180deg,#3fe093,#0f8f55)}.lt-n-i.r{background:linear-gradient(180deg,#ff6b6b,#c62828)}
+.lt-n-i.a{background:linear-gradient(180deg,#ffd56b,#e08a00)}.lt-n-i.m{background:linear-gradient(180deg,#4d8dff,#1f4fd0)}
+.lt-n-i.o{background:linear-gradient(180deg,#3b2a0a,#1a1204);border-color:#c99a2e}
+/* ===== Logros ===== */
+#lt-logros{position:fixed;inset:0;z-index:99998;background:var(--bg-main,#070b18);display:none;flex-direction:column}
+#lt-logros.on{display:flex}
+.lt-lg-top{display:flex;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 10px}
+.lt-lg-top button{width:42px;height:42px;border-radius:50%;border:1px solid var(--border-color);background:rgba(255,255,255,.06);color:inherit;font-size:1.2rem;cursor:pointer}
+.lt-lg-top h2{margin:0;font-size:1.25rem}.lt-lg-top small{display:block;color:var(--text-muted);font-size:.74rem}
+.lt-lg-list{flex:1;overflow:auto;padding:6px 16px 24px}
+.lt-lv{display:flex;gap:14px;align-items:center;padding:14px;margin-bottom:12px;border-radius:20px;border:1.5px solid var(--border-color);background:rgba(255,255,255,.03)}
+.lt-lv .bd{width:62px;height:62px;border-radius:18px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;position:relative;
+ background:linear-gradient(180deg,#2a2f45,#171b2c);box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 4px 0 rgba(0,0,0,.4)}
+.lt-lv .bd .lt-coin{width:38px;height:38px;margin:0}.lt-lv .bd svg.med{width:44px;height:44px}
+.lt-lv .bd svg.lock{width:26px;height:26px;fill:none;stroke:#8a93b3;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.lt-lv .tx{flex:1;min-width:0}.lt-lv .tx b{display:block;font-size:1rem}.lt-lv .tx small{display:block;color:var(--text-muted);font-size:.76rem;margin-top:2px}
+.lt-lv .st{display:inline-block;font-size:.62rem;font-weight:900;letter-spacing:1px;padding:3px 9px;border-radius:999px;margin-bottom:5px}
+.lt-lv.done{border-color:#1fb36a;background:linear-gradient(180deg,rgba(31,179,106,.14),rgba(31,179,106,.04))}
+.lt-lv.done .st{background:#1fb36a;color:#fff}.lt-lv.done .bd{background:linear-gradient(180deg,#3b2a0a,#1a1204);box-shadow:0 0 0 2px #c99a2e,0 4px 0 rgba(0,0,0,.4)}
+.lt-lv.cur{border-color:#e0a21a;background:linear-gradient(180deg,rgba(224,162,26,.14),rgba(224,162,26,.04))}.lt-lv.cur .st{background:#e0a21a;color:#1a1204}
+.lt-lv.lock{opacity:.72}.lt-lv.lock .st{background:rgba(255,255,255,.12);color:#aab3d1}.lt-lv.lock .bd .lt-coin{filter:grayscale(1) brightness(.55)}
+.lt-bar{height:8px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:8px}.lt-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#e0a21a,#ffd56b)}
+.lt-medal-mini{display:inline-block;width:20px;height:20px;margin-left:6px;vertical-align:-4px}
 </style>
-<div id="em-modal" role="dialog" aria-modal="true" aria-labelledby="em-tit"><div class="em-box"><div class="em-in">
-<div class="em-ico" id="em-ico"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></div>
-<h3 id="em-tit">Verifica tu correo</h3>
-<div class="em-tags"><span class="wc2-tag">SEGURO</span><span class="wc2-tag wc2-tag-azul">CÓDIGO DE 6 DÍGITOS</span></div>
-<p>Enviamos un código a<br><span class="em-mail"><b id="em-to"></b></span></p>
-<div class="em-digs" id="em-digs">
-<input class="em-d" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="Dígito 1">
-<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
-<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
-<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
-<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
-<input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
-</div>
-<div id="em-msg"></div>
-<div class="em-vence">El código vence en <b id="em-vence">10:00</b></div>
-<button class="em-btn" id="em-ok" onclick="emailVerificar()" disabled>VERIFICAR</button>
-<div class="em-acc"><button class="em-link" id="em-re" onclick="emailReenviar()">Reenviar código</button><button class="em-link" onclick="emailCerrar()">Cambiar correo</button></div>
-<div class="em-tip">¿No lo ves? Revisa <b>Spam</b> o <b>Promociones</b> en tu Gmail. Puede tardar un minuto.</div>
-</div></div></div>
+
 <script>
 (function(){
-var D=null,T=null,TV=null,esp=0,fin=0,enviando=false;
-function $(i){return document.getElementById(i);}
-function dig(){return Array.prototype.slice.call(document.querySelectorAll('#em-digs .em-d'));}
-function valor(){return dig().map(function(i){return i.value;}).join('');}
-function msg(t,info){var m=$('em-msg');m.textContent=t||'';m.className=info?'info':'';}
-function ocultarCorreo(e){var p=String(e).split('@');if(p.length!==2)return e;var u=p[0];return (u.length<=2?u.charAt(0):u.slice(0,2))+'•••••@'+p[1];}
-async function api(ruta,body){
-  var r=await fetch(WORKER_URL+ruta,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  var j={};try{j=await r.json();}catch(e){}
-  return {ok:r.ok&&j.ok,j:j};
-}
-function cuenta(s){
-  esp=s;clearInterval(T);var b=$('em-re');
-  function t(){if(esp>0){b.disabled=true;b.textContent='Reenviar en '+esp+'s';esp--;}else{b.disabled=false;b.textContent='Reenviar código';clearInterval(T);}}
-  t();T=setInterval(t,1000);
-}
-function vigencia(seg){
-  fin=Date.now()+seg*1000;clearInterval(TV);
-  function t(){var r=Math.max(0,Math.round((fin-Date.now())/1000));$('em-vence').textContent=String(Math.floor(r/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0');
-    if(r<=0){clearInterval(TV);msg('El código venció. Pide uno nuevo.');$('em-ok').disabled=true;}}
-  t();TV=setInterval(t,1000);
-}
-function refrescar(){
-  var v=valor();dig().forEach(function(i){i.classList.toggle('llena',!!i.value);});
-  $('em-ok').disabled=!(v.length===6&&Date.now()<fin);
-}
-function limpiar(){dig().forEach(function(i){i.value='';});$('em-digs').className='em-digs';refrescar();dig()[0].focus();}
-function repartir(txt,desde){
-  var n=String(txt).replace(/\D/g,'').slice(0,6),d=dig();
-  if(!n)return;
-  if(n.length>1)desde=0;
-  for(var k=0;k<n.length&&desde+k<6;k++)d[desde+k].value=n.charAt(k);
-  var sig=Math.min(5,desde+n.length);d[sig].focus();
-  refrescar();
-  if(valor().length===6)window.emailVerificar();
-}
-function conectar(){
-  dig().forEach(function(inp,i,d){
-    inp.addEventListener('input',function(){
-      $('em-digs').className='em-digs';
-      if(inp.value.length>1||(i===0&&inp.value.replace(/\D/g,'').length>1)){var t=inp.value;inp.value='';repartir(t,i);return;}
-      inp.value=inp.value.replace(/\D/g,'').slice(0,1);
-      if(inp.value&&i<5)d[i+1].focus();
-      refrescar();
-      if(valor().length===6)window.emailVerificar();
-    });
-    inp.addEventListener('keydown',function(e){
-      if(e.key==='Backspace'&&!inp.value&&i>0){d[i-1].value='';d[i-1].focus();refrescar();e.preventDefault();}
-      else if(e.key==='ArrowLeft'&&i>0){d[i-1].focus();e.preventDefault();}
-      else if(e.key==='ArrowRight'&&i<5){d[i+1].focus();e.preventDefault();}
-      else if(e.key==='Enter'){window.emailVerificar();}
-    });
-    inp.addEventListener('paste',function(e){var t=(e.clipboardData||window.clipboardData).getData('text');e.preventDefault();repartir(t,i);});
-    inp.addEventListener('focus',function(){try{inp.select();}catch(e){}});
+ var $=function(i){return document.getElementById(i);};
+ var leer=function(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v;}catch(e){return d;}};
+ var guardar=function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
+ var MED='<svg class="med" viewBox="0 0 64 64"><defs><linearGradient id="mg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a3"/><stop offset=".55" stop-color="#e8b730"/><stop offset="1" stop-color="#a8741a"/></linearGradient></defs><path d="M20 4h10l6 18H26zM44 4H34l-6 18h10z" fill="#2f6bff"/><circle cx="32" cy="38" r="20" fill="url(#mg)" stroke="#7a5412" stroke-width="2"/><circle cx="32" cy="38" r="14.5" fill="none" stroke="#fff3c4" stroke-width="1.6" opacity=".8"/><path d="M32 27l3.4 7 7.6 1-5.5 5.3 1.3 7.6L32 44.2 25.2 48l1.3-7.6L21 35.1l7.6-1z" fill="#fff8dc" stroke="#9c6a10" stroke-width="1"/></svg>';
+ var NIV=[{n:1,req:10,lt:0,t:'Insignia de cliente'},{n:2,req:15,lt:0.10},{n:3,req:45,lt:0.10},{n:4,req:95,lt:0.10},{n:5,req:495,lt:0.30}];
+ function usr(){try{return usuarioActual;}catch(e){return null;}}
+ function cuenta(){var e=$('stat-cantidad-recargas-perfil'),n=e?parseInt(e.textContent,10):NaN,u=usr();return isNaN(n)?((u&&u.recargasCount)||0):n;}
+ /* ---- Premios: se reclaman con un botón y se acreditan al instante ---- */
+ function listos(){var u=usr(),c=cuenta(),lg=(u&&u.logros)||{};return NIV.filter(function(L){return c>=L.req&&!lg['n'+L.n];});}
+ function revisarLogros(){
+  var u=usr();if(!u||!$('stat-cantidad-recargas-perfil'))return;
+  var l=listos(),av=leer('lt_lg_avisados',{}),nuevo=l.filter(function(L){return !av[(u.correo||'')+L.n];});
+  var bt=document.querySelector('.pf-logros');if(bt)bt.classList.toggle('lt-dot',l.length>0);
+  if(!nuevo.length)return;
+  nuevo.forEach(function(L){av[(u.correo||'')+L.n]=1;});guardar('lt_lg_avisados',av);
+  var L=nuevo[nuevo.length-1];try{mostrarNotificacion('¡Nivel '+L.n+' desbloqueado! Reclama tu premio en Mis logros');reproducirSonidoLester('aviso');}catch(e){}
+ }
+ window.ltReclamar=function(n){
+  var u=usr(),L=NIV.filter(function(x){return x.n===n;})[0];if(!u||!L)return;
+  u.logros=u.logros||{};if(u.logros['n'+n]||cuenta()<L.req)return;
+  u.logros['n'+n]=new Date().toISOString();
+  if(L.lt){u.balanceUSDT=parseFloat(((parseFloat(u.balanceUSDT)||0)+L.lt).toFixed(2));u.balance=u.balanceUSDT;}
+  u.avisosPropios=(u.avisosPropios||[]).concat([{id:Date.now(),ti:'Premio reclamado · Nivel '+n,de:(L.lt?'+'+L.lt.toFixed(2)+' ORO LT acreditados':'Insignia de cliente desbloqueada')+' · '+L.req+' recargas',fecha:new Date().toISOString()}]).slice(-20);
+  try{var ul=listaUsuariosGlobales.find(function(x){return String(x.correo).toLowerCase()===String(u.correo).toLowerCase();});
+   if(ul){ul.logros=u.logros;ul.balanceUSDT=u.balanceUSDT;ul.balance=u.balance;ul.avisosPropios=u.avisosPropios;}
+   localStorage.setItem('lester_lista_usuarios',JSON.stringify(listaUsuariosGlobales));localStorage.setItem('lester_usuario',JSON.stringify(u));guardarEnCloud();actualizarPerfilUI();}catch(e){}
+  try{mostrarNotificacion(L.lt?'¡Premio reclamado! +'+L.lt.toFixed(2)+' ORO LT en tu cuenta':'¡Insignia de cliente desbloqueada!');reproducirSonidoLester('aviso');}catch(e){}
+  try{ltBellBadge();}catch(e){}
+  ltLogros();
+ };
+ /* ---- Pantalla de logros ---- */
+ var LOCK='<svg class="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>';
+ window.ltLogros=function(){
+  var u=usr();if(!u)return;var c=cuenta(),lg=u.logros||{},h='';
+  NIV.forEach(function(L){
+   var rec=!!lg['n'+L.n],listo=!rec&&c>=L.req,cur=!rec&&!listo&&c<L.req&&(L.n===1||(lg['n'+(L.n-1)]||c>=NIV[L.n-2].req)),
+       estado=rec?'done':listo?'claim':cur?'cur':'lock';
+   var ico=estado==='lock'?LOCK:(L.n===1?MED:'<i class="lt-coin"></i>');
+   var prem=L.lt?'+'+L.lt.toFixed(2)+' ORO LT':L.t;
+   var st=rec?'RECLAMADO':listo?'LISTO PARA RECLAMAR':cur?'EN PROCESO':'BLOQUEADO';
+   var det=estado==='cur'?'<div class="lt-bar"><i style="width:'+Math.min(100,Math.round(c/L.req*100))+'%"></i></div><small>'+Math.min(c,L.req)+' de '+L.req+' recargas</small>':'<small>'+L.req+' recargas</small>';
+   var btn=listo?'<button class="lt-claim" onclick="ltReclamar('+L.n+')">'+(L.lt?'RECLAMAR '+prem:'RECLAMAR INSIGNIA')+'</button>':'';
+   h+='<div class="lt-lv '+estado+'"><div class="bd">'+ico+'</div><div class="tx"><span class="st">'+st+'</span><b>Nivel '+L.n+' · '+prem+'</b>'+det+btn+'</div></div>';
   });
-}
-conectar();
-window.emailPedirCodigo=async function(user,email,pass,ref){
-  D={user:user,email:email,pass:pass,ref:ref};
-  mostrarCarga('Enviando código a tu correo...');
-  var r;try{r=await api('/api/email/codigo',{correo:email});}catch(e){r={ok:false,j:{mensaje:'Sin conexión. Intenta de nuevo.'}};}
-  ocultarCarga();
-  if(!r.ok){mostrarNotificacion(r.j.mensaje||'No se pudo enviar el código','error');return;}
-  $('em-to').textContent=ocultarCorreo(email);$('em-ico').className='em-ico';$('em-tit').textContent='Verifica tu correo';
-  msg('');limpiar();
-  $('em-modal').classList.add('on');cuenta(r.j.espera||60);vigencia(600);
-  setTimeout(function(){dig()[0].focus();},120);
-};
-window.emailReenviar=async function(){
-  if(!D||esp>0)return;msg('');$('em-re').disabled=true;
-  var r;try{r=await api('/api/email/codigo',{correo:D.email});}catch(e){r={ok:false,j:{mensaje:'Sin conexión.'}};}
-  if(!r.ok){msg(r.j.mensaje||'No se pudo reenviar');cuenta(r.j.espera||5);return;}
-  limpiar();msg('Código nuevo enviado. Revisa tu correo.',true);cuenta(r.j.espera||60);vigencia(600);
-};
-window.emailVerificar=async function(){
-  if(!D||enviando)return;var c=valor();
-  if(c.length!==6){msg('Escribe los 6 dígitos.');return;}
-  if(Date.now()>=fin){msg('El código venció. Pide uno nuevo.');return;}
-  enviando=true;var b=$('em-ok');b.disabled=true;b.textContent='VERIFICANDO...';msg('');
-  var r;try{r=await api('/api/email/verificar',{correo:D.email,codigo:c});}catch(e){r={ok:false,j:{mensaje:'Sin conexión. Intenta de nuevo.'}};}
-  enviando=false;b.textContent='VERIFICAR';
-  if(!r.ok){
-    $('em-digs').className='em-digs mal';msg(r.j.mensaje||'Código incorrecto');
-    setTimeout(function(){var d=dig();d.forEach(function(i){i.value='';});$('em-digs').className='em-digs';refrescar();d[0].focus();},650);
-    return;
-  }
-  $('em-digs').className='em-digs bien';$('em-ico').className='em-ico ok';
-  $('em-ico').innerHTML='<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-  $('em-tit').textContent='Correo verificado';msg('Creando tu cuenta...',true);
-  var d0=D;D=null;clearInterval(T);clearInterval(TV);
-  setTimeout(function(){$('em-modal').classList.remove('on');
-    $('em-ico').innerHTML='<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>';
-    crearCuentaVerificada(d0.user,d0.email,d0.pass,d0.ref);},700);
-};
-window.emailCerrar=function(){D=null;clearInterval(T);clearInterval(TV);$('em-modal').classList.remove('on');};
+  $('lt-lg-sub').textContent=c+' recargas completadas';$('lt-lg-list').innerHTML=h;$('lt-logros').classList.add('on');
+ };
+ window.ltLogrosCerrar=function(){$('lt-logros').classList.remove('on');};
+ document.body.insertAdjacentHTML('beforeend','<div id="lt-logros"><div class="lt-lg-top"><button onclick="ltLogrosCerrar()">←</button><div><h2>Mis logros</h2><small id="lt-lg-sub"></small></div></div><div class="lt-lg-list" id="lt-lg-list"></div></div>');
+ /* ---- Perfil: icono ORO LT flotando + medalla ---- */
+ function perfilExtra(){
+  try{
+   var h4=$('stat-saldo-movil-perfil');if(h4){var card=h4.parentElement,u=usr();
+    var sv=card.querySelector('svg');if(sv){var i=document.createElement('i');i.className='lt-coin lt-float';card.replaceChild(i,sv);}
+    if(u)h4.textContent=(parseFloat(u.balanceUSDT)||0).toFixed(2);h4.style.whiteSpace='nowrap';h4.style.fontSize='1rem';
+   }
+   var u2=usr(),b=document.querySelector('.pf-logros');
+   if(b&&u2&&u2.logros&&u2.logros.n1&&!b.dataset.med){b.dataset.med=1;b.innerHTML=MED.replace('class="med"','class="lt-medal-mini"')+' Mis logros';}
+   revisarLogros();
+  }catch(e){}
+ }
+ var f=window.actualizarPerfilUI;if(typeof f==='function'){window.actualizarPerfilUI=function(){var r=f.apply(this,arguments);perfilExtra();return r;};}
+ setTimeout(perfilExtra,1200);
+ /* ---- Transferir: saldo disponible + aviso al recibir ---- */
+ setInterval(function(){var e=$('trans-saldo-lt'),u=usr();if(e&&u&&e.offsetParent)e.textContent=(parseFloat(u.balanceUSDT)||0).toFixed(2);},1000);
+ setInterval(function(){
+  try{var u=usr();if(!u||!u.transferencias)return;var ids=u.transferencias.filter(function(t){return t.tipo==='rec';}).map(function(t){return t.id;}),v=leer('lt_trans_vistas',null);
+   if(v===null){guardar('lt_trans_vistas',ids);return;}var S={};v.forEach(function(k){S[k]=1;});var nuevas=ids.filter(function(k){return !S[k];});
+   if(nuevas.length){guardar('lt_trans_vistas',v.concat(nuevas).slice(-200));var t=u.transferencias.filter(function(x){return x.id===nuevas[nuevas.length-1];})[0];
+    mostrarNotificacion('Recibiste '+t.monto+' ORO LT de '+t.con+(t.msg?' · '+t.msg:''));try{reproducirSonidoLester('aviso');}catch(e){}try{ltBellBadge();}catch(e){}}
+  }catch(e){}
+ },6000);
 })();
 </script>
+
+<style id="lt-claim-css">
+.lt-lv.claim{border-color:#f0b429;background:linear-gradient(180deg,rgba(240,180,41,.2),rgba(31,179,106,.07));box-shadow:0 0 0 3px rgba(240,180,41,.15)}
+.lt-lv.claim .st{background:#f0b429;color:#1a1204}.lt-lv.claim .bd{background:linear-gradient(180deg,#3b2a0a,#1a1204);box-shadow:0 0 0 2px #f0b429,0 4px 0 rgba(0,0,0,.4)}
+.lt-lv.done{opacity:.9}
+.lt-claim{display:block;width:100%;margin-top:10px;padding:12px;border:0;border-radius:14px;color:#fff;font-weight:900;font-size:.88rem;cursor:pointer;
+ background:linear-gradient(180deg,#3fe093,#14a85f 55%,#0d7e47);box-shadow:0 4px 0 #075a31,0 8px 14px rgba(18,163,90,.35),inset 0 1px 0 rgba(255,255,255,.4)}
+.lt-claim:active{transform:translateY(3px);box-shadow:0 1px 0 #075a31}
+.pf-logros.lt-dot{position:relative}.pf-logros.lt-dot::after{content:"";position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;background:#ef4444;box-shadow:0 0 0 2px var(--bg-card,#0b1128)}
+</style>
 </body>
 </html>
