@@ -166,7 +166,7 @@
                 <label>Correo electrónico</label>
                 <div class="input-icon-wrapper">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    <input type="email" id="reg-email" class="form-control" placeholder="correo@gmail.com" oninput="validarCampoEmail(this)">
+                    <input type="email" id="reg-email" class="form-control" placeholder="correo@gmail.com" oninput="validarCampoEmail(this);ltOtpResetSiCambio()">
                 </div>
                 <div id="err-reg-email" class="error-feedback-text">Introduce un correo electrónico válido.</div>
             </div>
@@ -196,7 +196,21 @@
                 <label>¿Quién te invitó? (Opcional)</label>
                 <input type="text" id="reg-referido" class="form-control no-left-icon" placeholder="Patrocinador">
             </div>
-            <button class="btn-main" onclick="registrarUsuario()">REGISTRARSE</button>
+            <div id="lt-email-otp-card" class="lt-email-otp-card" style="display:none;">
+  <div class="lt-otp-head">
+    <div class="lt-otp-icon">✉</div>
+    <div><strong>VERIFICACIÓN DE CORREO</strong><span>Protegemos tu cuenta Lester Tienda</span></div>
+    <span class="lt-otp-live">SEGURO</span>
+  </div>
+  <p class="lt-otp-desc">Enviamos un código de 6 dígitos a:</p>
+  <div id="lt-otp-email" class="lt-otp-email"></div>
+  <label class="lt-otp-label" for="lt-email-otp-code">TU CÓDIGO DE SEGURIDAD</label>
+  <input id="lt-email-otp-code" class="lt-email-otp-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="• • • • • •" aria-label="Código de verificación de seis dígitos">
+  <div class="lt-otp-hint"><span class="lt-otp-dot"></span> Código válido durante 10 minutos</div>
+  <button type="button" id="lt-otp-resend" class="lt-otp-resend" onclick="ltOtpReenviar()">REENVIAR CÓDIGO</button>
+  <div id="lt-otp-feedback" class="lt-otp-feedback" aria-live="polite"></div>
+</div>
+<button class="btn-main" id="lt-reg-submit" onclick="registrarUsuario()">REGISTRARSE</button>
         </div>
 
         <div id="form-login" style="display: none;">
@@ -7248,5 +7262,116 @@ function irASelectorJuegos(){ mostrarVista('seccion-juegos-selector'); aplicarCo
 <script>__s("lt-pf-ico","91XZu9mb642bpRXYtlmbht3bjlWLmBnLn1Wag4DI0FGdz1iZw5yepU2Y1RWZypjbvlGdv1WLkV2Y1RWZy1ycyVmZlJHcoASYpRWZtBUf9lSK1UjLsUTNywSM0EDL3cDKhJ2ZyBCewZDIwACewJDK39GZhh2ctA3byRmOyVGdslmZ7kiNw4SMoUGbhN2cgkyZlRGOoUGdhR3bypTby9mZz5WYyR3elUzN9lSK34CL1UjMsEDNxwyN3gSYidmcggHc4ACMgADK39GZhh2ctA3byRmOyVGdslmZ7kSMuEDKlxWYjNHIpADKlRXY09mc60mcvZ2cuFmc0tXJwUTfpkSN14CL1UjMsEDNxwyN3gSYidmcggHc2ACMggHcy0CK39GZhh2ctA3byRmOyVGdslmZ7kiNw4SMoUGbhN2cgkyZlRGOtgSZ0FGdvJnOtJ3bmNnbhJHd7VSNy0XKpADL1UjMsEDNxwyN3gSYidmcgADIwACMoc3bkFGaz1CcvJHZ6IXZ0xWamtTKxgSZsF2YzBSKwgSZ0FGdvJnOtJ3bmNnbhJHd7VCMwEDLlAzevV2YuFGbhJkZwBycl1WYyZWeltGQ91XKpcjLsQjNsQTMywSN1IDKhJ2ZyBCewdDIwACMoc3bkFGaz1CcvJHZgkCNx4SMoM3cl5GdodWayJmOyVGdslmZ7kiMx4SMoUGbhN2c60mcvZ2cuFmc0tXJwcTfpkSN04CL0YDL0EjMsUTNygSYidmcggHc0ACMgADK39GZhh2ctA3byRGIpgDMuEDKzNXZuRHanlmcipjclRHbpZ2OpYDMuEDKlxWYjNnOtJ3bmNnbhJHd7VSN10XKpUzNuwCN2wCNxIDL1UjMoEmYnJHI4B3NgADIwgydvRWYoNXLw9mckBSK2EjLxgyczVmb0h2ZpJnY6IXZ0xWamtTKzEjLxgSZsF2YzpTby9mZz5WYyR3elADN9lSKwwCN2wCNxIDL1UjMoEmYnJHIwACMgADK39GZhh2ctA3byRGIpEDKzNXZuRHanlmcipjclRHbpZ2OpEDKlxWYjNnOtJ3bmNnbhJHd7VCMwEDLlAzehdmchNkZwBycl1WYyZWeltGQ9VGdp5Wam5WagQXdv1ibp1SZzFWZgMHNuMDIvV2YuFGbhJkZwpjbvlGdh1WauF2OlITOgUCM1ojbpdWay9WLtJ3bmNnbhJHd78Gd1FmOoRHZpd3O4BHMzoDdodWalh2emVmct82Yp1iZw5yZtlGI+ACdhR3ctYGcu0XZ0lmbpZmbpBCd19WLulWLlNXYlByc04iMgE2ZyF2QmBnOu9Wa0FWbp5WY7UCM2ASJwUjOul2ZpJ3bt0mcvZ2cuFmc0tzb0VXY6gGdkl2d7gHcwMjO0h2ZpVGa7RXYi1ybjlWLmBnLn1Wag4DI0FGdz1iZw5Sfl52bupzZhJHZtIXZzVXL0l2aiV2dtsTZu9mb6Q3YlxWZz1iclNXd7Umbv5mOzRnblZXZtIXZ05WavB3OulWY052bjpDdpZWL0NWZqJ2b7gHc0Ayb0VXYgAjOul2ZyFWb7s2YvxmY6kXYsB3cpR2evNWatYGcucWbpBiPgQXY0NXLmBnL",document.currentScript)</script>
 <script>__s("lt-pf-cards","==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",document.currentScript)</script>
 <script>__s("lt-pf-pro","=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",document.currentScript)</script>
+
+<script>
+/* Lester Tienda — verificación OTP de registro */
+(function(){
+  var otpEmailEnviado = '';
+  var otpVerificado = false;
+  var otpEnviando = false;
+  var otpVerificando = false;
+  var otpEsperaTimer = null;
+  var otpApi = (typeof WORKER_URL !== 'undefined' ? WORKER_URL : 'https://tienda.lester-tiendadiamantes.workers.dev');
+
+  var css = `
+  .lt-email-otp-card{position:relative;isolation:isolate;overflow:hidden;margin:18px 0 16px;padding:19px 17px 16px;border-radius:18px;background:linear-gradient(145deg,#080b0a 0%,#101512 55%,#070908 100%);border:1px solid rgba(42,255,151,.48);box-shadow:0 0 0 1px rgba(42,255,151,.08),0 10px 35px rgba(0,0,0,.35),inset 0 0 28px rgba(42,255,151,.055);color:#f4fff8}
+  .lt-email-otp-card:before{content:"";position:absolute;inset:-2px;z-index:-1;border-radius:20px;background:conic-gradient(from 0deg,transparent 0 18%,#00ff88 27%,#a5ffd0 31%,transparent 42% 68%,#00ff88 78%,transparent 88%);animation:ltOtpLed 5s linear infinite;opacity:.9}
+  .lt-email-otp-card:after{content:"";position:absolute;inset:1px;z-index:-1;border-radius:17px;background:linear-gradient(145deg,#080b0a,#101512 60%,#070908)}
+  @keyframes ltOtpLed{to{transform:rotate(360deg)}}
+  .lt-otp-head{display:flex;align-items:center;gap:11px;margin-bottom:15px}.lt-otp-icon{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.35);color:#5dffa9;font-size:19px;box-shadow:0 0 16px rgba(0,255,136,.13)}
+  .lt-otp-head strong{display:block;font-size:11px;letter-spacing:1.15px;color:#baffd6}.lt-otp-head span:not(.lt-otp-live){display:block;margin-top:4px;font-size:10px;color:#9ca9a1}
+  .lt-otp-live{margin-left:auto;padding:5px 8px;border-radius:20px;border:1px solid rgba(0,255,136,.3);background:rgba(0,255,136,.08);color:#5dffa9;font-size:8px;letter-spacing:1px}
+  .lt-otp-desc{margin:0 0 5px;color:#aebbb3;font-size:12px}.lt-otp-email{font-size:13px;font-weight:700;color:#fff;word-break:break-all;margin-bottom:17px}
+  .lt-otp-label{display:block;margin-bottom:8px;color:#9eafa5;font-size:9px;font-weight:800;letter-spacing:1.25px}
+  .lt-email-otp-code{display:block;width:100%;box-sizing:border-box;height:58px;border-radius:12px;border:1px solid rgba(0,255,136,.43);outline:none;background:linear-gradient(180deg,#050706,#0d1210);color:#d9ffe9;text-align:center;font-size:25px;font-weight:800;letter-spacing:11px;padding:0 8px 0 19px;font-variant-numeric:tabular-nums;box-shadow:inset 0 2px 12px rgba(0,0,0,.5),0 0 17px rgba(0,255,136,.07);transition:.2s}
+  .lt-email-otp-code:focus{border-color:#43ffa0;box-shadow:0 0 0 3px rgba(0,255,136,.1),0 0 22px rgba(0,255,136,.16)}
+  .lt-email-otp-code::placeholder{color:#52645a;letter-spacing:8px}
+  .lt-otp-hint{display:flex;align-items:center;gap:7px;margin-top:11px;color:#82958a;font-size:10px}.lt-otp-dot{width:6px;height:6px;border-radius:50%;background:#35ed91;box-shadow:0 0 8px #35ed91}
+  .lt-otp-resend{margin-top:13px;padding:0;border:0;background:none;color:#6dffa9;font-size:10px;font-weight:800;letter-spacing:.7px;cursor:pointer}.lt-otp-resend:disabled{opacity:.45;cursor:default}
+  .lt-otp-feedback{min-height:15px;margin-top:9px;font-size:11px;color:#ff9b9b;line-height:1.4}.lt-otp-feedback.ok{color:#75ffb0}
+  @media(max-width:420px){.lt-email-otp-card{padding:16px 13px}.lt-email-otp-code{height:54px;font-size:23px;letter-spacing:9px}}
+  `;
+  var st=document.createElement('style');st.id='lt-email-otp-style';st.textContent=css;document.head.appendChild(st);
+
+  function el(id){return document.getElementById(id)}
+  function feedback(msg,ok){var n=el('lt-otp-feedback');if(n){n.textContent=msg||'';n.classList.toggle('ok',!!ok)}}
+  function card(show){var c=el('lt-email-otp-card');if(c)c.style.display=show?'block':'none'}
+  function btn(text,disabled){var b=el('lt-reg-submit');if(b){b.textContent=text;b.disabled=!!disabled;b.style.opacity=disabled?'.65':''}}
+  function correo(){return (el('reg-email')&&el('reg-email').value||'').trim().toLowerCase()}
+  function cambiarEspera(seg){var b=el('lt-otp-resend');if(!b)return;clearInterval(otpEsperaTimer);var restante=Math.max(0,Number(seg)||0);b.disabled=restante>0;b.textContent=restante>0?'REENVIAR EN '+restante+' S':'REENVIAR CÓDIGO';if(restante>0)otpEsperaTimer=setInterval(function(){restante--;b.disabled=restante>0;b.textContent=restante>0?'REENVIAR EN '+restante+' S':'REENVIAR CÓDIGO';if(restante<=0)clearInterval(otpEsperaTimer)},1000)}
+  async function post(ruta,data){var r=await fetch(otpApi+ruta,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});var j={};try{j=await r.json()}catch(e){}if(!r.ok||!j.ok){var er=new Error(j.mensaje||'No se pudo completar la operación.');er.espera=j.espera||0;throw er}return j}
+  async function enviarCodigo(){
+    var email=correo();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){mostrarNotificacion('Introduce un correo electrónico válido.','error');return false}
+    if(otpEnviando)return false;
+    otpEnviando=true;btn('ENVIANDO CÓDIGO...',true);
+    try{
+      await post('/api/email/codigo',{correo:email});
+      otpEmailEnviado=email;otpVerificado=false;
+      if(el('lt-otp-email'))el('lt-otp-email').textContent=email;
+      card(true);feedback('Código enviado. Revisa tu bandeja de entrada y la carpeta de spam.',true);
+      btn('VERIFICAR CÓDIGO Y CREAR CUENTA',false);cambiarEspera(60);
+      setTimeout(function(){if(el('lt-email-otp-code'))el('lt-email-otp-code').focus()},150);
+      return true;
+    }catch(e){
+      feedback(e.message,false);btn('ENVIAR CÓDIGO DE VERIFICACIÓN',false);
+      if(e.espera)cambiarEspera(e.espera);
+      return false;
+    }finally{otpEnviando=false}
+  }
+  async function verificarCodigo(){
+    var codigo=(el('lt-email-otp-code')&&el('lt-email-otp-code').value||'').replace(/\D/g,'');
+    if(codigo.length!==6){feedback('Escribe los 6 dígitos del código.',false);return false}
+    if(otpVerificando)return false;
+    otpVerificando=true;btn('VERIFICANDO...',true);
+    try{
+      await post('/api/email/verificar',{correo:otpEmailEnviado,codigo:codigo});
+      otpVerificado=true;feedback('Correo verificado correctamente. Creando tu cuenta...',true);
+      return true;
+    }catch(e){feedback(e.message,false);btn('VERIFICAR CÓDIGO Y CREAR CUENTA',false);return false}
+    finally{otpVerificando=false}
+  }
+  window.ltOtpResetSiCambio=function(){
+    var email=correo();
+    if(otpEmailEnviado&&email!==otpEmailEnviado){otpEmailEnviado='';otpVerificado=false;card(false);if(el('lt-email-otp-code'))el('lt-email-otp-code').value='';btn('REGISTRARSE',false);clearInterval(otpEsperaTimer)}
+  };
+  window.ltOtpReenviar=function(){if(correo()!==otpEmailEnviado){window.ltOtpResetSiCambio();return}enviarCodigo()};
+  window.registrarUsuario=async function(){
+    var inputUser=el('reg-user'),inputEmail=el('reg-email'),inputPass=el('reg-pass');
+    var v1=validarCampoUser(inputUser),v2=validarCampoEmail(inputEmail),v3=validarCampoPass(inputPass),v4=validarCampoPassConfirm();
+    if(!v1||!v2||!v3||!v4){mostrarNotificacion('Revisa los campos marcados en rojo','error');return}
+    var email=correo();
+    if(otpVerificado&&email!==otpEmailEnviado){otpVerificado=false;otpEmailEnviado=''}
+    if(!otpEmailEnviado){await enviarCodigo();return}
+    if(!otpVerificado){if(await verificarCodigo()){}else return}
+    if(listaUsuariosGlobales.some(function(u){return String(u.correo||'').toLowerCase()===email})){mostrarNotificacion('Ya existe una cuenta con ese correo','error');return}
+    var user=inputUser.value.trim(),pass=inputPass.value,referidoPor=el('reg-referido').value.trim();
+    if(!referidoPor)referidoPor=localStorage.getItem('lester_ref_pendiente')||null;
+    mostrarCarga('Creando cuenta segura...');
+    try{
+      var esPrincipalCEO=false;
+      usuarioActual={nombre:user,correo:email,pass:pass,balanceUSDT:0.00,balanceCUP:0,balance:0.00,recargasCount:0,avatar:'',referidoPor:referidoPor||null,descuentosDisponibles:0,rango:esPrincipalCEO?2:0,nombreCompleto:'',telefono:'',correoVerificado:true};
+      listaUsuariosGlobales.push(usuarioActual);
+      localStorage.setItem('lester_lista_usuarios',JSON.stringify(listaUsuariosGlobales));
+      localStorage.setItem('lester_usuario',JSON.stringify(usuarioActual));
+      localStorage.removeItem('lester_ref_pendiente');
+      var guardado=await guardarEnCloud();
+      ocultarCarga();
+      if(!guardado){
+        listaUsuariosGlobales=listaUsuariosGlobales.filter(function(u){return String(u.correo||'').toLowerCase()!==email});
+        localStorage.setItem('lester_lista_usuarios',JSON.stringify(listaUsuariosGlobales));
+        localStorage.removeItem('lester_usuario');usuarioActual=null;
+        mostrarNotificacion('No se pudo guardar la cuenta. Intenta nuevamente.','error');return
+      }
+      otpVerificado=false;otpEmailEnviado='';clearInterval(otpEsperaTimer);
+      entrarALaApp();mostrarNotificacion('¡Bienvenido a Lester Tienda!','ok');
+      setTimeout(function(){try{if(!localStorage.getItem('lt_guia_'+email))window.iniciarGuiaLT(true)}catch(e){}},1600);
+    }catch(e){ocultarCarga();mostrarNotificacion('No se pudo completar el registro. Intenta de nuevo.','error')}
+  };
+  document.addEventListener('input',function(e){if(e.target&&e.target.id==='lt-email-otp-code'){e.target.value=e.target.value.replace(/\D/g,'').slice(0,6)}});
+  document.addEventListener('keydown',function(e){if(e.target&&e.target.id==='lt-email-otp-code'&&e.key==='Enter'){e.preventDefault();window.registrarUsuario()}});
+})();
+</script>
+
 </body>
 </html>
