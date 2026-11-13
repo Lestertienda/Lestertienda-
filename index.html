@@ -8921,7 +8921,7 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
    var u=window.usuarioActual||(typeof usuarioActual!=='undefined'?usuarioActual:null); if(!u) return;
    document.body.classList.toggle('lt-legacy',(u.balanceCUP||0)>0);
    var el=document.getElementById('stat-saldo-movil-perfil'); if(!el) return;
-   el.innerHTML='<i class="lt-coin"></i><span class="lt-t">'+(u.balanceUSDT||0).toFixed(2)+'</span>';
+   el.textContent=(u.balanceUSDT||0).toFixed(2);
    var card=el.parentElement, lab=card&&card.querySelector(':scope > span');
    if(lab) lab.textContent='ORO LT';
    document.querySelectorAll('[id^="stat-"][id$="-perfil"]').forEach(function(x){
@@ -9580,13 +9580,14 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
   ltLogros();
  };
  /* ---- Pantalla de logros ---- */
+ var LOCKS='<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>';
  var LOCK='<svg class="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>';
  window.ltLogros=function(){
   var u=usr();if(!u)return;var c=cuenta(),lg=u.logros||{},h='';
   NIV.forEach(function(L){
    var rec=!!lg['n'+L.n],listo=!rec&&c>=L.req,cur=!rec&&!listo&&c<L.req&&(L.n===1||(lg['n'+(L.n-1)]||c>=NIV[L.n-2].req)),
        estado=rec?'done':listo?'claim':cur?'cur':'lock';
-   var ico=estado==='lock'?LOCK:(L.n===1?MED:'<i class="lt-coin"></i>');
+   var base=(L.n===1?MED:'<i class="lt-coin"></i>'),ico=estado==='lock'?base+'<span class="lk">'+LOCKS+'</span>':base;
    var prem=L.lt?'+'+L.lt.toFixed(2)+' ORO LT':L.t;
    var st=rec?'RECLAMADO':listo?'LISTO PARA RECLAMAR':cur?'EN PROCESO':'BLOQUEADO';
    var det=estado==='cur'?'<div class="lt-bar"><i style="width:'+Math.min(100,Math.round(c/L.req*100))+'%"></i></div><small>'+Math.min(c,L.req)+' de '+L.req+' recargas</small>':'<small>'+L.req+' recargas</small>';
@@ -9601,8 +9602,10 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
  function perfilExtra(){
   try{
    var h4=$('stat-saldo-movil-perfil');if(h4){var card=h4.parentElement,u=usr();
-    var sv=card.querySelector('svg');if(sv){var i=document.createElement('i');i.className='lt-coin lt-float';card.replaceChild(i,sv);}
+    var sv=card.querySelector(':scope > svg');if(sv){var i=document.createElement('i');i.className='lt-coin lt-float';card.replaceChild(i,sv);}
+    card.querySelectorAll(':scope > i.lt-coin').forEach(function(x,k){if(k>0)x.remove();});
     if(u)h4.textContent=(parseFloat(u.balanceUSDT)||0).toFixed(2);h4.style.whiteSpace='nowrap';h4.style.fontSize='1rem';
+    var sp=card.querySelector(':scope > span');if(sp)sp.textContent='ORO LT';
    }
    var u2=usr(),b=document.querySelector('.pf-logros');
    if(b&&u2&&u2.logros&&u2.logros.n1&&!b.dataset.med){b.dataset.med=1;b.innerHTML=MED.replace('class="med"','class="lt-medal-mini"')+' Mis logros';}
@@ -9631,6 +9634,15 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
  background:linear-gradient(180deg,#3fe093,#14a85f 55%,#0d7e47);box-shadow:0 4px 0 #075a31,0 8px 14px rgba(18,163,90,.35),inset 0 1px 0 rgba(255,255,255,.4)}
 .lt-claim:active{transform:translateY(3px);box-shadow:0 1px 0 #075a31}
 .pf-logros.lt-dot{position:relative}.pf-logros.lt-dot::after{content:"";position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;background:#ef4444;box-shadow:0 0 0 2px var(--bg-card,#0b1128)}
+</style>
+
+<style id="lt-fix3">
+.pf-stat > i.lt-coin{width:28px !important;height:28px !important;margin:0 auto 4px !important;display:block !important}
+.pf-stat h4 .lt-coin{display:none !important}
+.lt-lv.lock{filter:grayscale(1);opacity:.8}
+.lt-lv .bd .lk{position:absolute;right:-7px;bottom:-7px;width:26px;height:26px;border-radius:50%;background:#2a2f45;border:2px solid var(--bg-main,#070b18);display:flex;align-items:center;justify-content:center}
+.lt-lv .bd .lk svg{width:14px;height:14px;fill:none;stroke:#c3cadf;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.lt-lv.lock .bd .lt-coin{filter:grayscale(1) brightness(.7)}
 </style>
 </body>
 </html>
