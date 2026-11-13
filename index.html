@@ -1700,17 +1700,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         .sm-estado-ico .sm-spin { width: 30px; height: 30px; border-width: 4px; }
         .sm-estado h4 { font-size: 1.02rem; font-weight: 900; color: var(--text-main); margin-bottom: .45rem; }
         .sm-estado p { font-size: .76rem; line-height: 1.6; color: var(--text-muted); max-width: 30em; margin: 0 auto; }
-    
-        /* ===== Registro con WhatsApp ===== */
-        .rg-modo { display: flex; gap: 6px; padding: 4px; margin-bottom: 14px; border-radius: 14px; background: rgba(255,255,255,.05); border: 1px solid rgba(120,170,255,.25); }
-        .rg-modo button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 8px; border: 0; border-radius: 10px; background: transparent; color: #9fb0d2; font-weight: 800; font-size: .82rem; letter-spacing: .3px; cursor: pointer; font-family: inherit; transition: all .18s; }
-        .rg-modo button.on { color: #fff; background: linear-gradient(180deg, #4d8dff, #2f6bff 55%, #1f4fd0); box-shadow: 0 3px 0 #153a9c, 0 6px 12px rgba(47,107,255,.3); }
-        .rg-modo #rg-modo-wa.on { background: linear-gradient(180deg, #34d27b, #16a860 55%, #0f8a4e); box-shadow: 0 3px 0 #0a5f35, 0 6px 12px rgba(22,168,96,.3); }
-        .rg-wa-wrap { display: flex; align-items: stretch; }
-        .rg-pref { display: grid; place-items: center; padding: 0 12px; font-weight: 900; font-size: .95rem; color: #fff; background: rgba(47,107,255,.25); border: 1px solid rgba(120,170,255,.35); border-right: 0; border-radius: 14px 0 0 14px; }
-        .rg-wa-wrap .form-control { border-radius: 0 14px 14px 0 !important; padding-left: 14px !important; letter-spacing: .5px; }
-        .rg-ayuda { display: block; margin-top: 6px; font-size: .7rem; line-height: 1.45; color: #8fa0c4; }
-</style>
+    </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -1847,22 +1837,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 <div id="err-reg-user" class="error-feedback-text">Mínimo 4 caracteres y sin espacios.</div>
             </div>
 
-            <div class="rg-modo" id="rg-modo" role="tablist">
-                <button type="button" id="rg-modo-wa" class="on" onclick="setModoReg('wa')"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.3.7a2.8 2.8 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>WhatsApp</button>
-                <button type="button" id="rg-modo-co" onclick="setModoReg('correo')"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Correo</button>
-            </div>
-
-            <div class="form-group" id="rg-wa-group">
-                <label>Número de WhatsApp</label>
-                <div class="input-icon-wrapper rg-wa-wrap">
-                    <span class="rg-pref">+53</span>
-                    <input type="tel" id="reg-wa" class="form-control" placeholder="5XXXXXXX" inputmode="numeric" maxlength="16" autocomplete="tel-national" oninput="validarCampoWa(this)">
-                </div>
-                <div id="err-reg-wa" class="error-feedback-text">Escribe tu número de WhatsApp (8 dígitos que empiezan con 5). Si es de otro país, con código.</div>
-                <small class="rg-ayuda">Te enviaremos un código por WhatsApp para verificar que el número es tuyo.</small>
-            </div>
-
-            <div class="form-group" id="rg-co-group" style="display:none">
+            <div class="form-group">
                 <label>Correo electrónico</label>
                 <div class="input-icon-wrapper">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -1901,10 +1876,10 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
 
         <div id="form-login" style="display: none;">
             <div class="form-group">
-                <label>Correo o número de WhatsApp</label>
+                <label>Correo electrónico</label>
                 <div class="input-icon-wrapper">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                    <input type="text" id="log-email" class="form-control" placeholder="correo@gmail.com o 5XXXXXXX" autocapitalize="none" autocomplete="username">
+                    <input type="email" id="log-email" class="form-control" placeholder="correo@gmail.com">
                 </div>
             </div>
             <div class="form-group">
@@ -4350,45 +4325,13 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             renderizarOrdenes();
         }
 
-        /* ===== Registro con número de WhatsApp (el identificador interno es NUMERO@whatsapp.lt) ===== */
-        let modoReg = 'wa';
-        function setModoReg(m) {
-            modoReg = m;
-            document.getElementById('rg-wa-group').style.display = m === 'wa' ? '' : 'none';
-            document.getElementById('rg-co-group').style.display = m === 'wa' ? 'none' : '';
-            document.getElementById('rg-modo-wa').classList.toggle('on', m === 'wa');
-            document.getElementById('rg-modo-co').classList.toggle('on', m !== 'wa');
-        }
-        function waNormal(v) {
-            const d = String(v || '').replace(/\D/g, '');
-            if (/^5\d{7}$/.test(d)) return '53' + d;
-            if (/^53[5]\d{7}$/.test(d)) return d;
-            if (/^\d{10,15}$/.test(d) && !d.startsWith('53')) return d;
-            return null;
-        }
-        function waCorreo(n) { return n + '@whatsapp.lt'; }
-        function esCorreoWa(c) { return /@whatsapp\.lt$/i.test(String(c || '')); }
-        function waBonito(c) {
-            const n = String(c || '').replace(/@whatsapp\.lt$/i, '');
-            if (/^53\d{8}$/.test(n)) return '+53 ' + n.slice(2, 6) + ' ' + n.slice(6);
-            return '+' + n;
-        }
-        function validarCampoWa(input) {
-            const ok = !!waNormal(input.value);
-            const err = document.getElementById('err-reg-wa');
-            input.classList.toggle('input-error', !ok && input.value.length > 0);
-            err.style.display = (!ok && input.value.length > 0) ? 'block' : 'none';
-            return ok;
-        }
-
         function registrarUsuario() {
             const inputUser = document.getElementById('reg-user');
             const inputEmail = document.getElementById('reg-email');
             const inputPass = document.getElementById('reg-pass');
 
             let v1 = validarCampoUser(inputUser);
-            const inputWa = document.getElementById('reg-wa');
-            let v2 = modoReg === 'wa' ? (validarCampoWa(inputWa) || (inputWa.classList.add('input-error'), document.getElementById('err-reg-wa').style.display = 'block', false)) : validarCampoEmail(inputEmail);
+            let v2 = validarCampoEmail(inputEmail);
             let v3 = validarCampoPass(inputPass);
             let v4 = validarCampoPassConfirm();
             if (!v1 || !v2 || !v3 || !v4) {
@@ -4397,13 +4340,13 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             }
 
             const user = inputUser.value.trim();
-            const email = modoReg === 'wa' ? waCorreo(waNormal(inputWa.value)) : inputEmail.value.trim().toLowerCase();
+            const email = inputEmail.value.trim().toLowerCase();
             const pass = inputPass.value;
             let referidoPor = document.getElementById('reg-referido').value.trim();
             if (!referidoPor) referidoPor = localStorage.getItem('lester_ref_pendiente') || null;
 
             if (listaUsuariosGlobales.some(u => u.correo.toLowerCase() === email)) {
-                mostrarNotificacion(modoReg === 'wa' ? "Ya existe una cuenta con ese número" : "Ya existe una cuenta con ese correo");
+                mostrarNotificacion("Ya existe una cuenta con ese correo");
                 return;
             }
 
@@ -4421,9 +4364,8 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                     referidoPor: referidoPor || null,
                     descuentosDisponibles: 0,
                     rango: esPrincipalCEO ? 2 : 0,
-                    nombreCompleto: "", telefono: esCorreoWa(email) ? String(email).replace(/@whatsapp\.lt$/i, "") : ""
+                    nombreCompleto: "", telefono: ""
                 };
-                if (esCorreoWa(email)) usuarioActual.whatsapp = true;
                 listaUsuariosGlobales.push(usuarioActual);
                 localStorage.setItem('lester_lista_usuarios', JSON.stringify(listaUsuariosGlobales));
                 localStorage.setItem('lester_usuario', JSON.stringify(usuarioActual));
@@ -4437,10 +4379,9 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
         }
 
         async function iniciarSesion() {
-            let email = document.getElementById('log-email').value.trim();
-            if (email && !email.includes('@')) { const n = waNormal(email); if (n) email = waCorreo(n); }
+            const email = document.getElementById('log-email').value.trim();
             const pass = document.getElementById('log-pass').value.trim();
-            if (!email || !pass) { mostrarNotificacion("Ingresa tu correo o WhatsApp y la contraseña"); return; }
+            if (!email || !pass) { mostrarNotificacion("Ingresa correo y contraseña"); return; }
 
             let encontrado = listaUsuariosGlobales.find(u => u.correo.toLowerCase() === email.toLowerCase() && u.pass && u.pass === pass);
             if (!encontrado && WORKER_URL) {
@@ -4459,7 +4400,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 } catch (e) {}
                 ocultarCarga();
             }
-            if (!encontrado) { mostrarNotificacion("Datos o contraseña incorrectos."); return; }
+            if (!encontrado) { mostrarNotificacion("Correo o contraseña incorrectos."); return; }
 
             mostrarCarga("Iniciando sesión...");
             setTimeout(() => {
@@ -5859,7 +5800,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             document.getElementById('perfil-input-telefono').value = usuarioActual.telefono || '';
             document.getElementById('perfil-input-email').value = usuarioActual.correo || '';
             document.getElementById('dp-nombre-grande').innerText = usuarioActual.nombreCompleto || usuarioActual.nombre;
-            document.getElementById('dp-correo-grande').innerText = esCorreoWa(usuarioActual.correo) ? waBonito(usuarioActual.correo) : (usuarioActual.correo || '');
+            document.getElementById('dp-correo-grande').innerText = usuarioActual.correo || '';
             document.getElementById('dp-avatar').innerHTML = usuarioActual.avatar
                 ? '<img src="' + usuarioActual.avatar + '" alt="">'
                 : esc((usuarioActual.nombre || '?').charAt(0).toUpperCase());
@@ -6179,7 +6120,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
             ajustarEncabezadoPro();
             document.getElementById('stat-saldo-movil-perfil').innerText = saldoMovilTexto;
             document.getElementById('perfil-usuario').innerText = usuarioActual.nombre;
-            document.getElementById('perfil-correo').innerText = esCorreoWa(usuarioActual.correo) ? waBonito(usuarioActual.correo) : usuarioActual.correo;
+            document.getElementById('perfil-correo').innerText = usuarioActual.correo;
 
             let rangoTexto = "CLIENTE PRO";
             if (usuarioActual.rango === 1) rangoTexto = "ADMINISTRADOR (RANGO 1)";
@@ -6331,7 +6272,7 @@ body.lt-scroll .lt-vis::after, body.lt-scroll .dc-shine::before, body.lt-scroll 
                 contenedorCEO.innerHTML = `
                     <div class="ceo-box">
                         <h3 style="color: #ff3b30; margin-bottom: 0.3rem; font-weight: 900; font-size:0.92rem;">PANEL DE CONTROL ${esCEO ? 'CEO SUPREMO' : 'ADMIN (RANGO 1)'}</h3>
-                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.8rem;">${esc(esCorreoWa(usuarioActual.correo) ? waBonito(usuarioActual.correo) : usuarioActual.correo)}</p>
+                        <p style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.8rem;">${esc(usuarioActual.correo)}</p>
                         ${destacados}
                         <div class="ceo-grid">${htmlBotones}</div>
                     </div>`;
@@ -9592,8 +9533,8 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
 <div id="em-modal" role="dialog" aria-modal="true" aria-labelledby="em-tit"><div class="em-box"><div class="em-in">
 <div class="em-ico" id="em-ico"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg></div>
 <h3 id="em-tit">Verifica tu correo</h3>
-<div class="em-tags"><span class="wc2-tag" id="em-tag1">SEGURO</span><span class="wc2-tag wc2-tag-azul">CÓDIGO DE 6 DÍGITOS</span></div>
-<p><span id="em-sub">Enviamos un código a</span><br><span class="em-mail"><b id="em-to"></b></span></p>
+<div class="em-tags"><span class="wc2-tag">SEGURO</span><span class="wc2-tag wc2-tag-azul">CÓDIGO DE 6 DÍGITOS</span></div>
+<p>Enviamos un código a<br><span class="em-mail"><b id="em-to"></b></span></p>
 <div class="em-digs" id="em-digs">
 <input class="em-d" inputmode="numeric" autocomplete="one-time-code" maxlength="6" aria-label="Dígito 1">
 <input class="em-d" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
@@ -9605,14 +9546,12 @@ body.lt-legacy .header-wallet-pill.hw-saldo{display:none !important}
 <div id="em-msg"></div>
 <div class="em-vence">El código vence en <b id="em-vence">10:00</b></div>
 <button class="em-btn" id="em-ok" onclick="emailVerificar()" disabled>VERIFICAR</button>
-<div class="em-acc"><button class="em-link" id="em-re" onclick="emailReenviar()">Reenviar código</button><button class="em-link" id="em-cambiar" onclick="emailCerrar()">Cambiar correo</button></div>
-<div class="em-tip" id="em-tip">¿No lo ves? Revisa <b>Spam</b> o <b>Promociones</b> en tu Gmail. Puede tardar un minuto.</div>
+<div class="em-acc"><button class="em-link" id="em-re" onclick="emailReenviar()">Reenviar código</button><button class="em-link" onclick="emailCerrar()">Cambiar correo</button></div>
+<div class="em-tip">¿No lo ves? Revisa <b>Spam</b> o <b>Promociones</b> en tu Gmail. Puede tardar un minuto.</div>
 </div></div></div>
 <script>
 (function(){
 var D=null,T=null,TV=null,esp=0,fin=0,enviando=false;
-var ICO_MAIL='<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>';
-var ICO_WA='<svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.3.7a2.8 2.8 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>';
 function $(i){return document.getElementById(i);}
 function dig(){return Array.prototype.slice.call(document.querySelectorAll('#em-digs .em-d'));}
 function valor(){return dig().map(function(i){return i.value;}).join('');}
@@ -9675,13 +9614,7 @@ window.emailPedirCodigo=async function(user,email,pass,ref){
   var r;try{r=await api('/api/email/codigo',{correo:email});}catch(e){r={ok:false,j:{mensaje:'Sin conexión. Intenta de nuevo.'}};}
   ocultarCarga();
   if(!r.ok){mostrarNotificacion(r.j.mensaje||'No se pudo enviar el código','error');return;}
-  var wa=/@whatsapp\.lt$/i.test(email);
-  $('em-to').textContent=wa?waBonito(email):ocultarCorreo(email);$('em-ico').className='em-ico';
-  $('em-tit').textContent=wa?'Verifica tu WhatsApp':'Verifica tu correo';
-  $('em-sub').textContent=wa?'Enviamos un código por WhatsApp a':'Enviamos un código a';
-  $('em-cambiar').textContent=wa?'Cambiar número':'Cambiar correo';
-  $('em-tip').innerHTML=wa?'¿No te llegó? Abre <b>WhatsApp</b> y busca el mensaje de <b>Lester Tienda</b>. Puede tardar unos segundos.':'¿No lo ves? Revisa <b>Spam</b> o <b>Promociones</b> en tu Gmail. Puede tardar un minuto.';
-  $('em-ico').innerHTML=wa?ICO_WA:ICO_MAIL;
+  $('em-to').textContent=ocultarCorreo(email);$('em-ico').className='em-ico';$('em-tit').textContent='Verifica tu correo';
   msg('');limpiar();
   $('em-modal').classList.add('on');cuenta(r.j.espera||60);vigencia(600);
   setTimeout(function(){dig()[0].focus();},120);
@@ -9706,9 +9639,10 @@ window.emailVerificar=async function(){
   }
   $('em-digs').className='em-digs bien';$('em-ico').className='em-ico ok';
   $('em-ico').innerHTML='<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
-  $('em-tit').textContent=/@whatsapp\.lt$/i.test(D.email)?'WhatsApp verificado':'Correo verificado';msg('Creando tu cuenta...',true);
+  $('em-tit').textContent='Correo verificado';msg('Creando tu cuenta...',true);
   var d0=D;D=null;clearInterval(T);clearInterval(TV);
   setTimeout(function(){$('em-modal').classList.remove('on');
+    $('em-ico').innerHTML='<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/></svg>';
     crearCuentaVerificada(d0.user,d0.email,d0.pass,d0.ref);},700);
 };
 window.emailCerrar=function(){D=null;clearInterval(T);clearInterval(TV);$('em-modal').classList.remove('on');};
