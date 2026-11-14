@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://lestertienda.github.io/sitemap.xml
