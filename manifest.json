@@ -1,16 +1,25 @@
 {
-"name": "Lester Tienda",
-"short_name": "LesterTienda",
-"start_url": "./index.html",
-"display": "standalone",
-"background_color": "#07090e",
-"theme_color": "#07090e",
-"icons": [
-{
-"src": "icon-192.png",
-"sizes": "192x192",
-"type": "image/png",
-"purpose": "any maskable"
-}
-]
+  "name": "Lester Tienda",
+  "short_name": "LesterTienda",
+  "description": "Recargas de videojuegos 24/7",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07090e",
+  "theme_color": "#07090e",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
 }
