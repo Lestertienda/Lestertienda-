@@ -1,25 +1,30 @@
 {
   "name": "Lester Tienda",
-  "short_name": "Lester",
-  "description": "Lester Tienda - Recargas, juegos y Gift Cards",
+  "short_name": "LesterTienda",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#07090e",
-  "theme_color": "#07090e",
+  "theme_color": "#07111f",
+  "description": "Lester Tienda - Juegos, recargas, regalos y servicios digitales.",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "assets/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-512.png",
+      "src": "assets/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
