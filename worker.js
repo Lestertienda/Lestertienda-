@@ -467,21 +467,23 @@ const g2CacheId = new Map();
 async function g2Tablas(env) {
   if (g2TablasListas) return;
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS g2_ordenes (recarga_id TEXT PRIMARY KEY, g2_order_id INTEGER, juego TEXT, estado TEXT, creado INTEGER)').run();
+  await env.DB.prepare('CREATE TABLE IF NOT EXISTS g2_cola (recarga_id TEXT PRIMARY KEY, intentos INTEGER, proximo INTEGER, estado TEXT, motivo TEXT, actualizado INTEGER)').run();
   g2TablasListas = true;
 }
 
 async function g2(env, ruta, opciones = {}) {
   if (!env.G2BULK_API_KEY) throw new Error('Falta el secret G2BULK_API_KEY');
   const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), 9000);
+  const t = setTimeout(() => ctl.abort(), opciones.timeout || 9000);
   try {
     const r = await fetch(G2_BASE + ruta, {
       method: opciones.method || 'GET', signal: ctl.signal,
       headers: { 'X-API-Key': env.G2BULK_API_KEY, 'Content-Type': 'application/json', ...(opciones.headers || {}) },
       body: opciones.body ? JSON.stringify(opciones.body) : undefined,
     });
-    let data = null; try { data = await r.json(); } catch (e) { /* sin cuerpo */ }
-    return { status: r.status, data: data || {} };
+    let texto = '', data = null;
+    try { texto = await r.text(); data = JSON.parse(texto); } catch (e) { /* sin cuerpo o no es JSON */ }
+    return { status: r.status, data: (data && typeof data === 'object') ? data : {}, texto: String(texto || '').replace(/\s+/g, ' ').slice(0, 300) };
   } finally { clearTimeout(t); }
 }
 
@@ -522,10 +524,16 @@ function emparejar(env, clave, pkg, catalogo) {
   } catch (e) { /* G2_MAPA mal escrito: se ignora */ }
   if (pkg.patron) { // membresías / pase: se buscan por nombre
     let re; try { re = new RegExp(pkg.patron, 'i'); } catch (e) { return null; }
-    const l = catalogo.filter((c) => re.test(c.name));
+    let l = catalogo.filter((c) => re.test(c.name));
+    if (!/lite/i.test(String(pkg.patron))) l = l.filter((c) => !/lite/i.test(c.name)); // nunca entregar la versión Lite por la completa
     return l.length ? l.sort((a, b) => a.amount - b.amount)[0] : null;
   }
-  const iguales = catalogo.filter((c) => claveNum(c.name) === Number(pkg.diamantesNum));
+  let iguales = catalogo.filter((c) => claveNum(c.name) === Number(pkg.diamantesNum));
+  if (!iguales.length && pkg.textoDetalle && /\d/.test(String(pkg.textoDetalle))) { // el catálogo usa la forma "310+31"
+    const forma = (t) => (String(t || '').replace(/(\d)[.,](\d{3})/g, '$1$2').match(/\d+/g) || []).join('+');
+    const f = forma(pkg.textoDetalle);
+    iguales = catalogo.filter((c) => forma(c.name) === f);
+  }
   if (!iguales.length) return null;
   return iguales.sort((a, b) => a.amount - b.amount)[0];
 }
@@ -619,62 +627,237 @@ async function g2Finalizar(env, recargaId, ok) {
   await marcarCambio(env);
 }
 
+// Estados del proveedor (se aceptan varias formas de escribirlos)
+const G2_OK = /^(COMPLETED|COMPLETE|SUCCESS|SUCCEEDED|SUCCESSFUL|DELIVERED|DONE)$/i;
+const G2_MAL = /^(FAILED|FAIL|CANCELLED|CANCELED|REJECTED|REFUNDED|ERROR)$/i;
+function g2LeerOrden(d) {
+  const o = (d && (d.order || d.data)) && typeof (d.order || d.data) === 'object' ? (d.order || d.data) : (d || {});
+  const id = o.order_id !== undefined ? o.order_id : (o.id !== undefined ? o.id : (d && d.order_id !== undefined ? d.order_id : null));
+  const status = String(o.status || (d && d.status) || 'PENDING').toUpperCase();
+  return { id: id === null || id === '' ? null : Number(id), status };
+}
+function g2Mensaje(r) {
+  let msg = String((r.data && (r.data.message || r.data.detail || r.data.error || r.data.msg)) || '');
+  if (typeof (r.data && r.data.detail) === 'object') { try { msg = JSON.stringify(r.data.detail); } catch (e) {} }
+  if (!msg && r.texto) msg = r.texto;
+  return msg.slice(0, 160);
+}
+
+// G2Bulk exige que X-Idempotency-Key sea un UUID de EXACTAMENTE 36 caracteres (si no, responde 400).
+// Se genera siempre el mismo UUID para la misma recarga: así un reintento nunca cobra dos veces.
+async function g2Uuid(texto) {
+  const buf = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode('lester-tienda|' + String(texto))));
+  const h = Array.from(buf.slice(0, 16)).map((b) => b.toString(16).padStart(2, '0'));
+  h[6] = '4' + h[6][1];                                   // versión 4
+  h[8] = ((parseInt(h[8], 16) & 0x3f) | 0x80).toString(16).padStart(2, '0'); // variante RFC 4122
+  const s = h.join('');
+  return s.slice(0, 8) + '-' + s.slice(8, 12) + '-' + s.slice(12, 16) + '-' + s.slice(16, 20) + '-' + s.slice(20, 32);
+}
+// Mensajes que SÍ significan "el jugador / la cuenta no es válido" (nunca "idempotency")
+const G2_RE_JUGADOR = /player|jugador|user[\s_-]?id|invalid\s+(user|account|uid|id\b)|account|cuenta|not found|no existe/i;
+const G2_RE_SALDO = /balance|saldo|insufficient|fondos/i;
+function g2EsJugadorInvalido(msg) { return !/idempot/i.test(msg) && G2_RE_JUGADOR.test(msg) && !G2_RE_SALDO.test(msg); }
+
 // ---------- Enviar la recarga al proveedor ----------
-async function g2Pedir(env, origen, cuerpo) {
+async function g2PedirUnico(env, origen, cuerpo, forzar) {
   await g2Tablas(env);
   const recargaId = String(cuerpo.id || '');
   const correo = String(cuerpo.correo || '').toLowerCase().trim();
-  const sol = await leerKv(env, 'solicitudes');
+  const [sol, cfg] = await Promise.all([leerKv(env, 'solicitudes'), leerKv(env, 'config')]);
   const rec = sol && Array.isArray(sol.recargas) ? sol.recargas.find((r) => String(r.id) === recargaId) : null;
   if (!rec || String(rec.correo || '').toLowerCase().trim() !== correo) return { resultado: 'no_encontrada' };
   if (rec.estado !== 'Pendiente') return { resultado: 'no_pendiente' };
   const clave = NOMBRE_A_CLAVE[rec.juego];
-  if (!clave) return { resultado: 'manual', mensaje: 'Juego sin proveedor' };
+  if (!clave) return { resultado: 'manual', mensaje: 'Juego sin proveedor', def: true };
 
+  // Rápido: si el juego tiene un solo código en G2Bulk no hace falta validar antes (G2Bulk valida el jugador al crear la orden)
   let code;
-  if (clave === 'roblox') code = await g2Codigo(env, clave);
+  const candidatos = await g2Candidatos(env, clave);
+  if (clave === 'roblox' || candidatos.length === 1) code = candidatos[0];
   else {
     const b = await g2BuscarJugador(env, clave, String(rec.idJugador), '');
-    if (b.estado === 'invalido') return { resultado: 'manual', mensaje: 'ID de jugador no válido' };
-    code = b.code || await g2Codigo(env, clave);
+    if (b.estado === 'invalido') return { resultado: 'manual', mensaje: 'ID de jugador no válido en G2Bulk', def: true };
+    code = b.code || candidatos[0];
   }
-  if (!code) return { resultado: 'manual', mensaje: 'Juego no disponible en G2Bulk' };
-  const pkg = paquetesPedido(await leerKv(env, 'config'), clave).find((p) => String(p.id) === String(rec.paqueteId));
-  if (!pkg) return { resultado: 'manual', mensaje: 'Paquete no encontrado' };
-  const entrada = emparejar(env, clave, pkg, await g2Catalogo(env, code, true));
-  if (!entrada) return { resultado: 'manual', mensaje: 'Sin equivalente en G2Bulk' };
+  if (!code) return { resultado: 'manual', mensaje: 'No se pudo obtener el juego en G2Bulk (se reintenta)' };
+  const pkg = paquetesPedido(cfg, clave).find((p) => String(p.id) === String(rec.paqueteId));
+  if (!pkg) return { resultado: 'manual', mensaje: 'Paquete no encontrado en el catálogo', def: true };
+  // Catálogo en caché (rápido); si no aparece el paquete se vuelve a pedir fresco una vez
+  let entrada = emparejar(env, clave, pkg, await g2Catalogo(env, code, false));
+  if (!entrada) entrada = emparejar(env, clave, pkg, await g2Catalogo(env, code, true));
+  if (!entrada) return { resultado: 'manual', mensaje: 'Sin equivalente en el catálogo de G2Bulk para "' + pkg.nombre + '"', def: true };
 
   // Protección: nunca se compra si el costo supera lo que pagó el cliente
   const venta = rec.moneda === 'usdt' ? Number(rec.precio) : Number(pkg.precioUsdt);
-  if (!(venta >= entrada.amount)) return { resultado: 'manual', mensaje: 'Costo mayor al precio de venta' };
+  if (!(venta >= entrada.amount)) return { resultado: 'manual', mensaje: 'Costo G2 (' + entrada.amount + ') mayor al precio pagado (' + venta + ') por "' + pkg.nombre + '"', def: true };
 
+  if (forzar) await env.DB.prepare('DELETE FROM g2_ordenes WHERE recarga_id = ? AND g2_order_id IS NULL').bind(recargaId).run();
   const reclamo = await env.DB.prepare("INSERT OR IGNORE INTO g2_ordenes (recarga_id, juego, estado, creado) VALUES (?, ?, 'creando', ?)")
     .bind(recargaId, clave + '|' + code, Date.now()).run();
   if (!reclamo.meta || reclamo.meta.changes !== 1) return { resultado: 'ya_enviada' };
+  const liberar = () => env.DB.prepare('DELETE FROM g2_ordenes WHERE recarga_id = ? AND g2_order_id IS NULL').bind(recargaId).run();
 
-  let r;
-  try {
-    r = await g2(env, '/v1/games/' + encodeURIComponent(code) + '/order', {
-      method: 'POST', headers: { 'X-Idempotency-Key': 'lt-' + recargaId },
-      body: { catalogue_name: entrada.name, player_id: String(rec.idJugador), remark: 'lt-' + recargaId, callback_url: origen + '/api/g2/webhook' },
-    });
-  } catch (e) { r = { status: 0, data: { message: 'sin respuesta de G2Bulk' } }; }
+  // (Ya no se consulta el saldo antes: G2Bulk lo comprueba al crear la orden y responde 400 con "balance", que abajo se reintenta solo)
 
-  if (r.status === 200 && r.data.success && r.data.order) {
-    const o = r.data.order;
-    await env.DB.prepare('UPDATE g2_ordenes SET g2_order_id = ?, estado = ? WHERE recarga_id = ?').bind(o.order_id, o.status, recargaId).run();
+  // La petición se prueba en varias formas: si G2Bulk rechaza una por formato, se prueba la siguiente (nunca crea dos órdenes)
+  const jug = String(rec.idJugador);
+  const ruta = '/v1/games/' + encodeURIComponent(code) + '/order';
+  const cb = origen + '/api/g2/webhook';
+  const llaveIdem = await g2Uuid(recargaId);
+  const variantes = [
+    { h: { 'X-Idempotency-Key': llaveIdem }, b: { catalogue_name: entrada.name, player_id: jug, remark: 'lt-' + recargaId, callback_url: cb } },
+    { h: {}, b: { catalogue_name: entrada.name, player_id: jug, remark: 'lt-' + recargaId, callback_url: cb } },
+    { h: {}, b: { catalogue_name: entrada.name, player_id: jug, remark: 'lt-' + recargaId } },
+    { h: {}, b: { catalogue_name: entrada.name, player_id: jug } },
+    { h: {}, b: { catalogue_name: entrada.name, player_id: /^\d+$/.test(jug) ? Number(jug) : jug } },
+  ];
+  let r = { status: 0, data: {}, texto: '' };
+  const bitacora = [];
+  for (let v = 0; v < variantes.length; v++) {
+    try { r = await g2(env, ruta, { method: 'POST', headers: variantes[v].h, body: variantes[v].b, timeout: 20000 }); }
+    catch (e) { r = { status: 0, data: { message: 'sin respuesta de G2Bulk' }, texto: '' }; }
+    bitacora.push('v' + (v + 1) + ':' + r.status + (r.texto ? ' ' + r.texto.slice(0, 70) : ''));
+    if (r.status >= 200 && r.status < 300) break;
+    if (r.status === 0 || r.status === 401 || r.status === 403 || r.status === 429 || r.status >= 500) break; // no es un problema de formato
+    const mv = g2Mensaje(r);
+    if (/idempot/i.test(mv)) continue; // problema de formato de la clave: se prueba la siguiente forma
+    if (G2_RE_JUGADOR.test(mv) || G2_RE_SALDO.test(mv)) break;
+  }
+
+  // Cualquier respuesta 2xx del proveedor = orden aceptada: NUNCA se vuelve a enviar
+  if (r.status >= 200 && r.status < 300 && r.data.success !== false) {
+    const o = g2LeerOrden(r.data);
+    await env.DB.prepare('UPDATE g2_ordenes SET g2_order_id = ?, estado = ? WHERE recarga_id = ?').bind(o.id === null || isNaN(o.id) ? 0 : o.id, o.status, recargaId).run();
     await editarKv(env, 'solicitudes', (s) => {
       const x = s && Array.isArray(s.recargas) ? s.recargas.find((q) => String(q.id) === recargaId) : null;
-      if (!x) return null; x.g2Id = o.order_id; return s;
+      if (!x) return null; x.g2Id = o.id; return s;
     });
-    if (o.status === 'COMPLETED') await g2Finalizar(env, recargaId, true);
-    else if (o.status === 'FAILED') await g2Finalizar(env, recargaId, false);
+    if (G2_OK.test(o.status)) await g2Finalizar(env, recargaId, true);
+    else if (G2_MAL.test(o.status)) await g2Finalizar(env, recargaId, false);
     await marcarCambio(env);
     return { resultado: 'enviada', estado: o.status };
   }
-  // No se pudo (saldo insuficiente, ID inválido...): se libera el reclamo y queda manual
-  await env.DB.prepare('DELETE FROM g2_ordenes WHERE recarga_id = ? AND g2_order_id IS NULL').bind(recargaId).run();
-  return { resultado: 'manual', mensaje: String(r.data.message || 'rechazada por G2Bulk') };
+  // No se pudo. Sin respuesta (puede que G2 sí la recibiera) se deja bloqueada para revisar; el resto se libera
+  if (r.status === 0) return { resultado: 'manual', mensaje: 'G2Bulk no respondió a tiempo: revisa en G2Bulk si se creó antes de reenviar', def: true, revisar: true };
+  await liberar();
+  const msg = g2Mensaje(r);
+  const detalle = 'G2Bulk (' + r.status + '): ' + (msg || 'rechazada') + ' [' + bitacora.join(' | ') + ']';
+  const saldoProv = G2_RE_SALDO.test(msg);
+  const definitivo = g2EsJugadorInvalido(msg);
+  if (!definitivo) return { resultado: 'manual', mensaje: detalle + ' (se reintenta)', saldo: saldoProv };
+  return { resultado: 'manual', mensaje: detalle, def: true };
+}
+
+// ---------- Envío garantizado: reintentos desde el servidor (no depende del teléfono) ----------
+const G2_ORIGEN_DEFECTO = 'https://tienda.lester-tiendadiamantes.workers.dev';
+const G2_MAX_INTENTOS = 20; // 1 intento por minuto; si el proveedor no tiene saldo se espera más
+const G2_MAX_INTENTOS_SALDO = 45;
+async function g2Origen(env) { return (await leerKv(env, 'g2_origen')) || env.G2_ORIGEN || G2_ORIGEN_DEFECTO; }
+
+async function g2Anotar(env, recargaId, estado, motivo, intentos) {
+  await editarKv(env, 'solicitudes', (s) => {
+    const x = s && Array.isArray(s.recargas) ? s.recargas.find((q) => String(q.id) === String(recargaId)) : null;
+    if (!x) return null;
+    x.g2Estado = estado; x.g2Motivo = String(motivo || '').slice(0, 420); x.g2Intentos = intentos || 0; x.g2T = Date.now();
+    return s;
+  });
+  await marcarCambio(env);
+}
+
+async function g2PedirConReintento(env, origen, cuerpo, forzar) {
+  await g2Tablas(env);
+  const id = String(cuerpo.id || '');
+  const fila = await env.DB.prepare('SELECT * FROM g2_cola WHERE recarga_id = ?').bind(id).first();
+  let intentos = (fila ? fila.intentos : 0) + 1;
+  let r;
+  try { r = await g2PedirUnico(env, origen, cuerpo, forzar); }
+  catch (e) { r = { resultado: 'manual', mensaje: 'Error al contactar G2Bulk: ' + (e && e.message ? e.message : e) }; }
+  const ahora = Date.now();
+  let estado, motivo = r.mensaje || '', proximo = 0, sinSaldo = false;
+  if (r.resultado === 'enviada') { estado = 'enviada'; motivo = 'Enviada a G2Bulk (' + (r.estado || '') + ')'; }
+  else if (r.resultado === 'ya_enviada' || r.resultado === 'no_pendiente') { estado = 'enviada'; }
+  else if (r.resultado === 'no_encontrada') { estado = 'reintentar'; proximo = ahora + 30000; motivo = 'Aún no está guardada la orden'; }
+  else if (r.def && r.revisar) { estado = 'revisar'; }
+  else if (r.saldo) { estado = 'cancelada'; sinSaldo = true; motivo = 'Cancelada y reembolsada: oferta agotada por falta de saldo del proveedor (' + motivo + ')'; }
+  else if (r.def) { estado = 'cancelada'; motivo = 'Cancelada y reembolsada: ' + motivo; }
+  else if (intentos >= (r.saldo ? G2_MAX_INTENTOS_SALDO : G2_MAX_INTENTOS)) { estado = 'cancelada'; motivo = 'Cancelada y reembolsada (no se pudo entregar): ' + motivo; }
+  else { estado = 'reintentar'; proximo = ahora + 60000; }
+  await env.DB.prepare('INSERT INTO g2_cola (recarga_id, intentos, proximo, estado, motivo, actualizado) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(recarga_id) DO UPDATE SET intentos = excluded.intentos, proximo = excluded.proximo, estado = excluded.estado, motivo = excluded.motivo, actualizado = excluded.actualizado')
+    .bind(id, intentos, proximo, estado, motivo, ahora).run();
+  if (estado === 'cancelada') { try { await g2Finalizar(env, id, false); } catch (e) { /* se reintenta en la cola */ } }
+  if (sinSaldo) { try { await g2MarcarSinSaldo(env, id, motivo); } catch (e) { /* no crítico */ } }
+  if (r.resultado !== 'no_pendiente' && r.resultado !== 'no_encontrada') { try { await g2Anotar(env, id, estado, motivo, intentos); } catch (e) { /* no crítico */ } }
+  return { resultado: r.resultado, estado, mensaje: motivo };
+}
+
+// Cada minuto: toda recarga Pendiente de un juego con proveedor que aún no salió a G2Bulk se envía (o se reintenta)
+async function g2Cola(env) {
+  await g2Tablas(env);
+  const sol = await leerKv(env, 'solicitudes');
+  if (!sol || !Array.isArray(sol.recargas)) return;
+  const ahora = Date.now(), origen = await g2Origen(env);
+  let hechos = 0;
+  for (const rec of sol.recargas) {
+    if (hechos >= 5) break;
+    if (rec.estado !== 'Pendiente' || !NOMBRE_A_CLAVE[rec.juego]) continue;
+    const id = String(rec.id), edad = ahora - Number(rec.id);
+    if (!(edad > 25 * 1000) || edad > 3 * 24 * 3600 * 1000) continue;
+    const claim = await env.DB.prepare('SELECT g2_order_id, creado FROM g2_ordenes WHERE recarga_id = ?').bind(id).first();
+    if (claim) {
+      if (!claim.g2_order_id && ahora - claim.creado > 3 * 60 * 1000 && rec.g2Estado !== 'revisar') await g2Anotar(env, id, 'revisar', 'Envío interrumpido: revisa en G2Bulk si se creó antes de reenviar', rec.g2Intentos || 1);
+      continue;
+    }
+    const f = await env.DB.prepare('SELECT estado, proximo FROM g2_cola WHERE recarga_id = ?').bind(id).first();
+    if (f && !(f.estado === 'reintentar' && f.proximo <= ahora)) continue;
+    hechos++;
+    try { await g2PedirConReintento(env, origen, { id, correo: rec.correo }, false); } catch (e) { /* se reintenta al minuto */ }
+  }
+}
+
+
+// ---------- Sin saldo en el proveedor: ofertas AGOTADAS + aviso a Lester; se reactivan solas al reponer saldo ----------
+const G2_SALDO_MIN = 1; // saldo mínimo (USD) en G2Bulk para reactivar las ofertas (variable G2_SALDO_MIN para cambiarlo)
+async function g2CambiarAgotado(env, agotar) {
+  const ok = await editarKv(env, 'config', (cfg) => {
+    cfg = cfg && typeof cfg === 'object' ? cfg : {};
+    let cambio = false;
+    const toca = (p) => {
+      if (agotar) { if (!p.agotado) { p.agotado = true; p.agotadoAuto = true; cambio = true; } }
+      else if (p.agotadoAuto) { p.agotado = false; delete p.agotadoAuto; cambio = true; }
+    };
+    for (const clave of Object.keys(CAMPO_JUEGO)) {
+      const campo = CAMPO_JUEGO[clave];
+      const arr = paquetesDe(cfg, clave);
+      arr.forEach(toca);
+      cfg[campo] = arr;
+    }
+    if (agotar && !(Array.isArray(cfg.paquetesExtras) && cfg.paquetesExtras.length)) cfg.paquetesExtras = JSON.parse(JSON.stringify(PAQ_EXTRAS)); // membresías y pase
+    if (Array.isArray(cfg.paquetesExtras)) cfg.paquetesExtras.forEach(toca);
+    // Aviso para Lester dentro de la tienda (la app lo muestra con sonido y un cartel rojo mientras dure)
+    if (agotar) { cfg.g2Alerta = { t: Date.now(), activa: true, texto: 'Sin saldo en G2Bulk: ofertas agotadas. Repón saldo.' }; cambio = true; }
+    else if (cfg.g2Alerta && cfg.g2Alerta.activa) { cfg.g2Alerta = { t: Date.now(), activa: false, texto: 'Saldo repuesto: ofertas disponibles otra vez.' }; cambio = true; }
+    return cambio ? cfg : null;
+  });
+  if (ok) await marcarCambio(env);
+  return ok;
+}
+async function g2MarcarSinSaldo(env, recargaId, motivo) {
+  const ya = await leerKv(env, 'g2_sin_saldo');
+  if (ya) return; // ya se avisó y ya están agotadas
+  await guardarKv(env, 'g2_sin_saldo', { t: Date.now(), recarga: String(recargaId) });
+  await g2CambiarAgotado(env, true);
+  await tgTexto(env, '🚨 SIN SALDO EN G2BULK\nSe canceló y reembolsó la recarga ' + recargaId + ' (el cliente recibió su dinero de vuelta).\nTodas las ofertas de juegos quedaron como AGOTADO: "Lester se conecta pronto".\nRepón saldo en G2Bulk: se reactivan solas en cuanto haya saldo.');
+}
+async function g2RevisarSaldo(env) {
+  const flag = await leerKv(env, 'g2_sin_saldo');
+  if (!flag) return;
+  const me = await g2(env, '/v1/getMe');
+  const saldo = Number(me.data && me.data.balance);
+  const minimo = env.G2_SALDO_MIN !== undefined && env.G2_SALDO_MIN !== '' ? Number(env.G2_SALDO_MIN) : G2_SALDO_MIN;
+  if (me.status !== 200 || !(saldo >= minimo)) return;
+  await g2CambiarAgotado(env, false);
+  await env.DB.prepare('DELETE FROM kv WHERE k = ?').bind('g2_sin_saldo').run();
+  await tgTexto(env, '✅ Saldo de G2Bulk repuesto (' + saldo + '). Las ofertas de los juegos volvieron a estar disponibles.');
 }
 
 // ---------- Firma del webhook ----------
@@ -711,11 +894,16 @@ async function g2Webhook(req, env) {
   if (ev.event === 'ping' || !ev.order_id) return json({ ok: true });
   if (!/^topup\./.test(String(ev.event || ''))) return json({ ok: true });
   await g2Tablas(env);
-  const fila = await env.DB.prepare('SELECT * FROM g2_ordenes WHERE g2_order_id = ?').bind(ev.order_id).first();
+  let fila = await env.DB.prepare('SELECT * FROM g2_ordenes WHERE g2_order_id = ?').bind(ev.order_id).first();
+  if (!fila) {
+    const rm = String(ev.remark || (ev.order && ev.order.remark) || '').match(/^lt-(.+)$/);
+    if (rm) fila = await env.DB.prepare('SELECT * FROM g2_ordenes WHERE recarga_id = ?').bind(rm[1]).first();
+  }
   if (!fila) return json({ ok: true });
-  if (ev.status === 'COMPLETED' || ev.status === 'FAILED') {
-    await env.DB.prepare('UPDATE g2_ordenes SET estado = ? WHERE recarga_id = ?').bind(ev.status, fila.recarga_id).run();
-    await g2Finalizar(env, fila.recarga_id, ev.status === 'COMPLETED');
+  const st = String(ev.status || '').toUpperCase();
+  if (G2_OK.test(st) || G2_MAL.test(st)) {
+    await env.DB.prepare('UPDATE g2_ordenes SET estado = ? WHERE recarga_id = ?').bind(st, fila.recarga_id).run();
+    await g2Finalizar(env, fila.recarga_id, G2_OK.test(st));
   }
   return json({ ok: true });
 }
@@ -771,25 +959,71 @@ async function g2SincronizarPrecios(env) {
 // ---------- Respaldo: si un webhook no llegó, se consulta el estado ----------
 async function g2Respaldo(env) {
   await g2Tablas(env);
-  const { results } = await env.DB.prepare("SELECT * FROM g2_ordenes WHERE g2_order_id IS NOT NULL AND estado IN ('PENDING','PROCESSING') AND creado < ? LIMIT 5")
-    .bind(Date.now() - 3 * 60 * 1000).all();
+  const { results } = await env.DB.prepare("SELECT * FROM g2_ordenes WHERE g2_order_id IS NOT NULL AND g2_order_id > 0 AND estado NOT IN ('COMPLETED','FAILED','creando') AND creado < ? LIMIT 8")
+    .bind(Date.now() - 20 * 1000).all();
   for (const f of results || []) {
     try {
       const partes = String(f.juego).split('|');
       const code = partes[1] || await g2Codigo(env, partes[0]);
       const r = await g2(env, '/v1/games/order/status', { method: 'POST', body: { game: code, order_id: f.g2_order_id } });
-      const st = r.data && r.data.order && r.data.order.status;
-      if (st === 'COMPLETED' || st === 'FAILED') {
+      const st = g2LeerOrden(r.data).status;
+      if (G2_OK.test(st) || G2_MAL.test(st)) {
         await env.DB.prepare('UPDATE g2_ordenes SET estado = ? WHERE recarga_id = ?').bind(st, f.recarga_id).run();
-        await g2Finalizar(env, f.recarga_id, st === 'COMPLETED');
+        await g2Finalizar(env, f.recarga_id, G2_OK.test(st));
       }
     } catch (e) { /* se reintenta */ }
   }
 }
 
-function esAdmin(req, env) { return !!env.CLAVE_ESCRITURA && req.headers.get('X-Clave') === env.CLAVE_ESCRITURA; }
+// ---------- Diagnóstico: qué pasaría con cada paquete y qué pasó con las órdenes ----------
+async function g2Diagnostico(env) {
+  const salida = { fecha: new Date().toISOString(), secrets: { G2BULK_API_KEY: !!env.G2BULK_API_KEY, G2BULK_WEBHOOK_SECRET: !!env.G2BULK_WEBHOOK_SECRET } };
+  try { const me = await g2(env, '/v1/getMe'); salida.g2 = { http: me.status, cuenta: me.data.username, saldo: me.data.balance }; }
+  catch (e) { salida.g2 = { error: String(e && e.message ? e.message : e) }; }
+  const cfg = await leerKv(env, 'config');
+  salida.juegos = {};
+  for (const k of Object.keys(CAMPO_JUEGO)) {
+    try {
+      const code = await g2Codigo(env, k);
+      if (!code) { salida.juegos[k] = 'NO está en G2Bulk'; continue; }
+      const cat = await g2Catalogo(env, code, true);
+      const lista = paquetesPedido(cfg, k).map((p) => {
+        const e = emparejar(env, k, p, cat);
+        const venta = Number(p.precioUsdt);
+        let veredicto = 'OK se envía solo';
+        if (!e) veredicto = 'SIN equivalente en G2Bulk (se queda manual)';
+        else if (!(venta >= e.amount)) veredicto = 'COSTO MAYOR que tu precio (se queda manual)';
+        return { paquete: p.nombre, tu_precio: venta, g2: e ? e.name : null, costo_g2: e ? e.amount : null, veredicto };
+      });
+      salida.juegos[k] = { code, paquetes: lista, catalogo_g2: cat.map((c) => c.name + ' = ' + c.amount) };
+    } catch (e) { salida.juegos[k] = 'error: ' + (e && e.message ? e.message : e); }
+  }
+  await g2Tablas(env);
+  const sol = await leerKv(env, 'solicitudes');
+  const pend = (sol && Array.isArray(sol.recargas) ? sol.recargas : []).filter((r) => r.estado === 'Pendiente' && NOMBRE_A_CLAVE[r.juego]).slice(-15);
+  salida.pendientes = [];
+  for (const r of pend) {
+    const c = await env.DB.prepare('SELECT estado, intentos, motivo FROM g2_cola WHERE recarga_id = ?').bind(String(r.id)).first();
+    const o = await env.DB.prepare('SELECT g2_order_id, estado FROM g2_ordenes WHERE recarga_id = ?').bind(String(r.id)).first();
+    salida.pendientes.push({ id: r.id, juego: r.juego, paquete: r.detalle, jugador: r.idJugador, precio: r.precio, cola: c || null, g2: o || null });
+  }
+  return salida;
+}
 
-async function rutaG2(req, env, ruta, url) {
+function esAdmin(req, env) { return !!env.CLAVE_ESCRITURA && req.headers.get('X-Clave') === env.CLAVE_ESCRITURA; }
+// Admin de G2: clave de escritura, o el pase del CEO (X-Admin), o ?k= con la clave de escritura / la contraseña de admin
+async function esAdminG2(req, env, url) {
+  if (esAdmin(req, env)) return true;
+  try { if (await tokenAdminValido(req, env)) return true; } catch (e) {}
+  const k = url ? url.searchParams.get('k') : null;
+  if (k) {
+    if (env.CLAVE_ESCRITURA && igualesSeguro(k, String(env.CLAVE_ESCRITURA))) return true;
+    if (env.ADMIN_PASSWORD && igualesSeguro(k, String(env.ADMIN_PASSWORD))) return true;
+  }
+  return false;
+}
+
+async function rutaG2(req, env, ruta, url, ctx) {
   const leer = async () => { try { return await req.json(); } catch (e) { return null; } };
   if (ruta === '/api/g2/webhook' && req.method === 'POST') return await g2Webhook(req, env);
   if (ruta === '/api/g2/validar' && req.method === 'POST') {
@@ -798,10 +1032,27 @@ async function rutaG2(req, env, ruta, url) {
   }
   if (ruta === '/api/g2/pedir' && req.method === 'POST') {
     const c = await leer(); if (!c) return json({ mensaje: 'JSON no válido' }, 400);
-    return json(await g2Pedir(env, url.origin, c));
+    // Se responde enseguida y el envío sigue en el servidor aunque el cliente cierre la app
+    const trabajo = (async () => { try { if ((await leerKv(env, 'g2_origen')) !== url.origin) await guardarKv(env, 'g2_origen', url.origin); } catch (e) {} return g2PedirConReintento(env, url.origin, c, false); })();
+    if (ctx && ctx.waitUntil) { ctx.waitUntil(trabajo.catch(() => {})); return json({ resultado: 'recibida' }); }
+    return json(await trabajo);
   }
-  // ---- Admin (header X-Clave = CLAVE_ESCRITURA) ----
-  if (!esAdmin(req, env)) return json({ mensaje: 'No autorizado' }, 401);
+  // ---- Admin (header X-Clave = CLAVE_ESCRITURA; el diagnóstico también acepta ?k=CLAVE para abrirlo en el navegador) ----
+  if (ruta === '/api/g2/diagnostico' && req.method === 'GET') {
+    if (!(await esAdminG2(req, env, url))) return json({ mensaje: 'No autorizado' }, 401);
+    return json(await g2Diagnostico(env));
+  }
+  if (!(await esAdminG2(req, env, null))) return json({ mensaje: 'No autorizado' }, 401);
+  if (ruta === '/api/g2/reintentar' && req.method === 'POST') {
+    const c = await leer(); if (!c || !c.id) return json({ mensaje: 'Falta id' }, 400);
+    await g2Tablas(env);
+    if (c.forzar) await env.DB.prepare('DELETE FROM g2_ordenes WHERE recarga_id = ? AND g2_order_id IS NULL').bind(String(c.id)).run();
+    await env.DB.prepare('DELETE FROM g2_cola WHERE recarga_id = ?').bind(String(c.id)).run();
+    const sol = await leerKv(env, 'solicitudes');
+    const rec = sol && Array.isArray(sol.recargas) ? sol.recargas.find((r) => String(r.id) === String(c.id)) : null;
+    if (!rec) return json({ mensaje: 'Orden no encontrada' }, 404);
+    return json(await g2PedirConReintento(env, await g2Origen(env), { id: String(c.id), correo: rec.correo }, !!c.forzar));
+  }
   if (ruta === '/api/g2/estado' && req.method === 'GET') {
     const me = await g2(env, '/v1/getMe');
     const juegos = {};
@@ -958,17 +1209,22 @@ async function rutaChat(req, env, ruta) {
 
   // ---------- Usuario ----------
   if (ruta === '/api/chat/enviar' || ruta === '/api/chat/ver' || ruta === '/api/chat/cerrar') {
-    const u = await chatAuth(env, c, false);
+    let u = await chatAuth(env, c, false);
+    // La cuenta del admin no guarda contraseña (por seguridad): se acepta con su pase de admin para que pueda probar el chat como usuario
+    if (!u && (await tokenAdminValido(req, env))) { const cm = String(c.correo || '').toLowerCase().trim(); if (cm && cm === adminCorreo(env)) u = { correo: cm, nombre: 'Admin' }; }
     if (!u) return json({ mensaje: 'No autorizado' }, 401);
     let f = await chatFila(env, u.correo);
     if (ruta === '/api/chat/enviar') {
       const texto = chatTexto(c.texto);
       if (!texto) return json({ mensaje: 'Mensaje vacío' }, 400);
       if (f && f.upd && ahora - f.upd < 600 && f.msgs.length && f.msgs[f.msgs.length - 1].de === 'u') return json({ mensaje: 'Espera un momento' }, 429);
+      const avisarCeo = !f || f.estado === 'cerrado' || !f.msgs.length || f.msgs[f.msgs.length - 1].de !== 'u';
       if (!f || f.estado === 'cerrado') f = { correo: u.correo, nombre: u.nombre, estado: 'abierto', msgs: [], upd: ahora, na: 0, nu: 0 };
       f.nombre = u.nombre; f.estado = 'abierto'; f.upd = ahora; f.na += 1;
       f.msgs.push({ de: 'u', t: texto, ts: ahora });
       await chatGuardar(env, f);
+      // Aviso al CEO en Telegram (si TG_TOKEN y TG_CHAT están puestos): solo al primer mensaje de cada tanda
+      if (avisarCeo) { try { await tgTexto(env, '💬 Soporte Lester Tienda\n' + u.nombre + ' (' + u.correo + ') quiere hablar contigo:\n' + texto.slice(0, 200)); } catch (e) {} }
       return json({ ok: true });
     }
     if (!f) return json({ n: 0, msgs: [], estado: 'ninguno', reset: false });
@@ -1120,8 +1376,58 @@ async function saldoRevisarPendientes(env) {
   }
 }
 
+
+// =====================================================================
+//  IA LT (chat): responde cualquier pregunta con Workers AI (gratis dentro del plan de Cloudflare)
+//  Necesita el "binding" de Workers AI con el nombre AI (Worker -> Settings -> Bindings -> Add -> Workers AI).
+//  Opcionales: IA_MODEL (por defecto llama 3.1 8B), IA_MAX_HORA (preguntas por IP y hora, por defecto 40)
+// =====================================================================
+const IA_SISTEMA = `Eres IA LT, la asistente virtual de Lester Tienda, una tienda de recargas de videojuegos. Hablas en español, con un tono cercano, amable y natural, como una persona; usas algún emoji de vez en cuando y respuestas claras y no demasiado largas.
+Puedes conversar y responder cualquier pregunta general (cultura, tecnología, juegos, consejos, matemáticas, redacción, etc.) con la mejor ayuda posible. Si no sabes algo, lo dices con honestidad y no inventas datos.
+Datos reales de la tienda (úsalos solo cuando pregunten por ella, nunca inventes otros precios, plazos ni funciones):
+- Juegos: Free Fire (diamantes, por ID), Blood Strike (BC, por ID), Call of Duty Mobile (CP, por ID), Roblox (Robux, por correo) y Arena Breakout (Bonds, por ID). Mobile Legends y Gift Cards: próximamente.
+- Todas las recargas se pagan con ORO LT, la moneda de la tienda. Se compra en la sección Wallet con USDT (red BEP 20) o con Saldo Móvil, desde 1 ORO LT en números enteros; el precio de cada opción se ve en Wallet.
+- Depósito USDT: mínimo 0.5, el pago dura 5 minutos y se acredita solo.
+- Referidos: con 5 referidos válidos (amigos que se registran con tu enlace y hacen su primera recarga o depósito aprobado) eliges un juego y recibes su primera oferta gratis, una sola vez por cuenta.
+- Pedidos: estados Pendiente, Completado y Cancelado (si se cancela, el dinero vuelve al saldo).
+- Si algo falla o necesitan una persona, pueden pedir hablar con soporte en este mismo chat y Lester responde en vivo.
+Reglas: nunca pidas ni aceptes contraseñas, claves ni datos de pago; no prometas acciones que no puedes hacer (tú no ejecutas recargas ni reembolsos); rechaza con amabilidad contenido ilegal, peligroso o sexual; no des diagnósticos médicos ni asesoría legal o financiera definitiva. Responde en texto sencillo, sin tablas ni encabezados.`;
+async function rutaIaChat(req, env) {
+  if (!env.AI) return json({ ok: false, motivo: 'sin_ia' }, 200);
+  let c; try { c = await req.json(); } catch (e) { return json({ ok: false }, 400); }
+  const msg = String((c && c.mensaje) || '').trim().slice(0, 600);
+  if (!msg) return json({ ok: false }, 400);
+  // límite por IP y hora (evita abusos y gasto)
+  const ip = req.headers.get('CF-Connecting-IP') || 'x';
+  const maxH = Number(env.IA_MAX_HORA) > 0 ? Number(env.IA_MAX_HORA) : 40;
+  const k = 'ia_rl:' + ip, ahora = Date.now();
+  const rl = (await leerKv(env, k)) || { n: 0, t: ahora };
+  const nuevo = ahora - rl.t > 3600000 ? { n: 1, t: ahora } : { n: rl.n + 1, t: rl.t };
+  if (nuevo.n > maxH) return json({ ok: false, motivo: 'limite' }, 200);
+  await guardarKv(env, k, nuevo);
+  const nombre = String((c && c.nombre) || '').replace(/[^\p{L}\p{N} ._-]/gu, '').slice(0, 30);
+  const hist = (Array.isArray(c.historial) ? c.historial : []).slice(-8).map((h) => ({
+    role: h && h.r === 'assistant' ? 'assistant' : 'user', content: String((h && h.t) || '').slice(0, 500),
+  })).filter((h) => h.content);
+  const mensajes = [{ role: 'system', content: IA_SISTEMA + (nombre ? '\nEl usuario se llama ' + nombre + '.' : '') }, ...hist, { role: 'user', content: msg }];
+  try {
+    const r = await env.AI.run(env.IA_MODEL || '@cf/meta/llama-3.1-8b-instruct', { messages: mensajes, max_tokens: 420, temperature: 0.6 });
+    const texto = String((r && (r.response || r.result || '')) || '').trim().slice(0, 1800);
+    if (!texto) return json({ ok: false, motivo: 'vacio' }, 200);
+    return json({ ok: true, texto });
+  } catch (e) { return json({ ok: false, motivo: 'error' }, 200); }
+}
+
 // ---------- Telegram (opcional) ----------
+// WhatsApp (opcional, gratis con CallMeBot). Secrets: WA_PHONE (tu número con código de país, sin +) y WA_APIKEY
+async function waTexto(env, texto) {
+  if (!env.WA_PHONE || !env.WA_APIKEY) return;
+  try {
+    await fetch('https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(String(env.WA_PHONE).replace(/[^0-9]/g, '')) + '&text=' + encodeURIComponent(String(texto).slice(0, 900)) + '&apikey=' + encodeURIComponent(env.WA_APIKEY));
+  } catch (e) { /* no es crítico */ }
+}
 async function tgTexto(env, texto) {
+  await waTexto(env, texto); // todos los avisos al teléfono también llegan por WhatsApp si está configurado
   if (!env.TG_TOKEN || !env.TG_CHAT) return;
   try {
     await fetch('https://api.telegram.org/bot' + env.TG_TOKEN + '/sendMessage', {
@@ -1399,6 +1705,9 @@ async function rutaSaldo(req, env, ruta, url) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo)) return json({ mensaje: 'Correo no válido' }, 400);
     if (!tel) return json({ mensaje: 'Escribe tu número de celular (8 dígitos, empieza con 5).' }, 400);
     if (!(monto >= SALDO_MIN) || monto > SALDO_MAX) return json({ mensaje: 'Escribe un monto válido.' }, 400);
+    // El saldo se usa para comprar ORO LT: el monto debe dar al menos 0.01 ORO LT (si no, se aprobaría sin acreditar nada)
+    const prMin = await preciosLT(env);
+    if (Math.round((monto / prMin.saldo) * 100) / 100 < 0.01) return json({ mensaje: 'Ese monto es muy pequeño para comprar ORO LT. Escribe un monto mayor.' }, 400);
     const fu = await env.DB.prepare("SELECT v FROM kv WHERE k = 'usuarios'").first();
     const lista = fu ? JSON.parse(fu.v) : [];
     const usuario = Array.isArray(lista) ? lista.find((x) => String(x.correo || '').toLowerCase().trim() === correo) : null;
@@ -1582,7 +1891,7 @@ async function emailEnviar(env, correo, codigo) {
       body: JSON.stringify({ clave: env.APPS_SCRIPT_CLAVE, to: correo, codigo }),
     });
     const t = await r.text();
-    let j; try { j = JSON.parse(t); } catch (e) { return { ok: false, motivo: 'respuesta_no_valida' }; }
+    let j; try { j = JSON.parse(t); } catch (e) { return { ok: false, motivo: 'respuesta_no_valida: ' + r.status + ' ' + t.replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 70) }; }
     return { ok: !!j.ok, motivo: j.error || '' };
   } catch (e) { return { ok: false, motivo: 'sin_conexion' }; }
 }
@@ -1623,8 +1932,9 @@ async function rutaEmail(req, env, ruta) {
     const r = await emailEnviar(env, correo, codigo);
     if (!r.ok) {
       await env.DB.prepare('DELETE FROM email_codigos WHERE correo = ?').bind(correo).run();
+      await env.DB.prepare('DELETE FROM email_ip WHERE ip = ? AND ts = ?').bind(ip, ahora).run(); // un envío fallido no cuenta para el límite
       if (r.motivo === 'no_configurado') return json({ mensaje: 'El envío de códigos aún no está configurado. Avisa a soporte.' }, 503);
-      return json({ mensaje: 'No pudimos enviar el código ahora. Intenta en unos minutos.' }, 502);
+      return json({ mensaje: 'No pudimos enviar el código ahora. Intenta en unos minutos.' + (r.motivo ? ' (' + String(r.motivo).slice(0, 80) + ')' : '') }, 502);
     }
     return json({ ok: true, espera: EMAIL_ESPERA_MS / 1000 });
   }
@@ -1650,6 +1960,7 @@ async function rutaEmail(req, env, ruta) {
 
 // Deja pasar solo a los usuarios nuevos con correo verificado (cada verificación se gasta una vez)
 async function emailFiltrarNuevos(env, usuariosNuevos, previo) {
+  return usuariosNuevos; // registro SIN código de correo: se aceptan los usuarios nuevos directamente
   if (!Array.isArray(previo) || previo.length === 0) return usuariosNuevos; // base vacía: no se bloquea nada
   await emailTabla(env);
   const existentes = new Set(previo.map((u) => emailNorm(u && u.correo)));
@@ -1668,7 +1979,7 @@ async function emailFiltrarNuevos(env, usuariosNuevos, previo) {
 }
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     // Si la petición viene de una página web (trae Origin) que NO es tu tienda, se corta aquí.
     // Las llamadas de servidor (webhook de G2Bulk, reenviador de SMS, Telegram) no traen Origin y siguen funcionando.
     const origenPeticion = req.headers.get('Origin');
@@ -1695,13 +2006,17 @@ export default {
       catch (e) { return json({ ok: false }, 500); }
     }
 
+    if (ruta === '/api/ia/chat' && req.method === 'POST') {
+      try { return await rutaIaChat(req, env); } catch (e) { return json({ ok: false }, 200); }
+    }
+
     if (ruta.startsWith('/api/chat/')) {
       try { return await rutaChat(req, env, ruta); }
       catch (e) { return json({ mensaje: 'Error interno: ' + (e && e.message ? e.message : e) }, 500); }
     }
 
     if (ruta.startsWith('/api/g2/')) {
-      try { return await rutaG2(req, env, ruta, url); }
+      try { return await rutaG2(req, env, ruta, url, ctx); }
       catch (e) { return json({ mensaje: 'Error interno: ' + (e && e.message ? e.message : e) }, 500); }
     }
 
@@ -1772,6 +2087,8 @@ export default {
     ctx.waitUntil((async () => {
       try { await escanear(env, true); } catch (e) { /* se reintenta al minuto siguiente */ }
       try { await limpiar(env); } catch (e) {}
+      try { await g2RevisarSaldo(env); } catch (e) {}
+      try { await g2Cola(env); } catch (e) {}
       try { await g2Respaldo(env); } catch (e) {}
       try { await saldoConciliar(env); } catch (e) {}
       try { if (new Date(event.scheduledTime).getUTCMinutes() % 10 === 0) await saldoLimpiar(env); } catch (e) {}
