@@ -1590,37 +1590,81 @@
    try{dp.prompt();dp.userChoice.then(function(c){
      if(c&&c.outcome==='accepted'){try{mostrarNotificacion('Instalando aplicación...')}catch(e){}
        setTimeout(function(){if(!inst)pasosManual()},12000)}}).catch(function(){pasosManual()})}catch(e){pasosManual()}}}
- /* ---- instalar con progreso real de descarga ---- */
- var APP_BYTES=4700000,liOn=false;
+ /* ---- instalar con progreso REAL de descarga (bytes y tamaño reales, sin simulación) ---- */
+ var liOn=false;
  function $i(i){return document.getElementById(i)}
+ (function(){try{var s=document.createElement('style');s.textContent='#lt-inst .li-bar i.ind{width:38%!important;animation:liInd 1.1s ease-in-out infinite alternate}@keyframes liInd{from{margin-left:0}to{margin-left:62%}}';document.head.appendChild(s)}catch(e){}})();
  function liBox(){var o=$i('lt-inst');if(o)return o;o=document.createElement('div');o.id='lt-inst';o.setAttribute('role','dialog');
   o.innerHTML='<div class="li-box"><img alt="" src="'+(window.__LTICO||'')+'"><h3>Descargando Lester Tienda</h3><div class="li-s" id="li-s">Preparando…</div><div class="li-bar"><i id="li-b"></i></div><div class="li-n"><span id="li-p">0%</span><span id="li-m">0.0 MB</span></div><ol class="li-steps"><li><b>Sin VPN</b>, hazlo así:</li><li>Toca el menú del navegador <b>⋮</b>.</li><li>Elige <b>Añadir a pantalla de inicio</b>.</li><li>Si te da a escoger, toca <b>Crear acceso directo</b> y confirma.</li></ol><button type="button" id="li-x">Entendido</button></div>';
   document.body.appendChild(o);$i('li-x').onclick=function(){o.classList.remove('on','fin','err');liOn=false};return o}
- function liSet(p,txt,mb){$i('li-b').style.width=p+'%';$i('li-p').textContent=Math.round(p)+'%';if(mb!=null)$i('li-m').textContent=mb.toFixed(1)+' / '+(APP_BYTES/1048576).toFixed(1)+' MB';if(txt)$i('li-s').textContent=txt}
+ function liMB(n){return (n/1048576).toFixed(1)}
+ function liSet(p,txt,got,tot){
+  var b=$i('li-b');
+  if(tot>0){b.classList.remove('ind');b.style.width=Math.max(0,Math.min(100,p))+'%';$i('li-p').textContent=Math.floor(Math.max(0,Math.min(100,p)))+'%';$i('li-m').textContent=liMB(got)+' / '+liMB(tot)+' MB'}
+  else{b.classList.add('ind');$i('li-p').textContent='…';$i('li-m').textContent=liMB(got||0)+' MB'}
+  if(txt)$i('li-s').textContent=txt}
+ /* tamaño real de cada archivo: el de la página ya cargada, el de recursos ya cargados o, si no, el del servidor */
+ function liSizeOf(u,isPage){
+  try{
+   var abs=new URL(u,location.href).href.split('#')[0];
+   if(isPage){var nv=performance.getEntriesByType('navigation')[0];if(nv&&nv.decodedBodySize>0)return Promise.resolve(nv.decodedBodySize)}
+   var rs=performance.getEntriesByType('resource');
+   for(var i=rs.length-1;i>=0;i--){if(rs[i].name.split('#')[0]===abs&&rs[i].decodedBodySize>0)return Promise.resolve(rs[i].decodedBodySize)}
+  }catch(e){}
+  return fetch(u,{method:'HEAD',cache:'no-store'}).then(function(r){if(!r.ok||r.headers.get('content-encoding'))return 0;return parseInt(r.headers.get('content-length')||'0',10)||0}).catch(function(){return 0})
+ }
  async function liDescargar(){
-  var got=0,urls=[location.href.split('#')[0],'icon-192.png','icon-512.png'];
-  for(var k=0;k<urls.length;k++){
-   var r=await fetch(urls[k],{cache:'reload'});if(!r.ok)throw new Error('http');
-   if(r.body&&r.body.getReader){var rd=r.body.getReader();for(;;){var x=await rd.read();if(x.done)break;got+=x.value.length;liSet(Math.min(99,got/APP_BYTES*100),'Descargando la aplicación…',Math.min(got,APP_BYTES)/1048576)}}
-   else{var b=await r.blob();got+=b.size;liSet(Math.min(99,got/APP_BYTES*100),'Descargando la aplicación…',Math.min(got,APP_BYTES)/1048576)}
+  var mf=document.querySelector('link[rel="manifest"]'),
+      items=[[location.href.split('#')[0],1],[mf&&mf.getAttribute('href')||'manifest.json',0],['sw.js',0],['icon-192.png',0],['icon-512.png',0]];
+  var sizes=await Promise.all(items.map(function(it){return liSizeOf(it[0],it[1])}));
+  var tot=0;sizes.forEach(function(s){tot+=s});
+  var got=0,all=0,t0=Date.now(),last=0;
+  function upd(force){
+   var now=Date.now();if(!force&&now-last<120)return;last=now;
+   var txt='Descargando…';
+   if(tot>0){var rem=Math.max(0,tot-got),el=(now-t0)/1000,spd=got/Math.max(el,.2);
+    txt='Faltan '+liMB(rem)+' MB';
+    if(el>1&&spd>0){var sec=Math.ceil(rem/spd);txt+=' · '+(spd>=1048576?liMB(spd)+' MB/s':Math.max(1,Math.round(spd/1024))+' KB/s')+' · ~'+(sec>=60?Math.ceil(sec/60)+' min':sec+' s')}}
+   liSet(tot>0?got/tot*100:0,txt,tot>0?got:all,tot)}
+  upd(true);
+  for(var k=0;k<items.length;k++){
+   var counted=sizes[k]>0,inItem=0,inAll=0;
+   try{
+    var r=await fetch(items[k][0],{cache:'reload'});if(!r.ok)throw new Error('http');
+    if(r.body&&r.body.getReader){var rd=r.body.getReader();for(;;){var x=await rd.read();if(x.done)break;var n=x.value.length;inAll+=n;all+=n;if(counted){inItem+=n;got+=n}upd(false)}}
+    else{var b=await r.blob();inAll=b.size;all+=b.size;if(counted){inItem=b.size;got+=b.size}upd(false)}
+   }catch(e){
+    if(k===0)throw e; /* la página es obligatoria; lo demás (icono, sw…) no bloquea */
+    all-=inAll;if(counted){got-=inItem;tot-=sizes[k]}
+   }
   }
+  upd(true);
+  return {got:got,tot:tot,all:all};
  }
  var oi2=window.instalarApp;
  window.instalarApp=function(){
   try{if(esAppInstalada())return oi2.apply(this,arguments)}catch(e){}
-  if(liOn)return;liOn=true;var o=liBox();o.classList.remove('fin','err');o.classList.add('on');liSet(0,'Preparando…',0);
+  if(liOn)return;liOn=true;inst=false;
+  var o=liBox();o.classList.remove('fin','err');o.classList.add('on');liSet(0,'Preparando…',0,0);
   var dp=null;try{dp=deferredPrompt}catch(e){}
-  var accepted=false;
-  if(dp){try{deferredPrompt=null}catch(e){}try{dp.prompt();dp.userChoice.then(function(c){accepted=!!(c&&c.outcome==='accepted')}).catch(function(){})}catch(e){}}
-  liDescargar().then(function(){
-    liSet(100,'Descarga completa',APP_BYTES/1048576);
-    if(accepted||dp){$i('li-s').textContent='Instalando… espera unos segundos';
-      var t0=Date.now(),iv=setInterval(function(){
-        if(inst){clearInterval(iv);$i('li-s').textContent='¡Instalada! Búscala en tu pantalla de inicio';o.classList.add('fin')}
-        else if(Date.now()-t0>12000){clearInterval(iv);$i('li-s').textContent='No se pudo instalar automático (sin VPN).';o.classList.add('err')}
-      },500)}
-    else{$i('li-s').textContent='Descarga lista. Termina la instalación a mano:';o.classList.add('err')}
-  }).catch(function(){liSet(0,'No se pudo descargar. Revisa tu internet.');o.classList.add('err')});
+  var choice='none'; /* none | pending | accepted | dismissed */
+  if(dp){choice='pending';try{deferredPrompt=null}catch(e){}
+   try{dp.prompt();dp.userChoice.then(function(c){choice=(c&&c.outcome==='accepted')?'accepted':'dismissed'}).catch(function(){choice='dismissed'})}catch(e){choice='dismissed'}}
+  liDescargar().then(function(res){
+   var full=res.tot>0?res.tot:res.all;
+   if(res.tot>0)liSet(100,'Descarga completa',res.tot,res.tot);else{var b=$i('li-b');b.classList.remove('ind');b.style.width='100%';$i('li-p').textContent='100%';$i('li-m').textContent=liMB(full)+' MB';$i('li-s').textContent='Descarga completa'}
+   var s=$i('li-s');
+   if(choice==='none'){s.textContent='Descarga lista. Termina la instalación a mano:';o.classList.add('err');return}
+   if(choice==='dismissed'){s.textContent='Cancelaste la instalación. Si quieres, termínala a mano:';o.classList.add('err');return}
+   var t1=Date.now(),iv=setInterval(function(){
+    if(inst){clearInterval(iv);s.textContent='¡Instalada! Búscala en tu pantalla de inicio';o.classList.add('fin');return}
+    if(choice==='dismissed'){clearInterval(iv);s.textContent='Cancelaste la instalación. Si quieres, termínala a mano:';o.classList.add('err');return}
+    var w=Date.now()-t1;
+    if(choice==='pending'){if(w>90000){clearInterval(iv);s.textContent='No se confirmó la instalación. Termínala a mano:';o.classList.add('err')}else s.textContent='Acepta la instalación en la ventana del navegador…';return}
+    if(w>25000){clearInterval(iv);s.textContent='El navegador no confirmó la instalación (sin VPN a veces falla). Termínala a mano:';o.classList.add('err')}
+    else s.textContent='Instalando… espera unos segundos'
+   },400)
+  }).catch(function(){liSet(0,'No se pudo descargar. Revisa tu internet.',0,0);$i('li-p').textContent='0%';o.classList.add('err')});
  };
 
 })();
