@@ -2020,6 +2020,29 @@ body:not(#x) header.navbar .nav-brand-area::after{content:"";position:absolute;l
 @keyframes ltGlint{0%,12%{transform:translateX(-160%) skewX(-18deg)}55%,100%{transform:translateX(420%) skewX(-18deg)}}
 @keyframes ltLine{0%,10%{transform:scaleX(0);opacity:0}30%{opacity:1}60%{transform:scaleX(1);opacity:.9}85%,100%{transform:scaleX(1);opacity:0}}
 @media (prefers-reduced-motion:reduce){body:not(#x) header.navbar .nav-brand-area::before,body:not(#x) header.navbar .nav-brand-area::after{animation:none}}
+:root[data-theme="light"]:not(#x) body .bottom-nav{background:linear-gradient(180deg,#14224a,#0a1330) !important;border:1px solid #1d2f66 !important;box-shadow:0 -4px 18px rgba(20,40,110,.28),inset 0 1px 0 rgba(255,255,255,.12) !important}
+:root[data-theme="light"]:not(#x) body .bottom-nav .nav-item:not(.active){color:#a9c2f5 !important}
+:root[data-theme="light"]:not(#x) body .bottom-nav .nav-item:not(.active) svg,:root[data-theme="light"]:not(#x) body .bottom-nav .nav-item:not(.active) svg *{stroke:#a9c2f5 !important}
+:root[data-theme="light"]:not(#x) body .bottom-nav .nav-item:not(.active) span{color:#a9c2f5 !important}
+:root[data-theme="light"]:not(#x) body header.navbar::after,:root[data-theme="light"]:not(#x) body .bottom-nav::after{content:"" !important;display:block !important;position:absolute;left:22px;right:22px;height:6px;pointer-events:none;background:radial-gradient(circle,#e8f4ff 0 1.1px,#4aa0ff 1.6px,rgba(74,160,255,0) 3px) 0 50%/10px 6px repeat-x;opacity:.9;animation:ltLedPulse 2.4s ease-in-out infinite}
+:root[data-theme="light"]:not(#x) body header.navbar::after{bottom:2px}
+:root[data-theme="light"]:not(#x) body .bottom-nav::after{top:3px}
+@keyframes ltLedPulse{0%,100%{opacity:.45}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){:root[data-theme="light"]:not(#x) body header.navbar::after,:root[data-theme="light"]:not(#x) body .bottom-nav::after{animation:none}}
+:root[data-theme="light"]:not(#x) body header.navbar{background:radial-gradient(circle,#f2f9ff 0 1.2px,#4aa0ff 1.8px,rgba(74,160,255,0) 3.2px) 0 calc(100% - 3px)/10px 6px repeat-x,linear-gradient(180deg,#14224a,#0a1330) !important}
+:root[data-theme="light"]:not(#x) body .bottom-nav{background:radial-gradient(circle,#f2f9ff 0 1.2px,#4aa0ff 1.8px,rgba(74,160,255,0) 3.2px) 0 3px/10px 6px repeat-x,linear-gradient(180deg,#14224a,#0a1330) !important}
 </style>
+<style id="lt-led-run">
+.lt-ledrun{display:none;position:absolute;left:20px;right:20px;height:3px;overflow:hidden;pointer-events:none;border-radius:3px}
+:root[data-theme="light"] .lt-ledrun{display:block}
+.lt-ledrun.b{bottom:4px}.lt-ledrun.t{top:4px}
+.lt-ledrun i{position:absolute;top:0;left:0;height:3px;width:26%;border-radius:3px;background:linear-gradient(90deg,rgba(90,170,255,0),#6fb6ff 40%,#fff 70%,rgba(255,255,255,0));box-shadow:0 0 6px 1px rgba(110,180,255,.9);animation:ltLedRun 2.2s linear infinite;will-change:transform}
+.lt-ledrun.t i{animation-direction:reverse}
+@keyframes ltLedRun{0%{transform:translateX(-100%)}100%{transform:translateX(385%)}}
+@media (prefers-reduced-motion:reduce){.lt-ledrun i{animation:none}}
+:root[data-theme="light"]:not(#x) body header.navbar{background:linear-gradient(180deg,#14224a,#0a1330) !important}
+:root[data-theme="light"]:not(#x) body .bottom-nav{background:linear-gradient(180deg,#14224a,#0a1330) !important}
+</style>
+<script>(function(){function a(sel,c){var e=document.querySelector(sel);if(e&&!e.querySelector('.lt-ledrun')){var d=document.createElement('div');d.className='lt-ledrun '+c;d.innerHTML='<i></i>';e.appendChild(d)}}function go(){a('header.navbar','b');a('#bottom-nav','t')}if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);setTimeout(go,1500)})();</script>
 </body>
 </html>
