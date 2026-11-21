@@ -2013,15 +2013,13 @@ body #seccion-perfil .pf-card::before{
 :root[data-theme="light"]:not(#x) body header.navbar .nav-top-icon-btn{background:#16275a !important;border-color:#2a3f7a !important;box-shadow:none !important}
 :root[data-theme="light"]:not(#x) body header.navbar .nav-top-icon-btn svg,:root[data-theme="light"]:not(#x) body header.navbar .nav-top-icon-btn svg *{stroke:#9cbcff !important;color:#9cbcff !important}
 :root[data-theme="light"]:not(#x) body header.navbar .header-wallet-pill{border:0 !important}
-:root[data-theme="light"]:not(#x) body header.navbar .nav-brand-area{position:relative;overflow:hidden}
-:root[data-theme="light"]:not(#x) body header.navbar .nav-brand-area::before,:root[data-theme="light"]:not(#x) body header.navbar .nav-brand-area::after{content:"" !important;display:block !important;position:absolute;top:50%;width:38%;height:2px;margin-top:-1px;border-radius:2px;pointer-events:none;opacity:0;will-change:transform,opacity}
-:root[data-theme="light"]:not(#x) body header.navbar .nav-brand-area::before{left:0;background:linear-gradient(90deg,transparent,#5aa2ff,#fff);animation:ltBeamL 2.6s ease-in-out infinite}
-:root[data-theme="light"]:not(#x) body header.navbar .nav-brand-area::after{right:0;background:linear-gradient(270deg,transparent,#5aa2ff,#fff);animation:ltBeamR 2.6s ease-in-out infinite}
-@keyframes ltBeamL{0%{transform:translateX(120%);opacity:0}25%{opacity:.9}100%{transform:translateX(-120%);opacity:0}}
-@keyframes ltBeamR{0%{transform:translateX(-120%);opacity:0}25%{opacity:.9}100%{transform:translateX(120%);opacity:0}}
-@media (prefers-reduced-motion:reduce){:root[data-theme="light"]:not(#x) body header.navbar .nav-brand-area::before,:root[data-theme="light"]:not(#x) body header.navbar .nav-brand-area::after{animation:none}}
-:root[data-theme="light"]:not(#x) body header.navbar .header-wallet-pill,:root[data-theme="light"]:not(#x) body header.navbar .header-wallet-pill .hw-ico{background:none !important;border:0 !important;box-shadow:none !important;outline:0 !important;filter:none !important}
 :root[data-theme="light"]:not(#x) body header.navbar .header-wallet-pill .lt-coin{border:0 !important;box-shadow:none !important;outline:0 !important;background-color:transparent !important;filter:none !important}
+body:not(#x) header.navbar .nav-brand-area{position:relative;overflow:hidden;border-radius:12px}
+body:not(#x) header.navbar .nav-brand-area::before{content:"";position:absolute;top:0;bottom:0;left:0;width:34%;pointer-events:none;background:linear-gradient(100deg,transparent 0,rgba(255,255,255,.0) 20%,rgba(255,255,255,.55) 50%,rgba(255,255,255,0) 80%,transparent 100%);transform:translateX(-160%) skewX(-18deg);animation:ltGlint 4.2s cubic-bezier(.4,0,.2,1) infinite;will-change:transform;mix-blend-mode:overlay}
+body:not(#x) header.navbar .nav-brand-area::after{content:"";position:absolute;left:6%;right:6%;bottom:3px;height:2px;border-radius:2px;pointer-events:none;background:linear-gradient(90deg,transparent,#3d8bff 30%,#bfe0ff 50%,#3d8bff 70%,transparent);transform:scaleX(0);opacity:0;transform-origin:50% 50%;animation:ltLine 4.2s ease-in-out infinite;will-change:transform,opacity}
+@keyframes ltGlint{0%,12%{transform:translateX(-160%) skewX(-18deg)}55%,100%{transform:translateX(420%) skewX(-18deg)}}
+@keyframes ltLine{0%,10%{transform:scaleX(0);opacity:0}30%{opacity:1}60%{transform:scaleX(1);opacity:.9}85%,100%{transform:scaleX(1);opacity:0}}
+@media (prefers-reduced-motion:reduce){body:not(#x) header.navbar .nav-brand-area::before,body:not(#x) header.navbar .nav-brand-area::after{animation:none}}
 </style>
 </body>
 </html>
