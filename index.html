@@ -2044,5 +2044,6 @@ body:not(#x) header.navbar .nav-brand-area::after{content:"";position:absolute;l
 :root[data-theme="light"]:not(#x) body .bottom-nav{background:linear-gradient(180deg,#14224a,#0a1330) !important}
 </style>
 <script>(function(){function a(sel,c){var e=document.querySelector(sel);if(e&&!e.querySelector('.lt-ledrun')){var d=document.createElement('div');d.className='lt-ledrun '+c;d.innerHTML='<i></i>';e.appendChild(d)}}function go(){a('header.navbar','b');a('#bottom-nav','t')}if(document.readyState!=='loading')go();else document.addEventListener('DOMContentLoaded',go);setTimeout(go,1500)})();</script>
+<script id="lt-no-liberar">(function(){window.liberarEspacioCEO=function(){return false};function q(){document.querySelectorAll('button[onclick*="liberarEspacioCEO"]').forEach(function(b){b.remove()})}q();new MutationObserver(q).observe(document.documentElement,{childList:true,subtree:true})})();</script>
 </body>
 </html>
