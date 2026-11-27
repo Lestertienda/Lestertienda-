@@ -2134,5 +2134,6 @@ body #comp-card .lt-dur svg{width:10px;height:10px;fill:currentColor}
 </style>
 <script id="lt-sm-scroll">(function(){var o=window.smPaso,last=null,lt=0;if(typeof o!=="function")return;window.smPaso=function(e){var now=Date.now(),ch=(e!==last)||(now-lt>30000);last=e;lt=now;if(ch)return o.apply(this,arguments);var st=window.scrollTo;window.scrollTo=function(){};try{return o.apply(this,arguments)}finally{window.scrollTo=st}}})();</script>
 <script id="lt-no-desc">(function(){var o=window.seleccionarOferta;if(typeof o!=='function')return;window.seleccionarOferta=function(){var u=typeof usuarioActual!=='undefined'?usuarioActual:null,d=u&&u.descuentosDisponibles;if(u)u.descuentosDisponibles=0;try{return o.apply(this,arguments)}finally{if(u)u.descuentosDisponibles=d}}})();</script>
+<script id="lt-usdt-vis">document.addEventListener('visibilitychange',function(){try{if(!document.hidden&&typeof ordenUSDT!=='undefined'&&ordenUSDT&&typeof revisarOrdenUSDT==='function')revisarOrdenUSDT()}catch(e){}});</script>
 </body>
 </html>
